@@ -1,10 +1,10 @@
 package AST.Elements.ElementsNodes;
 
-import old.generatedback.ASTBack.Elements.HtmlElement;
+
+import AST.Elements.HtmlElement;
 
 import java.util.ArrayList;
 import java.util.List;
-
 
 public class HtmlContent {
 
@@ -12,7 +12,7 @@ public class HtmlContent {
     private List<HtmlCharData> htmlCharDataList = new ArrayList<>();
     private List<HtmlElement> htmlElement = new ArrayList<>();
     private List<String> htmlComment = new ArrayList<>();
-    private List<CData> cDatas = new List<CData>();
+    private List<String> cDatas = new ArrayList<>();
 
     public List<HtmlCharData> getHtmlCharDataList() {
         return htmlCharDataList;
@@ -38,11 +38,11 @@ public class HtmlContent {
         this.htmlComment = htmlComment;
     }
 
-    public List<CData> getcDatas() {
+    public List<String> getcDatas() {
         return cDatas;
     }
 
-    public void setcDatas(List<CData> cDatas) {
+    public void setcDatas(List<String> cDatas) {
         this.cDatas = cDatas;
     }
 }

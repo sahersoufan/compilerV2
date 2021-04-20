@@ -1,8 +1,11 @@
 package AST.Elements;
 
-import old.generatedback.ASTBack.Elements.ElementsNodes.*;
-import old.generatedback.ASTBack.Elements.ElementsNodes.MustacheExpression.MustacheExpression;
 
+import AST.Elements.ElementsNodes.HtmlAttribute;
+import AST.Elements.ElementsNodes.HtmlContent;
+import AST.Elements.ElementsNodes.script;
+import AST.Elements.ElementsNodes.style;
+import AST.Elements.ElementsNodes.mustacheExpression.mustacheExpression;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,8 +15,8 @@ public class HtmlElement {
     private String tagName;
     private List<HtmlAttribute> htmlAttributeList = new ArrayList<>();
     private HtmlContent htmlContent = new HtmlContent();
-    private MustacheExpression mustacheExpression = new MustacheExpression();
-    private ScriptLet ScriptLet;
+    private mustacheExpression mustacheExpression = new mustacheExpression();
+    private String ScriptLet;
     private script script;
     private style style;
 
@@ -41,19 +44,19 @@ public class HtmlElement {
         this.htmlContent = htmlContent;
     }
 
-    public MustacheExpression getMustacheExpression() {
+    public AST.Elements.ElementsNodes.mustacheExpression.mustacheExpression getMustacheExpression() {
         return mustacheExpression;
     }
 
-    public void setMustacheExpression(MustacheExpression mustacheExpression) {
+    public void setMustacheExpression(AST.Elements.ElementsNodes.mustacheExpression.mustacheExpression mustacheExpression) {
         this.mustacheExpression = mustacheExpression;
     }
 
-    public ScriptLet getScriptLet() {
+    public String getScriptLet() {
         return ScriptLet;
     }
 
-    public void setScriptLet(ScriptLet scriptLet) {
+    public void setScriptLet(String scriptLet) {
         ScriptLet = scriptLet;
     }
 
