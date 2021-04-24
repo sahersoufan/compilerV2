@@ -11,7 +11,6 @@ import AST.Elements.ElementsNodes.generic4Elements.variable.Variable;
 class Collection4For2 {
     private Variable variable;
     private NUmber number;
-    //TODO add number ro generic
      private SubObj subObj;
      private ObjArray objArray;
      private Array array;

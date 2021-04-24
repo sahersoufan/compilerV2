@@ -109,7 +109,7 @@ collection4App2
 //(!a && b < c || c)
 // FOR
 forExpression
-    : collection4For1 ( IN   collection4For2 (CP_CONTENT_SEMI_COLON collection4For1 CP_CONTENT_EQUALS INDEX)? )? //TODO check
+    : collection4For1 IN   collection4For2 (CP_CONTENT_SEMI_COLON collection4For1 CP_CONTENT_EQUALS INDEX)?
     | collection4For1 CP_CONTENT_COMMA collection4For1 IN collection4For3
     | collection4For5
     | (CP_CONTENT_NOT)? collection4For4 ( CP_CONTENT_AND (CP_CONTENT_NOT)? collection4For4 | CP_CONTENT_OR (CP_CONTENT_NOT)? collection4For4)*
