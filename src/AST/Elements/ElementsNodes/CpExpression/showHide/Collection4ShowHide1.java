@@ -1,4 +1,4 @@
-package AST.Elements.ElementsNodes.CpExpression.model;
+package AST.Elements.ElementsNodes.CpExpression.showHide;
 
 import AST.Elements.ElementsNodes.generic4Elements.array.objArray;
 import AST.Elements.ElementsNodes.generic4Elements.comparison.comparisonExpression;
@@ -7,8 +7,10 @@ import AST.Elements.ElementsNodes.generic4Elements.function.functionCall;
 import AST.Elements.ElementsNodes.generic4Elements.object.subObj;
 import AST.Elements.ElementsNodes.generic4Elements.variable.variable;
 
-public class collection4Model2 {
+public class Collection4ShowHide1 {
     private variable variable;
+    private boolean True;
+    private boolean False;
     private objArray objArray;
     private functionCall functionCall;
     private subObj subObj;
@@ -65,5 +67,19 @@ public class collection4Model2 {
         return oneLineBoolCondition;
     }
 
+    public boolean isTrue() {
+        return True;
+    }
 
+    public void setTrue(boolean aTrue) {
+        True = aTrue;
+    }
+
+    public boolean isFalse() {
+        return False;
+    }
+
+    public void setFalse(boolean aFalse) {
+        False = aFalse;
+    }
 }

@@ -4,7 +4,7 @@ import AST.Elements.ElementsNodes.generic4Elements.array.objArray;
 import AST.Elements.ElementsNodes.generic4Elements.object.subObj;
 import AST.Elements.ElementsNodes.generic4Elements.variable.variable;
 
-public class collection4For1 {
+public class Collection4For1 {
     private variable variable;
     private subObj subObj;
     private objArray objArray;

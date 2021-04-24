@@ -6,13 +6,13 @@ import AST.Elements.ElementsNodes.generic4Elements.object.obj;
 import AST.Elements.ElementsNodes.generic4Elements.object.objBody;
 import AST.Elements.ElementsNodes.generic4Elements.object.subObj;
 
-public class collection4For3 {
+public class Collection4For3 {
     private obj obj;
     private objBody objBody;
     private subObj subObj;
     private objArray objArray;
     private functionCall functionCall;
-    private  oneLine4For3Condition oneLine4For3Condition;
+    private OneLine4For3Condition oneLine4For3Condition;
 
     public obj getObj() {
         return obj;
@@ -34,7 +34,7 @@ public class collection4For3 {
         return functionCall;
     }
 
-    public oneLine4For3Condition getOneLine4For3Condition() {
+    public OneLine4For3Condition getOneLine4For3Condition() {
         return oneLine4For3Condition;
     }
 
@@ -60,7 +60,7 @@ public class collection4For3 {
         this.functionCall = functionCall;
     }
 
-    public void setOneLine4For3Condition(oneLine4For3Condition oneLine4For3Condition) {
+    public void setOneLine4For3Condition(OneLine4For3Condition oneLine4For3Condition) {
         this.oneLine4For3Condition = oneLine4For3Condition;
     }
 

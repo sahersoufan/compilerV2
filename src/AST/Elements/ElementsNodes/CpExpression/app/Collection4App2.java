@@ -1,34 +1,23 @@
 package AST.Elements.ElementsNodes.CpExpression.app;
 
-import AST.Elements.ElementsNodes.generic4Elements.array.array;
 import AST.Elements.ElementsNodes.generic4Elements.array.objArray;
-import AST.Elements.ElementsNodes.generic4Elements.comparison.oneLineArithCondition;
+import AST.Elements.ElementsNodes.generic4Elements.comparison.comparisonExpression;
 import AST.Elements.ElementsNodes.generic4Elements.comparison.oneLineBoolCondition;
 import AST.Elements.ElementsNodes.generic4Elements.function.functionCall;
 import AST.Elements.ElementsNodes.generic4Elements.object.subObj;
-import AST.Elements.ElementsNodes.generic4Elements.value;
 import AST.Elements.ElementsNodes.generic4Elements.variable.variable;
 
-public class collection4App1 {
+public class Collection4App2 {
+
     private variable variable;
-    private value value;
-    private array array;
     private objArray objArray;
     private functionCall functionCall;
     private subObj subObj;
     private oneLineBoolCondition oneLineBoolCondition;
-    private oneLineArithCondition oneLineArithCondition;
+    private comparisonExpression comparisonExpression;
 
     public void setVariable(variable variable) {
         this.variable = variable;
-    }
-
-    public void setValue(value value) {
-        this.value = value;
-    }
-
-    public void setArray(array array) {
-        this.array = array;
     }
 
     public void setObjArray(objArray objArray) {
@@ -43,26 +32,16 @@ public class collection4App1 {
         this.subObj = subObj;
     }
 
+    public void setComparisonExpression(comparisonExpression comparisonExpression) {
+        this.comparisonExpression = comparisonExpression;
+    }
+
     public void setOneLineBoolCondition(oneLineBoolCondition oneLineBoolCondition) {
         this.oneLineBoolCondition = oneLineBoolCondition;
     }
 
-    public void setOneLineArithCondition(oneLineArithCondition oneLineArithCondition) {
-        this.oneLineArithCondition = oneLineArithCondition;
-    }
-
-
-
     public variable getVariable() {
         return variable;
-    }
-
-    public value getValue() {
-        return value;
-    }
-
-    public array getArray() {
-        return array;
     }
 
     public objArray getObjArray() {
@@ -77,12 +56,12 @@ public class collection4App1 {
         return subObj;
     }
 
-    public oneLineBoolCondition getOneLineBoolCondition() {
-        return oneLineBoolCondition;
+    public comparisonExpression getComparisonExpression() {
+        return comparisonExpression;
     }
 
-    public oneLineArithCondition getOneLineArithCondition() {
-        return oneLineArithCondition;
+    public oneLineBoolCondition getOneLineBoolCondition() {
+        return oneLineBoolCondition;
     }
 
 

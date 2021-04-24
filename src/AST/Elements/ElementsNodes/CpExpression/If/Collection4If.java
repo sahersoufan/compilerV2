@@ -1,34 +1,24 @@
-package AST.Elements.ElementsNodes.CpExpression.model;
+package AST.Elements.ElementsNodes.CpExpression.If;
 
-import AST.Elements.ElementsNodes.generic4Elements.array.array;
 import AST.Elements.ElementsNodes.generic4Elements.array.objArray;
-import AST.Elements.ElementsNodes.generic4Elements.comparison.oneLineArithCondition;
+import AST.Elements.ElementsNodes.generic4Elements.comparison.comparisonExpression;
 import AST.Elements.ElementsNodes.generic4Elements.comparison.oneLineBoolCondition;
 import AST.Elements.ElementsNodes.generic4Elements.function.functionCall;
 import AST.Elements.ElementsNodes.generic4Elements.object.subObj;
-import AST.Elements.ElementsNodes.generic4Elements.value;
 import AST.Elements.ElementsNodes.generic4Elements.variable.variable;
 
-public class collection4Model1 {
+public class Collection4If {
     private variable variable;
-    private value value;
-    private array array;
+    private boolean True;
+    private boolean False;
     private objArray objArray;
     private functionCall functionCall;
     private subObj subObj;
+    private comparisonExpression comparisonExpression;
     private oneLineBoolCondition oneLineBoolCondition;
-    private oneLineArithCondition oneLineArithCondition;
 
     public void setVariable(variable variable) {
         this.variable = variable;
-    }
-
-    public void setValue(value value) {
-        this.value = value;
-    }
-
-    public void setArray(array array) {
-        this.array = array;
     }
 
     public void setObjArray(objArray objArray) {
@@ -43,26 +33,18 @@ public class collection4Model1 {
         this.subObj = subObj;
     }
 
-    public void setOneLineBoolCondition(oneLineBoolCondition oneLineBoolCondition) {
-        this.oneLineBoolCondition = oneLineBoolCondition;
+    public void setComparisonExpression(comparisonExpression comparisonExpression) {
+        this.comparisonExpression = comparisonExpression;
     }
 
-    public void setOneLineArithCondition(oneLineArithCondition oneLineArithCondition) {
-        this.oneLineArithCondition = oneLineArithCondition;
+    public void setOneLineBoolCondition(oneLineBoolCondition oneLineBoolCondition) {
+        this.oneLineBoolCondition = oneLineBoolCondition;
     }
 
 
 
     public variable getVariable() {
         return variable;
-    }
-
-    public value getValue() {
-        return value;
-    }
-
-    public array getArray() {
-        return array;
     }
 
     public objArray getObjArray() {
@@ -77,13 +59,27 @@ public class collection4Model1 {
         return subObj;
     }
 
+    public comparisonExpression getComparisonExpression() {
+        return comparisonExpression;
+    }
+
     public oneLineBoolCondition getOneLineBoolCondition() {
         return oneLineBoolCondition;
     }
 
-    public oneLineArithCondition getOneLineArithCondition() {
-        return oneLineArithCondition;
+    public boolean isTrue() {
+        return True;
     }
 
+    public void setTrue(boolean aTrue) {
+        True = aTrue;
+    }
 
+    public boolean isFalse() {
+        return False;
+    }
+
+    public void setFalse(boolean aFalse) {
+        False = aFalse;
+    }
 }
