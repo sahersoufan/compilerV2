@@ -1,12 +1,14 @@
 package AST.Elements.ElementsNodes.CpExpression.annotation;
 
+import AST.Elements.ElementsNodes.generic4Elements.function.functionName;
+
 public class FunctionCall4AnnotOneLine {
 
 
-    private String functionName;
+    private functionName functionName;
     private FuncEndRet4AnnotOneLine funcEndRet4AnnotOneLine ;
 
-    public String getFunctionName() {
+    public functionName getFunctionName() {
         return functionName;
     }
 
@@ -14,7 +16,7 @@ public class FunctionCall4AnnotOneLine {
         return funcEndRet4AnnotOneLine;
     }
 
-    public void setFunctionName(String functionName) {
+    public void setFunctionName(functionName functionName) {
         this.functionName = functionName;
     }
 
