@@ -8,8 +8,8 @@ import java.util.List;
 public class ArrayFuncRet4AnnotOneLine {
 
     private List<collection4ARITHMETIC> collection4ARITHMETIC=new ArrayList<>();
-    private PropFuncRet4AnnotOneLine propFuncRet4AnnotOneLine=new PropFuncRet4AnnotOneLine();
-    private FuncEndRet4AnnotOneLine funcEndRet4AnnotOneLine=new FuncEndRet4AnnotOneLine();
+    private PropFuncRet4AnnotOneLine propFuncRet4AnnotOneLine;
+    private FuncEndRet4AnnotOneLine funcEndRet4AnnotOneLine;
 
 
     public void setCollection4ARITHMETIC(List<collection4ARITHMETIC> collection4ARITHMETIC) {

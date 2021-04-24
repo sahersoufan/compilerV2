@@ -10,7 +10,8 @@ public class OneLine4For2Condition {
 
     private List<collection4oneLineCondition> collection4oneLineCondition=new ArrayList<>();
     private collection4For2 collection4For2;
-
+    // TODO make this right ! && ||
+    // TODO check this
 
     public List<collection4oneLineCondition> getCollection4oneLineCondition() {
         return collection4oneLineCondition;

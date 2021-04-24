@@ -8,7 +8,8 @@ import AST.Elements.ElementsNodes.generic4Elements.variable.variable;
 
 public class Collection4Switch1 {
     private variable variable;
-    private collection4ARITHMETIC collection4ARITHMETIC;
+    private NUmber number;
+    private String string;
     private objArray objArray;
     private subObj subObj;
     private OneLine4switch1 oneLine4switch1;
@@ -18,9 +19,6 @@ public class Collection4Switch1 {
         this.variable = variable;
     }
 
-    public void setCollection4ARITHMETIC(collection4ARITHMETIC collection4ARITHMETIC) {
-        this.collection4ARITHMETIC = collection4ARITHMETIC;
-    }
 
     public void setObjArray(objArray objArray) {
         this.objArray = objArray;
@@ -44,10 +42,6 @@ public class Collection4Switch1 {
         return variable;
     }
 
-    public collection4ARITHMETIC getCollection4ARITHMETIC() {
-        return collection4ARITHMETIC;
-    }
-
     public objArray getObjArray() {
         return objArray;
     }
@@ -64,5 +58,19 @@ public class Collection4Switch1 {
         return oneLineArithCondition;
     }
 
+    public NUmber getNumber() {
+        return number;
+    }
 
+    public void setNumber(NUmber number) {
+        this.number = number;
+    }
+
+    public String getString() {
+        return string;
+    }
+
+    public void setString(String string) {
+        this.string = string;
+    }
 }

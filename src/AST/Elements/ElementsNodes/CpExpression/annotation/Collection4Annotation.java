@@ -6,10 +6,13 @@ import AST.Elements.ElementsNodes.generic4Elements.object.obj;
 public class Collection4Annotation {
 
     private FunctionCall4AnnotOneLine functionCall4AnnotOneLine;
+
     private arrName arrName;
     private ArrayFuncRet4AnnotOneLine arrayFuncRet4AnnotOneLine;
+
     private obj obj;
     private PropFuncRet4AnnotOneLine propFuncRet4AnnotOneLine;
+
     private OneLine4Annotation oneLine4Annotation;
 
     public void setFunctionCall4AnnotOneLine(FunctionCall4AnnotOneLine functionCall4AnnotOneLine) {

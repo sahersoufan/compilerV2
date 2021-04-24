@@ -7,8 +7,10 @@ import java.util.List;
 
 public class OneLine4Annotation {
 
-    private Collection4Annotation collection4Annotation;
     private List<collection4oneLineCondition > collection4oneLineCondition=new ArrayList<>();
+    private Collection4Annotation collection4Annotation;
+    // TODO make this right ! && ||
+    // TODO check this
 
     public List<collection4oneLineCondition> getCollection4oneLineCondition() {
         return collection4oneLineCondition;

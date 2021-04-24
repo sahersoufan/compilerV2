@@ -12,7 +12,8 @@ import java.util.List;
 
 public class OneLine4For3Condition {
     private List<collection4oneLineCondition> collection4oneLineCondition=new ArrayList<>();
-
+    // TODO make this right ! && ||
+    // TODO check this
     public Collection4For3 getCollection4For3() {
         return collection4For3;
     }

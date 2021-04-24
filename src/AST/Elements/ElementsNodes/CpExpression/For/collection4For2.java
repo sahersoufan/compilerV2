@@ -9,6 +9,8 @@ import AST.Elements.ElementsNodes.generic4Elements.variable.variable;
 
 public class collection4For2 {
     private variable variable;
+    private NUmber number;
+    //TODO add number ro generic
      private subObj subObj;
      private objArray objArray;
      private array array;
@@ -74,5 +76,11 @@ public class collection4For2 {
         return oneLineArithCondithion;
     }
 
+    public Number getNumber() {
+        return number;
+    }
 
+    public void setNumber(Number number) {
+        this.number = number;
+    }
 }

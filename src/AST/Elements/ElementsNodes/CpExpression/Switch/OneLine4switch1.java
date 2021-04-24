@@ -8,7 +8,8 @@ import java.util.List;
 public class OneLine4switch1 {
     private List<collection4oneLineCondition> collection4oneLineCondition=new ArrayList<>();
     private Collection4Switch1 collection4Switch1;
-
+    // TODO make this right ! && ||
+    // TODO check this
 
 
     public List<collection4oneLineCondition> getCollection4oneLineCondition() {

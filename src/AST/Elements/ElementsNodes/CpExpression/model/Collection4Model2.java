@@ -9,6 +9,8 @@ import AST.Elements.ElementsNodes.generic4Elements.variable.variable;
 
 public class Collection4Model2 {
     private variable variable;
+    private boolean True;
+    private boolean False;
     private objArray objArray;
     private functionCall functionCall;
     private subObj subObj;

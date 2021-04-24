@@ -9,6 +9,7 @@ public class ModelExpression {
     public List<Collection4Model2> getCollection4Model2() {
         return collection4Model2;
     }
+    // TODO make this right ! && ||
 
     public void setCollection4Model2(List<Collection4Model2> collection4Model2) {
         this.collection4Model2 = collection4Model2;

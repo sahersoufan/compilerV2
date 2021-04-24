@@ -8,6 +8,7 @@ public class ForExpression {
     private collection4For2 collection4For2;
     private Collection4For3 collection4For3;
     private List<Collection4For4> collection4For4=new ArrayList<>();
+    //TODO make this right ! && ||
     private Collection4For5 collection4For5;
 
     public List<Collection4For4> getCollection4For4() {
