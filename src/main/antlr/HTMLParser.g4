@@ -89,7 +89,7 @@ collection4App1
         | functionCall
         | subObj
         | oneLineBoolCondition
-        | oneLineArithCondithion
+        | oneLineArithCondition
     ;
 collection4App2
         : variable
@@ -128,7 +128,7 @@ collection4For2
     | array
     | functionCall
     | oneLine4For2Condition
-    | oneLineArithCondithion
+    | oneLineArithCondition
     ;
 oneLine4For2Condition
 : CP_CONTENT_OPEN_PAR (CP_CONTENT_NOT)? collection4oneLineCondition
@@ -222,7 +222,7 @@ collection4Switch1
     | objArray
     | subObj
     | oneLine4switch1
-    | oneLineArithCondithion
+    | oneLineArithCondition
     ;
 oneLine4switch1
 : CP_CONTENT_OPEN_PAR(CP_CONTENT_NOT)? collection4oneLineCondition
@@ -265,7 +265,7 @@ collection4Model1
         | functionCall
         | subObj
         | oneLineBoolCondition
-        | oneLineArithCondithion
+        | oneLineArithCondition
     ;
 collection4Model2
         : variable
@@ -420,7 +420,7 @@ oneLineBoolCondition
     ;
 //v = (a < c ? 1 : 2) + a
 //v = (a < c ? 1 : [1,2,3]) + a
-oneLineArithCondithion
+oneLineArithCondition
     : CP_CONTENT_OPEN_PAR (CP_CONTENT_NOT)? collection4oneLineCondition
          ( CP_CONTENT_AND (CP_CONTENT_NOT)? collection4oneLineCondition | CP_CONTENT_OR (CP_CONTENT_NOT)? collection4oneLineCondition)*
          CP_CONTENT_QUESTION_MARK
@@ -472,7 +472,7 @@ collection4everything
         | functionCall
         | subObj
         | oneLineCondition
-        | oneLineArithCondithion
+        | oneLineArithCondition
     ;
 collection4ARITHMETIC
     : variable
@@ -480,7 +480,7 @@ collection4ARITHMETIC
     | objArray
     | functionCall
     | subObj
-    | oneLineArithCondithion (CP_CONTENT_ARITHMETIC collection4ARITHMETIC)?
+    | oneLineArithCondition (CP_CONTENT_ARITHMETIC collection4ARITHMETIC)?
     ;
 collection4boolRet
         : variable

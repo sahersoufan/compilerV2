@@ -1,35 +1,35 @@
 package AST.Elements.ElementsNodes.CpExpression.For;
 
-import AST.Elements.ElementsNodes.generic4Elements.array.objArray;
-import AST.Elements.ElementsNodes.generic4Elements.object.subObj;
-import AST.Elements.ElementsNodes.generic4Elements.variable.variable;
+import AST.Elements.ElementsNodes.generic4Elements.array.ObjArray;
+import AST.Elements.ElementsNodes.generic4Elements.object.SubObj;
+import AST.Elements.ElementsNodes.generic4Elements.variable.Variable;
 
 public class collection4For1 {
-    private variable variable;
-    private subObj subObj;
-    private objArray objArray;
+    private Variable variable;
+    private SubObj subObj;
+    private ObjArray objArray;
 
-    public void setVariable(variable variable) {
+    public void setVariable(Variable variable) {
         this.variable = variable;
     }
 
-    public void setSubObj(subObj subObj) {
+    public void setSubObj(SubObj subObj) {
         this.subObj = subObj;
     }
 
-    public void setObjArray(objArray objArray) {
+    public void setObjArray(ObjArray objArray) {
         this.objArray = objArray;
     }
 
-    public variable getVariable() {
+    public Variable getVariable() {
         return variable;
     }
 
-    public subObj getSubObj() {
+    public SubObj getSubObj() {
         return subObj;
     }
 
-    public objArray getObjArray() {
+    public ObjArray getObjArray() {
         return objArray;
     }
 

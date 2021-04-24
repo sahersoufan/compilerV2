@@ -1,14 +1,14 @@
 package AST.Elements.ElementsNodes.CpExpression.annotation;
 
-import AST.Elements.ElementsNodes.generic4Elements.array.arrName;
-import AST.Elements.ElementsNodes.generic4Elements.object.obj;
+import AST.Elements.ElementsNodes.generic4Elements.array.ArrName;
+import AST.Elements.ElementsNodes.generic4Elements.object.Obj;
 
 public class collection4Annotation {
 
     private  functionCall4AnnotOneLine functionCall4AnnotOneLine;
-    private arrName arrName;
+    private ArrName arrName;
     private arrayFuncRet4AnnotOneLine arrayFuncRet4AnnotOneLine;
-    private obj obj;
+    private Obj obj;
     private propFuncRet4AnnotOneLine propFuncRet4AnnotOneLine;
     private oneLine4Annotation oneLine4Annotation;
 
@@ -16,7 +16,7 @@ public class collection4Annotation {
         this.functionCall4AnnotOneLine = functionCall4AnnotOneLine;
     }
 
-    public void setArrName(arrName arrName) {
+    public void setArrName(ArrName arrName) {
         this.arrName = arrName;
     }
 
@@ -24,7 +24,7 @@ public class collection4Annotation {
         this.arrayFuncRet4AnnotOneLine = arrayFuncRet4AnnotOneLine;
     }
 
-    public void setObj(obj obj) {
+    public void setObj(Obj obj) {
         this.obj = obj;
     }
 
@@ -42,7 +42,7 @@ public class collection4Annotation {
         return functionCall4AnnotOneLine;
     }
 
-    public arrName getArrName() {
+    public ArrName getArrName() {
         return arrName;
     }
 
@@ -50,7 +50,7 @@ public class collection4Annotation {
         return arrayFuncRet4AnnotOneLine;
     }
 
-    public obj getObj() {
+    public Obj getObj() {
         return obj;
     }
 

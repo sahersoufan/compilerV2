@@ -1,32 +1,32 @@
 package AST.Elements.ElementsNodes.CpExpression.For;
 
-import AST.Elements.ElementsNodes.generic4Elements.array.objArray;
-import AST.Elements.ElementsNodes.generic4Elements.function.functionCall;
-import AST.Elements.ElementsNodes.generic4Elements.object.obj;
-import AST.Elements.ElementsNodes.generic4Elements.object.objBody;
-import AST.Elements.ElementsNodes.generic4Elements.object.subObj;
+import AST.Elements.ElementsNodes.generic4Elements.array.ObjArray;
+import AST.Elements.ElementsNodes.generic4Elements.function.FunctionCall;
+import AST.Elements.ElementsNodes.generic4Elements.object.Obj;
+import AST.Elements.ElementsNodes.generic4Elements.object.ObjBody;
+import AST.Elements.ElementsNodes.generic4Elements.object.SubObj;
 
 public class oneLine4For3Condition {
-    private obj obj;
-    private objBody  objBody;
-    private subObj subObj;
-    private objArray objArray;
-    private functionCall functionCall;
+    private Obj obj;
+    private ObjBody objBody;
+    private SubObj subObj;
+    private ObjArray objArray;
+    private FunctionCall functionCall;
     private oneLine4For3Condition oneLine4For3Condition;
 
-    public void setObj(obj obj) {
+    public void setObj(Obj obj) {
         this.obj = obj;
     }
 
-    public void setSubObj(subObj subObj) {
+    public void setSubObj(SubObj subObj) {
         this.subObj = subObj;
     }
 
-    public void setObjArray(objArray objArray) {
+    public void setObjArray(ObjArray objArray) {
         this.objArray = objArray;
     }
 
-    public void setFunctionCall(functionCall functionCall) {
+    public void setFunctionCall(FunctionCall functionCall) {
         this.functionCall = functionCall;
     }
 
@@ -36,19 +36,19 @@ public class oneLine4For3Condition {
 
 
 
-    public obj getObj() {
+    public Obj getObj() {
         return obj;
     }
 
-    public subObj getSubObj() {
+    public SubObj getSubObj() {
         return subObj;
     }
 
-    public objArray getObjArray() {
+    public ObjArray getObjArray() {
         return objArray;
     }
 
-    public functionCall getFunctionCall() {
+    public FunctionCall getFunctionCall() {
         return functionCall;
     }
 

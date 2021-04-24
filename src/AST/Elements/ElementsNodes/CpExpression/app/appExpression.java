@@ -1,7 +1,5 @@
 package AST.Elements.ElementsNodes.CpExpression.app;
 
-import AST.Elements.ElementsNodes.generic4Elements.collection4everything;
-
 public class appExpression {
 
     private collection4App1 collection4App1;

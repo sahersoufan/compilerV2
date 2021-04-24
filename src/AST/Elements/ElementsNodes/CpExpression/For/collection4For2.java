@@ -1,38 +1,38 @@
 package AST.Elements.ElementsNodes.CpExpression.For;
 
-import AST.Elements.ElementsNodes.generic4Elements.array.array;
-import AST.Elements.ElementsNodes.generic4Elements.array.objArray;
-import AST.Elements.ElementsNodes.generic4Elements.comparison.oneLineArithCondition;
-import AST.Elements.ElementsNodes.generic4Elements.function.functionCall;
-import AST.Elements.ElementsNodes.generic4Elements.object.subObj;
-import AST.Elements.ElementsNodes.generic4Elements.variable.variable;
+import AST.Elements.ElementsNodes.generic4Elements.array.Array;
+import AST.Elements.ElementsNodes.generic4Elements.array.ObjArray;
+import AST.Elements.ElementsNodes.generic4Elements.comparison.OneLineArithCondition;
+import AST.Elements.ElementsNodes.generic4Elements.function.FunctionCall;
+import AST.Elements.ElementsNodes.generic4Elements.object.SubObj;
+import AST.Elements.ElementsNodes.generic4Elements.variable.Variable;
 
 public class collection4For2 {
-    private variable variable;
-     private subObj subObj;
-     private objArray objArray;
-     private array array;
-     private functionCall functionCall;
-    private oneLineArithCondition oneLineArithCondithion;
+    private Variable variable;
+     private SubObj subObj;
+     private ObjArray objArray;
+     private Array array;
+     private FunctionCall functionCall;
+    private OneLineArithCondition oneLineArithCondithion;
     private  oneLine4For2Condition oneLine4For2Condition;
 
-    public void setVariable(variable variable) {
+    public void setVariable(Variable variable) {
         this.variable = variable;
     }
 
-    public void setSubObj(subObj subObj) {
+    public void setSubObj(SubObj subObj) {
         this.subObj = subObj;
     }
 
-    public void setObjArray(objArray objArray) {
+    public void setObjArray(ObjArray objArray) {
         this.objArray = objArray;
     }
 
-    public void setArray(array array) {
+    public void setArray(Array array) {
         this.array = array;
     }
 
-    public void setFunctionCall(functionCall functionCall) {
+    public void setFunctionCall(FunctionCall functionCall) {
         this.functionCall = functionCall;
     }
 
@@ -40,29 +40,29 @@ public class collection4For2 {
         this.oneLine4For2Condition = oneLine4For2Condition;
     }
 
-    public void setOneLineArithCondithion(oneLineArithCondition oneLineArithCondithion) {
+    public void setOneLineArithCondithion(OneLineArithCondition oneLineArithCondithion) {
         this.oneLineArithCondithion = oneLineArithCondithion;
     }
 
 
 
-    public variable getVariable() {
+    public Variable getVariable() {
         return variable;
     }
 
-    public subObj getSubObj() {
+    public SubObj getSubObj() {
         return subObj;
     }
 
-    public objArray getObjArray() {
+    public ObjArray getObjArray() {
         return objArray;
     }
 
-    public array getArray() {
+    public Array getArray() {
         return array;
     }
 
-    public functionCall getFunctionCall() {
+    public FunctionCall getFunctionCall() {
         return functionCall;
     }
 
@@ -70,7 +70,7 @@ public class collection4For2 {
         return oneLine4For2Condition;
     }
 
-    public oneLineArithCondition getOneLineArithCondithion() {
+    public OneLineArithCondition getOneLineArithCondithion() {
         return oneLineArithCondithion;
     }
 

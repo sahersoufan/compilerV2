@@ -1,16 +1,16 @@
 package AST.Elements.ElementsNodes.CpExpression.annotation;
 
-import AST.Elements.ElementsNodes.generic4Elements.function.parameters;
+import AST.Elements.ElementsNodes.generic4Elements.function.Parameters;
 
 public class funcEndRet4AnnotOneLine {
 
     private propFuncRet4AnnotOneLine propFuncRet4AnnotOneLine=new propFuncRet4AnnotOneLine();
-    private parameters functionParameters = new parameters();
+    private Parameters functionParameters = new Parameters();
     private  arrayFuncRet4AnnotOneLine arrayFuncRet4AnnotOneLine=new arrayFuncRet4AnnotOneLine();
 
 
 
-    public void setFunctionParameters(parameters functionParameters) {
+    public void setFunctionParameters(Parameters functionParameters) {
         this.functionParameters = functionParameters;
     }
 
@@ -22,7 +22,7 @@ public class funcEndRet4AnnotOneLine {
         this.propFuncRet4AnnotOneLine = propFuncRet4AnnotOneLine;
     }
 
-    public parameters getFunctionParameters() {
+    public Parameters getFunctionParameters() {
         return functionParameters;
     }
 

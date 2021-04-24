@@ -1,32 +1,32 @@
 package AST.Elements.ElementsNodes.CpExpression.Switch;
 
-import AST.Elements.ElementsNodes.generic4Elements.array.objArray;
-import AST.Elements.ElementsNodes.generic4Elements.collection4ARITHMETIC;
-import AST.Elements.ElementsNodes.generic4Elements.comparison.oneLineArithCondition;
-import AST.Elements.ElementsNodes.generic4Elements.object.subObj;
-import AST.Elements.ElementsNodes.generic4Elements.variable.variable;
+import AST.Elements.ElementsNodes.generic4Elements.array.ObjArray;
+import AST.Elements.ElementsNodes.generic4Elements.Collection4ARITHMETIC;
+import AST.Elements.ElementsNodes.generic4Elements.comparison.OneLineArithCondition;
+import AST.Elements.ElementsNodes.generic4Elements.object.SubObj;
+import AST.Elements.ElementsNodes.generic4Elements.variable.Variable;
 
 public class collection4Switch1 {
-    private variable variable;
-    private collection4ARITHMETIC collection4ARITHMETIC;
-    private objArray objArray;
-    private subObj subObj;
+    private Variable variable;
+    private Collection4ARITHMETIC collection4ARITHMETIC;
+    private ObjArray objArray;
+    private SubObj subObj;
     private oneLine4switch1 oneLine4switch1;
-    private oneLineArithCondition oneLineArithCondition;
+    private OneLineArithCondition oneLineArithCondition;
 
-    public void setVariable(variable variable) {
+    public void setVariable(Variable variable) {
         this.variable = variable;
     }
 
-    public void setCollection4ARITHMETIC(collection4ARITHMETIC collection4ARITHMETIC) {
+    public void setCollection4ARITHMETIC(Collection4ARITHMETIC collection4ARITHMETIC) {
         this.collection4ARITHMETIC = collection4ARITHMETIC;
     }
 
-    public void setObjArray(objArray objArray) {
+    public void setObjArray(ObjArray objArray) {
         this.objArray = objArray;
     }
 
-    public void setSubObj(subObj subObj) {
+    public void setSubObj(SubObj subObj) {
         this.subObj = subObj;
     }
 
@@ -34,25 +34,25 @@ public class collection4Switch1 {
         this.oneLine4switch1 = oneLine4switch1;
     }
 
-    public void setOneLineArithCondition(oneLineArithCondition oneLineArithCondition) {
+    public void setOneLineArithCondition(OneLineArithCondition oneLineArithCondition) {
         this.oneLineArithCondition = oneLineArithCondition;
     }
 
 
 
-    public variable getVariable() {
+    public Variable getVariable() {
         return variable;
     }
 
-    public collection4ARITHMETIC getCollection4ARITHMETIC() {
+    public Collection4ARITHMETIC getCollection4ARITHMETIC() {
         return collection4ARITHMETIC;
     }
 
-    public objArray getObjArray() {
+    public ObjArray getObjArray() {
         return objArray;
     }
 
-    public subObj getSubObj() {
+    public SubObj getSubObj() {
         return subObj;
     }
 
@@ -60,7 +60,7 @@ public class collection4Switch1 {
         return oneLine4switch1;
     }
 
-    public oneLineArithCondition getOneLineArithCondition() {
+    public OneLineArithCondition getOneLineArithCondition() {
         return oneLineArithCondition;
     }
 

@@ -1,12 +1,12 @@
 package AST.Elements.ElementsNodes.CpExpression.annotation;
 
-import AST.Elements.ElementsNodes.generic4Elements.property.propertyValue;
+import AST.Elements.ElementsNodes.generic4Elements.property.PropertyValue;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class propFuncRet4AnnotOneLine {
-    private List<propertyValue> propertyValue=new ArrayList<>();
+    private List<PropertyValue> propertyValue=new ArrayList<>();
     private arrayFuncRet4AnnotOneLine arrayFuncRet4AnnotOneLine;
     private funcEndRet4AnnotOneLine funcEndRet4AnnotOneLine;
 
@@ -20,7 +20,7 @@ public class propFuncRet4AnnotOneLine {
         this.funcEndRet4AnnotOneLine = funcEndRet4AnnotOneLine;
     }
 
-    public List<propertyValue> getPropertyValue() {
+    public List<PropertyValue> getPropertyValue() {
         return propertyValue;
     }
 
