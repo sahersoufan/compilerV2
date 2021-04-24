@@ -77,7 +77,7 @@ htmlComment
 
 // APP
 appExpression
-    : collection4everything
+    : collection4App1
     | (CP_CONTENT_NOT)? collection4App2 ( CP_CONTENT_AND (CP_CONTENT_NOT)? collection4App2 | CP_CONTENT_OR (CP_CONTENT_NOT)? collection4App2)*
     ;
 
@@ -122,7 +122,7 @@ collection4For1
 collection4For2
     : variable
     | CP_CONTENT_STRING
-    | CP_CONTENT_NUMBER (CP_CONTENT_ARITHMETIC collection4ARITHMETIC)?
+    | number
     | subObj
     | objArray
     | array
@@ -169,7 +169,7 @@ collection4For4
     ;
 collection4For5
     : variable
-    | CP_CONTENT_NUMBER (CP_CONTENT_ARITHMETIC collection4ARITHMETIC)?
+    | number
     | CP_CONTENT_TRUE
     | CP_CONTENT_FALSE
     | objArray
@@ -218,7 +218,7 @@ switchCaseExpression
 collection4Switch1
     : variable
     | CP_CONTENT_STRING
-    | CP_CONTENT_NUMBER (CP_CONTENT_ARITHMETIC collection4ARITHMETIC)?
+    | number
     | objArray
     | subObj
     | oneLine4switch1
@@ -330,6 +330,12 @@ variableName
     ;
 //
 
+
+//NUMBER
+ number
+ : CP_CONTENT_NUMBER (CP_CONTENT_ARITHMETIC collection4ARITHMETIC)?
+;
+//
 
 // ARRAY
 objArray
@@ -457,7 +463,7 @@ collection4oneLineCondition
 
 value
     : CP_CONTENT_STRING
-    | CP_CONTENT_NUMBER (CP_CONTENT_ARITHMETIC collection4ARITHMETIC)?
+    | number
     | CP_CONTENT_TRUE
     | CP_CONTENT_FALSE
     | CP_CONTENT_NULL
@@ -475,7 +481,7 @@ collection4everything
     ;
 collection4ARITHMETIC
     : variable
-    | CP_CONTENT_NUMBER (CP_CONTENT_ARITHMETIC collection4ARITHMETIC)?
+    | number
     | objArray
     | functionCall
     | subObj
