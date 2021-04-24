@@ -1,16 +1,16 @@
 package AST.Elements.ElementsNodes.CpExpression.annotation;
 
-import AST.Elements.ElementsNodes.generic4Elements.array.arrName;
-import AST.Elements.ElementsNodes.generic4Elements.object.obj;
+import AST.Elements.ElementsNodes.generic4Elements.array.ArrName;
+import AST.Elements.ElementsNodes.generic4Elements.object.Obj;
 
 public class Collection4Annotation {
 
     private FunctionCall4AnnotOneLine functionCall4AnnotOneLine;
 
-    private arrName arrName;
+    private ArrName arrName;
     private ArrayFuncRet4AnnotOneLine arrayFuncRet4AnnotOneLine;
 
-    private obj obj;
+    private Obj obj;
     private PropFuncRet4AnnotOneLine propFuncRet4AnnotOneLine;
 
     private OneLine4Annotation oneLine4Annotation;
@@ -19,17 +19,11 @@ public class Collection4Annotation {
         this.functionCall4AnnotOneLine = functionCall4AnnotOneLine;
     }
 
-    public void setArrName(arrName arrName) {
-        this.arrName = arrName;
-    }
 
     public void setArrayFuncRet4AnnotOneLine(ArrayFuncRet4AnnotOneLine arrayFuncRet4AnnotOneLine) {
         this.arrayFuncRet4AnnotOneLine = arrayFuncRet4AnnotOneLine;
     }
 
-    public void setObj(obj obj) {
-        this.obj = obj;
-    }
 
     public void setPropFuncRet4AnnotOneLine(PropFuncRet4AnnotOneLine propFuncRet4AnnotOneLine) {
         this.propFuncRet4AnnotOneLine = propFuncRet4AnnotOneLine;
@@ -45,17 +39,11 @@ public class Collection4Annotation {
         return functionCall4AnnotOneLine;
     }
 
-    public arrName getArrName() {
-        return arrName;
-    }
 
     public ArrayFuncRet4AnnotOneLine getArrayFuncRet4AnnotOneLine() {
         return arrayFuncRet4AnnotOneLine;
     }
 
-    public obj getObj() {
-        return obj;
-    }
 
     public PropFuncRet4AnnotOneLine getPropFuncRet4AnnotOneLine() {
         return propFuncRet4AnnotOneLine;
@@ -66,6 +54,19 @@ public class Collection4Annotation {
     }
 
 
+    public ArrName getArrName() {
+        return arrName;
+    }
 
+    public void setArrName(ArrName arrName) {
+        this.arrName = arrName;
+    }
 
+    public Obj getObj() {
+        return obj;
+    }
+
+    public void setObj(Obj obj) {
+        this.obj = obj;
+    }
 }

@@ -1,89 +1,86 @@
 package AST.Elements.ElementsNodes.CpExpression.model;
 
-import AST.Elements.ElementsNodes.generic4Elements.array.array;
-import AST.Elements.ElementsNodes.generic4Elements.array.objArray;
-import AST.Elements.ElementsNodes.generic4Elements.comparison.oneLineArithCondition;
-import AST.Elements.ElementsNodes.generic4Elements.comparison.oneLineBoolCondition;
-import AST.Elements.ElementsNodes.generic4Elements.function.functionCall;
-import AST.Elements.ElementsNodes.generic4Elements.object.subObj;
-import AST.Elements.ElementsNodes.generic4Elements.value;
-import AST.Elements.ElementsNodes.generic4Elements.variable.variable;
+
+import AST.Elements.ElementsNodes.generic4Elements.Value;
+import AST.Elements.ElementsNodes.generic4Elements.array.Array;
+import AST.Elements.ElementsNodes.generic4Elements.array.ObjArray;
+import AST.Elements.ElementsNodes.generic4Elements.comparison.OneLineArithCondition;
+import AST.Elements.ElementsNodes.generic4Elements.comparison.OneLineBoolCondition;
+import AST.Elements.ElementsNodes.generic4Elements.function.FunctionCall;
+import AST.Elements.ElementsNodes.generic4Elements.object.SubObj;
+import AST.Elements.ElementsNodes.generic4Elements.variable.Variable;
 
 public class Collection4Model1 {
-    private variable variable;
-    private value value;
-    private array array;
-    private objArray objArray;
-    private functionCall functionCall;
-    private subObj subObj;
-    private oneLineBoolCondition oneLineBoolCondition;
-    private oneLineArithCondition oneLineArithCondition;
+    private Variable variable;
+    private Value value;
+    private Array array;
+    private ObjArray objArray;
+    private FunctionCall functionCall;
+    private SubObj subObj;
+    private OneLineBoolCondition oneLineBoolCondition;
+    private OneLineArithCondition oneLineArithCondition;
 
-    public void setVariable(variable variable) {
-        this.variable = variable;
-    }
-
-    public void setValue(value value) {
-        this.value = value;
-    }
-
-    public void setArray(array array) {
-        this.array = array;
-    }
-
-    public void setObjArray(objArray objArray) {
-        this.objArray = objArray;
-    }
-
-    public void setFunctionCall(functionCall functionCall) {
-        this.functionCall = functionCall;
-    }
-
-    public void setSubObj(subObj subObj) {
-        this.subObj = subObj;
-    }
-
-    public void setOneLineBoolCondition(oneLineBoolCondition oneLineBoolCondition) {
-        this.oneLineBoolCondition = oneLineBoolCondition;
-    }
-
-    public void setOneLineArithCondition(oneLineArithCondition oneLineArithCondition) {
-        this.oneLineArithCondition = oneLineArithCondition;
-    }
-
-
-
-    public variable getVariable() {
+    public Variable getVariable() {
         return variable;
     }
 
-    public value getValue() {
+    public void setVariable(Variable variable) {
+        this.variable = variable;
+    }
+
+    public Value getValue() {
         return value;
     }
 
-    public array getArray() {
+    public void setValue(Value value) {
+        this.value = value;
+    }
+
+    public Array getArray() {
         return array;
     }
 
-    public objArray getObjArray() {
+    public void setArray(Array array) {
+        this.array = array;
+    }
+
+    public ObjArray getObjArray() {
         return objArray;
     }
 
-    public functionCall getFunctionCall() {
+    public void setObjArray(ObjArray objArray) {
+        this.objArray = objArray;
+    }
+
+    public FunctionCall getFunctionCall() {
         return functionCall;
     }
 
-    public subObj getSubObj() {
+    public void setFunctionCall(FunctionCall functionCall) {
+        this.functionCall = functionCall;
+    }
+
+    public SubObj getSubObj() {
         return subObj;
     }
 
-    public oneLineBoolCondition getOneLineBoolCondition() {
+    public void setSubObj(SubObj subObj) {
+        this.subObj = subObj;
+    }
+
+    public OneLineBoolCondition getOneLineBoolCondition() {
         return oneLineBoolCondition;
     }
 
-    public oneLineArithCondition getOneLineArithCondition() {
+    public void setOneLineBoolCondition(OneLineBoolCondition oneLineBoolCondition) {
+        this.oneLineBoolCondition = oneLineBoolCondition;
+    }
+
+    public OneLineArithCondition getOneLineArithCondition() {
         return oneLineArithCondition;
     }
 
-
+    public void setOneLineArithCondition(OneLineArithCondition oneLineArithCondition) {
+        this.oneLineArithCondition = oneLineArithCondition;
+    }
 }

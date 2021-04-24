@@ -1,6 +1,6 @@
 package AST.Elements.ElementsNodes.CpExpression.annotation;
 
-import AST.Elements.ElementsNodes.generic4Elements.function.parameters;
+import AST.Elements.ElementsNodes.generic4Elements.function.Parameters;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +10,7 @@ public class FuncEndRet4AnnotOneLine {
     private PropFuncRet4AnnotOneLine propFuncRet4AnnotOneLine;
     private ArrayFuncRet4AnnotOneLine arrayFuncRet4AnnotOneLine;
 
-    private List<parameters> functionParameters = new ArrayList<>();
+    private List<Parameters> functionParameters = new ArrayList<>();
 
 
 
@@ -33,11 +33,11 @@ public class FuncEndRet4AnnotOneLine {
     }
 
 
-    public List<parameters> getFunctionParameters() {
+    public List<Parameters> getFunctionParameters() {
         return functionParameters;
     }
 
-    public void setFunctionParameters(List<parameters> functionParameters) {
+    public void setFunctionParameters(List<Parameters> functionParameters) {
         this.functionParameters = functionParameters;
     }
 }

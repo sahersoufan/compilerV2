@@ -5,7 +5,7 @@ import java.util.List;
 
 public class ForExpression {
     private Collection4For1 collection4For1;
-    private collection4For2 collection4For2;
+    private Collection4For2 collection4For2;
     private Collection4For3 collection4For3;
     private List<Collection4For4> collection4For4=new ArrayList<>();
     //TODO make this right ! && ||
@@ -25,7 +25,7 @@ public class ForExpression {
         this.collection4For1 = collection4For1;
     }
 
-    public void setCollection4For2(collection4For2 collection4For2) {
+    public void setCollection4For2(Collection4For2 collection4For2) {
         this.collection4For2 = collection4For2;
     }
 
@@ -44,7 +44,7 @@ public class ForExpression {
         return collection4For1;
     }
 
-    public collection4For2 getCollection4For2() {
+    public Collection4For2 getCollection4For2() {
         return collection4For2;
     }
 

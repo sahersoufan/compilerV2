@@ -1,80 +1,31 @@
 package AST.Elements.ElementsNodes.CpExpression.For;
 
-import AST.Elements.ElementsNodes.generic4Elements.array.objArray;
-import AST.Elements.ElementsNodes.generic4Elements.collection4ARITHMETIC;
-import AST.Elements.ElementsNodes.generic4Elements.comparison.comparisonExpression;
-import AST.Elements.ElementsNodes.generic4Elements.comparison.oneLineBoolCondition;
-import AST.Elements.ElementsNodes.generic4Elements.function.functionCall;
-import AST.Elements.ElementsNodes.generic4Elements.object.subObj;
-import AST.Elements.ElementsNodes.generic4Elements.variable.variable;
+
+import AST.Elements.ElementsNodes.generic4Elements.NUmber;
+import AST.Elements.ElementsNodes.generic4Elements.array.ObjArray;
+import AST.Elements.ElementsNodes.generic4Elements.comparison.ComparisonExpression;
+import AST.Elements.ElementsNodes.generic4Elements.comparison.OneLineBoolCondition;
+import AST.Elements.ElementsNodes.generic4Elements.function.FunctionCall;
+import AST.Elements.ElementsNodes.generic4Elements.object.SubObj;
+import AST.Elements.ElementsNodes.generic4Elements.variable.Variable;
 
 public class Collection4For5 {
-    private variable variable;
+    private Variable variable;
     private NUmber number;
     private boolean True;
     private boolean False;
-    private objArray objArray;
-    private functionCall functionCall;
-    private subObj subObj;
-    private comparisonExpression comparisonExpression;
-    private oneLineBoolCondition oneLineBoolCondition;
+    private ObjArray objArray;
+    private FunctionCall functionCall;
+    private SubObj subObj;
+    private ComparisonExpression comparisonExpression;
+    private OneLineBoolCondition oneLineBoolCondition;
 
-    public void setVariable(variable variable) {
-        this.variable = variable;
-    }
-
-    public void setCollection4ARITHMETIC(collection4ARITHMETIC collection4ARITHMETIC) {
-        this.collection4ARITHMETIC = collection4ARITHMETIC;
-    }
-
-    public void setObjArray(objArray objArray) {
-        this.objArray = objArray;
-    }
-
-    public void setFunctionCall(functionCall functionCall) {
-        this.functionCall = functionCall;
-    }
-
-    public void setSubObj(subObj subObj) {
-        this.subObj = subObj;
-    }
-
-    public void setComparisonExpression(comparisonExpression comparisonExpression) {
-        this.comparisonExpression = comparisonExpression;
-    }
-
-    public void setOneLineBoolCondition(oneLineBoolCondition oneLineBoolCondition) {
-        this.oneLineBoolCondition = oneLineBoolCondition;
-    }
-
-
-
-    public variable getVariable() {
+    public Variable getVariable() {
         return variable;
     }
 
-    public collection4ARITHMETIC getCollection4ARITHMETIC() {
-        return collection4ARITHMETIC;
-    }
-
-    public objArray getObjArray() {
-        return objArray;
-    }
-
-    public functionCall getFunctionCall() {
-        return functionCall;
-    }
-
-    public subObj getSubObj() {
-        return subObj;
-    }
-
-    public comparisonExpression getComparisonExpression() {
-        return comparisonExpression;
-    }
-
-    public oneLineBoolCondition getOneLineBoolCondition() {
-        return oneLineBoolCondition;
+    public void setVariable(Variable variable) {
+        this.variable = variable;
     }
 
     public NUmber getNumber() {
@@ -99,5 +50,45 @@ public class Collection4For5 {
 
     public void setFalse(boolean aFalse) {
         False = aFalse;
+    }
+
+    public ObjArray getObjArray() {
+        return objArray;
+    }
+
+    public void setObjArray(ObjArray objArray) {
+        this.objArray = objArray;
+    }
+
+    public FunctionCall getFunctionCall() {
+        return functionCall;
+    }
+
+    public void setFunctionCall(FunctionCall functionCall) {
+        this.functionCall = functionCall;
+    }
+
+    public SubObj getSubObj() {
+        return subObj;
+    }
+
+    public void setSubObj(SubObj subObj) {
+        this.subObj = subObj;
+    }
+
+    public ComparisonExpression getComparisonExpression() {
+        return comparisonExpression;
+    }
+
+    public void setComparisonExpression(ComparisonExpression comparisonExpression) {
+        this.comparisonExpression = comparisonExpression;
+    }
+
+    public OneLineBoolCondition getOneLineBoolCondition() {
+        return oneLineBoolCondition;
+    }
+
+    public void setOneLineBoolCondition(OneLineBoolCondition oneLineBoolCondition) {
+        this.oneLineBoolCondition = oneLineBoolCondition;
     }
 }

@@ -1,68 +1,65 @@
 package AST.Elements.ElementsNodes.CpExpression.For;
 
-import AST.Elements.ElementsNodes.generic4Elements.array.objArray;
-import AST.Elements.ElementsNodes.generic4Elements.function.functionCall;
-import AST.Elements.ElementsNodes.generic4Elements.object.obj;
-import AST.Elements.ElementsNodes.generic4Elements.object.objBody;
-import AST.Elements.ElementsNodes.generic4Elements.object.subObj;
+import AST.Elements.ElementsNodes.generic4Elements.array.ObjArray;
+import AST.Elements.ElementsNodes.generic4Elements.function.FunctionCall;
+import AST.Elements.ElementsNodes.generic4Elements.object.Obj;
+import AST.Elements.ElementsNodes.generic4Elements.object.ObjBody;
+import AST.Elements.ElementsNodes.generic4Elements.object.SubObj;
+
 
 public class Collection4For3 {
-    private obj obj;
-    private objBody objBody;
-    private subObj subObj;
-    private objArray objArray;
-    private functionCall functionCall;
+    private Obj obj;
+    private ObjBody objBody;
+    private SubObj subObj;
+    private ObjArray objArray;
+    private FunctionCall functionCall;
     private OneLine4For3Condition oneLine4For3Condition;
 
-    public obj getObj() {
+    public Obj getObj() {
         return obj;
     }
 
-    public objBody getObjBody() {
+    public void setObj(Obj obj) {
+        this.obj = obj;
+    }
+
+    public ObjBody getObjBody() {
         return objBody;
     }
 
-    public subObj getSubObj() {
+    public void setObjBody(ObjBody objBody) {
+        this.objBody = objBody;
+    }
+
+    public SubObj getSubObj() {
         return subObj;
     }
 
-    public objArray getObjArray() {
+    public void setSubObj(SubObj subObj) {
+        this.subObj = subObj;
+    }
+
+    public ObjArray getObjArray() {
         return objArray;
     }
 
-    public functionCall getFunctionCall() {
+    public void setObjArray(ObjArray objArray) {
+        this.objArray = objArray;
+    }
+
+    public FunctionCall getFunctionCall() {
         return functionCall;
+    }
+
+    public void setFunctionCall(FunctionCall functionCall) {
+        this.functionCall = functionCall;
     }
 
     public OneLine4For3Condition getOneLine4For3Condition() {
         return oneLine4For3Condition;
     }
 
-
-
-    public void setObj(obj obj) {
-        this.obj = obj;
-    }
-
-    public void setObjBody(objBody objBody) {
-        this.objBody = objBody;
-    }
-
-    public void setSubObj(subObj subObj) {
-        this.subObj = subObj;
-    }
-
-    public void setObjArray(objArray objArray) {
-        this.objArray = objArray;
-    }
-
-    public void setFunctionCall(functionCall functionCall) {
-        this.functionCall = functionCall;
-    }
-
     public void setOneLine4For3Condition(OneLine4For3Condition oneLine4For3Condition) {
         this.oneLine4For3Condition = oneLine4For3Condition;
     }
-
-
 }
