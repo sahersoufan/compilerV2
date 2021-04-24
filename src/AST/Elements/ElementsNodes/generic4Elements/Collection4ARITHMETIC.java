@@ -8,7 +8,7 @@ import AST.Elements.ElementsNodes.generic4Elements.variable.Variable;
 
 public class Collection4ARITHMETIC {
     private Variable variable;
-    private Collection4ARITHMETIC collection4ARITHMETIC;
+    private NUmber number;
     private ObjArray objArray;
     private FunctionCall functionCall;
     private SubObj subObj;
@@ -22,12 +22,12 @@ public class Collection4ARITHMETIC {
         this.variable = variable;
     }
 
-    public Collection4ARITHMETIC getCollection4ARITHMETIC() {
-        return collection4ARITHMETIC;
+    public NUmber getNumber() {
+        return number;
     }
 
-    public void setCollection4ARITHMETIC(Collection4ARITHMETIC collection4ARITHMETIC) {
-        this.collection4ARITHMETIC = collection4ARITHMETIC;
+    public void setNumber(NUmber number) {
+        this.number = number;
     }
 
     public ObjArray getObjArray() {

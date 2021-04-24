@@ -5,18 +5,10 @@ import AST.Elements.ElementsNodes.generic4Elements.Collection4everything;
 import java.util.ArrayList;
 
 public class OneLineCondition {
-    private Collection4oneLineCondition collection4oneLineCondition;
     private ArrayList<Collection4oneLineCondition> collection4oneLineConditions = new ArrayList<>();
     private Collection4everything firstCollection4everything;
     private Collection4everything secondCollection4everything;
-
-    public Collection4oneLineCondition getCollection4oneLineCondition() {
-        return collection4oneLineCondition;
-    }
-
-    public void setCollection4oneLineCondition(Collection4oneLineCondition collection4oneLineCondition) {
-        this.collection4oneLineCondition = collection4oneLineCondition;
-    }
+    // TODO check ! && ||
 
     public ArrayList<Collection4oneLineCondition> getCollection4oneLineConditions() {
         return collection4oneLineConditions;

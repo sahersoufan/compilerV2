@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 public class Parameters {
     private ArrayList<Parameter> parameters = new ArrayList<>();
-    private ArrayList<Parameter> internalParameters = new ArrayList<>();
 
     public ArrayList<Parameter> getParameters() {
         return parameters;
@@ -14,11 +13,4 @@ public class Parameters {
         this.parameters = parameters;
     }
 
-    public ArrayList<Parameter> getInternalParameters() {
-        return internalParameters;
-    }
-
-    public void setInternalParameters(ArrayList<Parameter> internalParameters) {
-        this.internalParameters = internalParameters;
-    }
 }

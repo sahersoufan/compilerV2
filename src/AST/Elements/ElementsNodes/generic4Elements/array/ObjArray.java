@@ -6,7 +6,7 @@ public class ObjArray {
     private ArrName arrName;
     private ArrayCalling arrayCalling;
     private Collection4ARITHMETIC collection4ARITHMETIC;
-
+    private String arithmetic;
     public ArrName getArrName() {
         return arrName;
     }
@@ -29,5 +29,13 @@ public class ObjArray {
 
     public void setCollection4ARITHMETIC(Collection4ARITHMETIC collection4ARITHMETIC) {
         this.collection4ARITHMETIC = collection4ARITHMETIC;
+    }
+
+    public String getArithmetic() {
+        return arithmetic;
+    }
+
+    public void setArithmetic(String arithmetic) {
+        this.arithmetic = arithmetic;
     }
 }

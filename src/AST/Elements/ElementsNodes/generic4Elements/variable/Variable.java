@@ -4,6 +4,7 @@ import AST.Elements.ElementsNodes.generic4Elements.Collection4ARITHMETIC;
 
 public class Variable {
     private VariableName variableName;
+    private String Arithmetic;
     private Collection4ARITHMETIC collection4ARITHMETIC;
 
 
@@ -21,5 +22,13 @@ public class Variable {
 
     public void setCollection4ARITHMETIC(Collection4ARITHMETIC collection4ARITHMETIC) {
         this.collection4ARITHMETIC = collection4ARITHMETIC;
+    }
+
+    public String getArithmetic() {
+        return Arithmetic;
+    }
+
+    public void setArithmetic(String arithmetic) {
+        Arithmetic = arithmetic;
     }
 }

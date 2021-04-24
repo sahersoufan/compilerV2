@@ -7,6 +7,7 @@ public class SubObj {
     private String identifier;
     private Property property;
     private Collection4ARITHMETIC collection4ARITHMETIC;
+    private String arithmetic;
 
     public String getIdentifier() {
         return identifier;
@@ -30,5 +31,13 @@ public class SubObj {
 
     public void setCollection4ARITHMETIC(Collection4ARITHMETIC collection4ARITHMETIC) {
         this.collection4ARITHMETIC = collection4ARITHMETIC;
+    }
+
+    public String getArithmetic() {
+        return arithmetic;
+    }
+
+    public void setArithmetic(String arithmetic) {
+        this.arithmetic = arithmetic;
     }
 }

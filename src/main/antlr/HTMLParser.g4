@@ -400,7 +400,6 @@ parameter
     ;
 //
 
-// TODO add par to expr
 // comparison
 comparisonExpression
     : collection4comparison comparisonOperator collection4comparison

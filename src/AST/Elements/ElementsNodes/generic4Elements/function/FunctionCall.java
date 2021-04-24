@@ -6,6 +6,7 @@ public class FunctionCall {
     private FunctionName functionName;
     private FunctionCallFromVar functionCallFromVar;
     private Collection4ARITHMETIC collection4ARITHMETIC;
+    private String arithmetic;
 
     public FunctionName getFunctionName() {
         return functionName;
@@ -29,5 +30,13 @@ public class FunctionCall {
 
     public void setCollection4ARITHMETIC(Collection4ARITHMETIC collection4ARITHMETIC) {
         this.collection4ARITHMETIC = collection4ARITHMETIC;
+    }
+
+    public String getArithmetic() {
+        return arithmetic;
+    }
+
+    public void setArithmetic(String arithmetic) {
+        this.arithmetic = arithmetic;
     }
 }
