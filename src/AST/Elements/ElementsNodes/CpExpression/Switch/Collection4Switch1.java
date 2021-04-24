@@ -1,21 +1,18 @@
-package AST.Elements.ElementsNodes.CpExpression.For;
+package AST.Elements.ElementsNodes.CpExpression.Switch;
 
 import AST.Elements.ElementsNodes.generic4Elements.array.objArray;
 import AST.Elements.ElementsNodes.generic4Elements.collection4ARITHMETIC;
-import AST.Elements.ElementsNodes.generic4Elements.comparison.comparisonExpression;
-import AST.Elements.ElementsNodes.generic4Elements.comparison.oneLineBoolCondition;
-import AST.Elements.ElementsNodes.generic4Elements.function.functionCall;
+import AST.Elements.ElementsNodes.generic4Elements.comparison.oneLineArithCondition;
 import AST.Elements.ElementsNodes.generic4Elements.object.subObj;
 import AST.Elements.ElementsNodes.generic4Elements.variable.variable;
 
-public class collection4For5 {
+public class Collection4Switch1 {
     private variable variable;
     private collection4ARITHMETIC collection4ARITHMETIC;
     private objArray objArray;
-    private functionCall functionCall;
     private subObj subObj;
-    private comparisonExpression comparisonExpression;
-    private oneLineBoolCondition oneLineBoolCondition;
+    private OneLine4switch1 oneLine4switch1;
+    private oneLineArithCondition oneLineArithCondition;
 
     public void setVariable(variable variable) {
         this.variable = variable;
@@ -29,20 +26,16 @@ public class collection4For5 {
         this.objArray = objArray;
     }
 
-    public void setFunctionCall(functionCall functionCall) {
-        this.functionCall = functionCall;
-    }
-
     public void setSubObj(subObj subObj) {
         this.subObj = subObj;
     }
 
-    public void setComparisonExpression(comparisonExpression comparisonExpression) {
-        this.comparisonExpression = comparisonExpression;
+    public void setOneLine4switch1(OneLine4switch1 oneLine4switch1) {
+        this.oneLine4switch1 = oneLine4switch1;
     }
 
-    public void setOneLineBoolCondition(oneLineBoolCondition oneLineBoolCondition) {
-        this.oneLineBoolCondition = oneLineBoolCondition;
+    public void setOneLineArithCondition(oneLineArithCondition oneLineArithCondition) {
+        this.oneLineArithCondition = oneLineArithCondition;
     }
 
 
@@ -59,20 +52,16 @@ public class collection4For5 {
         return objArray;
     }
 
-    public functionCall getFunctionCall() {
-        return functionCall;
-    }
-
     public subObj getSubObj() {
         return subObj;
     }
 
-    public comparisonExpression getComparisonExpression() {
-        return comparisonExpression;
+    public OneLine4switch1 getOneLine4switch1() {
+        return oneLine4switch1;
     }
 
-    public oneLineBoolCondition getOneLineBoolCondition() {
-        return oneLineBoolCondition;
+    public oneLineArithCondition getOneLineArithCondition() {
+        return oneLineArithCondition;
     }
 
 

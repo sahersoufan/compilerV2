@@ -1,4 +1,4 @@
-package AST.Elements.ElementsNodes.CpExpression.app;
+package AST.Elements.ElementsNodes.CpExpression.model;
 
 import AST.Elements.ElementsNodes.generic4Elements.array.objArray;
 import AST.Elements.ElementsNodes.generic4Elements.comparison.comparisonExpression;
@@ -7,14 +7,13 @@ import AST.Elements.ElementsNodes.generic4Elements.function.functionCall;
 import AST.Elements.ElementsNodes.generic4Elements.object.subObj;
 import AST.Elements.ElementsNodes.generic4Elements.variable.variable;
 
-public class collection4App2 {
-
+public class Collection4Model2 {
     private variable variable;
     private objArray objArray;
     private functionCall functionCall;
     private subObj subObj;
-    private oneLineBoolCondition oneLineBoolCondition;
     private comparisonExpression comparisonExpression;
+    private oneLineBoolCondition oneLineBoolCondition;
 
     public void setVariable(variable variable) {
         this.variable = variable;
@@ -39,6 +38,8 @@ public class collection4App2 {
     public void setOneLineBoolCondition(oneLineBoolCondition oneLineBoolCondition) {
         this.oneLineBoolCondition = oneLineBoolCondition;
     }
+
+
 
     public variable getVariable() {
         return variable;

@@ -1,16 +1,16 @@
 package AST.Elements.ElementsNodes.CpExpression.annotation;
 
-public class functionCall4AnnotOneLine {
+public class FunctionCall4AnnotOneLine {
 
 
     private String functionName;
-    private  funcEndRet4AnnotOneLine funcEndRet4AnnotOneLine ;
+    private FuncEndRet4AnnotOneLine funcEndRet4AnnotOneLine ;
 
     public String getFunctionName() {
         return functionName;
     }
 
-    public funcEndRet4AnnotOneLine getFuncEndRet4AnnotOneLine() {
+    public FuncEndRet4AnnotOneLine getFuncEndRet4AnnotOneLine() {
         return funcEndRet4AnnotOneLine;
     }
 
@@ -18,7 +18,7 @@ public class functionCall4AnnotOneLine {
         this.functionName = functionName;
     }
 
-    public void setFuncEndRet4AnnotOneLine(funcEndRet4AnnotOneLine funcEndRet4AnnotOneLine) {
+    public void setFuncEndRet4AnnotOneLine(FuncEndRet4AnnotOneLine funcEndRet4AnnotOneLine) {
         this.funcEndRet4AnnotOneLine = funcEndRet4AnnotOneLine;
     }
 

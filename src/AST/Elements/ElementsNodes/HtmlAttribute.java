@@ -2,28 +2,28 @@ package AST.Elements.ElementsNodes;
 
 
 
-import AST.Elements.ElementsNodes.CpExpression.For.forExpression;
-import AST.Elements.ElementsNodes.CpExpression.If.ifExpression;
-import AST.Elements.ElementsNodes.CpExpression.Switch.switchCaseExpression;
-import AST.Elements.ElementsNodes.CpExpression.Switch.switchExpression;
-import AST.Elements.ElementsNodes.CpExpression.annotation.annotationExpression;
-import AST.Elements.ElementsNodes.CpExpression.app.appExpression;
-import AST.Elements.ElementsNodes.CpExpression.model.modelExpression;
-import AST.Elements.ElementsNodes.CpExpression.showHide.showHideExpression;
+import AST.Elements.ElementsNodes.CpExpression.For.ForExpression;
+import AST.Elements.ElementsNodes.CpExpression.If.IfExpression;
+import AST.Elements.ElementsNodes.CpExpression.Switch.SwitchCaseExpression;
+import AST.Elements.ElementsNodes.CpExpression.Switch.SwitchExpression;
+import AST.Elements.ElementsNodes.CpExpression.annotation.AnnotationExpression;
+import AST.Elements.ElementsNodes.CpExpression.app.AppExpression;
+import AST.Elements.ElementsNodes.CpExpression.model.ModelExpression;
+import AST.Elements.ElementsNodes.CpExpression.showHide.ShowHideExpression;
 
 public class HtmlAttribute {
 
 
     private String tagName;
     private String attValue;
-    private appExpression appExpression;
-    private forExpression forExpression;
-    private showHideExpression showHideExpression;
-    private switchExpression switchExpression;
-    private switchCaseExpression switchCaseExpression;
-    private ifExpression ifExpression;
-    private modelExpression modelExpression;
-    private annotationExpression annotationExpression;
+    private AppExpression appExpression;
+    private ForExpression forExpression;
+    private ShowHideExpression showHideExpression;
+    private SwitchExpression switchExpression;
+    private SwitchCaseExpression switchCaseExpression;
+    private IfExpression ifExpression;
+    private ModelExpression modelExpression;
+    private AnnotationExpression annotationExpression;
 
 
     public String getTagName() {
@@ -42,67 +42,67 @@ public class HtmlAttribute {
         this.attValue = attValue;
     }
 
-    public appExpression getAppExpression() {
+    public AppExpression getAppExpression() {
         return appExpression;
     }
 
-    public void setAppExpression(appExpression appExpression) {
+    public void setAppExpression(AppExpression appExpression) {
         this.appExpression = appExpression;
     }
 
-    public forExpression getForExpression() {
+    public ForExpression getForExpression() {
         return forExpression;
     }
 
-    public void setForExpression(forExpression forExpression) {
+    public void setForExpression(ForExpression forExpression) {
         this.forExpression = forExpression;
     }
 
-    public showHideExpression getShowHideExpression() {
+    public ShowHideExpression getShowHideExpression() {
         return showHideExpression;
     }
 
-    public void setShowHideExpression(showHideExpression showHideExpression) {
+    public void setShowHideExpression(ShowHideExpression showHideExpression) {
         this.showHideExpression = showHideExpression;
     }
 
-    public switchExpression getSwitchExpression() {
+    public SwitchExpression getSwitchExpression() {
         return switchExpression;
     }
 
-    public void setSwitchExpression(switchExpression switchExpression) {
+    public void setSwitchExpression(SwitchExpression switchExpression) {
         this.switchExpression = switchExpression;
     }
 
-    public switchCaseExpression getSwitchCaseExpression() {
+    public SwitchCaseExpression getSwitchCaseExpression() {
         return switchCaseExpression;
     }
 
-    public void setSwitchCaseExpression(switchCaseExpression switchCaseExpression) {
+    public void setSwitchCaseExpression(SwitchCaseExpression switchCaseExpression) {
         this.switchCaseExpression = switchCaseExpression;
     }
 
-    public ifExpression getIfExpression() {
+    public IfExpression getIfExpression() {
         return ifExpression;
     }
 
-    public void setIfExpression(ifExpression ifExpression) {
+    public void setIfExpression(IfExpression ifExpression) {
         this.ifExpression = ifExpression;
     }
 
-    public modelExpression getModelExpression() {
+    public ModelExpression getModelExpression() {
         return modelExpression;
     }
 
-    public void setModelExpression(modelExpression modelExpression) {
+    public void setModelExpression(ModelExpression modelExpression) {
         this.modelExpression = modelExpression;
     }
 
-    public annotationExpression getAnnotationExpression() {
+    public AnnotationExpression getAnnotationExpression() {
         return annotationExpression;
     }
 
-    public void setAnnotationExpression(annotationExpression annotationExpression) {
+    public void setAnnotationExpression(AnnotationExpression annotationExpression) {
         this.annotationExpression = annotationExpression;
     }
 }

@@ -1,4 +1,4 @@
-package AST.Elements.ElementsNodes.CpExpression.model;
+package AST.Elements.ElementsNodes.CpExpression.If;
 
 import AST.Elements.ElementsNodes.generic4Elements.array.objArray;
 import AST.Elements.ElementsNodes.generic4Elements.comparison.comparisonExpression;
@@ -7,7 +7,7 @@ import AST.Elements.ElementsNodes.generic4Elements.function.functionCall;
 import AST.Elements.ElementsNodes.generic4Elements.object.subObj;
 import AST.Elements.ElementsNodes.generic4Elements.variable.variable;
 
-public class collection4Model2 {
+public class Collection4If {
     private variable variable;
     private objArray objArray;
     private functionCall functionCall;
@@ -64,6 +64,7 @@ public class collection4Model2 {
     public oneLineBoolCondition getOneLineBoolCondition() {
         return oneLineBoolCondition;
     }
+
 
 
 }

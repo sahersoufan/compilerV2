@@ -14,7 +14,7 @@ public class collection4For2 {
      private array array;
      private functionCall functionCall;
     private oneLineArithCondition oneLineArithCondithion;
-    private  oneLine4For2Condition oneLine4For2Condition;
+    private OneLine4For2Condition oneLine4For2Condition;
 
     public void setVariable(variable variable) {
         this.variable = variable;
@@ -36,7 +36,7 @@ public class collection4For2 {
         this.functionCall = functionCall;
     }
 
-    public void setOneLine4For2Condition(oneLine4For2Condition oneLine4For2Condition) {
+    public void setOneLine4For2Condition(OneLine4For2Condition oneLine4For2Condition) {
         this.oneLine4For2Condition = oneLine4For2Condition;
     }
 
@@ -66,7 +66,7 @@ public class collection4For2 {
         return functionCall;
     }
 
-    public oneLine4For2Condition getOneLine4For2Condition() {
+    public OneLine4For2Condition getOneLine4For2Condition() {
         return oneLine4For2Condition;
     }
 

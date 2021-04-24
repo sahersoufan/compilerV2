@@ -7,7 +7,7 @@ import AST.Elements.ElementsNodes.generic4Elements.function.functionCall;
 import AST.Elements.ElementsNodes.generic4Elements.object.subObj;
 import AST.Elements.ElementsNodes.generic4Elements.variable.variable;
 
-public class collection4ShowHide1 {
+public class Collection4ShowHide1 {
     private variable variable;
     private objArray objArray;
     private functionCall functionCall;
