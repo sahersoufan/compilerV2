@@ -50,6 +50,18 @@ public class BaseVisitors extends HTMLParserBaseVisitor {
         return super.visitHtmlComment(ctx);
     }
 
+
+
+
+
+
+
+
+
+
+
+
+    ///////////////////////////// Fatimaaaaaaaaaaaaaaaaaaaaaaaaaaa ///////////////////////////////////
     @Override
     public Object visitAppExpression(HTMLParser.AppExpressionContext ctx) {
         return super.visitAppExpression(ctx);
@@ -194,6 +206,16 @@ public class BaseVisitors extends HTMLParserBaseVisitor {
     public Object visitFuncEndRet4AnnotOneLine(HTMLParser.FuncEndRet4AnnotOneLineContext ctx) {
         return super.visitFuncEndRet4AnnotOneLine(ctx);
     }
+ /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+    ////////////////////// MAYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAR //////////////////////
 
     @Override
     public Object visitVariable(HTMLParser.VariableContext ctx) {
@@ -344,7 +366,19 @@ public class BaseVisitors extends HTMLParserBaseVisitor {
     public Object visitCollection4boolRet(HTMLParser.Collection4boolRetContext ctx) {
         return super.visitCollection4boolRet(ctx);
     }
+ //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+
+
+
+
+
+
+
+
+
+
+    ////////////////////// NOOOOOOOOOOOOOOOOOOOOOOOOOOOOR //////////////////////
     @Override
     public Object visitMustacheExpression(HTMLParser.MustacheExpressionContext ctx) {
         return super.visitMustacheExpression(ctx);
@@ -469,6 +503,18 @@ public class BaseVisitors extends HTMLParserBaseVisitor {
     public Object visitFormatName(HTMLParser.FormatNameContext ctx) {
         return super.visitFormatName(ctx);
     }
+
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+
 
     @Override
     public Object visitScript(HTMLParser.ScriptContext ctx) {
