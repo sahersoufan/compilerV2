@@ -3,9 +3,9 @@ package AST.Elements;
 
 import AST.Elements.ElementsNodes.HtmlAttribute;
 import AST.Elements.ElementsNodes.HtmlContent;
-import AST.Elements.ElementsNodes.script;
-import AST.Elements.ElementsNodes.style;
-import AST.Elements.ElementsNodes.mustacheExpression.mustacheExpression;
+import AST.Elements.ElementsNodes.Script;
+import AST.Elements.ElementsNodes.Style;
+import AST.Elements.ElementsNodes.mustacheExpression.MustacheExpression;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,10 +15,10 @@ public class HtmlElement {
     private String tagName;
     private List<HtmlAttribute> htmlAttributeList = new ArrayList<>();
     private HtmlContent htmlContent = new HtmlContent();
-    private mustacheExpression mustacheExpression = new mustacheExpression();
+    private MustacheExpression mustacheExpression = new MustacheExpression();
     private String ScriptLet;
-    private script script;
-    private style style;
+    private Script script;
+    private Style style;
 
     public String getTagName() {
         return tagName;
@@ -44,11 +44,11 @@ public class HtmlElement {
         this.htmlContent = htmlContent;
     }
 
-    public AST.Elements.ElementsNodes.mustacheExpression.mustacheExpression getMustacheExpression() {
+    public MustacheExpression getMustacheExpression() {
         return mustacheExpression;
     }
 
-    public void setMustacheExpression(AST.Elements.ElementsNodes.mustacheExpression.mustacheExpression mustacheExpression) {
+    public void setMustacheExpression(MustacheExpression mustacheExpression) {
         this.mustacheExpression = mustacheExpression;
     }
 
@@ -60,19 +60,19 @@ public class HtmlElement {
         ScriptLet = scriptLet;
     }
 
-    public script getScript() {
+    public Script getScript() {
         return script;
     }
 
-    public void setScript(script script) {
+    public void setScript(Script script) {
         this.script = script;
     }
 
-    public style getStyle() {
+    public Style getStyle() {
         return style;
     }
 
-    public void setStyle(style style) {
+    public void setStyle(Style style) {
         this.style = style;
     }
 }
