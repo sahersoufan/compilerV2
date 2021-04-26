@@ -1,18 +1,19 @@
 package AST.Elements.ElementsNodes.mustacheExpression.generic4mustache;
 
-import AST.Elements.ElementsNodes.generic4Elements.Value;
-import AST.Elements.ElementsNodes.generic4Elements.array.Array;
-import AST.Elements.ElementsNodes.generic4Elements.array.ObjArray;
-import AST.Elements.ElementsNodes.generic4Elements.comparison.OneLineArithCondition;
-import AST.Elements.ElementsNodes.generic4Elements.comparison.OneLineBoolCondition;
-import AST.Elements.ElementsNodes.generic4Elements.function.FunctionCall;
-import AST.Elements.ElementsNodes.generic4Elements.object.SubObj;
-import AST.Elements.ElementsNodes.generic4Elements.variable.Variable;
+
+import AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.array.objArray4Must;
+import AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.comparison.oneLineCondition4Must;
+import AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.function.functionCall4Must;
+import AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.object.subObj4Must;
+import AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.var.mustacheVariable;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class collection4CompMust {
     private mustacheVariable mustacheVariable;
-    private MUSTACHE_NUMBER MUSTACHE_NUMBER;
-    private MUSTACHE_STRING MUSTACHE_STRING;
+    private int MUSTACHE_NUMBER;
+   private List<String> MUSTACHE_STRING=new ArrayList<>();
     private objArray4Must objArray4Must;
     private functionCall4Must functionCall4Must;
     private subObj4Must subObj4Must;
@@ -21,11 +22,11 @@ public class collection4CompMust {
     public void setmustacheVariable(mustacheVariable mustacheVariable) {
         this.mustacheVariable = mustacheVariable;
     }
-    public void setMUSTACHE_NUMBER(MUSTACHE_NUMBER MUSTACHE_NUMBER) {
+    public void setMUSTACHE_NUMBER(int MUSTACHE_NUMBER) {
         this.MUSTACHE_NUMBER = MUSTACHE_NUMBER;
     }
 
-    public void setMUSTACHE_STRING(MUSTACHE_STRING MUSTACHE_MUSTACHE_STRINGNUMBER) {
+    public void setMUSTACHE_STRING(List<String> MUSTACHE_STRING) {
         this.MUSTACHE_STRING = MUSTACHE_STRING;
     }
 
@@ -49,13 +50,14 @@ public class collection4CompMust {
         return mustacheVariable;
     }
 
-    public MUSTACHE_NUMBER getMUSTACHE_NUMBER() {
+    public int getMUSTACHE_NUMBER() {
         return MUSTACHE_NUMBER;
     }
 
-    public MUSTACHE_STRING getMUSTACHE_STRING() {
+    public List<String> getMUSTACHE_STRING() {
         return MUSTACHE_STRING;
     }
+
     public objArray4Must getobjArray4Must() {
         return objArray4Must;
     }

@@ -1,7 +1,9 @@
 package AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.comparison;
 
+import AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.collection4CompMust;
+
 public class comparisonExp4Must {
-    private collection4CompMust collection4CompMust;
+    private AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.collection4CompMust collection4CompMust;
       private mustacheComparisonOperator mustacheComparisonOperator;
 
     public void setCollection4CompMust(collection4CompMust collection4CompMust) {

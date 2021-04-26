@@ -1,8 +1,10 @@
 package AST.Elements.ElementsNodes.mustacheExpression.filter;
 
+import AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.collection4Mustache;
+
 public class filter {
         private modelName modelName;
-       private MUSTACHE_FILTER MUSTACHE_FILTER;
+      // private MUSTACHE_FILTER MUSTACHE_FILTER;
        private formatName formatName;
    private collection4Mustache collection4Mustache;
 
@@ -16,18 +18,6 @@ public class filter {
 
     public void setModelName(AST.Elements.ElementsNodes.mustacheExpression.filter.modelName modelName) {
         this.modelName = modelName;
-    }
-
-    public void setMUSTACHE_FILTER(MUSTACHE_FILTER MUSTACHE_FILTER) {
-        this.MUSTACHE_FILTER = MUSTACHE_FILTER;
-    }
-
-    public collection4Mustache getCollection4Mustache() {
-        return collection4Mustache;
-    }
-
-    public MUSTACHE_FILTER getMUSTACHE_FILTER() {
-        return MUSTACHE_FILTER;
     }
 
     public AST.Elements.ElementsNodes.mustacheExpression.filter.formatName getFormatName() {

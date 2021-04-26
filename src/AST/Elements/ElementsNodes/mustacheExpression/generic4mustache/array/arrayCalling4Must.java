@@ -1,12 +1,16 @@
 package AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.array;
 
-public class arrayCalling4Must {
-    private MUSTAHCE_ARITHMETIC MUSTAHCE_ARITHMETIC;
-    private collection4MUSTARITHMETIC collection4MUSTARITHMETIC;
-   private functionCallFromVar4Must functionCallFromVar4Must;
-   private property4Must property4Must;
+import AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.collection4MUSTARITHMETIC;
+import AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.function.functionCallFromVar4Must;
+import AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.property.property4Must;
 
-    public void setMUSTAHCE_ARITHMETIC(MUSTAHCE_ARITHMETIC MUSTAHCE_ARITHMETIC) {
+public class arrayCalling4Must {
+    private int MUSTAHCE_ARITHMETIC;
+    private AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.collection4MUSTARITHMETIC collection4MUSTARITHMETIC;
+   private AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.function.functionCallFromVar4Must functionCallFromVar4Must;
+   private AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.property.property4Must property4Must;
+
+    public void setMUSTAHCE_ARITHMETIC(int MUSTAHCE_ARITHMETIC) {
         this.MUSTAHCE_ARITHMETIC = MUSTAHCE_ARITHMETIC;
     }
 
@@ -22,7 +26,7 @@ public class arrayCalling4Must {
         this.collection4MUSTARITHMETIC = collection4MUSTARITHMETIC;
     }
 
-    public MUSTAHCE_ARITHMETIC getMUSTAHCE_ARITHMETIC() {
+    public int getMUSTAHCE_ARITHMETIC() {
         return MUSTAHCE_ARITHMETIC;
     }
 

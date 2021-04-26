@@ -1,9 +1,12 @@
 package AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.property;
 
+import AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.array.arrayCalling4Must;
+import AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.function.functionCallFromVar4Must;
+
 public class property4Must {
    private propertyValue4Must propertyValue4Must;
-    private arrayCalling4Must arrayCalling4Must;
-    private functionCallFromVar4Must functionCallFromVar4Must;
+    private AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.array.arrayCalling4Must arrayCalling4Must;
+    private AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.function.functionCallFromVar4Must functionCallFromVar4Must;
 
     public void setArrayCalling4Must(arrayCalling4Must arrayCalling4Must) {
         this.arrayCalling4Must = arrayCalling4Must;
