@@ -4,12 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PropertyValue4Must {
-    private List<String> MUSTACHE_IDENTIFIER=new ArrayList<>();
-    public void setMUSTACHE_IDENTIFIER(List<String> MUSTACHE_IDENTIFIER) {
-        this.MUSTACHE_IDENTIFIER = MUSTACHE_IDENTIFIER;
+    private List<String> mustachIdentifier = new ArrayList<>();
+
+    public void setMustachIdentifier(List<String> mustachIdentifier) {
+        this.mustachIdentifier = mustachIdentifier;
     }
 
-    public List<String> getMUSTACHE_IDENTIFIER() {
-        return MUSTACHE_IDENTIFIER;
+    public List<String> getMustachIdentifier() {
+        return mustachIdentifier;
     }
 }
+
+

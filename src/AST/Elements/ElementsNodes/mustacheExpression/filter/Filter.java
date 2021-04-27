@@ -4,9 +4,13 @@ import AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.Collection
 
 public class Filter {
         private ModelName modelName;
-      // private MUSTACHE_FILTER MUSTACHE_FILTER;
+     private MustacheFilter MustacheFilter ;
        private FormatName formatName;
    private Collection4Mustache collection4Mustache;
+
+    public void setMustacheFilter(MustacheFilter mustacheFilter) {
+        MustacheFilter = mustacheFilter;
+    }
 
     public void setCollection4Mustache(Collection4Mustache collection4Mustache) {
         this.collection4Mustache = collection4Mustache;
@@ -26,5 +30,9 @@ public class Filter {
 
     public ModelName getModelName() {
         return modelName;
+    }
+
+    public MustacheFilter getMustacheFilter() {
+        return MustacheFilter;
     }
 }

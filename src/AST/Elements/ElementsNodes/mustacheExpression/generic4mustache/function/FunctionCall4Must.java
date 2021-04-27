@@ -1,12 +1,16 @@
 package AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.function;
 
 import AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.Collection4MUSTARITHMETIC;
+import com.sun.source.tree.NewArrayTree;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class FunctionCall4Must {
     private FunctionName4Must functionName4Must;
     private FunctionCallFromVar4Must functionCallFromVar4Must;
     private String mustacheArithmetic;
-    private Collection4MUSTARITHMETIC collection4MUSTARITHMETIC;
+    private List<collection4MUSTARITHMETIC> collection4MUSTARITHMETIC= new ArrayList<>();
 
     public FunctionName4Must getFunctionName4Must() {
         return functionName4Must;
@@ -32,11 +36,11 @@ public class FunctionCall4Must {
         this.mustacheArithmetic = mustacheArithmetic;
     }
 
-    public Collection4MUSTARITHMETIC getCollection4MUSTARITHMETIC() {
-        return collection4MUSTARITHMETIC;
+    public void setCollection4MUSTARITHMETIC(List<collection4MUSTARITHMETIC> collection4MUSTARITHMETIC) {
+        this.collection4MUSTARITHMETIC = collection4MUSTARITHMETIC;
     }
 
-    public void setCollection4MUSTARITHMETIC(Collection4MUSTARITHMETIC collection4MUSTARITHMETIC) {
-        this.collection4MUSTARITHMETIC = collection4MUSTARITHMETIC;
+    public List<collection4MUSTARITHMETIC> getCollection4MUSTARITHMETIC() {
+        return collection4MUSTARITHMETIC;
     }
 }

@@ -4,14 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FormatName {
+    private List<String> mustachIdentifier = new ArrayList<>();
 
-        private String formatName;
-
-    public String getFormatName() {
-        return formatName;
+    public void setMustachIdentifier(List<String> mustachIdentifier) {
+        this.mustachIdentifier = mustachIdentifier;
     }
 
-    public void setFormatName(String formatName) {
-        this.formatName = formatName;
+    public List<String> getMustachIdentifier() {
+        return mustachIdentifier;
     }
 }

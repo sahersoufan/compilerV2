@@ -7,59 +7,55 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MustacheValue {
-    private int MUSTAHCE_ARITHMETIC;
+    private int mustacheNumber;
+    private String mustacheArithmetic;
     private Collection4MUSTARITHMETIC collection4MUSTARITHMETIC;
     private String mustacheString;
     private Object mustacheNull;
-    private boolean mustacheFalse;
-    private boolean mustacheTrue;
+    private Boolean mustacheFalse;
+    private Boolean mustacheTrue;
 
     public void setCollection4MUSTARITHMETIC(Collection4MUSTARITHMETIC collection4MUSTARITHMETIC) {
         this.collection4MUSTARITHMETIC = collection4MUSTARITHMETIC;
     }
 
-    public void setMUSTAHCE_ARITHMETIC(int MUSTAHCE_ARITHMETIC) {
-        this.MUSTAHCE_ARITHMETIC = MUSTAHCE_ARITHMETIC;
+    public void setMustacheNumber(int mustacheNumber) {
+        this.mustacheNumber = mustacheNumber;
     }
 
-    public void setMUSTACHE_FALSE(boolean MUSTACHE_FALSE) {
-        this.MUSTACHE_FALSE = MUSTACHE_FALSE;
+    public void setMUSTACHE_FALSE(Boolean mustacheFalse) {
+        this.mustacheFalse = mustacheFalse;
+    }
+    public void setMUSTACHE_NULL(Object mustacheNull) {
+        this.mustacheNull = mustacheNull;
+    }
+    public void setMUSTACHE_TRUE(Boolean mustacheTrue) {
+        this.mustacheTrue = mustacheTrue;
     }
 
-    public void setMUSTACHE_STRING(List<String> MUSTACHE_STRING) {
-        this.MUSTACHE_STRING = MUSTACHE_STRING;
+    public void setMustacheString(String mustacheString) {this.mustacheString = mustacheString; }
+    public void setMustacheArithmetic(String mustacheArithmetic) { this.mustacheArithmetic = mustacheArithmetic; }
+
+    public Object getMUSTACHE_NULL() {
+        return mustacheNull;
+    }
+    public Boolean getMUSTACHE_FALSE() {
+        return mustacheFalse;
+    }
+    public Boolean getMUSTACHE_TRUE() {
+        return mustacheTrue;
+    }
+    public int getMustacheNumber() {return mustacheNumber; }
+
+    public String getMustacheArithmetic() {
+        return mustacheArithmetic;
     }
 
-    public void setMUSTACHE_NULL(NullType MUSTACHE_NULL) {
-        this.MUSTACHE_NULL = MUSTACHE_NULL;
-    }
-
-    public void setMUSTACHE_TRUE(boolean MUSTACHE_TRUE) {
-        this.MUSTACHE_TRUE = MUSTACHE_TRUE;
-    }
-
-    public List<String> getMUSTACHE_STRING() {
-        return MUSTACHE_STRING;
-    }
-
-    public NullType getMUSTACHE_NULL() {
-        return MUSTACHE_NULL;
-    }
-
-
-    public boolean getMUSTACHE_FALSE() {
-        return MUSTACHE_FALSE;
-    }
-
-    public boolean getMUSTACHE_TRUE() {
-        return MUSTACHE_TRUE;
+    public String getMustacheString() {
+        return mustacheString;
     }
 
     public Collection4MUSTARITHMETIC getCollection4MUSTARITHMETIC() {
         return collection4MUSTARITHMETIC;
-    }
-
-    public int getMUSTAHCE_ARITHMETIC() {
-        return MUSTAHCE_ARITHMETIC;
     }
 }

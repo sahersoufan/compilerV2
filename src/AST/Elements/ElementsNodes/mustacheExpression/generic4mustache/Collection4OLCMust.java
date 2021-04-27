@@ -9,8 +9,8 @@ import AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.var.Mustac
 
 public class Collection4OLCMust {
     private MustacheVariable mustacheVariable;
-    private  boolean  MUSTACHE_TRUE;
-    private boolean MUSTACHE_FALSE;
+    private  Boolean  mustacheTrue;
+    private Boolean mustacheFalse;
     private ObjArray4Must objArray4Must;
      private FunctionCall4Must functionCall4Must;
     private SubObj4Must subObj4Must;
@@ -19,11 +19,11 @@ public class Collection4OLCMust {
     public void setmustacheVariable(MustacheVariable mustacheVariable) {
         this.mustacheVariable = mustacheVariable;
     }
-    public void setMUSTACHE_TRUE(boolean MUSTACHE_TRUE) {
-        this.MUSTACHE_TRUE = MUSTACHE_TRUE;
+    public void setMUSTACHE_TRUE(Boolean mustacheTrue) {
+        this.mustacheTrue = mustacheTrue;
     }
-    public void setMUSTACHE_FALSE(boolean MUSTACHE_FALSE) {
-        this.MUSTACHE_FALSE = MUSTACHE_FALSE;
+    public void setMUSTACHE_FALSE(Boolean mustacheFalse) {
+        this.mustacheFalse = mustacheFalse;
     }
     public void setobjArray4Must(ObjArray4Must objArray4Must) {
         this.objArray4Must = objArray4Must;
@@ -43,11 +43,11 @@ public class Collection4OLCMust {
     public MustacheVariable getmustacheVariable() {
         return mustacheVariable;
     }
-    public boolean getMUSTACHE_TRUE() {
-        return MUSTACHE_TRUE;
+    public Boolean getMUSTACHE_TRUE() {
+        return mustacheTrue;
     }
-    public boolean getMUSTACHE_FALSE() {
-        return MUSTACHE_FALSE;
+    public Boolean getMUSTACHE_FALSE() {
+        return mustacheFalse;
     }
     public ObjArray4Must getobjArray4Must() {
         return objArray4Must;

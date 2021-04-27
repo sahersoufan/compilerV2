@@ -5,13 +5,13 @@ import java.util.List;
 
 public class MustacheComparisonOperator {
 
-    private List<String> booolean=new ArrayList<>();
+    private List<Boolean> operator=new ArrayList<>();
 
-    public List<String> booolean() {
-        return booolean;
+    public List<Boolean> operator() {
+        return operator;
     }
 
-    public void booolean(List<String> booolean) {
-        this.booolean = booolean;
+    public void booolean(List<Boolean> operator) {
+        this.operator = operator;
     }
 }
