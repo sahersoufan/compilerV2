@@ -9,7 +9,7 @@ import java.util.List;
 public class MustacheVariable {
 
 
-    private List<String> mustachIdentifier = new ArrayList<>();
+    private String mustacheVariable;
 
     private String mustachArithmetic;
     private Collection4MUSTARITHMETIC Collection4MUSTARITHMETIC;
@@ -30,12 +30,11 @@ public class MustacheVariable {
         return mustachArithmetic;
     }
 
-    public void setMUSTACHE_IDENTIFIER(List<String> mustachIdentifier) {
-        this.mustachIdentifier = mustachIdentifier;
+    public String getMustacheVariable() {
+        return mustacheVariable;
     }
 
-
-    public List<String> getMUSTACHE_IDENTIFIER() {
-        return mustachIdentifier;
+    public void setMustacheVariable(String mustacheVariable) {
+        this.mustacheVariable = mustacheVariable;
     }
 }

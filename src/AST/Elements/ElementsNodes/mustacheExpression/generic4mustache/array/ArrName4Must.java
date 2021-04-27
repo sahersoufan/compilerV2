@@ -5,13 +5,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ArrName4Must {
-    private List<String> mustachIdentifier = new ArrayList<>();
+    private List<String> arrName4Must = new ArrayList<>();
 
-    public List<String> getMustachIdentifier() {
-        return mustachIdentifier;
+    public List<String> getArrName4Must() {
+        return arrName4Must;
     }
 
-    public void setMustachIdentifier(List<String> mustachIdentifier) {
-        this.mustachIdentifier = mustachIdentifier;
+    public void setArrName4Must(List<String> arrName4Must) {
+        this.arrName4Must = arrName4Must;
     }
 }

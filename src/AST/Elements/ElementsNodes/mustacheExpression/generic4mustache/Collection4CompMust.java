@@ -12,9 +12,11 @@ import java.util.List;
 
 public class Collection4CompMust {
     private MustacheVariable mustacheVariable;
+
     private int mustacheNumber;
     private String mustachArithmetic ;
     private  Collection4MUSTARITHMETIC Collection4MUSTARITHMETIC;
+
     private String mustacheString;
     private ObjArray4Must objArray4Must;
     private FunctionCall4Must functionCall4Must;

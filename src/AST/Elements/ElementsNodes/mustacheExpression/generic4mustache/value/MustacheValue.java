@@ -10,6 +10,8 @@ public class MustacheValue {
     private int mustacheNumber;
     private String mustacheArithmetic;
     private Collection4MUSTARITHMETIC collection4MUSTARITHMETIC;
+
+
     private String mustacheString;
     private Object mustacheNull;
     private Boolean mustacheFalse;

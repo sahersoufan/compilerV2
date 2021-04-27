@@ -5,13 +5,13 @@ import java.util.List;
 
 public class FunctionName4Must {
 
-    private List<String> mustachIdentifier = new ArrayList<>();
+    private List<String> functionName4Must = new ArrayList<>();
 
-    public void setMustachIdentifier(List<String> mustachIdentifier) {
-        this.mustachIdentifier = mustachIdentifier;
+    public void setFunctionName4Must(List<String> functionName4Must) {
+        this.functionName4Must = functionName4Must;
     }
 
-    public List<String> getMustachIdentifier() {
-        return mustachIdentifier;
+    public List<String> getFunctionName4Must() {
+        return functionName4Must;
     }
 }

@@ -3,21 +3,18 @@ package AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.object;
 import AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.Collection4MUSTARITHMETIC;
 import AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.property.Property4Must;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class SubObj4Must {
-    private List<String> subName=new ArrayList<>();
+    private String subObj4MustName;
     private Property4Must property4Must;
     private String Arithmetic;
     private Collection4MUSTARITHMETIC collection4MUSTARITHMETIC;
 
-    public List<String> getSubName() {
-        return subName;
+    public String getSubObj4MustName() {
+        return subObj4MustName;
     }
 
-    public void setSubName(List<String> subName) {
-        this.subName = subName;
+    public void setSubObj4MustName(String subObj4MustName) {
+        this.subObj4MustName = subObj4MustName;
     }
 
     public Property4Must getProperty4Must() {

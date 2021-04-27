@@ -4,14 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MustacheComparisonOperator {
+    private String operator;
 
-    private List<Boolean> operator=new ArrayList<>();
-
-    public List<Boolean> operator() {
+    public String getOperator() {
         return operator;
     }
 
-    public void booolean(List<Boolean> operator) {
+    public void setOperator(String operator) {
         this.operator = operator;
     }
 }
