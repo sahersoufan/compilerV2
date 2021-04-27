@@ -1,11 +1,11 @@
 package AST;
 
-import old.generatedback.ASTBack.Elements.HtmlElements;
+import AST.Elements.HtmlElements;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class HtmlDocument extends old.generatedback.ASTBack.Node {
+public class HtmlDocument {
 
 
     private String XML;

@@ -1,18 +1,44 @@
 package Base;
 
+import AST.HtmlDocument;
 import generatedGrammers.HTMLParser;
 import generatedGrammers.HTMLParserBaseVisitor;
+import jdk.dynalink.linker.LinkerServices;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class BaseVisitors extends HTMLParserBaseVisitor {
 
     @Override
     public Object visitHtmlDocument(HTMLParser.HtmlDocumentContext ctx) {
-        return super.visitHtmlDocument(ctx);
+        HtmlDocument htmlDocument = new HtmlDocument();
+        List<String> ScriptletOrSeaWs = new ArrayList<>();
+
+        if(!ctx.scriptletOrSeaWs().isEmpty()){
+                for(int i = 0 ; i < ctx.scriptletOrSeaWs().size() ; i ++){
+                    ScriptletOrSeaWs.add((String)visitScriptletOrSeaWs(ctx.scriptletOrSeaWs(i)));
+                }
+                htmlDocument.setScriptLetORSeaWs(ScriptletOrSeaWs);
+        }
+
+
+        return htmlDocument;
     }
 
     @Override
     public Object visitScriptletOrSeaWs(HTMLParser.ScriptletOrSeaWsContext ctx) {
-        return super.visitScriptletOrSeaWs(ctx);
+    if(ctx.SCRIPTLET() != null){
+        String scriptLet;
+        scriptLet = ctx.SCRIPTLET().getSymbol().getText();
+        return scriptLet;
+    }
+    if(ctx.SEA_WS() != null){
+        String seaWs;
+        seaWs = ctx.SEA_WS().getSymbol().getText();
+        return  seaWs;
+    }
+    return  "";
     }
 
     @Override
@@ -47,6 +73,8 @@ public class BaseVisitors extends HTMLParserBaseVisitor {
 
     @Override
     public Object visitHtmlComment(HTMLParser.HtmlCommentContext ctx) {
+
+
         return super.visitHtmlComment(ctx);
     }
 
@@ -62,8 +90,10 @@ public class BaseVisitors extends HTMLParserBaseVisitor {
 
 
     ///////////////////////////// Fatimaaaaaaaaaaaaaaaaaaaaaaaaaaa ///////////////////////////////////
+
     @Override
     public Object visitAppExpression(HTMLParser.AppExpressionContext ctx) {
+
         return super.visitAppExpression(ctx);
     }
 
@@ -206,6 +236,14 @@ public class BaseVisitors extends HTMLParserBaseVisitor {
     public Object visitFuncEndRet4AnnotOneLine(HTMLParser.FuncEndRet4AnnotOneLineContext ctx) {
         return super.visitFuncEndRet4AnnotOneLine(ctx);
     }
+
+
+
+
+
+
+
+
  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 

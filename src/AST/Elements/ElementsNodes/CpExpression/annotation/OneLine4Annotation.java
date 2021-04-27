@@ -9,12 +9,15 @@ public class OneLine4Annotation {
 
     private List<Collection4oneLineCondition> collection4oneLineCondition=new ArrayList<>();
     private Collection4Annotation collection4Annotation;
+
     // TODO make this right ! && ||
     // TODO check this
 
-
     public List<Collection4oneLineCondition> getCollection4oneLineCondition() {
         return collection4oneLineCondition;
+       // if(a && (!b || c)) //TODO add this to parser, add this to arithmetic
+
+       //
     }
 
     public void setCollection4oneLineCondition(List<Collection4oneLineCondition> collection4oneLineCondition) {
