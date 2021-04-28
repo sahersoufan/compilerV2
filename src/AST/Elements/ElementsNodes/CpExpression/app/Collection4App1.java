@@ -4,6 +4,7 @@ import AST.Elements.ElementsNodes.generic4Elements.Value;
 import AST.Elements.ElementsNodes.generic4Elements.array.Array;
 import AST.Elements.ElementsNodes.generic4Elements.array.ObjArray;
 import AST.Elements.ElementsNodes.generic4Elements.comparison.OneLineArithCondition;
+import AST.Elements.ElementsNodes.generic4Elements.comparison.OneLineArithCondition1;
 import AST.Elements.ElementsNodes.generic4Elements.comparison.OneLineBoolCondition;
 import AST.Elements.ElementsNodes.generic4Elements.function.FunctionCall;
 import AST.Elements.ElementsNodes.generic4Elements.object.SubObj;
@@ -17,7 +18,7 @@ public class Collection4App1 {
     private FunctionCall functionCall;
     private SubObj subObj;
     private OneLineBoolCondition oneLineBoolCondition;
-    private OneLineArithCondition oneLineArithCondition;
+    private OneLineArithCondition1 oneLineArithCondition1;
 
     public Variable getVariable() {
         return variable;
@@ -75,11 +76,11 @@ public class Collection4App1 {
         this.oneLineBoolCondition = oneLineBoolCondition;
     }
 
-    public OneLineArithCondition getOneLineArithCondition() {
-        return oneLineArithCondition;
+    public OneLineArithCondition1 getOneLineArithCondition1() {
+        return oneLineArithCondition1;
     }
 
-    public void setOneLineArithCondition(OneLineArithCondition oneLineArithCondition) {
-        this.oneLineArithCondition = oneLineArithCondition;
+    public void setOneLineArithCondition1(OneLineArithCondition1 oneLineArithCondition1) {
+        this.oneLineArithCondition1 = oneLineArithCondition1;
     }
 }

@@ -1,16 +1,14 @@
-package AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.object;
+package AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.comparison;
 
 import AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.Collection4MUSTArithmetic;
-import AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.property.Property4Must;
 
-public class SubObj4Must {
-    private String subObj4MustName1_1;
-    private Property4Must property4Must1_1;
+public class OneLineArithCondition4Must1 {
+
+    private OneLineArithCondition4Must oneLineArithCondition4Must1_1;
     private String Arithmetic1_1;
     private Collection4MUSTArithmetic collection4MUSTARITHMETIC1_1;
 
-    private String subObj4MustName2_1;
-    private Property4Must property4Must2_1;
+    private OneLineArithCondition4Must oneLineArithCondition4Must2_1;
 
 
     private String openMustPar;
@@ -20,20 +18,12 @@ public class SubObj4Must {
     private String MustArithmetic2_2;
     private Collection4MUSTArithmetic Collection4MUSTARITHMETIC2_2;
 
-    public String getSubObj4MustName1_1() {
-        return subObj4MustName1_1;
+    public OneLineArithCondition4Must getOneLineArithCondition4Must1_1() {
+        return oneLineArithCondition4Must1_1;
     }
 
-    public void setSubObj4MustName1_1(String subObj4MustName1_1) {
-        this.subObj4MustName1_1 = subObj4MustName1_1;
-    }
-
-    public Property4Must getProperty4Must1_1() {
-        return property4Must1_1;
-    }
-
-    public void setProperty4Must1_1(Property4Must property4Must1_1) {
-        this.property4Must1_1 = property4Must1_1;
+    public void setOneLineArithCondition4Must1_1(OneLineArithCondition4Must oneLineArithCondition4Must1_1) {
+        this.oneLineArithCondition4Must1_1 = oneLineArithCondition4Must1_1;
     }
 
     public String getArithmetic1_1() {
@@ -52,20 +42,12 @@ public class SubObj4Must {
         this.collection4MUSTARITHMETIC1_1 = collection4MUSTARITHMETIC1_1;
     }
 
-    public String getSubObj4MustName2_1() {
-        return subObj4MustName2_1;
+    public OneLineArithCondition4Must getOneLineArithCondition4Must2_1() {
+        return oneLineArithCondition4Must2_1;
     }
 
-    public void setSubObj4MustName2_1(String subObj4MustName2_1) {
-        this.subObj4MustName2_1 = subObj4MustName2_1;
-    }
-
-    public Property4Must getProperty4Must2_1() {
-        return property4Must2_1;
-    }
-
-    public void setProperty4Must2_1(Property4Must property4Must2_1) {
-        this.property4Must2_1 = property4Must2_1;
+    public void setOneLineArithCondition4Must2_1(OneLineArithCondition4Must oneLineArithCondition4Must2_1) {
+        this.oneLineArithCondition4Must2_1 = oneLineArithCondition4Must2_1;
     }
 
     public String getOpenMustPar() {
@@ -116,3 +98,5 @@ public class SubObj4Must {
         Collection4MUSTARITHMETIC2_2 = collection4MUSTARITHMETIC2_2;
     }
 }
+
+

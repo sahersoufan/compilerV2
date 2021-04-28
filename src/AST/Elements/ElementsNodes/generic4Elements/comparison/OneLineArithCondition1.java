@@ -1,11 +1,14 @@
-package AST.Elements.ElementsNodes.generic4Elements;
+package AST.Elements.ElementsNodes.generic4Elements.comparison;
 
-public class NUmber {
-    private Number number1_1;
-    private String arithmetic1_1;
+import AST.Elements.ElementsNodes.generic4Elements.Collection4ARITHMETIC;
+
+public class OneLineArithCondition1 {
+
+    private OneLineArithCondition oneLineArithCondition1_1;
+    private String Arithmetic;
     private Collection4ARITHMETIC collection4ARITHMETIC1_1;
 
-    private Number number2_1;
+    private OneLineArithCondition oneLineArithCondition2_1;
     private String openPar;
     private String Arithmetic2_1;
     private Collection4ARITHMETIC collection4ARITHMETIC2_1;
@@ -13,21 +16,20 @@ public class NUmber {
     private String Arithmetic2_2;
     private Collection4ARITHMETIC collection4ARITHMETIC2_2;
 
-
-    public Number getNumber1_1() {
-        return number1_1;
+    public OneLineArithCondition getOneLineArithCondition1_1() {
+        return oneLineArithCondition1_1;
     }
 
-    public void setNumber1_1(Number number1_1) {
-        this.number1_1 = number1_1;
+    public void setOneLineArithCondition1_1(OneLineArithCondition oneLineArithCondition1_1) {
+        this.oneLineArithCondition1_1 = oneLineArithCondition1_1;
     }
 
-    public String getArithmetic1_1() {
-        return arithmetic1_1;
+    public String getArithmetic() {
+        return Arithmetic;
     }
 
-    public void setArithmetic1_1(String arithmetic1_1) {
-        this.arithmetic1_1 = arithmetic1_1;
+    public void setArithmetic(String arithmetic) {
+        Arithmetic = arithmetic;
     }
 
     public Collection4ARITHMETIC getCollection4ARITHMETIC1_1() {
@@ -38,12 +40,12 @@ public class NUmber {
         this.collection4ARITHMETIC1_1 = collection4ARITHMETIC1_1;
     }
 
-    public Number getNumber2_1() {
-        return number2_1;
+    public OneLineArithCondition getOneLineArithCondition2_1() {
+        return oneLineArithCondition2_1;
     }
 
-    public void setNumber2_1(Number number2_1) {
-        this.number2_1 = number2_1;
+    public void setOneLineArithCondition2_1(OneLineArithCondition oneLineArithCondition2_1) {
+        this.oneLineArithCondition2_1 = oneLineArithCondition2_1;
     }
 
     public String getOpenPar() {

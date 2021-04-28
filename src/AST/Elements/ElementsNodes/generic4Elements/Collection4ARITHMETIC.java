@@ -2,6 +2,7 @@ package AST.Elements.ElementsNodes.generic4Elements;
 
 import AST.Elements.ElementsNodes.generic4Elements.array.ObjArray;
 import AST.Elements.ElementsNodes.generic4Elements.comparison.OneLineArithCondition;
+import AST.Elements.ElementsNodes.generic4Elements.comparison.OneLineArithCondition1;
 import AST.Elements.ElementsNodes.generic4Elements.function.FunctionCall;
 import AST.Elements.ElementsNodes.generic4Elements.object.SubObj;
 import AST.Elements.ElementsNodes.generic4Elements.variable.Variable;
@@ -12,7 +13,7 @@ public class Collection4ARITHMETIC {
     private ObjArray objArray;
     private FunctionCall functionCall;
     private SubObj subObj;
-    private OneLineArithCondition oneLineArithCondition;
+    private OneLineArithCondition1 oneLineArithCondition1;
 
     public Variable getVariable() {
         return variable;
@@ -54,11 +55,11 @@ public class Collection4ARITHMETIC {
         this.subObj = subObj;
     }
 
-    public OneLineArithCondition getOneLineArithCondition() {
-        return oneLineArithCondition;
+    public OneLineArithCondition1 getOneLineArithCondition1() {
+        return oneLineArithCondition1;
     }
 
-    public void setOneLineArithCondition(OneLineArithCondition oneLineArithCondition) {
-        this.oneLineArithCondition = oneLineArithCondition;
+    public void setOneLineArithCondition1(OneLineArithCondition1 oneLineArithCondition1) {
+        this.oneLineArithCondition1 = oneLineArithCondition1;
     }
 }

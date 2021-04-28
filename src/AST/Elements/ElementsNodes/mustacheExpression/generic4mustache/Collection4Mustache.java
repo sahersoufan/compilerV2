@@ -2,7 +2,7 @@ package AST.Elements.ElementsNodes.mustacheExpression.generic4mustache;
 
 
 import AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.array.ObjArray4Must;
-import AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.comparison.OneLineArithCondithion4Must;
+import AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.comparison.OneLineArithCondition4Must;
 import AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.comparison.OneLineCondition4Must;
 import AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.function.FunctionCall4Must;
 import AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.object.SubObj4Must;
@@ -16,7 +16,7 @@ public class Collection4Mustache {
     private FunctionCall4Must functionCall4Must;
     private SubObj4Must subObj4Must;
     private OneLineCondition4Must oneLineCondition4Must;
-    private OneLineArithCondithion4Must oneLineArithCondithion4Must;
+    private OneLineArithCondition4Must oneLineArithCondithion4Must1;
 
     public void setmustacheVariable(MustacheVariable mustacheVariable) {
         this.mustacheVariable = mustacheVariable;
@@ -42,8 +42,8 @@ public class Collection4Mustache {
         this.oneLineCondition4Must = oneLineCondition4Must;
     }
 
-    public void setoneLineArithCondithion4Must(OneLineArithCondithion4Must oneLineArithCondithion4Must) {
-        this.oneLineArithCondithion4Must = oneLineArithCondithion4Must;
+    public void setoneLineArithCondithion4Must(OneLineArithCondition4Must oneLineArithCondithion4Must) {
+        this.oneLineArithCondithion4Must1 = oneLineArithCondithion4Must;
     }
 
 
@@ -65,8 +65,8 @@ public class Collection4Mustache {
     public OneLineCondition4Must getoneLineCondition4Must() {
         return oneLineCondition4Must;
     }
-    public OneLineArithCondithion4Must getoneLineArithCondithion4Must() {
-        return oneLineArithCondithion4Must;
+    public OneLineArithCondition4Must getoneLineArithCondithion4Must() {
+        return oneLineArithCondithion4Must1;
     }
 
 }

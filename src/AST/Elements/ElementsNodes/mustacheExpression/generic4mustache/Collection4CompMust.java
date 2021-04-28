@@ -7,15 +7,12 @@ import AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.function.F
 import AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.object.SubObj4Must;
 import AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.var.MustacheVariable;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Collection4CompMust {
     private MustacheVariable mustacheVariable;
 
-    private int mustacheNumber;
+    private MustacheNumber mustacheNumber;
     private String mustachArithmetic ;
-    private  Collection4MUSTARITHMETIC Collection4MUSTARITHMETIC;
+    private Collection4MUSTArithmetic Collection4MUSTARITHMETIC;
 
     private String mustacheString;
     private ObjArray4Must objArray4Must;
@@ -31,11 +28,11 @@ public class Collection4CompMust {
         this.mustacheVariable = mustacheVariable;
     }
 
-    public int getMustacheNumber() {
+    public MustacheNumber getMustacheNumber() {
         return mustacheNumber;
     }
 
-    public void setMustacheNumber(int mustacheNumber) {
+    public void setMustacheNumber(MustacheNumber mustacheNumber) {
         this.mustacheNumber = mustacheNumber;
     }
 
@@ -47,11 +44,11 @@ public class Collection4CompMust {
         this.mustachArithmetic = mustachArithmetic;
     }
 
-    public AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.Collection4MUSTARITHMETIC getCollection4MUSTARITHMETIC() {
+    public Collection4MUSTArithmetic getCollection4MUSTARITHMETIC() {
         return Collection4MUSTARITHMETIC;
     }
 
-    public void setCollection4MUSTARITHMETIC(AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.Collection4MUSTARITHMETIC collection4MUSTARITHMETIC) {
+    public void setCollection4MUSTARITHMETIC(Collection4MUSTArithmetic collection4MUSTARITHMETIC) {
         Collection4MUSTARITHMETIC = collection4MUSTARITHMETIC;
     }
 

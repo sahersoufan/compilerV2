@@ -4,6 +4,7 @@ import AST.Elements.ElementsNodes.generic4Elements.NUmber;
 import AST.Elements.ElementsNodes.generic4Elements.array.Array;
 import AST.Elements.ElementsNodes.generic4Elements.array.ObjArray;
 import AST.Elements.ElementsNodes.generic4Elements.comparison.OneLineArithCondition;
+import AST.Elements.ElementsNodes.generic4Elements.comparison.OneLineArithCondition1;
 import AST.Elements.ElementsNodes.generic4Elements.function.FunctionCall;
 import AST.Elements.ElementsNodes.generic4Elements.object.SubObj;
 import AST.Elements.ElementsNodes.generic4Elements.variable.Variable;
@@ -15,7 +16,7 @@ class Collection4For2 {
      private ObjArray objArray;
      private Array array;
      private FunctionCall functionCall;
-    private OneLineArithCondition oneLineArithCondithion;
+    private OneLineArithCondition1 oneLineArithCondithion1;
     private OneLine4For2Condition oneLine4For2Condition;
 
     public Variable getVariable() {
@@ -66,12 +67,12 @@ class Collection4For2 {
         this.functionCall = functionCall;
     }
 
-    public OneLineArithCondition getOneLineArithCondithion() {
-        return oneLineArithCondithion;
+    public OneLineArithCondition1 getOneLineArithCondithion1() {
+        return oneLineArithCondithion1;
     }
 
-    public void setOneLineArithCondithion(OneLineArithCondition oneLineArithCondithion) {
-        this.oneLineArithCondithion = oneLineArithCondithion;
+    public void setOneLineArithCondithion1(OneLineArithCondition1 oneLineArithCondithion1) {
+        this.oneLineArithCondithion1 = oneLineArithCondithion1;
     }
 
     public OneLine4For2Condition getOneLine4For2Condition() {

@@ -1,17 +1,11 @@
-package AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.object;
+package AST.Elements.ElementsNodes.mustacheExpression.generic4mustache;
 
-import AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.Collection4MUSTArithmetic;
-import AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.property.Property4Must;
+public class MustacheNumber {
+    private Number number1_1;
+    private String mustacheArithmetic1_1;
+    private Collection4MUSTArithmetic Collection4MUSTARITHMETIC1_1;
 
-public class SubObj4Must {
-    private String subObj4MustName1_1;
-    private Property4Must property4Must1_1;
-    private String Arithmetic1_1;
-    private Collection4MUSTArithmetic collection4MUSTARITHMETIC1_1;
-
-    private String subObj4MustName2_1;
-    private Property4Must property4Must2_1;
-
+    private Number number2_1;
 
     private String openMustPar;
     private String MustArithmetic2_1;
@@ -20,52 +14,36 @@ public class SubObj4Must {
     private String MustArithmetic2_2;
     private Collection4MUSTArithmetic Collection4MUSTARITHMETIC2_2;
 
-    public String getSubObj4MustName1_1() {
-        return subObj4MustName1_1;
+    public Number getNumber1_1() {
+        return number1_1;
     }
 
-    public void setSubObj4MustName1_1(String subObj4MustName1_1) {
-        this.subObj4MustName1_1 = subObj4MustName1_1;
+    public void setNumber1_1(Number number1_1) {
+        this.number1_1 = number1_1;
     }
 
-    public Property4Must getProperty4Must1_1() {
-        return property4Must1_1;
+    public String getMustacheArithmetic1_1() {
+        return mustacheArithmetic1_1;
     }
 
-    public void setProperty4Must1_1(Property4Must property4Must1_1) {
-        this.property4Must1_1 = property4Must1_1;
-    }
-
-    public String getArithmetic1_1() {
-        return Arithmetic1_1;
-    }
-
-    public void setArithmetic1_1(String arithmetic1_1) {
-        Arithmetic1_1 = arithmetic1_1;
+    public void setMustacheArithmetic1_1(String mustacheArithmetic1_1) {
+        this.mustacheArithmetic1_1 = mustacheArithmetic1_1;
     }
 
     public Collection4MUSTArithmetic getCollection4MUSTARITHMETIC1_1() {
-        return collection4MUSTARITHMETIC1_1;
+        return Collection4MUSTARITHMETIC1_1;
     }
 
     public void setCollection4MUSTARITHMETIC1_1(Collection4MUSTArithmetic collection4MUSTARITHMETIC1_1) {
-        this.collection4MUSTARITHMETIC1_1 = collection4MUSTARITHMETIC1_1;
+        Collection4MUSTARITHMETIC1_1 = collection4MUSTARITHMETIC1_1;
     }
 
-    public String getSubObj4MustName2_1() {
-        return subObj4MustName2_1;
+    public Number getNumber2_1() {
+        return number2_1;
     }
 
-    public void setSubObj4MustName2_1(String subObj4MustName2_1) {
-        this.subObj4MustName2_1 = subObj4MustName2_1;
-    }
-
-    public Property4Must getProperty4Must2_1() {
-        return property4Must2_1;
-    }
-
-    public void setProperty4Must2_1(Property4Must property4Must2_1) {
-        this.property4Must2_1 = property4Must2_1;
+    public void setNumber2_1(Number number2_1) {
+        this.number2_1 = number2_1;
     }
 
     public String getOpenMustPar() {
