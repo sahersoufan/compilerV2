@@ -1,21 +1,18 @@
 package AST.Elements.ElementsNodes.CpExpression.showHide;
 
+import AST.Elements.ElementsNodes.generic4Elements.Logic.LogicComprison;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class ShowHideExpression {
-    public List<Collection4ShowHide1> getCollection4ShowHide1() {
-        return collection4ShowHide1;
-    }
-    // TODO make this right ! && ||
+    private LogicComprison logicComprison;
 
-    public void setCollection4ShowHide1(List<Collection4ShowHide1> collection4ShowHide1) {
-        this.collection4ShowHide1 = collection4ShowHide1;
+    public LogicComprison getLogicComprison() {
+        return logicComprison;
     }
 
-    private List<Collection4ShowHide1> collection4ShowHide1=new ArrayList<>();
-
-
-
-
+    public void setLogicComprison(LogicComprison logicComprison) {
+        this.logicComprison = logicComprison;
+    }
 }

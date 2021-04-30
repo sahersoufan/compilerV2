@@ -1,7 +1,10 @@
 package AST.Elements.ElementsNodes.CpExpression.For;
 
 
+import AST.Elements.ElementsNodes.generic4Elements.Logic.ArithmeticLogic;
+import AST.Elements.ElementsNodes.generic4Elements.Logic.LogicComprison;
 import AST.Elements.ElementsNodes.generic4Elements.NUmber;
+import AST.Elements.ElementsNodes.generic4Elements.TrueOrFalse;
 import AST.Elements.ElementsNodes.generic4Elements.array.ObjArray;
 import AST.Elements.ElementsNodes.generic4Elements.comparison.ComparisonExpression;
 import AST.Elements.ElementsNodes.generic4Elements.comparison.OneLineBoolCondition;
@@ -12,13 +15,14 @@ import AST.Elements.ElementsNodes.generic4Elements.variable.Variable;
 public class Collection4For5 {
     private Variable variable;
     private NUmber number;
-    private boolean True;
-    private boolean False;
+    private TrueOrFalse trueOrFalse;
     private ObjArray objArray;
     private FunctionCall functionCall;
     private SubObj subObj;
     private ComparisonExpression comparisonExpression;
-    private OneLineBoolCondition oneLineBoolCondition;
+    private OneLine4For5Condition  oneLine4For5Condition;
+    private LogicComprison logicComprison;
+    private ArithmeticLogic arithmeticLogic;
 
     public Variable getVariable() {
         return variable;
@@ -36,20 +40,12 @@ public class Collection4For5 {
         this.number = number;
     }
 
-    public boolean isTrue() {
-        return True;
+    public TrueOrFalse getTrueOrFalse() {
+        return trueOrFalse;
     }
 
-    public void setTrue(boolean aTrue) {
-        True = aTrue;
-    }
-
-    public boolean isFalse() {
-        return False;
-    }
-
-    public void setFalse(boolean aFalse) {
-        False = aFalse;
+    public void setTrueOrFalse(TrueOrFalse trueOrFalse) {
+        this.trueOrFalse = trueOrFalse;
     }
 
     public ObjArray getObjArray() {
@@ -84,11 +80,27 @@ public class Collection4For5 {
         this.comparisonExpression = comparisonExpression;
     }
 
-    public OneLineBoolCondition getOneLineBoolCondition() {
-        return oneLineBoolCondition;
+    public OneLine4For5Condition getOneLine4For5Condition() {
+        return oneLine4For5Condition;
     }
 
-    public void setOneLineBoolCondition(OneLineBoolCondition oneLineBoolCondition) {
-        this.oneLineBoolCondition = oneLineBoolCondition;
+    public void setOneLine4For5Condition(OneLine4For5Condition oneLine4For5Condition) {
+        this.oneLine4For5Condition = oneLine4For5Condition;
+    }
+
+    public LogicComprison getLogicComprison() {
+        return logicComprison;
+    }
+
+    public void setLogicComprison(LogicComprison logicComprison) {
+        this.logicComprison = logicComprison;
+    }
+
+    public ArithmeticLogic getArithmeticLogic() {
+        return arithmeticLogic;
+    }
+
+    public void setArithmeticLogic(ArithmeticLogic arithmeticLogic) {
+        this.arithmeticLogic = arithmeticLogic;
     }
 }

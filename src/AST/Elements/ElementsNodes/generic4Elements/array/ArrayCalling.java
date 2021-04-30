@@ -1,22 +1,41 @@
 package AST.Elements.ElementsNodes.generic4Elements.array;
 
-import AST.Elements.ElementsNodes.generic4Elements.Collection4ARITHMETIC;
+import AST.Elements.ElementsNodes.generic4Elements.Logic.ArithmeticLogic;
 import AST.Elements.ElementsNodes.generic4Elements.function.FunctionCallFromVar;
 import AST.Elements.ElementsNodes.generic4Elements.property.Property;
 
 import java.util.ArrayList;
 
 public class ArrayCalling {
-    private ArrayList<Collection4ARITHMETIC> collection4ARITHMETICArrayList = new ArrayList<>();
+    private String openBracket;
+    private ArrayList<ArithmeticLogic> arithmeticLogics = new ArrayList<>();
     private FunctionCallFromVar functionCallFromVar;
     private Property property;
+    private String closeBracket;
 
-    public ArrayList<Collection4ARITHMETIC> getCollection4ARITHMETICArrayList() {
-        return collection4ARITHMETICArrayList;
+
+    public String getOpenBracket() {
+        return openBracket;
     }
 
-    public void setCollection4ARITHMETICArrayList(ArrayList<Collection4ARITHMETIC> collection4ARITHMETICArrayList) {
-        this.collection4ARITHMETICArrayList = collection4ARITHMETICArrayList;
+    public void setOpenBracket(String openBracket) {
+        this.openBracket = openBracket;
+    }
+
+    public String getCloseBracket() {
+        return closeBracket;
+    }
+
+    public void setCloseBracket(String closeBracket) {
+        this.closeBracket = closeBracket;
+    }
+
+    public ArrayList<ArithmeticLogic> getArithmeticLogics() {
+        return arithmeticLogics;
+    }
+
+    public void setArithmeticLogics(ArrayList<ArithmeticLogic> arithmeticLogics) {
+        this.arithmeticLogics = arithmeticLogics;
     }
 
     public FunctionCallFromVar getFunctionCallFromVar() {

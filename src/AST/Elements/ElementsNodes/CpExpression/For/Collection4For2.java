@@ -1,23 +1,23 @@
 package AST.Elements.ElementsNodes.CpExpression.For;
 
+import AST.Elements.ElementsNodes.generic4Elements.Logic.ArithmeticLogic;
 import AST.Elements.ElementsNodes.generic4Elements.NUmber;
 import AST.Elements.ElementsNodes.generic4Elements.array.Array;
 import AST.Elements.ElementsNodes.generic4Elements.array.ObjArray;
-import AST.Elements.ElementsNodes.generic4Elements.comparison.OneLineArithCondition;
-import AST.Elements.ElementsNodes.generic4Elements.comparison.OneLineArithCondition1;
 import AST.Elements.ElementsNodes.generic4Elements.function.FunctionCall;
 import AST.Elements.ElementsNodes.generic4Elements.object.SubObj;
 import AST.Elements.ElementsNodes.generic4Elements.variable.Variable;
 
 class Collection4For2 {
     private Variable variable;
+    private String string;
     private NUmber number;
      private SubObj subObj;
      private ObjArray objArray;
      private Array array;
      private FunctionCall functionCall;
-    private OneLineArithCondition1 oneLineArithCondithion1;
     private OneLine4For2Condition oneLine4For2Condition;
+    private ArithmeticLogic arithmeticLogic;
 
     public Variable getVariable() {
         return variable;
@@ -67,19 +67,27 @@ class Collection4For2 {
         this.functionCall = functionCall;
     }
 
-    public OneLineArithCondition1 getOneLineArithCondithion1() {
-        return oneLineArithCondithion1;
-    }
-
-    public void setOneLineArithCondithion1(OneLineArithCondition1 oneLineArithCondithion1) {
-        this.oneLineArithCondithion1 = oneLineArithCondithion1;
-    }
-
     public OneLine4For2Condition getOneLine4For2Condition() {
         return oneLine4For2Condition;
     }
 
     public void setOneLine4For2Condition(OneLine4For2Condition oneLine4For2Condition) {
         this.oneLine4For2Condition = oneLine4For2Condition;
+    }
+
+    public String getString() {
+        return string;
+    }
+
+    public void setString(String string) {
+        this.string = string;
+    }
+
+    public ArithmeticLogic getArithmeticLogic() {
+        return arithmeticLogic;
+    }
+
+    public void setArithmeticLogic(ArithmeticLogic arithmeticLogic) {
+        this.arithmeticLogic = arithmeticLogic;
     }
 }

@@ -6,9 +6,9 @@ import AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.property.P
 import java.util.List;
 
 public class FunctionCallFromVar4Must {
-
+    private String openPar;
     private List<Parameters4Must> parameters4Must;
-
+    private String closePar;
     private ArrayCalling4Must arrayCalling4Must;
     private Property4Must property4Must;
 
@@ -34,5 +34,21 @@ public class FunctionCallFromVar4Must {
 
     public void setProperty4Must(Property4Must property4Must) {
         this.property4Must = property4Must;
+    }
+
+    public String getOpenPar() {
+        return openPar;
+    }
+
+    public void setOpenPar(String openPar) {
+        this.openPar = openPar;
+    }
+
+    public String getClosePar() {
+        return closePar;
+    }
+
+    public void setClosePar(String closePar) {
+        this.closePar = closePar;
     }
 }

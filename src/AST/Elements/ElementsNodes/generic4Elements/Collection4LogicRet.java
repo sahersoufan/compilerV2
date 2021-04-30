@@ -1,5 +1,4 @@
-package AST.Elements.ElementsNodes.CpExpression.For;
-
+package AST.Elements.ElementsNodes.generic4Elements;
 
 import AST.Elements.ElementsNodes.generic4Elements.array.ObjArray;
 import AST.Elements.ElementsNodes.generic4Elements.comparison.ComparisonExpression;
@@ -8,16 +7,14 @@ import AST.Elements.ElementsNodes.generic4Elements.function.FunctionCall;
 import AST.Elements.ElementsNodes.generic4Elements.object.SubObj;
 import AST.Elements.ElementsNodes.generic4Elements.variable.Variable;
 
-public class Collection4For4 {
-
+public class Collection4LogicRet {
     private Variable variable;
-    private boolean True;
-    private boolean False;
+    private TrueOrFalse trueOrFalse;
     private ObjArray objArray;
     private FunctionCall functionCall;
     private SubObj subObj;
-    private OneLineBoolCondition oneLineBoolCondition;
     private ComparisonExpression comparisonExpression;
+    private OneLineBoolCondition oneLineBoolCondition;
 
     public Variable getVariable() {
         return variable;
@@ -25,22 +22,6 @@ public class Collection4For4 {
 
     public void setVariable(Variable variable) {
         this.variable = variable;
-    }
-
-    public boolean isTrue() {
-        return True;
-    }
-
-    public void setTrue(boolean aTrue) {
-        True = aTrue;
-    }
-
-    public boolean isFalse() {
-        return False;
-    }
-
-    public void setFalse(boolean aFalse) {
-        False = aFalse;
     }
 
     public ObjArray getObjArray() {
@@ -67,6 +48,14 @@ public class Collection4For4 {
         this.subObj = subObj;
     }
 
+    public ComparisonExpression getComparisonExpression() {
+        return comparisonExpression;
+    }
+
+    public void setComparisonExpression(ComparisonExpression comparisonExpression) {
+        this.comparisonExpression = comparisonExpression;
+    }
+
     public OneLineBoolCondition getOneLineBoolCondition() {
         return oneLineBoolCondition;
     }
@@ -75,11 +64,11 @@ public class Collection4For4 {
         this.oneLineBoolCondition = oneLineBoolCondition;
     }
 
-    public ComparisonExpression getComparisonExpression() {
-        return comparisonExpression;
+    public TrueOrFalse getTrueOrFalse() {
+        return trueOrFalse;
     }
 
-    public void setComparisonExpression(ComparisonExpression comparisonExpression) {
-        this.comparisonExpression = comparisonExpression;
+    public void setTrueOrFalse(TrueOrFalse trueOrFalse) {
+        this.trueOrFalse = trueOrFalse;
     }
 }

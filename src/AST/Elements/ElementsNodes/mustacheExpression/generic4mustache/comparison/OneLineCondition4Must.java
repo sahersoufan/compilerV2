@@ -2,33 +2,47 @@ package AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.compariso
 
 
 import AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.Collection4Mustache;
-import AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.Collection4OLCMust;
-
-import java.util.ArrayList;
-import java.util.List;
+import AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.Collection4LogicRet4Must;
+import AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.Logic.LogicComprison4Must;
 
 public class OneLineCondition4Must {
-    private Collection4OLCMust collection4OLCMust;
-    private Collection4Mustache collection4Mustache;
+    private String openPar;
+    private LogicComprison4Must logicComprison4Must;
+    private String questionMark;
+    private Collection4Mustache collection4Mustache1;
     private Collection4Mustache collection4Mustache2;
+    private String closePar;
 
-    // TODO check ! && ||
-
-
-    public Collection4OLCMust getCollection4OLCMust() {
-        return collection4OLCMust;
+    public String getOpenPar() {
+        return openPar;
     }
 
-    public void setCollection4OLCMust(Collection4OLCMust collection4OLCMust) {
-        this.collection4OLCMust = collection4OLCMust;
+    public void setOpenPar(String openPar) {
+        this.openPar = openPar;
     }
 
-    public Collection4Mustache getCollection4Mustache() {
-        return collection4Mustache;
+    public LogicComprison4Must getLogicComprison4Must() {
+        return logicComprison4Must;
     }
 
-    public void setCollection4Mustache(Collection4Mustache collection4Mustache) {
-        this.collection4Mustache = collection4Mustache;
+    public void setLogicComprison4Must(LogicComprison4Must logicComprison4Must) {
+        this.logicComprison4Must = logicComprison4Must;
+    }
+
+    public String getQuestionMark() {
+        return questionMark;
+    }
+
+    public void setQuestionMark(String questionMark) {
+        this.questionMark = questionMark;
+    }
+
+    public Collection4Mustache getCollection4Mustache1() {
+        return collection4Mustache1;
+    }
+
+    public void setCollection4Mustache1(Collection4Mustache collection4Mustache1) {
+        this.collection4Mustache1 = collection4Mustache1;
     }
 
     public Collection4Mustache getCollection4Mustache2() {
@@ -37,5 +51,13 @@ public class OneLineCondition4Must {
 
     public void setCollection4Mustache2(Collection4Mustache collection4Mustache2) {
         this.collection4Mustache2 = collection4Mustache2;
+    }
+
+    public String getClosePar() {
+        return closePar;
+    }
+
+    public void setClosePar(String closePar) {
+        this.closePar = closePar;
     }
 }

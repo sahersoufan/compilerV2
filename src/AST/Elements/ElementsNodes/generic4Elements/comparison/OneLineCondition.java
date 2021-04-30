@@ -1,36 +1,65 @@
 package AST.Elements.ElementsNodes.generic4Elements.comparison;
 
 import AST.Elements.ElementsNodes.generic4Elements.Collection4everything;
+import AST.Elements.ElementsNodes.generic4Elements.Logic.LogicComprison;
 
 import java.util.ArrayList;
 
 public class OneLineCondition {
-    private ArrayList<Collection4oneLineCondition> collection4oneLineConditions = new ArrayList<>();
-    private Collection4everything firstCollection4everything;
-    private Collection4everything secondCollection4everything;
-    // TODO check ! && ||
+    private LogicComprison logicComprison;
+    private Collection4everything collection4everything1;
+    private Collection4everything collection4everything2;
 
-    public ArrayList<Collection4oneLineCondition> getCollection4oneLineConditions() {
-        return collection4oneLineConditions;
+    private String openPar;
+    private String questionMark;
+    private String closePar;
+
+    public String getOpenPar() {
+        return openPar;
     }
 
-    public void setCollection4oneLineConditions(ArrayList<Collection4oneLineCondition> collection4oneLineConditions) {
-        this.collection4oneLineConditions = collection4oneLineConditions;
+    public void setOpenPar(String openPar) {
+        this.openPar = openPar;
     }
 
-    public Collection4everything getFirstCollection4everything() {
-        return firstCollection4everything;
+    public String getQuestionMark() {
+        return questionMark;
     }
 
-    public void setFirstCollection4everything(Collection4everything firstCollection4everything) {
-        this.firstCollection4everything = firstCollection4everything;
+    public void setQuestionMark(String questionMark) {
+        this.questionMark = questionMark;
     }
 
-    public Collection4everything getSecondCollection4everything() {
-        return secondCollection4everything;
+    public String getClosePar() {
+        return closePar;
     }
 
-    public void setSecondCollection4everything(Collection4everything secondCollection4everything) {
-        this.secondCollection4everything = secondCollection4everything;
+    public void setClosePar(String closePar) {
+        this.closePar = closePar;
+    }
+
+
+    public LogicComprison getLogicComprison() {
+        return logicComprison;
+    }
+
+    public void setLogicComprison(LogicComprison logicComprison) {
+        this.logicComprison = logicComprison;
+    }
+
+    public Collection4everything getCollection4everything1() {
+        return collection4everything1;
+    }
+
+    public void setCollection4everything1(Collection4everything collection4everything1) {
+        this.collection4everything1 = collection4everything1;
+    }
+
+    public Collection4everything getCollection4everything2() {
+        return collection4everything2;
+    }
+
+    public void setCollection4everything2(Collection4everything collection4everything2) {
+        this.collection4everything2 = collection4everything2;
     }
 }

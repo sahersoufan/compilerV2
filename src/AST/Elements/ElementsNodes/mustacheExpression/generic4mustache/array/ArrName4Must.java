@@ -5,13 +5,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ArrName4Must {
-    private List<String> arrName4Must = new ArrayList<>();
+    private String arrName4Must;
 
-    public List<String> getArrName4Must() {
+    public String getArrName4Must() {
         return arrName4Must;
     }
 
-    public void setArrName4Must(List<String> arrName4Must) {
+    public void setArrName4Must(String arrName4Must) {
         this.arrName4Must = arrName4Must;
     }
 }

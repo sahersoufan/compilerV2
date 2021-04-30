@@ -6,9 +6,28 @@ import AST.Elements.ElementsNodes.generic4Elements.property.Property;
 import java.util.ArrayList;
 
 public class FunctionCallFromVar {
+    private String openPar;
     private ArrayList<Parameters> parameters = new ArrayList<>();
+    private String closePar;
     private ArrayCalling arrayCalling;
     private Property property;
+
+
+    public String getOpenPar() {
+        return openPar;
+    }
+
+    public void setOpenPar(String openPar) {
+        this.openPar = openPar;
+    }
+
+    public String getClosePar() {
+        return closePar;
+    }
+
+    public void setClosePar(String closePar) {
+        this.closePar = closePar;
+    }
 
     public ArrayList<Parameters> getParameters() {
         return parameters;

@@ -3,8 +3,7 @@ package AST.Elements.ElementsNodes.generic4Elements;
 public class Value {
     private String string;
     private NUmber number;
-    private boolean True;
-    private boolean False;
+    private TrueOrFalse trueOrFalse;
     private Object Null;
 
     public String getString() {
@@ -23,20 +22,12 @@ public class Value {
         this.number = number;
     }
 
-    public boolean isTrue() {
-        return True;
+    public TrueOrFalse getTrueOrFalse() {
+        return trueOrFalse;
     }
 
-    public void setTrue(boolean aTrue) {
-        True = aTrue;
-    }
-
-    public boolean isFalse() {
-        return False;
-    }
-
-    public void setFalse(boolean aFalse) {
-        False = aFalse;
+    public void setTrueOrFalse(TrueOrFalse trueOrFalse) {
+        this.trueOrFalse = trueOrFalse;
     }
 
     public Object getNull() {

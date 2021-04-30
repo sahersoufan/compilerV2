@@ -9,23 +9,12 @@ import AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.var.Mustac
 public class Collection4MUSTArithmetic {
 
     private MustacheVariable mustacheVariable;
-
     private MustacheNumber mustacheNumber;
-    private String mustachArithmetic;
-    private Collection4MUSTArithmetic Collection4MUSTARITHMETIC;
-
-    private ObjArray4Must objArray4Must;
+      private ObjArray4Must objArray4Must;
     private FunctionCall4Must functionCall4Must;
     private SubObj4Must subObj4Must;
     private OneLineArithCondition4Must oneLineArithCondithion4Must1;
 
-    public void setMUSTAHCE_ARITHMETIC(String mustachArithmetic) {
-        this.mustachArithmetic = mustachArithmetic;
-    }
-
-    public void setCollection4MUSTARITHMETIC(Collection4MUSTArithmetic Collection4MUSTARITHMETIC) {
-        this.Collection4MUSTARITHMETIC = Collection4MUSTARITHMETIC;
-    }
 
 
     public void setmustacheVariable(MustacheVariable mustacheVariable) {
@@ -70,14 +59,6 @@ public class Collection4MUSTArithmetic {
         return oneLineArithCondithion4Must1;
     }
 
-    public Collection4MUSTArithmetic getCollection4MUSTARITHMETIC() {
-        return Collection4MUSTARITHMETIC;
-    }
-
-    public String getMustachArithmetic() {
-        return mustachArithmetic;
-    }
-
     public MustacheVariable getMustacheVariable() {
         return mustacheVariable;
     }
@@ -94,9 +75,6 @@ public class Collection4MUSTArithmetic {
         this.mustacheNumber = mustacheNumber;
     }
 
-    public void setMustachArithmetic(String mustachArithmetic) {
-        this.mustachArithmetic = mustachArithmetic;
-    }
 
     public ObjArray4Must getObjArray4Must() {
         return objArray4Must;

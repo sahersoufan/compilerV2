@@ -1,18 +1,14 @@
 package AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.comparison;
 
-import AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.Collection4MUSTArithmetic;
-import AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.Collection4LogicRet4Must;
-import AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.Logic.ArithmeticLogic4Must;
 import AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.Logic.LogicComprison4Must;
 
-public class OneLineArithCondition4Must {
+public class OneLineBoolCondition4Must {
     private String openPar;
     private LogicComprison4Must logicComprison4Must;
     private String questionMark;
-    private ArithmeticLogic4Must arithmeticLogic4Must1;
-    private ArithmeticLogic4Must arithmeticLogic4Must2;
+    private boolean True;
+    private boolean False;
     private String closePar;
-
 
     public String getOpenPar() {
         return openPar;
@@ -38,20 +34,20 @@ public class OneLineArithCondition4Must {
         this.questionMark = questionMark;
     }
 
-    public ArithmeticLogic4Must getArithmeticLogic4Must1() {
-        return arithmeticLogic4Must1;
+    public boolean isTrue() {
+        return True;
     }
 
-    public void setArithmeticLogic4Must1(ArithmeticLogic4Must arithmeticLogic4Must1) {
-        this.arithmeticLogic4Must1 = arithmeticLogic4Must1;
+    public void setTrue(boolean aTrue) {
+        True = aTrue;
     }
 
-    public ArithmeticLogic4Must getArithmeticLogic4Must2() {
-        return arithmeticLogic4Must2;
+    public boolean isFalse() {
+        return False;
     }
 
-    public void setArithmeticLogic4Must2(ArithmeticLogic4Must arithmeticLogic4Must2) {
-        this.arithmeticLogic4Must2 = arithmeticLogic4Must2;
+    public void setFalse(boolean aFalse) {
+        False = aFalse;
     }
 
     public String getClosePar() {

@@ -1,6 +1,7 @@
 package AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.array;
 
 import AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.Collection4MUSTArithmetic;
+import AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.Logic.ArithmeticLogic4Must;
 import AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.function.FunctionCallFromVar4Must;
 import AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.property.Property4Must;
 
@@ -8,35 +9,34 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ArrayCalling4Must {
-    private List<String> mustacheArithmetic;
-    private List<Collection4MUSTArithmetic> collection4MUSTARITHMETIC2 = new ArrayList<>();
-    private List<Collection4MUSTArithmetic> collection4MUSTARITHMETIC = new ArrayList<>();
+    private String openBracket;
+    private ArithmeticLogic4Must arithmeticLogic4Must;
+    private String closeBracket;
     private FunctionCallFromVar4Must functionCallFromVar4Must;
     private Property4Must property4Must;
 
-
-    public List<String> getMustacheArithmetic() {
-        return mustacheArithmetic;
+    public String getOpenBracket() {
+        return openBracket;
     }
 
-    public void setMustacheArithmetic(List<String> mustacheArithmetic) {
-        this.mustacheArithmetic = mustacheArithmetic;
+    public void setOpenBracket(String openBracket) {
+        this.openBracket = openBracket;
     }
 
-    public List<Collection4MUSTArithmetic> getCollection4MUSTARITHMETIC2() {
-        return collection4MUSTARITHMETIC2;
+    public ArithmeticLogic4Must getArithmeticLogic4Must() {
+        return arithmeticLogic4Must;
     }
 
-    public void setCollection4MUSTARITHMETIC2(List<Collection4MUSTArithmetic> collection4MUSTARITHMETIC2) {
-        this.collection4MUSTARITHMETIC2 = collection4MUSTARITHMETIC2;
+    public void setArithmeticLogic4Must(ArithmeticLogic4Must arithmeticLogic4Must) {
+        this.arithmeticLogic4Must = arithmeticLogic4Must;
     }
 
-    public List<Collection4MUSTArithmetic> getCollection4MUSTARITHMETIC() {
-        return collection4MUSTARITHMETIC;
+    public String getCloseBracket() {
+        return closeBracket;
     }
 
-    public void setCollection4MUSTARITHMETIC(List<Collection4MUSTArithmetic> collection4MUSTARITHMETIC) {
-        this.collection4MUSTARITHMETIC = collection4MUSTARITHMETIC;
+    public void setCloseBracket(String closeBracket) {
+        this.closeBracket = closeBracket;
     }
 
     public FunctionCallFromVar4Must getFunctionCallFromVar4Must() {

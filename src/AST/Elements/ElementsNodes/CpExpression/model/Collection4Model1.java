@@ -1,25 +1,18 @@
 package AST.Elements.ElementsNodes.CpExpression.model;
 
 
-import AST.Elements.ElementsNodes.generic4Elements.Value;
-import AST.Elements.ElementsNodes.generic4Elements.array.Array;
 import AST.Elements.ElementsNodes.generic4Elements.array.ObjArray;
-import AST.Elements.ElementsNodes.generic4Elements.comparison.OneLineArithCondition;
-import AST.Elements.ElementsNodes.generic4Elements.comparison.OneLineArithCondition1;
-import AST.Elements.ElementsNodes.generic4Elements.comparison.OneLineBoolCondition;
 import AST.Elements.ElementsNodes.generic4Elements.function.FunctionCall;
 import AST.Elements.ElementsNodes.generic4Elements.object.SubObj;
 import AST.Elements.ElementsNodes.generic4Elements.variable.Variable;
 
 public class Collection4Model1 {
     private Variable variable;
-    private Value value;
-    private Array array;
     private ObjArray objArray;
     private FunctionCall functionCall;
     private SubObj subObj;
-    private OneLineBoolCondition oneLineBoolCondition;
-    private OneLineArithCondition1 oneLineArithCondition1;
+    private OneLine4ModelCondition oneLine4ModelCondition;
+
 
     public Variable getVariable() {
         return variable;
@@ -27,22 +20,6 @@ public class Collection4Model1 {
 
     public void setVariable(Variable variable) {
         this.variable = variable;
-    }
-
-    public Value getValue() {
-        return value;
-    }
-
-    public void setValue(Value value) {
-        this.value = value;
-    }
-
-    public Array getArray() {
-        return array;
-    }
-
-    public void setArray(Array array) {
-        this.array = array;
     }
 
     public ObjArray getObjArray() {
@@ -69,19 +46,11 @@ public class Collection4Model1 {
         this.subObj = subObj;
     }
 
-    public OneLineBoolCondition getOneLineBoolCondition() {
-        return oneLineBoolCondition;
+    public OneLine4ModelCondition getOneLine4ModelCondition() {
+        return oneLine4ModelCondition;
     }
 
-    public void setOneLineBoolCondition(OneLineBoolCondition oneLineBoolCondition) {
-        this.oneLineBoolCondition = oneLineBoolCondition;
-    }
-
-    public OneLineArithCondition1 getOneLineArithCondition1() {
-        return oneLineArithCondition1;
-    }
-
-    public void setOneLineArithCondition1(OneLineArithCondition1 oneLineArithCondition1) {
-        this.oneLineArithCondition1 = oneLineArithCondition1;
+    public void setOneLine4ModelCondition(OneLine4ModelCondition oneLine4ModelCondition) {
+        this.oneLine4ModelCondition = oneLine4ModelCondition;
     }
 }

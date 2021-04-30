@@ -1,21 +1,18 @@
 package AST.Elements.ElementsNodes.generic4Elements;
 
 import AST.Elements.ElementsNodes.generic4Elements.array.ObjArray;
-import AST.Elements.ElementsNodes.generic4Elements.comparison.ComparisonExpression;
-import AST.Elements.ElementsNodes.generic4Elements.comparison.OneLineBoolCondition;
+import AST.Elements.ElementsNodes.generic4Elements.comparison.OneLineArithCondition;
 import AST.Elements.ElementsNodes.generic4Elements.function.FunctionCall;
 import AST.Elements.ElementsNodes.generic4Elements.object.SubObj;
 import AST.Elements.ElementsNodes.generic4Elements.variable.Variable;
 
-public class Collection4boolRet {
+public class Collection4Arithmetic {
     private Variable variable;
-    private boolean True;
-    private boolean False;
+    private NUmber number;
     private ObjArray objArray;
     private FunctionCall functionCall;
     private SubObj subObj;
-    private ComparisonExpression comparisonExpression;
-    private OneLineBoolCondition oneLineBoolCondition;
+    private OneLineArithCondition oneLineArithCondition;
 
     public Variable getVariable() {
         return variable;
@@ -23,6 +20,14 @@ public class Collection4boolRet {
 
     public void setVariable(Variable variable) {
         this.variable = variable;
+    }
+
+    public NUmber getNumber() {
+        return number;
+    }
+
+    public void setNumber(NUmber number) {
+        this.number = number;
     }
 
     public ObjArray getObjArray() {
@@ -49,35 +54,11 @@ public class Collection4boolRet {
         this.subObj = subObj;
     }
 
-    public ComparisonExpression getComparisonExpression() {
-        return comparisonExpression;
+    public OneLineArithCondition getOneLineArithCondition() {
+        return oneLineArithCondition;
     }
 
-    public void setComparisonExpression(ComparisonExpression comparisonExpression) {
-        this.comparisonExpression = comparisonExpression;
-    }
-
-    public OneLineBoolCondition getOneLineBoolCondition() {
-        return oneLineBoolCondition;
-    }
-
-    public void setOneLineBoolCondition(OneLineBoolCondition oneLineBoolCondition) {
-        this.oneLineBoolCondition = oneLineBoolCondition;
-    }
-
-    public boolean isTrue() {
-        return True;
-    }
-
-    public void setTrue(boolean aTrue) {
-        True = aTrue;
-    }
-
-    public boolean isFalse() {
-        return False;
-    }
-
-    public void setFalse(boolean aFalse) {
-        False = aFalse;
+    public void setOneLineArithCondition(OneLineArithCondition oneLineArithCondition) {
+        this.oneLineArithCondition = oneLineArithCondition;
     }
 }

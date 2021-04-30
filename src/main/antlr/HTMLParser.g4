@@ -211,6 +211,10 @@ collection4Model1
         | objArray
         | functionCall
         | subObj
+        | oneLine4ModelCondition
+    ;
+oneLine4ModelCondition
+    : CP_CONTENT_OPEN_PAR logicComprison CP_CONTENT_QUESTION_MARK collection4Model1 CP_CONTENT_COLON collection4Model1 CP_CONTENT_CLOSE_PAR
     ;
 //
 
@@ -353,7 +357,6 @@ oneLineCondition
 : CP_CONTENT_OPEN_PAR logicComprison CP_CONTENT_QUESTION_MARK collection4everything CP_CONTENT_COLON collection4everything CP_CONTENT_CLOSE_PAR
     ;
 oneLineBoolCondition
-
 : CP_CONTENT_OPEN_PAR logicComprison CP_CONTENT_QUESTION_MARK CP_CONTENT_TRUE CP_CONTENT_COLON CP_CONTENT_FALSE CP_CONTENT_CLOSE_PAR
     ;
 //v = (a < c ? 1 : 2) + a

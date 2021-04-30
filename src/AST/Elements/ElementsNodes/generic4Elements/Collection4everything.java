@@ -1,9 +1,10 @@
 package AST.Elements.ElementsNodes.generic4Elements;
 
+import AST.Elements.ElementsNodes.generic4Elements.Logic.ArithmeticLogic;
+import AST.Elements.ElementsNodes.generic4Elements.Logic.LogicComprison;
 import AST.Elements.ElementsNodes.generic4Elements.array.Array;
 import AST.Elements.ElementsNodes.generic4Elements.array.ObjArray;
-import AST.Elements.ElementsNodes.generic4Elements.comparison.OneLineArithCondition;
-import AST.Elements.ElementsNodes.generic4Elements.comparison.OneLineArithCondition1;
+import AST.Elements.ElementsNodes.generic4Elements.comparison.ComparisonExpression;
 import AST.Elements.ElementsNodes.generic4Elements.comparison.OneLineCondition;
 import AST.Elements.ElementsNodes.generic4Elements.function.FunctionCall;
 import AST.Elements.ElementsNodes.generic4Elements.object.SubObj;
@@ -17,8 +18,9 @@ public class Collection4everything {
     private FunctionCall functionCall;
     private SubObj subObj;
     private OneLineCondition oneLineCondition;
-    private OneLineArithCondition1 oneLineArithCondition1;
-
+    private ComparisonExpression comparisonExpression;
+    private LogicComprison logicComprison;
+    private ArithmeticLogic arithmeticLogic;
     public Variable getVariable() {
         return variable;
     }
@@ -75,11 +77,27 @@ public class Collection4everything {
         this.oneLineCondition = oneLineCondition;
     }
 
-    public OneLineArithCondition1 getOneLineArithCondition1() {
-        return oneLineArithCondition1;
+    public ComparisonExpression getComparisonExpression() {
+        return comparisonExpression;
     }
 
-    public void setOneLineArithCondition1(OneLineArithCondition1 oneLineArithCondition1) {
-        this.oneLineArithCondition1 = oneLineArithCondition1;
+    public void setComparisonExpression(ComparisonExpression comparisonExpression) {
+        this.comparisonExpression = comparisonExpression;
+    }
+
+    public LogicComprison getLogicComprison() {
+        return logicComprison;
+    }
+
+    public void setLogicComprison(LogicComprison logicComprison) {
+        this.logicComprison = logicComprison;
+    }
+
+    public ArithmeticLogic getArithmeticLogic() {
+        return arithmeticLogic;
+    }
+
+    public void setArithmeticLogic(ArithmeticLogic arithmeticLogic) {
+        this.arithmeticLogic = arithmeticLogic;
     }
 }

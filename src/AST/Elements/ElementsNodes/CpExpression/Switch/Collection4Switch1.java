@@ -1,10 +1,9 @@
 package AST.Elements.ElementsNodes.CpExpression.Switch;
 
 
+import AST.Elements.ElementsNodes.generic4Elements.Logic.ArithmeticLogic;
 import AST.Elements.ElementsNodes.generic4Elements.NUmber;
 import AST.Elements.ElementsNodes.generic4Elements.array.ObjArray;
-import AST.Elements.ElementsNodes.generic4Elements.comparison.OneLineArithCondition;
-import AST.Elements.ElementsNodes.generic4Elements.comparison.OneLineArithCondition1;
 import AST.Elements.ElementsNodes.generic4Elements.object.SubObj;
 import AST.Elements.ElementsNodes.generic4Elements.variable.Variable;
 
@@ -15,7 +14,7 @@ public class Collection4Switch1 {
     private ObjArray objArray;
     private SubObj subObj;
     private OneLine4switch1 oneLine4switch1;
-    private OneLineArithCondition1 oneLineArithCondition1;
+    private ArithmeticLogic arithmeticLogic;
 
 
     public Variable getVariable() {
@@ -66,11 +65,11 @@ public class Collection4Switch1 {
         this.oneLine4switch1 = oneLine4switch1;
     }
 
-    public OneLineArithCondition1 getOneLineArithCondition1() {
-        return oneLineArithCondition1;
+    public ArithmeticLogic getArithmeticLogic() {
+        return arithmeticLogic;
     }
 
-    public void setOneLineArithCondition1(OneLineArithCondition1 oneLineArithCondition1) {
-        this.oneLineArithCondition1 = oneLineArithCondition1;
+    public void setArithmeticLogic(ArithmeticLogic arithmeticLogic) {
+        this.arithmeticLogic = arithmeticLogic;
     }
 }

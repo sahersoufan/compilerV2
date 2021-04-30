@@ -1,37 +1,61 @@
 package AST.Elements.ElementsNodes.generic4Elements.comparison;
 
-import AST.Elements.ElementsNodes.generic4Elements.Collection4ARITHMETIC;
-
-import java.util.ArrayList;
+import AST.Elements.ElementsNodes.generic4Elements.Logic.ArithmeticLogic;
+import AST.Elements.ElementsNodes.generic4Elements.Logic.LogicComprison;
 
 public class OneLineArithCondition {
-    private ArrayList<Collection4oneLineCondition> collection4oneLineConditions = new ArrayList<>();
-    private Collection4ARITHMETIC firstCollection4ARITHMETIC;
-    private Collection4ARITHMETIC secondCollection4ARITHMETIC;
-    // TODO check ! && ||
+    private String openPar;
+    private LogicComprison logicComprison;
+    private String questionMark;
+    private ArithmeticLogic arithmeticLogic1;
+    private ArithmeticLogic arithmeticLogic2;
+    private String closePar;
 
-
-    public ArrayList<Collection4oneLineCondition> getCollection4oneLineConditions() {
-        return collection4oneLineConditions;
+    public String getOpenPar() {
+        return openPar;
     }
 
-    public void setCollection4oneLineConditions(ArrayList<Collection4oneLineCondition> collection4oneLineConditions) {
-        this.collection4oneLineConditions = collection4oneLineConditions;
+    public void setOpenPar(String openPar) {
+        this.openPar = openPar;
     }
 
-    public Collection4ARITHMETIC getFirstCollection4ARITHMETIC() {
-        return firstCollection4ARITHMETIC;
+    public String getQuestionMark() {
+        return questionMark;
     }
 
-    public void setFirstCollection4ARITHMETIC(Collection4ARITHMETIC firstCollection4ARITHMETIC) {
-        this.firstCollection4ARITHMETIC = firstCollection4ARITHMETIC;
+    public void setQuestionMark(String questionMark) {
+        this.questionMark = questionMark;
     }
 
-    public Collection4ARITHMETIC getSecondCollection4ARITHMETIC() {
-        return secondCollection4ARITHMETIC;
+    public String getClosePar() {
+        return closePar;
     }
 
-    public void setSecondCollection4ARITHMETIC(Collection4ARITHMETIC secondCollection4ARITHMETIC) {
-        this.secondCollection4ARITHMETIC = secondCollection4ARITHMETIC;
+    public void setClosePar(String closePar) {
+        this.closePar = closePar;
+    }
+
+    public LogicComprison getLogicComprison() {
+        return logicComprison;
+    }
+
+    public void setLogicComprison(LogicComprison logicComprison) {
+        this.logicComprison = logicComprison;
+    }
+
+    public ArithmeticLogic getArithmeticLogic1() {
+        return arithmeticLogic1;
+    }
+
+    public void setArithmeticLogic1(ArithmeticLogic arithmeticLogic1) {
+        this.arithmeticLogic1 = arithmeticLogic1;
+    }
+
+    public ArithmeticLogic getArithmeticLogic2() {
+        return arithmeticLogic2;
+    }
+
+    public void setArithmeticLogic2(ArithmeticLogic arithmeticLogic2) {
+        this.arithmeticLogic2 = arithmeticLogic2;
     }
 }

@@ -1,16 +1,18 @@
 package AST.Elements.ElementsNodes.generic4Elements.comparison;
 
-public class ComparisonExpression {
-    private Collection4comparison firstCollection4comparison;
-    private ComparisonOperator comparisonOperator;
-    private Collection4comparison secondCollection4comparison;
+import AST.Elements.ElementsNodes.generic4Elements.Collection4comparison;
 
-    public Collection4comparison getFirstCollection4comparison() {
-        return firstCollection4comparison;
+public class ComparisonExpression {
+    private Collection4comparison collection4comparison1;
+    private ComparisonOperator comparisonOperator;
+    private Collection4comparison collection4comparison2;
+
+    public Collection4comparison getCollection4comparison1() {
+        return collection4comparison1;
     }
 
-    public void setFirstCollection4comparison(Collection4comparison firstCollection4comparison) {
-        this.firstCollection4comparison = firstCollection4comparison;
+    public void setCollection4comparison1(Collection4comparison collection4comparison1) {
+        this.collection4comparison1 = collection4comparison1;
     }
 
     public ComparisonOperator getComparisonOperator() {
@@ -21,11 +23,11 @@ public class ComparisonExpression {
         this.comparisonOperator = comparisonOperator;
     }
 
-    public Collection4comparison getSecondCollection4comparison() {
-        return secondCollection4comparison;
+    public Collection4comparison getCollection4comparison2() {
+        return collection4comparison2;
     }
 
-    public void setSecondCollection4comparison(Collection4comparison secondCollection4comparison) {
-        this.secondCollection4comparison = secondCollection4comparison;
+    public void setCollection4comparison2(Collection4comparison collection4comparison2) {
+        this.collection4comparison2 = collection4comparison2;
     }
 }

@@ -6,14 +6,29 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FuncEndRet4AnnotOneLine {
+    private String openPar;
+    private List<Parameters> functionParameters = new ArrayList<>();
+    private String closePar;
 
     private PropFuncRet4AnnotOneLine propFuncRet4AnnotOneLine;
     private ArrayFuncRet4AnnotOneLine arrayFuncRet4AnnotOneLine;
 
-    private List<Parameters> functionParameters = new ArrayList<>();
 
+    public String getOpenPar() {
+        return openPar;
+    }
 
+    public void setOpenPar(String openPar) {
+        this.openPar = openPar;
+    }
 
+    public String getClosePar() {
+        return closePar;
+    }
+
+    public void setClosePar(String closePar) {
+        this.closePar = closePar;
+    }
 
     public void setArrayFuncRet4AnnotOneLine(ArrayFuncRet4AnnotOneLine arrayFuncRet4AnnotOneLine) {
         this.arrayFuncRet4AnnotOneLine = arrayFuncRet4AnnotOneLine;

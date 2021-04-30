@@ -1,33 +1,65 @@
 package AST.Elements.ElementsNodes.CpExpression.For;
 
 
-import AST.Elements.ElementsNodes.generic4Elements.comparison.Collection4oneLineCondition;
-
-import java.util.ArrayList;
-import java.util.List;
+import AST.Elements.ElementsNodes.generic4Elements.Logic.LogicComprison;
 
 public class OneLine4For2Condition {
+    private LogicComprison logicComprison;
+    private Collection4For2 collection4For2_1_1;
+    private Collection4For2 collection4For2_1_2;
 
 
-    private List<Collection4oneLineCondition> collection4oneLineCondition=new ArrayList<>();
-    private Collection4For2 collection4For2;
-    // TODO make this right ! && ||
-    // TODO check this
+    private String openPar;
+    private String questionMark;
+    private String closePar;
 
-
-    public List<Collection4oneLineCondition> getCollection4oneLineCondition() {
-        return collection4oneLineCondition;
+    public String getOpenPar() {
+        return openPar;
     }
 
-    public void setCollection4oneLineCondition(List<Collection4oneLineCondition> collection4oneLineCondition) {
-        this.collection4oneLineCondition = collection4oneLineCondition;
+    public void setOpenPar(String openPar) {
+        this.openPar = openPar;
     }
 
-    public Collection4For2 getCollection4For2() {
-        return collection4For2;
+    public String getQuestionMark() {
+        return questionMark;
     }
 
-    public void setCollection4For2(Collection4For2 collection4For2) {
-        this.collection4For2 = collection4For2;
+    public void setQuestionMark(String questionMark) {
+        this.questionMark = questionMark;
+    }
+
+    public String getClosePar() {
+        return closePar;
+    }
+
+    public void setClosePar(String closePar) {
+        this.closePar = closePar;
+    }
+
+
+
+    public LogicComprison getLogicComprison() {
+        return logicComprison;
+    }
+
+    public void setLogicComprison(LogicComprison logicComprison) {
+        this.logicComprison = logicComprison;
+    }
+
+    public Collection4For2 getCollection4For2_1_1() {
+        return collection4For2_1_1;
+    }
+
+    public void setCollection4For2_1_1(Collection4For2 collection4For2_1_1) {
+        this.collection4For2_1_1 = collection4For2_1_1;
+    }
+
+    public Collection4For2 getCollection4For2_1_2() {
+        return collection4For2_1_2;
+    }
+
+    public void setCollection4For2_1_2(Collection4For2 collection4For2_1_2) {
+        this.collection4For2_1_2 = collection4For2_1_2;
     }
 }
