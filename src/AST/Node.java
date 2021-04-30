@@ -6,6 +6,11 @@ public class Node {
 
     public void setLine(int line) {
         this.line = line;
+        boolean a = true;
+        boolean b = true;
+        switch (1 + 2){
+
+        }
     }
 
     public void setCol(int col) {
