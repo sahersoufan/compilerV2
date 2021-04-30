@@ -6,6 +6,3 @@ public class Main {
 	// write your code here
     }
 }
-//hello
-// hello
-//world
