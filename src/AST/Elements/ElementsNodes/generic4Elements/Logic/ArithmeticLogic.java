@@ -16,7 +16,6 @@ public class ArithmeticLogic {
     //last
     private List<LastArithmeticLogic> lastArithmeticLogic = new ArrayList<>();
 
-
     public Collection4Arithmetic getCollection4Arithmetic() {
         return collection4Arithmetic;
     }
@@ -56,4 +55,5 @@ public class ArithmeticLogic {
     public void setLastArithmeticLogic(List<LastArithmeticLogic> lastArithmeticLogic) {
         this.lastArithmeticLogic = lastArithmeticLogic;
     }
+
 }

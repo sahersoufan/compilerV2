@@ -486,6 +486,7 @@ arithmeticLogic4Must
     : (collection4MUSTArithmetic | MUSTACHE_OPEN_PAR arithmeticLogic4Must MUSTACHE_CLOSE_PAR)
       (MUSTACHE_ARITHMETIC (collection4MUSTArithmetic | MUSTACHE_OPEN_PAR arithmeticLogic4Must MUSTACHE_CLOSE_PAR))*
     ;
+
 //
 
 
