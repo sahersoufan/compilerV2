@@ -5,14 +5,14 @@ import java.util.List;
 
 public class HtmlElements {
 
-    private List<String> misc = new ArrayList<>();
+    private List<HtmlMisc> misc = new ArrayList<>();
     private HtmlElement htmlElement;
 
-    public List<String> getMisc() {
+    public List<HtmlMisc> getMisc() {
         return misc;
     }
 
-    public void setMisc(List<String> misc) {
+    public void setMisc(List<HtmlMisc> misc) {
         this.misc = misc;
     }
 

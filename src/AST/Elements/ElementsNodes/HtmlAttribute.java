@@ -1,15 +1,16 @@
 package AST.Elements.ElementsNodes;
 
 
-
 import AST.Elements.ElementsNodes.CpExpression.For.ForExpression;
 import AST.Elements.ElementsNodes.CpExpression.If.IfExpression;
 import AST.Elements.ElementsNodes.CpExpression.Switch.SwitchCaseExpression;
 import AST.Elements.ElementsNodes.CpExpression.Switch.SwitchExpression;
-import AST.Elements.ElementsNodes.CpExpression.annotation.AnnotationExpression;
+import AST.Elements.ElementsNodes.CpExpression.annotation.AnnotationClickExpression;
+import AST.Elements.ElementsNodes.CpExpression.annotation.AnnotationOverExpression;
 import AST.Elements.ElementsNodes.CpExpression.app.AppExpression;
 import AST.Elements.ElementsNodes.CpExpression.model.ModelExpression;
-import AST.Elements.ElementsNodes.CpExpression.showHide.ShowHideExpression;
+import AST.Elements.ElementsNodes.CpExpression.showHide.HideExpression;
+import AST.Elements.ElementsNodes.CpExpression.showHide.ShowExpression;
 
 public class HtmlAttribute {
 
@@ -18,12 +19,14 @@ public class HtmlAttribute {
     private String attValue;
     private AppExpression appExpression;
     private ForExpression forExpression;
-    private ShowHideExpression showHideExpression;
+    private ShowExpression showExpression;
+    private HideExpression hideExpression;
     private SwitchExpression switchExpression;
     private SwitchCaseExpression switchCaseExpression;
     private IfExpression ifExpression;
     private ModelExpression modelExpression;
-    private AnnotationExpression annotationExpression;
+    private AnnotationClickExpression annotationClickExpression;
+    private AnnotationOverExpression annotationOverExpression;
 
 
     public String getTagName() {
@@ -58,12 +61,20 @@ public class HtmlAttribute {
         this.forExpression = forExpression;
     }
 
-    public ShowHideExpression getShowHideExpression() {
-        return showHideExpression;
+    public ShowExpression getShowExpression() {
+        return showExpression;
     }
 
-    public void setShowHideExpression(ShowHideExpression showHideExpression) {
-        this.showHideExpression = showHideExpression;
+    public void setShowExpression(ShowExpression showExpression) {
+        this.showExpression = showExpression;
+    }
+
+    public HideExpression getHideExpression() {
+        return hideExpression;
+    }
+
+    public void setHideExpression(HideExpression hideExpression) {
+        this.hideExpression = hideExpression;
     }
 
     public SwitchExpression getSwitchExpression() {
@@ -98,11 +109,19 @@ public class HtmlAttribute {
         this.modelExpression = modelExpression;
     }
 
-    public AnnotationExpression getAnnotationExpression() {
-        return annotationExpression;
+    public AnnotationClickExpression getAnnotationClickExpression() {
+        return annotationClickExpression;
     }
 
-    public void setAnnotationExpression(AnnotationExpression annotationExpression) {
-        this.annotationExpression = annotationExpression;
+    public void setAnnotationClickExpression(AnnotationClickExpression annotationClickExpression) {
+        this.annotationClickExpression = annotationClickExpression;
+    }
+
+    public AnnotationOverExpression getAnnotationOverExpression() {
+        return annotationOverExpression;
+    }
+
+    public void setAnnotationOverExpression(AnnotationOverExpression annotationOverExpression) {
+        this.annotationOverExpression = annotationOverExpression;
     }
 }

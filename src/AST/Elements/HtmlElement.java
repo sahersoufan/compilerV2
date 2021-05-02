@@ -15,10 +15,19 @@ public class HtmlElement {
     private String tagName;
     private List<HtmlAttribute> htmlAttributeList = new ArrayList<>();
     private HtmlContent htmlContent = new HtmlContent();
+    private String tagName2;
     private MustacheExpression mustacheExpression = new MustacheExpression();
     private String ScriptLet;
     private Script script;
     private Style style;
+
+    public String getTagName2() {
+        return tagName2;
+    }
+
+    public void setTagName2(String tagName2) {
+        this.tagName2 = tagName2;
+    }
 
     public String getTagName() {
         return tagName;

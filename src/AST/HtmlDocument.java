@@ -1,6 +1,7 @@
 package AST;
 
 import AST.Elements.HtmlElements;
+import AST.Elements.ScriptLetOrSeaWs;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,11 +9,21 @@ import java.util.List;
 public class HtmlDocument {
 
 
+
+
+    private List<ScriptLetOrSeaWs> scriptLetORSeaWs = new ArrayList<>();
     private String XML;
     private String DTD;
-    private List<String> scriptLetORSeaWs = new ArrayList<>();
-    private List<HtmlElements> htmlElemList = new ArrayList<>();
+    private List<HtmlElements> htmlElements = new ArrayList<>();
 
+
+    public List<ScriptLetOrSeaWs> getScriptLetORSeaWs() {
+        return scriptLetORSeaWs;
+    }
+
+    public void setScriptLetORSeaWs(List<ScriptLetOrSeaWs> scriptLetORSeaWs) {
+        this.scriptLetORSeaWs = scriptLetORSeaWs;
+    }
 
     public String getXML() {
         return XML;
@@ -30,19 +41,11 @@ public class HtmlDocument {
         this.DTD = DTD;
     }
 
-    public List<String> getScriptLetORSeaWs() {
-        return scriptLetORSeaWs;
+    public List<HtmlElements> getHtmlElements() {
+        return htmlElements;
     }
 
-    public void setScriptLetORSeaWs(List<String> scriptLetORSeaWs) {
-        this.scriptLetORSeaWs = scriptLetORSeaWs;
-    }
-
-    public List<HtmlElements> getHtmlElemList() {
-        return htmlElemList;
-    }
-
-    public void setHtmlElemList(List<HtmlElements> htmlElemList) {
-        this.htmlElemList = htmlElemList;
+    public void setHtmlElements(List<HtmlElements> htmlElements) {
+        this.htmlElements = htmlElements;
     }
 }

@@ -1,6 +1,6 @@
 package AST.Elements.ElementsNodes.CpExpression.annotation;
 
-public class AnnotationExpression {
+public class AnnotationOverExpression {
 
     private Collection4Annotation collection4Annotation;
 

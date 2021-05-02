@@ -131,11 +131,17 @@ public interface HTMLParserVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitOneLine4For5Condition(HTMLParser.OneLine4For5ConditionContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link HTMLParser#showHideExpression}.
+	 * Visit a parse tree produced by {@link HTMLParser#showExpression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitShowHideExpression(HTMLParser.ShowHideExpressionContext ctx);
+	T visitShowExpression(HTMLParser.ShowExpressionContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link HTMLParser#hideExpression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitHideExpression(HTMLParser.HideExpressionContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link HTMLParser#switchExpression}.
 	 * @param ctx the parse tree
@@ -185,11 +191,17 @@ public interface HTMLParserVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitOneLine4ModelCondition(HTMLParser.OneLine4ModelConditionContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link HTMLParser#annotationExpression}.
+	 * Visit a parse tree produced by {@link HTMLParser#annotationClickExpression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitAnnotationExpression(HTMLParser.AnnotationExpressionContext ctx);
+	T visitAnnotationClickExpression(HTMLParser.AnnotationClickExpressionContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link HTMLParser#annotationOverExpression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAnnotationOverExpression(HTMLParser.AnnotationOverExpressionContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link HTMLParser#collection4Annotation}.
 	 * @param ctx the parse tree
@@ -383,11 +395,23 @@ public interface HTMLParserVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitLogicComprison(HTMLParser.LogicComprisonContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link HTMLParser#middleAndLastLogicComparison}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMiddleAndLastLogicComparison(HTMLParser.MiddleAndLastLogicComparisonContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link HTMLParser#arithmeticLogic}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitArithmeticLogic(HTMLParser.ArithmeticLogicContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link HTMLParser#lastArithmeticLogic}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitLastArithmeticLogic(HTMLParser.LastArithmeticLogicContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link HTMLParser#value}.
 	 * @param ctx the parse tree
@@ -455,11 +479,23 @@ public interface HTMLParserVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitLogicComprison4Must(HTMLParser.LogicComprison4MustContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link HTMLParser#middleAndLastLogicComparison4Must}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMiddleAndLastLogicComparison4Must(HTMLParser.MiddleAndLastLogicComparison4MustContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link HTMLParser#arithmeticLogic4Must}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitArithmeticLogic4Must(HTMLParser.ArithmeticLogic4MustContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link HTMLParser#lastArithmeticLogic4Must}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitLastArithmeticLogic4Must(HTMLParser.LastArithmeticLogic4MustContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link HTMLParser#mustacheVariable}.
 	 * @param ctx the parse tree

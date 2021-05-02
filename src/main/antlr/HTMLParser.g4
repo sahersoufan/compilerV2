@@ -36,8 +36,8 @@ htmlAttribute
 
     | CP_FOR CP_EQUALS CP_OPEN_DOUBLE_QUOTE forExpression CP_CONTENT_CLOSE_DOUBLE_QUOTE
 
-    | CP_SHOW CP_EQUALS CP_OPEN_DOUBLE_QUOTE showHideExpression CP_CONTENT_CLOSE_DOUBLE_QUOTE
-    | CP_HIDE CP_EQUALS CP_OPEN_DOUBLE_QUOTE showHideExpression CP_CONTENT_CLOSE_DOUBLE_QUOTE
+    | CP_SHOW CP_EQUALS CP_OPEN_DOUBLE_QUOTE showExpression CP_CONTENT_CLOSE_DOUBLE_QUOTE
+    | CP_HIDE CP_EQUALS CP_OPEN_DOUBLE_QUOTE hideExpression CP_CONTENT_CLOSE_DOUBLE_QUOTE
 
     | CP_SWITCH CP_EQUALS CP_OPEN_DOUBLE_QUOTE switchExpression CP_CONTENT_CLOSE_DOUBLE_QUOTE
     | CP_SWITCH_CASE CP_EQUALS CP_OPEN_DOUBLE_QUOTE switchCaseExpression CP_CONTENT_CLOSE_DOUBLE_QUOTE
@@ -47,8 +47,8 @@ htmlAttribute
 
     | CP_MODEL CP_EQUALS CP_OPEN_DOUBLE_QUOTE modelExpression CP_CONTENT_CLOSE_DOUBLE_QUOTE
 //TODO we don't know :)
-    | CP_CLICK CP_EQUALS CP_OPEN_DOUBLE_QUOTE annotationExpression CP_CONTENT_CLOSE_DOUBLE_QUOTE
-    | CP_MOUSEOVER CP_EQUALS CP_OPEN_DOUBLE_QUOTE annotationExpression CP_CONTENT_CLOSE_DOUBLE_QUOTE
+    | CP_CLICK CP_EQUALS CP_OPEN_DOUBLE_QUOTE annotationClickExpression CP_CONTENT_CLOSE_DOUBLE_QUOTE
+    | CP_MOUSEOVER CP_EQUALS CP_OPEN_DOUBLE_QUOTE annotationOverExpression CP_CONTENT_CLOSE_DOUBLE_QUOTE
     //
     | TAG_NAME (TAG_EQUALS ATTVALUE_VALUE)?
     ;
@@ -156,7 +156,10 @@ oneLine4For5Condition
 
 //SHOW
 //HIDE
-showHideExpression
+showExpression
+    : logicComprison
+    ;
+hideExpression
     : logicComprison
     ;
 
@@ -222,7 +225,10 @@ oneLine4ModelCondition
 
 
 // ANNOTATION
-annotationExpression
+annotationClickExpression
+    : collection4Annotation
+    ;
+annotationOverExpression
     : collection4Annotation
     ;
 collection4Annotation
@@ -377,15 +383,22 @@ comparisonOperator
 
 // LOGIC
 logicComprison
-    :((CP_CONTENT_NOT)? ((collection4LogicRet) | (CP_CONTENT_OPEN_PAR logicComprison CP_CONTENT_CLOSE_PAR))) /// first
-    (((CP_CONTENT_AND (CP_CONTENT_NOT)?) | (CP_CONTENT_OR (CP_CONTENT_NOT)?))   /// middle
-    (collection4LogicRet | CP_CONTENT_OPEN_PAR logicComprison CP_CONTENT_CLOSE_PAR))* /// last
+    : ((CP_CONTENT_NOT)? ((collection4LogicRet) | (CP_CONTENT_OPEN_PAR logicComprison CP_CONTENT_CLOSE_PAR))) /// first
+      middleAndLastLogicComparison*
+    ;
+
+middleAndLastLogicComparison
+    : ((CP_CONTENT_AND (CP_CONTENT_NOT)?) | (CP_CONTENT_OR (CP_CONTENT_NOT)?))   /// middle
+      (collection4LogicRet | CP_CONTENT_OPEN_PAR logicComprison CP_CONTENT_CLOSE_PAR) /// last
     ;
 
 arithmeticLogic
-    : (collection4Arithmetic | CP_CONTENT_OPEN_PAR arithmeticLogic CP_CONTENT_CLOSE_PAR)
-      (CP_CONTENT_ARITHMETIC (collection4Arithmetic | CP_CONTENT_OPEN_PAR arithmeticLogic CP_CONTENT_CLOSE_PAR))*
+    : (collection4Arithmetic | CP_CONTENT_OPEN_PAR arithmeticLogic CP_CONTENT_CLOSE_PAR) lastArithmeticLogic*
     ;
+lastArithmeticLogic
+    : CP_CONTENT_ARITHMETIC (collection4Arithmetic | CP_CONTENT_OPEN_PAR arithmeticLogic CP_CONTENT_CLOSE_PAR)
+    ;
+
 //
 
 value
@@ -478,15 +491,21 @@ collection4MUSTArithmetic
 // LOGIC
 logicComprison4Must
     :((MUSTACHE_NOT)? ((collection4LogicRet4Must) | (MUSTACHE_OPEN_PAR logicComprison4Must MUSTACHE_CLOSE_PAR))) /// first
-    (((MUSTACHE_AND (MUSTACHE_NOT)?) | (MUSTACHE_OR (MUSTACHE_NOT)?))   /// middle
-    (collection4LogicRet4Must | MUSTACHE_OPEN_PAR logicComprison4Must MUSTACHE_CLOSE_PAR))* /// last
+      middleAndLastLogicComparison4Must*
+    ;
+
+middleAndLastLogicComparison4Must
+    : ((MUSTACHE_AND (MUSTACHE_NOT)?) | (MUSTACHE_OR (MUSTACHE_NOT)?))   /// middle
+      (collection4LogicRet4Must | MUSTACHE_OPEN_PAR logicComprison4Must MUSTACHE_CLOSE_PAR)/// last
     ;
 
 arithmeticLogic4Must
     : (collection4MUSTArithmetic | MUSTACHE_OPEN_PAR arithmeticLogic4Must MUSTACHE_CLOSE_PAR)
-      (MUSTACHE_ARITHMETIC (collection4MUSTArithmetic | MUSTACHE_OPEN_PAR arithmeticLogic4Must MUSTACHE_CLOSE_PAR))*
+      lastArithmeticLogic4Must*
     ;
-
+lastArithmeticLogic4Must
+    : MUSTACHE_ARITHMETIC (collection4MUSTArithmetic | MUSTACHE_OPEN_PAR arithmeticLogic4Must MUSTACHE_CLOSE_PAR)
+    ;
 //
 
 

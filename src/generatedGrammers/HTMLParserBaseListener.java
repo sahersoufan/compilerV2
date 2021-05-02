@@ -256,13 +256,25 @@ public class HTMLParserBaseListener implements HTMLParserListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterShowHideExpression(HTMLParser.ShowHideExpressionContext ctx) { }
+	@Override public void enterShowExpression(HTMLParser.ShowExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitShowHideExpression(HTMLParser.ShowHideExpressionContext ctx) { }
+	@Override public void exitShowExpression(HTMLParser.ShowExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterHideExpression(HTMLParser.HideExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitHideExpression(HTMLParser.HideExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -364,13 +376,25 @@ public class HTMLParserBaseListener implements HTMLParserListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterAnnotationExpression(HTMLParser.AnnotationExpressionContext ctx) { }
+	@Override public void enterAnnotationClickExpression(HTMLParser.AnnotationClickExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitAnnotationExpression(HTMLParser.AnnotationExpressionContext ctx) { }
+	@Override public void exitAnnotationClickExpression(HTMLParser.AnnotationClickExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterAnnotationOverExpression(HTMLParser.AnnotationOverExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitAnnotationOverExpression(HTMLParser.AnnotationOverExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -760,6 +784,18 @@ public class HTMLParserBaseListener implements HTMLParserListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterMiddleAndLastLogicComparison(HTMLParser.MiddleAndLastLogicComparisonContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitMiddleAndLastLogicComparison(HTMLParser.MiddleAndLastLogicComparisonContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterArithmeticLogic(HTMLParser.ArithmeticLogicContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -767,6 +803,18 @@ public class HTMLParserBaseListener implements HTMLParserListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitArithmeticLogic(HTMLParser.ArithmeticLogicContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterLastArithmeticLogic(HTMLParser.LastArithmeticLogicContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitLastArithmeticLogic(HTMLParser.LastArithmeticLogicContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -904,6 +952,18 @@ public class HTMLParserBaseListener implements HTMLParserListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterMiddleAndLastLogicComparison4Must(HTMLParser.MiddleAndLastLogicComparison4MustContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitMiddleAndLastLogicComparison4Must(HTMLParser.MiddleAndLastLogicComparison4MustContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterArithmeticLogic4Must(HTMLParser.ArithmeticLogic4MustContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -911,6 +971,18 @@ public class HTMLParserBaseListener implements HTMLParserListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitArithmeticLogic4Must(HTMLParser.ArithmeticLogic4MustContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterLastArithmeticLogic4Must(HTMLParser.LastArithmeticLogic4MustContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitLastArithmeticLogic4Must(HTMLParser.LastArithmeticLogic4MustContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

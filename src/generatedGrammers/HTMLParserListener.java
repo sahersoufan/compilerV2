@@ -208,15 +208,25 @@ public interface HTMLParserListener extends ParseTreeListener {
 	 */
 	void exitOneLine4For5Condition(HTMLParser.OneLine4For5ConditionContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link HTMLParser#showHideExpression}.
+	 * Enter a parse tree produced by {@link HTMLParser#showExpression}.
 	 * @param ctx the parse tree
 	 */
-	void enterShowHideExpression(HTMLParser.ShowHideExpressionContext ctx);
+	void enterShowExpression(HTMLParser.ShowExpressionContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link HTMLParser#showHideExpression}.
+	 * Exit a parse tree produced by {@link HTMLParser#showExpression}.
 	 * @param ctx the parse tree
 	 */
-	void exitShowHideExpression(HTMLParser.ShowHideExpressionContext ctx);
+	void exitShowExpression(HTMLParser.ShowExpressionContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link HTMLParser#hideExpression}.
+	 * @param ctx the parse tree
+	 */
+	void enterHideExpression(HTMLParser.HideExpressionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link HTMLParser#hideExpression}.
+	 * @param ctx the parse tree
+	 */
+	void exitHideExpression(HTMLParser.HideExpressionContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link HTMLParser#switchExpression}.
 	 * @param ctx the parse tree
@@ -298,15 +308,25 @@ public interface HTMLParserListener extends ParseTreeListener {
 	 */
 	void exitOneLine4ModelCondition(HTMLParser.OneLine4ModelConditionContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link HTMLParser#annotationExpression}.
+	 * Enter a parse tree produced by {@link HTMLParser#annotationClickExpression}.
 	 * @param ctx the parse tree
 	 */
-	void enterAnnotationExpression(HTMLParser.AnnotationExpressionContext ctx);
+	void enterAnnotationClickExpression(HTMLParser.AnnotationClickExpressionContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link HTMLParser#annotationExpression}.
+	 * Exit a parse tree produced by {@link HTMLParser#annotationClickExpression}.
 	 * @param ctx the parse tree
 	 */
-	void exitAnnotationExpression(HTMLParser.AnnotationExpressionContext ctx);
+	void exitAnnotationClickExpression(HTMLParser.AnnotationClickExpressionContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link HTMLParser#annotationOverExpression}.
+	 * @param ctx the parse tree
+	 */
+	void enterAnnotationOverExpression(HTMLParser.AnnotationOverExpressionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link HTMLParser#annotationOverExpression}.
+	 * @param ctx the parse tree
+	 */
+	void exitAnnotationOverExpression(HTMLParser.AnnotationOverExpressionContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link HTMLParser#collection4Annotation}.
 	 * @param ctx the parse tree
@@ -628,6 +648,16 @@ public interface HTMLParserListener extends ParseTreeListener {
 	 */
 	void exitLogicComprison(HTMLParser.LogicComprisonContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link HTMLParser#middleAndLastLogicComparison}.
+	 * @param ctx the parse tree
+	 */
+	void enterMiddleAndLastLogicComparison(HTMLParser.MiddleAndLastLogicComparisonContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link HTMLParser#middleAndLastLogicComparison}.
+	 * @param ctx the parse tree
+	 */
+	void exitMiddleAndLastLogicComparison(HTMLParser.MiddleAndLastLogicComparisonContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link HTMLParser#arithmeticLogic}.
 	 * @param ctx the parse tree
 	 */
@@ -637,6 +667,16 @@ public interface HTMLParserListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitArithmeticLogic(HTMLParser.ArithmeticLogicContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link HTMLParser#lastArithmeticLogic}.
+	 * @param ctx the parse tree
+	 */
+	void enterLastArithmeticLogic(HTMLParser.LastArithmeticLogicContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link HTMLParser#lastArithmeticLogic}.
+	 * @param ctx the parse tree
+	 */
+	void exitLastArithmeticLogic(HTMLParser.LastArithmeticLogicContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link HTMLParser#value}.
 	 * @param ctx the parse tree
@@ -748,6 +788,16 @@ public interface HTMLParserListener extends ParseTreeListener {
 	 */
 	void exitLogicComprison4Must(HTMLParser.LogicComprison4MustContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link HTMLParser#middleAndLastLogicComparison4Must}.
+	 * @param ctx the parse tree
+	 */
+	void enterMiddleAndLastLogicComparison4Must(HTMLParser.MiddleAndLastLogicComparison4MustContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link HTMLParser#middleAndLastLogicComparison4Must}.
+	 * @param ctx the parse tree
+	 */
+	void exitMiddleAndLastLogicComparison4Must(HTMLParser.MiddleAndLastLogicComparison4MustContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link HTMLParser#arithmeticLogic4Must}.
 	 * @param ctx the parse tree
 	 */
@@ -757,6 +807,16 @@ public interface HTMLParserListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitArithmeticLogic4Must(HTMLParser.ArithmeticLogic4MustContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link HTMLParser#lastArithmeticLogic4Must}.
+	 * @param ctx the parse tree
+	 */
+	void enterLastArithmeticLogic4Must(HTMLParser.LastArithmeticLogic4MustContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link HTMLParser#lastArithmeticLogic4Must}.
+	 * @param ctx the parse tree
+	 */
+	void exitLastArithmeticLogic4Must(HTMLParser.LastArithmeticLogic4MustContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link HTMLParser#mustacheVariable}.
 	 * @param ctx the parse tree
