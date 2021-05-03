@@ -286,7 +286,7 @@ trueOrFalse
 // ARRAY
 objArray
     : arrName arrayCalling
-    ;
+         ;
 arrName
     : CP_CONTENT_IDENTIFIER
     ;

@@ -15,6 +15,13 @@ import AST.Elements.ElementsNodes.CpExpression.showHide.ShowExpression;
 import AST.Elements.ElementsNodes.generic4Elements.Collection4LogicRet;
 import AST.Elements.ElementsNodes.generic4Elements.Logic.LogicComprison;
 import AST.Elements.ElementsNodes.generic4Elements.Logic.MiddleAndLastLogicComparison;
+import AST.Elements.ElementsNodes.generic4Elements.NUmber;
+import AST.Elements.ElementsNodes.generic4Elements.TrueOrFalse;
+import AST.Elements.ElementsNodes.generic4Elements.array.ArrName;
+import AST.Elements.ElementsNodes.generic4Elements.array.ArrayCalling;
+import AST.Elements.ElementsNodes.generic4Elements.array.ObjArray;
+import AST.Elements.ElementsNodes.generic4Elements.variable.Variable;
+import AST.Elements.ElementsNodes.generic4Elements.variable.VariableName;
 import AST.Elements.ElementsNodes.mustacheExpression.MustacheExpression;
 import AST.HtmlDocument;
 import generatedGrammers.HTMLParser;
@@ -471,36 +478,90 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
 
     @Override
     public Object visitVariable(HTMLParser.VariableContext ctx) {
+        //: variableName
+        Variable variable = new Variable();
+        if (ctx.variableName() != null){
+            variable.setVariableName((VariableName) visitVariableName(ctx.variableName()));
+        }
+
         return super.visitVariable(ctx);
     }
 
     @Override
     public Object visitVariableName(HTMLParser.VariableNameContext ctx) {
+        //: CP_CONTENT_IDENTIFIER
+        VariableName variableName = new VariableName();
+        if (ctx.CP_CONTENT_IDENTIFIER() != null){
+            variableName.setIdentifier(ctx.CP_CONTENT_IDENTIFIER().getSymbol().getText());
+        }
         return super.visitVariableName(ctx);
     }
 
     @Override
     public Object visitNumber(HTMLParser.NumberContext ctx) {
+//        : CP_CONTENT_NUMBER
+        NUmber nUmber = new NUmber();
+        if (ctx.CP_CONTENT_NUMBER() != null) {
+            double numberType = Double.valueOf(ctx.CP_CONTENT_NUMBER().getSymbol().getText());
+            // For check what's the type of Number
+            if (numberType == (int) numberType) {
+                nUmber.setNumber(Integer.parseInt(ctx.CP_CONTENT_NUMBER().getSymbol().getText()));
+            }
+            else if (numberType == (float)numberType){
+                nUmber.setNumber(Float.parseFloat(ctx
+                .CP_CONTENT_NUMBER().getSymbol().getText()));
+            }
+            else{
+                nUmber.setNumber(Double.parseDouble(ctx.CP_CONTENT_NUMBER().getSymbol().getText()));
+            }
+        }
         return super.visitNumber(ctx);
     }
 
     @Override
     public Object visitTrueOrFalse(HTMLParser.TrueOrFalseContext ctx) {
+//        :  (CP_CONTENT_TRUE | CP_CONTENT_FALSE)
+        TrueOrFalse trueOrFalse = new TrueOrFalse();
+        if (ctx.CP_CONTENT_TRUE() != null){
+            trueOrFalse.setTrue(true);
+        }
+
+        if (ctx.CP_CONTENT_FALSE() != null){
+            trueOrFalse.setFalse(false);
+        }
         return super.visitTrueOrFalse(ctx);
     }
 
     @Override
     public Object visitObjArray(HTMLParser.ObjArrayContext ctx) {
+//        : arrName arrayCalling
+        ObjArray objArray = new ObjArray();
+
+        if (ctx.arrName() != null){
+            objArray.setArrName((ArrName) visitArrName(ctx.arrName()));
+        }
+        if (ctx.arrayCalling() != null){
+            objArray.setArrayCalling((ArrayCalling) visitArrayCalling(ctx.arrayCalling()));
+        }
         return super.visitObjArray(ctx);
     }
 
     @Override
     public Object visitArrName(HTMLParser.ArrNameContext ctx) {
+//        : CP_CONTENT_IDENTIFIER
+        ArrName arrName = new ArrName();
+
+        if (ctx.CP_CONTENT_IDENTIFIER() != null){
+            arrName.setIdentifier(ctx.CP_CONTENT_IDENTIFIER().getSymbol().getText());
+        }
         return super.visitArrName(ctx);
     }
 
     @Override
     public Object visitArrayCalling(HTMLParser.ArrayCallingContext ctx) {
+//: (CP_CONTENT_OPEN_BRACKETS  arithmeticLogic CP_CONTENT_CLOSE_BRACKETS)+ (functionCallFromVar | property)?
+        ArrayCalling arrayCalling = new ArrayCalling();
+
         return super.visitArrayCalling(ctx);
     }
 
