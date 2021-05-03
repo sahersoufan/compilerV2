@@ -7,12 +7,11 @@ import AST.Elements.ElementsNodes.generic4Elements.NUmber;
 import AST.Elements.ElementsNodes.generic4Elements.TrueOrFalse;
 import AST.Elements.ElementsNodes.generic4Elements.array.ObjArray;
 import AST.Elements.ElementsNodes.generic4Elements.comparison.ComparisonExpression;
-import AST.Elements.ElementsNodes.generic4Elements.comparison.OneLineBoolCondition;
 import AST.Elements.ElementsNodes.generic4Elements.function.FunctionCall;
 import AST.Elements.ElementsNodes.generic4Elements.object.SubObj;
 import AST.Elements.ElementsNodes.generic4Elements.variable.Variable;
 
-public class Collection4For5 {
+public class Collection4For4 {
     private Variable variable;
     private NUmber number;
     private TrueOrFalse trueOrFalse;
@@ -20,7 +19,7 @@ public class Collection4For5 {
     private FunctionCall functionCall;
     private SubObj subObj;
     private ComparisonExpression comparisonExpression;
-    private OneLine4For5Condition  oneLine4For5Condition;
+    private OneLine4For4Condition oneLine4For5Condition;
     private LogicComprison logicComprison;
     private ArithmeticLogic arithmeticLogic;
 
@@ -80,11 +79,11 @@ public class Collection4For5 {
         this.comparisonExpression = comparisonExpression;
     }
 
-    public OneLine4For5Condition getOneLine4For5Condition() {
+    public OneLine4For4Condition getOneLine4For5Condition() {
         return oneLine4For5Condition;
     }
 
-    public void setOneLine4For5Condition(OneLine4For5Condition oneLine4For5Condition) {
+    public void setOneLine4For5Condition(OneLine4For4Condition oneLine4For5Condition) {
         this.oneLine4For5Condition = oneLine4For5Condition;
     }
 
