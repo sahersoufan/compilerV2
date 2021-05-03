@@ -23,6 +23,32 @@ import generatedGrammers.HTMLParserBaseVisitor;
 import java.util.ArrayList;
 import java.util.List;
 
+
+// For create new node in tree
+//-------------------Use this code---------------------------
+
+//SimpleTreeNode root = new SimpleTreeNode("root");
+//Notice "We have only one root and many children"
+
+//root.addChild(new SimpleTreeNode("Child 1"));
+// For adding endpoint child
+
+//SimpleTreeNode child3 = new SimpleTreeNode("Child 3");
+//For create new child that has many children
+
+//root.addChild(child3);
+// For adding child
+
+//new ListingTreePrinter().print(root);
+// For print tree
+
+//new TraditionalTreePrinter().print(root);
+// For print Traditional Tree
+
+//new TraditionalTreePrinter().print(new BorderTreeNodeDecorator(root));
+//for print Traditional Tree with Border
+
+
 public class BaseVisitor extends HTMLParserBaseVisitor {
     @Override
     public Object visitHtmlDocument(HTMLParser.HtmlDocumentContext ctx) {
