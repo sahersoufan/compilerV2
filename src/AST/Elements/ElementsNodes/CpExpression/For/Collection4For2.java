@@ -8,14 +8,14 @@ import AST.Elements.ElementsNodes.generic4Elements.function.FunctionCall;
 import AST.Elements.ElementsNodes.generic4Elements.object.SubObj;
 import AST.Elements.ElementsNodes.generic4Elements.variable.Variable;
 
-class Collection4For2 {
+public class Collection4For2 {
     private Variable variable;
     private String string;
     private NUmber number;
-     private SubObj subObj;
-     private ObjArray objArray;
-     private Array array;
-     private FunctionCall functionCall;
+    private SubObj subObj;
+    private ObjArray objArray;
+    private Array array;
+    private FunctionCall functionCall;
     private OneLine4For2Condition oneLine4For2Condition;
     private ArithmeticLogic arithmeticLogic;
 
@@ -90,4 +90,5 @@ class Collection4For2 {
     public void setArithmeticLogic(ArithmeticLogic arithmeticLogic) {
         this.arithmeticLogic = arithmeticLogic;
     }
+
 }
