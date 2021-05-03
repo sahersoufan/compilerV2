@@ -5,37 +5,23 @@ import AST.Elements.ElementsNodes.generic4Elements.function.FunctionCallFromVar;
 import AST.Elements.ElementsNodes.generic4Elements.property.Property;
 
 import java.util.ArrayList;
+import java.util.List;
+
+
 
 public class ArrayCalling {
-    private String openBracket;
-    private ArrayList<ArithmeticLogic> arithmeticLogics = new ArrayList<>();
+    private List<OAC> oacs = new ArrayList<>();
+
     private FunctionCallFromVar functionCallFromVar;
     private Property property;
-    private String closeBracket;
 
 
-    public String getOpenBracket() {
-        return openBracket;
+    public List<OAC> getOacs() {
+        return oacs;
     }
 
-    public void setOpenBracket(String openBracket) {
-        this.openBracket = openBracket;
-    }
-
-    public String getCloseBracket() {
-        return closeBracket;
-    }
-
-    public void setCloseBracket(String closeBracket) {
-        this.closeBracket = closeBracket;
-    }
-
-    public ArrayList<ArithmeticLogic> getArithmeticLogics() {
-        return arithmeticLogics;
-    }
-
-    public void setArithmeticLogics(ArrayList<ArithmeticLogic> arithmeticLogics) {
-        this.arithmeticLogics = arithmeticLogics;
+    public void setOacs(List<OAC> oacs) {
+        this.oacs = oacs;
     }
 
     public FunctionCallFromVar getFunctionCallFromVar() {
