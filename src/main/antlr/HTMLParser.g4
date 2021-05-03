@@ -292,7 +292,7 @@ arrName
     ;
 
 arrayCalling
-    : (CP_CONTENT_OPEN_BRACKETS  arithmeticLogic CP_CONTENT_CLOSE_BRACKETS)+ (functionCallFromVar | property)?
+    :  (functionCallFromVar | property)?
     ;
 array
     : CP_CONTENT_OPEN_BRACKETS collection4everything (CP_CONTENT_COMMA collection4everything)* CP_CONTENT_CLOSE_BRACKETS
