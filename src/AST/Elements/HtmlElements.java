@@ -6,7 +6,7 @@ import java.util.List;
 public class HtmlElements {
 
     private List<HtmlMisc> misc = new ArrayList<>();
-    private HtmlElement htmlElement;
+    private HtmlElementsComp htmlElement;
 
     public List<HtmlMisc> getMisc() {
         return misc;
@@ -16,11 +16,11 @@ public class HtmlElements {
         this.misc = misc;
     }
 
-    public HtmlElement getHtmlElement() {
+    public HtmlElementsComp getHtmlElement() {
         return htmlElement;
     }
 
-    public void setHtmlElement(HtmlElement htmlElement) {
+    public void setHtmlElement(HtmlElementsComp htmlElement) {
         this.htmlElement = htmlElement;
     }
 }

@@ -17,6 +17,8 @@ import AST.Elements.ElementsNodes.generic4Elements.Logic.LogicComprison;
 import AST.Elements.ElementsNodes.generic4Elements.Logic.MiddleAndLastLogicComparison;
 import AST.Elements.ElementsNodes.mustacheExpression.MustacheExpression;
 import AST.HtmlDocument;
+import AST.HtmlEle;
+import AST.HtmlXML;
 import generatedGrammers.HTMLParser;
 import generatedGrammers.HTMLParserBaseVisitor;
 
@@ -28,7 +30,6 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
     public Object visitHtmlDocument(HTMLParser.HtmlDocumentContext ctx) {
         HtmlDocument htmlDocument = new HtmlDocument();
         List<ScriptLetOrSeaWs> ObjscriptletOrSeaWs = new ArrayList<>();
-        List<HtmlElements> htmlElements = new ArrayList<>();
 
         // TODO i think we can know it
         if(ctx.scriptletOrSeaWs() != null){
@@ -38,21 +39,17 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
             htmlDocument.setScriptLetORSeaWs(ObjscriptletOrSeaWs);
         }
 
-        if(ctx.XML() != null){
-            htmlDocument.setXML(ctx.XML().getSymbol().getText());
-        }
-
         if(ctx.DTD() != null){
-            htmlDocument.setXML(ctx.DTD().getSymbol().getText());
+            htmlDocument.setDTD(ctx.DTD().getSymbol().getText());
         }
 
-        if (ctx.htmlElements() != null){
-            for (int i = 0 ; i <  ctx.htmlElements().size() ; i ++){
-                htmlElements.add((HtmlElements) visitHtmlElements(ctx.htmlElements(i)));
-            }
-            htmlDocument.setHtmlElements(htmlElements);
+        if (ctx.htmlXML() != null){
+            htmlDocument.setHtmlXML((HtmlXML) visitHtmlXML(ctx.htmlXML()));
         }
 
+        if (ctx.htmlEle() != null){
+            htmlDocument.setHtmlEle((HtmlEle) visitHtmlEle(ctx.htmlEle()));
+        }
         return super.visitHtmlDocument(ctx);
     }
 
@@ -70,10 +67,20 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
     }
 
     @Override
+    public Object visitHtmlXML(HTMLParser.HtmlXMLContext ctx) {
+        return super.visitHtmlXML(ctx);
+    }
+
+    @Override
+    public Object visitHtmlEle(HTMLParser.HtmlEleContext ctx) {
+        return super.visitHtmlEle(ctx);
+    }
+
+    @Override
     public Object visitHtmlElements(HTMLParser.HtmlElementsContext ctx) {
         HtmlElements htmlElements = new HtmlElements();
         List<HtmlMisc> htmlMiscs = new ArrayList<>();
-        // TODO i think we can know it
+
         if (ctx.htmlMisc() != null){
             for (int i = 0 ; i < ctx.htmlMisc().size() ; i ++ ){
                 htmlMiscs.add((HtmlMisc) visitHtmlMisc(ctx.htmlMisc(i)));
@@ -81,11 +88,16 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
             htmlElements.setMisc(htmlMiscs);
         }
 
-        if (ctx.htmlElement() != null){
-            htmlElements.setHtmlElement((HtmlElement) visitHtmlElement(ctx.htmlElement()));
+        if (ctx.htmlElementsComp() != null){
+            htmlElements.setHtmlElement((HtmlElementsComp) visitHtmlElementsComp(ctx.htmlElementsComp()));
         }
 
         return super.visitHtmlElements(ctx);
+    }
+
+    @Override
+    public Object visitHtmlElementsComp(HTMLParser.HtmlElementsCompContext ctx) {
+        return super.visitHtmlElementsComp(ctx);
     }
 
     @Override
@@ -156,40 +168,40 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
         // htmlCharData?
         // ((htmlElement | CDATA | htmlComment) htmlChardata?)*
         HtmlContent htmlContent = new HtmlContent();
-        List<HtmlCharData> htmlCharData = new ArrayList<>();
+
         if (ctx.htmlChardata() != null){
-            for (int i = 0;i<ctx.htmlChardata().size() ;i++){
-                htmlCharData.add((HtmlCharData) visitHtmlChardata(ctx.htmlChardata(i)));
-            }
-            htmlContent.setHtmlCharDataList(htmlCharData);
+            htmlContent.setHtmlCharDataList((HtmlCharData) visitHtmlChardata(ctx.htmlChardata()));
         }
-
-
-        List<HtmlElement> htmlElements = new ArrayList<>();
-        if (ctx.htmlElement() != null){
-            for (int i = 0;i<ctx.htmlElement().size() ;i++){
-                htmlElements.add((HtmlElement) visitHtmlElement(ctx.htmlElement(i)));
+        List<HtmlContentComp> htmlContentComps = new ArrayList<>();
+        if (ctx.htmlContentComp() != null){
+            for (int i = 0 ; i < ctx.htmlContentComp().size() ; i ++){
+                htmlContentComps.add((HtmlContentComp) visitHtmlContentComp(ctx.htmlContentComp(i)));
             }
-            htmlContent.setHtmlElement(htmlElements);
+            htmlContent.setHtmlContentComps(htmlContentComps);
         }
-
-        List<String> CData = new ArrayList<>();
-        if (ctx.CDATA() != null) {
-            for (int i = 0;i<ctx.CDATA().size() ;i++){
-                CData.add((String) ctx.CDATA(i).getSymbol().getText());
-            }
-        htmlContent.setcDatas(CData);
-        }
-
-        List<HtmlComment> htmlComment = new ArrayList<>();
-        if (ctx.htmlComment() != null){
-            for (int i = 0;i<ctx.htmlComment().size() ;i++){
-                htmlComment.add((HtmlComment) visitHtmlComment(ctx.htmlComment(i)));
-            }
-        }
-
-
         return super.visitHtmlContent(ctx);
+    }
+
+    @Override
+    public Object visitHtmlContentComp(HTMLParser.HtmlContentCompContext ctx) {
+        HtmlContentComp htmlContentComp = new HtmlContentComp();
+
+        if (ctx.htmlElement() != null){
+            htmlContentComp.setHtmlElement((HtmlElement) visitHtmlElement(ctx.htmlElement()));
+        }
+
+        if (ctx.CDATA() != null){
+            htmlContentComp.setCDATA(ctx.CDATA().getSymbol().getText());
+        }
+
+        if (ctx.htmlComment() != null){
+            htmlContentComp.setHtmlComment((HtmlComment) visitHtmlComment(ctx.htmlComment()));
+        }
+
+        if (ctx.htmlChardata() != null){
+            htmlContentComp.setHtmlCharData((HtmlCharData) visitHtmlChardata(ctx.htmlChardata()));
+        }
+        return super.visitHtmlContentComp(ctx);
     }
 
     @Override

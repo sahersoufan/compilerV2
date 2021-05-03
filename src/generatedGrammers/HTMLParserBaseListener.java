@@ -28,6 +28,30 @@ public class HTMLParserBaseListener implements HTMLParserListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterHtmlXML(HTMLParser.HtmlXMLContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitHtmlXML(HTMLParser.HtmlXMLContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterHtmlEle(HTMLParser.HtmlEleContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitHtmlEle(HTMLParser.HtmlEleContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterScriptletOrSeaWs(HTMLParser.ScriptletOrSeaWsContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -52,6 +76,18 @@ public class HTMLParserBaseListener implements HTMLParserListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterHtmlElementsComp(HTMLParser.HtmlElementsCompContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitHtmlElementsComp(HTMLParser.HtmlElementsCompContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterHtmlElement(HTMLParser.HtmlElementContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -71,6 +107,18 @@ public class HTMLParserBaseListener implements HTMLParserListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitHtmlContent(HTMLParser.HtmlContentContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterHtmlContentComp(HTMLParser.HtmlContentCompContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitHtmlContentComp(HTMLParser.HtmlContentCompContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

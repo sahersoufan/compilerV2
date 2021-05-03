@@ -18,6 +18,26 @@ public interface HTMLParserListener extends ParseTreeListener {
 	 */
 	void exitHtmlDocument(HTMLParser.HtmlDocumentContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link HTMLParser#htmlXML}.
+	 * @param ctx the parse tree
+	 */
+	void enterHtmlXML(HTMLParser.HtmlXMLContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link HTMLParser#htmlXML}.
+	 * @param ctx the parse tree
+	 */
+	void exitHtmlXML(HTMLParser.HtmlXMLContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link HTMLParser#htmlEle}.
+	 * @param ctx the parse tree
+	 */
+	void enterHtmlEle(HTMLParser.HtmlEleContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link HTMLParser#htmlEle}.
+	 * @param ctx the parse tree
+	 */
+	void exitHtmlEle(HTMLParser.HtmlEleContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link HTMLParser#scriptletOrSeaWs}.
 	 * @param ctx the parse tree
 	 */
@@ -38,6 +58,16 @@ public interface HTMLParserListener extends ParseTreeListener {
 	 */
 	void exitHtmlElements(HTMLParser.HtmlElementsContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link HTMLParser#htmlElementsComp}.
+	 * @param ctx the parse tree
+	 */
+	void enterHtmlElementsComp(HTMLParser.HtmlElementsCompContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link HTMLParser#htmlElementsComp}.
+	 * @param ctx the parse tree
+	 */
+	void exitHtmlElementsComp(HTMLParser.HtmlElementsCompContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link HTMLParser#htmlElement}.
 	 * @param ctx the parse tree
 	 */
@@ -57,6 +87,16 @@ public interface HTMLParserListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitHtmlContent(HTMLParser.HtmlContentContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link HTMLParser#htmlContentComp}.
+	 * @param ctx the parse tree
+	 */
+	void enterHtmlContentComp(HTMLParser.HtmlContentCompContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link HTMLParser#htmlContentComp}.
+	 * @param ctx the parse tree
+	 */
+	void exitHtmlContentComp(HTMLParser.HtmlContentCompContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link HTMLParser#htmlAttribute}.
 	 * @param ctx the parse tree

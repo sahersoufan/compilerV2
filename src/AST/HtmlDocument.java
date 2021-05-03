@@ -7,15 +7,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HtmlDocument {
-
-
-
-
     private List<ScriptLetOrSeaWs> scriptLetORSeaWs = new ArrayList<>();
-    private String XML;
     private String DTD;
-    private List<HtmlElements> htmlElements = new ArrayList<>();
-
+    private HtmlXML htmlXML;
+    private HtmlEle htmlEle;
 
     public List<ScriptLetOrSeaWs> getScriptLetORSeaWs() {
         return scriptLetORSeaWs;
@@ -23,14 +18,6 @@ public class HtmlDocument {
 
     public void setScriptLetORSeaWs(List<ScriptLetOrSeaWs> scriptLetORSeaWs) {
         this.scriptLetORSeaWs = scriptLetORSeaWs;
-    }
-
-    public String getXML() {
-        return XML;
-    }
-
-    public void setXML(String XML) {
-        this.XML = XML;
     }
 
     public String getDTD() {
@@ -41,11 +28,19 @@ public class HtmlDocument {
         this.DTD = DTD;
     }
 
-    public List<HtmlElements> getHtmlElements() {
-        return htmlElements;
+    public HtmlXML getHtmlXML() {
+        return htmlXML;
     }
 
-    public void setHtmlElements(List<HtmlElements> htmlElements) {
-        this.htmlElements = htmlElements;
+    public void setHtmlXML(HtmlXML htmlXML) {
+        this.htmlXML = htmlXML;
+    }
+
+    public HtmlEle getHtmlEle() {
+        return htmlEle;
+    }
+
+    public void setHtmlEle(HtmlEle htmlEle) {
+        this.htmlEle = htmlEle;
     }
 }
