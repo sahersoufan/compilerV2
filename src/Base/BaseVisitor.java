@@ -15,6 +15,13 @@ import AST.Elements.ElementsNodes.CpExpression.showHide.ShowExpression;
 import AST.Elements.ElementsNodes.generic4Elements.Collection4LogicRet;
 import AST.Elements.ElementsNodes.generic4Elements.Logic.LogicComprison;
 import AST.Elements.ElementsNodes.generic4Elements.Logic.MiddleAndLastLogicComparison;
+import AST.Elements.ElementsNodes.generic4Elements.NUmber;
+import AST.Elements.ElementsNodes.generic4Elements.TrueOrFalse;
+import AST.Elements.ElementsNodes.generic4Elements.array.ArrName;
+import AST.Elements.ElementsNodes.generic4Elements.array.ArrayCalling;
+import AST.Elements.ElementsNodes.generic4Elements.array.ObjArray;
+import AST.Elements.ElementsNodes.generic4Elements.variable.Variable;
+import AST.Elements.ElementsNodes.generic4Elements.variable.VariableName;
 import AST.Elements.ElementsNodes.mustacheExpression.MustacheExpression;
 import AST.HtmlDocument;
 import AST.HtmlEle;
@@ -24,6 +31,32 @@ import generatedGrammers.HTMLParserBaseVisitor;
 
 import java.util.ArrayList;
 import java.util.List;
+
+
+// For create new node in tree
+//-------------------Use this code---------------------------
+
+//SimpleTreeNode root = new SimpleTreeNode("root");
+//Notice "We have only one root and many children"
+
+//root.addChild(new SimpleTreeNode("Child 1"));
+// For adding endpoint child
+
+//SimpleTreeNode child3 = new SimpleTreeNode("Child 3");
+//For create new child that has many children
+
+//root.addChild(child3);
+// For adding child
+
+//new ListingTreePrinter().print(root);
+// For print tree
+
+//new TraditionalTreePrinter().print(root);
+// For print Traditional Tree
+
+//new TraditionalTreePrinter().print(new BorderTreeNodeDecorator(root));
+//for print Traditional Tree with Border
+
 
 public class BaseVisitor extends HTMLParserBaseVisitor {
     @Override
@@ -501,36 +534,90 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
 
     @Override
     public Object visitVariable(HTMLParser.VariableContext ctx) {
+        //: variableName
+        Variable variable = new Variable();
+        if (ctx.variableName() != null){
+            variable.setVariableName((VariableName) visitVariableName(ctx.variableName()));
+        }
+
         return super.visitVariable(ctx);
     }
 
     @Override
     public Object visitVariableName(HTMLParser.VariableNameContext ctx) {
+        //: CP_CONTENT_IDENTIFIER
+        VariableName variableName = new VariableName();
+        if (ctx.CP_CONTENT_IDENTIFIER() != null){
+            variableName.setIdentifier(ctx.CP_CONTENT_IDENTIFIER().getSymbol().getText());
+        }
         return super.visitVariableName(ctx);
     }
 
     @Override
     public Object visitNumber(HTMLParser.NumberContext ctx) {
+//        : CP_CONTENT_NUMBER
+        NUmber nUmber = new NUmber();
+        if (ctx.CP_CONTENT_NUMBER() != null) {
+            double numberType = Double.valueOf(ctx.CP_CONTENT_NUMBER().getSymbol().getText());
+            // For check what's the type of Number
+            if (numberType == (int) numberType) {
+                nUmber.setNumber(Integer.parseInt(ctx.CP_CONTENT_NUMBER().getSymbol().getText()));
+            }
+            else if (numberType == (float)numberType){
+                nUmber.setNumber(Float.parseFloat(ctx
+                .CP_CONTENT_NUMBER().getSymbol().getText()));
+            }
+            else{
+                nUmber.setNumber(Double.parseDouble(ctx.CP_CONTENT_NUMBER().getSymbol().getText()));
+            }
+        }
         return super.visitNumber(ctx);
     }
 
     @Override
     public Object visitTrueOrFalse(HTMLParser.TrueOrFalseContext ctx) {
+//        :  (CP_CONTENT_TRUE | CP_CONTENT_FALSE)
+        TrueOrFalse trueOrFalse = new TrueOrFalse();
+        if (ctx.CP_CONTENT_TRUE() != null){
+            trueOrFalse.setTrue(true);
+        }
+
+        if (ctx.CP_CONTENT_FALSE() != null){
+            trueOrFalse.setFalse(false);
+        }
         return super.visitTrueOrFalse(ctx);
     }
 
     @Override
     public Object visitObjArray(HTMLParser.ObjArrayContext ctx) {
+//        : arrName arrayCalling
+        ObjArray objArray = new ObjArray();
+
+        if (ctx.arrName() != null){
+            objArray.setArrName((ArrName) visitArrName(ctx.arrName()));
+        }
+        if (ctx.arrayCalling() != null){
+            objArray.setArrayCalling((ArrayCalling) visitArrayCalling(ctx.arrayCalling()));
+        }
         return super.visitObjArray(ctx);
     }
 
     @Override
     public Object visitArrName(HTMLParser.ArrNameContext ctx) {
+//        : CP_CONTENT_IDENTIFIER
+        ArrName arrName = new ArrName();
+
+        if (ctx.CP_CONTENT_IDENTIFIER() != null){
+            arrName.setIdentifier(ctx.CP_CONTENT_IDENTIFIER().getSymbol().getText());
+        }
         return super.visitArrName(ctx);
     }
 
     @Override
     public Object visitArrayCalling(HTMLParser.ArrayCallingContext ctx) {
+//: (CP_CONTENT_OPEN_BRACKETS  arithmeticLogic CP_CONTENT_CLOSE_BRACKETS)+ (functionCallFromVar | property)?
+        ArrayCalling arrayCalling = new ArrayCalling();
+
         return super.visitArrayCalling(ctx);
     }
 
