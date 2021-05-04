@@ -2,7 +2,7 @@ package Base;
 
 import AST.Elements.*;
 import AST.Elements.ElementsNodes.*;
-import AST.Elements.ElementsNodes.CpExpression.For.ForExpression;
+import AST.Elements.ElementsNodes.CpExpression.For.*;
 import AST.Elements.ElementsNodes.CpExpression.If.IfExpression;
 import AST.Elements.ElementsNodes.CpExpression.Switch.SwitchCaseExpression;
 import AST.Elements.ElementsNodes.CpExpression.Switch.SwitchExpression;
@@ -13,13 +13,20 @@ import AST.Elements.ElementsNodes.CpExpression.model.ModelExpression;
 import AST.Elements.ElementsNodes.CpExpression.showHide.HideExpression;
 import AST.Elements.ElementsNodes.CpExpression.showHide.ShowExpression;
 import AST.Elements.ElementsNodes.generic4Elements.Collection4LogicRet;
+import AST.Elements.ElementsNodes.generic4Elements.Logic.ArithmeticLogic;
 import AST.Elements.ElementsNodes.generic4Elements.Logic.LogicComprison;
 import AST.Elements.ElementsNodes.generic4Elements.Logic.MiddleAndLastLogicComparison;
 import AST.Elements.ElementsNodes.generic4Elements.NUmber;
 import AST.Elements.ElementsNodes.generic4Elements.TrueOrFalse;
 import AST.Elements.ElementsNodes.generic4Elements.array.ArrName;
+import AST.Elements.ElementsNodes.generic4Elements.array.Array;
 import AST.Elements.ElementsNodes.generic4Elements.array.ArrayCalling;
 import AST.Elements.ElementsNodes.generic4Elements.array.ObjArray;
+import AST.Elements.ElementsNodes.generic4Elements.comparison.ComparisonExpression;
+import AST.Elements.ElementsNodes.generic4Elements.function.FunctionCall;
+import AST.Elements.ElementsNodes.generic4Elements.object.Obj;
+import AST.Elements.ElementsNodes.generic4Elements.object.ObjBody;
+import AST.Elements.ElementsNodes.generic4Elements.object.SubObj;
 import AST.Elements.ElementsNodes.generic4Elements.variable.Variable;
 import AST.Elements.ElementsNodes.generic4Elements.variable.VariableName;
 import AST.Elements.ElementsNodes.mustacheExpression.MustacheExpression;
@@ -393,47 +400,316 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
     public Object visitOneLine4AppCondition(HTMLParser.OneLine4AppConditionContext ctx) {
         return super.visitOneLine4AppCondition(ctx);
     }
+        //////////// Fatima started  work from here /////////////
 
+    ////////////////////// forExpression ////////////////////////
     @Override
     public Object visitForExpression(HTMLParser.ForExpressionContext ctx) {
+       ForExpression forExpression=new ForExpression();
+
+       //For CpExpression role 1
+       if(ctx.collection4For1()!=null&& ctx.collection4For2()!=null){
+           forExpression.setCollection4For1_1_1((Collection4For1) visitCollection4For1(ctx.collection4For1(0)));
+           forExpression.setCollection4For2_1_1((Collection4For2) visitCollection4For2(ctx.collection4For2()));
+           // note :i think you must be to add terminal node (In) to ForExpression in ast
+
+          if(ctx.collection4For1().size()>1){
+              //note: i did add parameter collection4For1_1_2 in ast
+              forExpression.setCollection4For1_1_2((Collection4For1) visitCollection4For1(ctx.collection4For1(1)));
+              // note :i think you must be to add terminal node (CP_CONTENT_EQUALS) to ForExpression in ast
+              // note :i think you must be to add terminal node (INDEX) to ForExpression in ast
+              // note :i think you must be to add terminal node (CP_CONTENT_SEMI_COLON) to ForExpression in ast
+
+          }
+
+       }
+
+       //For CpExpression role 2
+        if(ctx.collection4For1()!=null&& ctx.collection4For3()!=null){
+            forExpression.setCollection4For1_2_1((Collection4For1) visitCollection4For1(ctx.collection4For1(0)));
+            forExpression.setCollection4For3_2_1((Collection4For3) visitCollection4For3(ctx.collection4For3()));
+
+
+            if(ctx.collection4For1().size()>1){
+                forExpression.setCollection4For1_2_2((Collection4For1) visitCollection4For1(ctx.collection4For1(1)));
+            }
+
+        }
+
+        //For CpExpression role 3
+        if(ctx.collection4For5()!=null){
+            forExpression.setCollection4For5_3_1((Collection4For4) visitCollection4For5(ctx.collection4For5()));
+        }
+
         return super.visitForExpression(ctx);
     }
 
     @Override
     public Object visitCollection4For1(HTMLParser.Collection4For1Context ctx) {
+
+      Collection4For1 collection4For1=new Collection4For1();
+
+      //Collection4For1  role 1
+      if(ctx.variable()!=null){
+          collection4For1.setVariable((Variable) visitVariable(ctx.variable()));
+      }
+      //Collection4For1  role 2
+      if(ctx.subObj()!=null){
+          collection4For1.setSubObj((SubObj) visitSubObj(ctx.subObj()));
+      }
+      //Collection4For1  role 3
+      if(ctx.objArray()!=null){
+          collection4For1.setObjArray((ObjArray) visitObjArray(ctx.objArray()));
+      }
+
         return super.visitCollection4For1(ctx);
     }
 
     @Override
     public Object visitCollection4For2(HTMLParser.Collection4For2Context ctx) {
+       Collection4For2 collection4For2=new Collection4For2();
+
+        //Collection4For2  role 1
+
+        if(ctx.variable()!=null){
+            collection4For2.setVariable((Variable) visitVariable(ctx.variable()));
+        }
+        //Collection4For2  role 2
+
+        if(ctx.CP_CONTENT_STRING()!=null){
+            collection4For2.setString(ctx.CP_CONTENT_STRING().getSymbol().getText());
+        }
+        //Collection4For2  role 3
+        if(ctx.number()!=null){
+            collection4For2.setNumber((NUmber) visitNumber(ctx.number()));
+        }
+        //Collection4For2  role 4
+        if(ctx.subObj()!=null){
+            collection4For2.setSubObj((SubObj) visitSubObj(ctx.subObj()));
+        }
+        //Collection4For2  role 5
+        if(ctx.objArray()!=null){
+            collection4For2.setObjArray((ObjArray) visitObjArray(ctx.objArray()));
+        }
+
+        //Collection4For2  role 6
+        if(ctx.array()!=null){
+            collection4For2.setArray((Array) visitArray(ctx.array()));
+        }
+
+        //Collection4For2  role 7
+        if(ctx.functionCall()!=null){
+            collection4For2.setFunctionCall((FunctionCall) visitFunctionCall(ctx.functionCall()));
+        }
+
+        //Collection4For2  role 8
+        if(ctx.oneLine4For2Condition()!=null){
+            collection4For2.setOneLine4For2Condition((OneLine4For2Condition) visitOneLine4For2Condition(ctx.oneLine4For2Condition()));
+        }
+
+        //Collection4For2  role 9
+        if(ctx.arithmeticLogic()!=null){
+            collection4For2.setArithmeticLogic((ArithmeticLogic) visitArithmeticLogic(ctx.arithmeticLogic()));
+        }
+
+
+
+
         return super.visitCollection4For2(ctx);
     }
 
     @Override
     public Object visitOneLine4For2Condition(HTMLParser.OneLine4For2ConditionContext ctx) {
+
+        // ex: (true && (a<b ?true :false ) && !c ? b : b)
+
+        OneLine4For2Condition oneLine4For2Condition=new OneLine4For2Condition();
+
+       if(ctx.CP_CONTENT_OPEN_PAR()!=null&&ctx.CP_CONTENT_CLOSE_PAR()!=null){
+           oneLine4For2Condition.setOpenPar(ctx.CP_CONTENT_OPEN_PAR().getSymbol().getText());
+
+
+           if(ctx.logicComprison()!=null&& ctx.collection4For2()!=null){
+               oneLine4For2Condition.setLogicComprison((LogicComprison) visitLogicComprison(ctx.logicComprison()));
+
+               oneLine4For2Condition.setCollection4For2_1_1((Collection4For2) visitCollection4For2(ctx.collection4For2(0)));
+
+              if(ctx.CP_CONTENT_QUESTION_MARK()!=null){
+                  oneLine4For2Condition.setQuestionMark(ctx.CP_CONTENT_QUESTION_MARK().getSymbol().getText());
+              }
+           }
+
+
+           if(ctx.collection4For2().size()>1){
+             oneLine4For2Condition.setCollection4For2_1_2((Collection4For2) visitCollection4For2(ctx.collection4For2(1)));
+           }
+            // maybe you think to add (Colon) to oneLine4For2Condition in ast
+           oneLine4For2Condition.setClosePar(ctx.CP_CONTENT_CLOSE_PAR().getSymbol().getText());
+       }
+
+
+
         return super.visitOneLine4For2Condition(ctx);
     }
 
     @Override
     public Object visitCollection4For3(HTMLParser.Collection4For3Context ctx) {
+       Collection4For3 collection4For3=new Collection4For3();
+
+       //Collection4For3 role 1
+        if(ctx.obj()!=null){
+            collection4For3.setObj((Obj) visitObj(ctx.obj()));
+        }
+
+        //Collection4For3 role 2
+        if(ctx.objBody()!=null){
+            collection4For3.setObjBody((ObjBody)visitObjBody(ctx.objBody()));
+        }
+
+        //Collection4For3 role 3
+        if(ctx.subObj()!=null){
+            collection4For3.setSubObj((SubObj) visitSubObj(ctx.subObj()));
+        }
+
+        //Collection4For3 role 4
+        if(ctx.objArray()!=null){
+            collection4For3.setObjArray((ObjArray) visitObjArray(ctx.objArray()));
+        }
+
+        //Collection4For3 role 5
+        if(ctx.functionCall()!=null){
+            collection4For3.setFunctionCall((FunctionCall) visitFunctionCall(ctx.functionCall()));
+        }
+
+        //Collection4For3 role 6
+        if(ctx.oneLine4For3Condition()!=null){
+            collection4For3.setOneLine4For3Condition((OneLine4For3Condition) visitOneLine4For3Condition(ctx.oneLine4For3Condition()));
+        }
+
+
         return super.visitCollection4For3(ctx);
     }
 
     @Override
     public Object visitOneLine4For3Condition(HTMLParser.OneLine4For3ConditionContext ctx) {
+
+        OneLine4For3Condition oneLine4For3Condition=new OneLine4For3Condition();
+
+        if(ctx.CP_CONTENT_OPEN_PAR()!=null&&ctx.CP_CONTENT_CLOSE_PAR()!=null){
+            oneLine4For3Condition.setOpenPar(ctx.CP_CONTENT_OPEN_PAR().getSymbol().getText());
+
+
+            if(ctx.logicComprison()!=null&& ctx.collection4For3()!=null){
+                oneLine4For3Condition.setLogicComprison((LogicComprison) visitLogicComprison(ctx.logicComprison()));
+
+                oneLine4For3Condition.setCollection4For3_1_1((Collection4For3) visitCollection4For3(ctx.collection4For3(0)));
+
+                if(ctx.CP_CONTENT_QUESTION_MARK()!=null){
+                    oneLine4For3Condition.setQuestionMark(ctx.CP_CONTENT_QUESTION_MARK().getSymbol().getText());
+                }
+            }
+
+
+            if(ctx.collection4For3().size()>1){
+                oneLine4For3Condition.setCollection4For3_1_2((Collection4For3) visitCollection4For3(ctx.collection4For3(1)));
+            }
+            // maybe you think to add (Colon) to oneLine4For3Condition in ast
+            oneLine4For3Condition.setClosePar(ctx.CP_CONTENT_CLOSE_PAR().getSymbol().getText());
+        }
+
         return super.visitOneLine4For3Condition(ctx);
     }
 
     @Override
     public Object visitCollection4For5(HTMLParser.Collection4For5Context ctx) {
+
+        Collection4For4 collection4For4=new Collection4For4();
+
+        //Collection4For4 role 1
+        if(ctx.variable()!=null){
+            collection4For4.setVariable((Variable) visitVariable(ctx.variable()));
+        }
+
+        //Collection4For4 role 2
+        if(ctx.number()!=null){
+            collection4For4.setNumber((NUmber) visitNumber(ctx.number()));
+        }
+
+        //Collection4For4 role 3
+        if(ctx.trueOrFalse()!=null){
+            collection4For4.setTrueOrFalse((TrueOrFalse) visitTrueOrFalse(ctx.trueOrFalse()));
+        }
+
+        //Collection4For4 role 4
+        if(ctx.objArray()!=null){
+            collection4For4.setObjArray((ObjArray) visitObjArray(ctx.objArray()));
+        }
+
+        //Collection4For4 role 5
+        if(ctx.functionCall()!=null){
+            collection4For4.setFunctionCall((FunctionCall) visitFunctionCall(ctx.functionCall()));
+        }
+
+        //Collection4For4 role 6
+        if(ctx.subObj()!=null){
+            collection4For4.setSubObj((SubObj) visitSubObj(ctx.subObj()));
+        }
+
+        //Collection4For4 role 7
+        if(ctx.comparisonExpression()!=null){
+            collection4For4.setComparisonExpression((ComparisonExpression) visitComparisonExpression(ctx.comparisonExpression()));
+        }
+
+        //Collection4For4 role 8
+        if(ctx.oneLine4For5Condition()!=null){
+            collection4For4.setOneLine4For5Condition((OneLine4For4Condition) visitOneLine4For5Condition(ctx.oneLine4For5Condition()));
+        }
+
+        //Collection4For4 role 9
+        if(ctx.logicComprison()!=null){
+            collection4For4.setLogicComprison((LogicComprison) visitLogicComprison(ctx.logicComprison()));
+        }
+
+        //Collection4For4 role 10
+        if(ctx.arithmeticLogic()!=null){
+            collection4For4.setArithmeticLogic((ArithmeticLogic) visitArithmeticLogic(ctx.arithmeticLogic()));
+        }
+
+
         return super.visitCollection4For5(ctx);
     }
 
     @Override
     public Object visitOneLine4For5Condition(HTMLParser.OneLine4For5ConditionContext ctx) {
+
+        OneLine4For4Condition oneLine4For4Condition = new OneLine4For4Condition();
+
+        if (ctx.CP_CONTENT_OPEN_PAR() != null && ctx.CP_CONTENT_CLOSE_PAR() != null) {
+            oneLine4For4Condition.setOpenPar(ctx.CP_CONTENT_OPEN_PAR().getSymbol().getText());
+
+
+            if (ctx.logicComprison() != null && ctx.collection4For5() != null) {
+                oneLine4For4Condition.setLogicComprison((LogicComprison) visitLogicComprison(ctx.logicComprison()));
+
+                oneLine4For4Condition.setCollection4For5_1_1((Collection4For4) visitCollection4For5(ctx.collection4For5(0)));
+
+                if (ctx.CP_CONTENT_QUESTION_MARK() != null) {
+                    oneLine4For4Condition.setQuestionMark(ctx.CP_CONTENT_QUESTION_MARK().getSymbol().getText());
+                }
+            }
+
+
+            if (ctx.collection4For5().size() > 1) {
+                oneLine4For4Condition.setCollection4For5_1_2((Collection4For4) visitCollection4For5(ctx.collection4For5(1)));
+            }
+            // maybe you think to add (Colon) to oneLine4For3Condition in ast
+            oneLine4For4Condition.setClosePar(ctx.CP_CONTENT_CLOSE_PAR().getSymbol().getText());
+        }
+
         return super.visitOneLine4For5Condition(ctx);
     }
 
+   /////////////////////////// end forexprition ///////////////////////////
     @Override
     public Object visitShowExpression(HTMLParser.ShowExpressionContext ctx) {
         return super.visitShowExpression(ctx);
