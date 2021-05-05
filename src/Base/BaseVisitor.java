@@ -444,14 +444,12 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
 
         OneLine4AppCondition  oneLine4AppCondition=new OneLine4AppCondition();
 
-        oneLine4AppCondition.setOpenPar(ctx.CP_CONTENT_OPEN_PAR().getSymbol().getText());
         if(ctx.logicComprison()!=null&& ctx.collection4App1()!=null){
             oneLine4AppCondition.setLogicComprison((LogicComprison) visitLogicComprison(ctx.logicComprison()));
             oneLine4AppCondition.setCollection4App1_1((Collection4App1) visitCollection4App1(ctx.collection4App1(0)));
             oneLine4AppCondition.setCollection4App1_2((Collection4App1) visitCollection4App1(ctx.collection4App1(1)));
         }
 
-        oneLine4AppCondition.setClosePar(ctx.CP_CONTENT_CLOSE_PAR().getSymbol().getText());
         return super.visitOneLine4AppCondition(ctx);
     }
 
@@ -577,7 +575,6 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
                oneLine4For2Condition.setCollection4For2_1_2((Collection4For2) visitCollection4For2(ctx.collection4For2(1)));
            }
 
-           oneLine4For2Condition.setClosePar(ctx.CP_CONTENT_CLOSE_PAR().getSymbol().getText());
 
         return super.visitOneLine4For2Condition(ctx);
     }
@@ -810,14 +807,11 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
 
         OneLine4switch1  oneLine4switch1=new OneLine4switch1 ();
 
-        oneLine4switch1.setOpenPar(ctx.CP_CONTENT_OPEN_PAR().getSymbol().getText());
         if(ctx.logicComprison()!=null&& ctx.collection4Switch1()!=null){
             oneLine4switch1.setLogicComprison((LogicComprison) visitLogicComprison(ctx.logicComprison()));
             oneLine4switch1.setCollection4Switch1_1_1((Collection4Switch1) visitCollection4Switch1(ctx.collection4Switch1(0)));
             oneLine4switch1.setCollection4Switch1_1_2((Collection4Switch1) visitCollection4Switch1(ctx.collection4Switch1(1)));
         }
-
-        oneLine4switch1.setClosePar(ctx.CP_CONTENT_CLOSE_PAR().getSymbol().getText());
 
         return super.visitOneLine4switch1(ctx);
     }
@@ -891,14 +885,12 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
     public Object visitOneLine4ModelCondition(HTMLParser.OneLine4ModelConditionContext ctx) {
 
         OneLine4ModelCondition oneLine4ModelCondition=new OneLine4ModelCondition();
-        oneLine4ModelCondition.setOpenPar(ctx.CP_CONTENT_OPEN_PAR().getSymbol().getText());
+
         if(ctx.logicComprison()!=null&& ctx.collection4Model1()!=null){
             oneLine4ModelCondition.setLogicComprison((LogicComprison) visitLogicComprison(ctx.logicComprison()));
             oneLine4ModelCondition.setCollection4Model1_1_1((Collection4Model1) visitCollection4Model1(ctx.collection4Model1(0)));
             oneLine4ModelCondition.setCollection4Model1_1_2((Collection4Model1) visitCollection4Model1(ctx.collection4Model1(1)));
         }
-
-        oneLine4ModelCondition.setClosePar(ctx.CP_CONTENT_CLOSE_PAR().getSymbol().getText());
 
         return super.visitOneLine4ModelCondition(ctx);
     }
@@ -959,15 +951,11 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
     public Object visitOneLine4Annotation(HTMLParser.OneLine4AnnotationContext ctx) {
 
           OneLine4Annotation oneLine4Annotation=new OneLine4Annotation();
-        oneLine4Annotation.setOpenPar(ctx.CP_CONTENT_OPEN_PAR().getSymbol().getText());
         if(ctx.logicComprison()!=null&& ctx.collection4Annotation()!=null){
             oneLine4Annotation.setLogicComprison((LogicComprison) visitLogicComprison(ctx.logicComprison()));
             oneLine4Annotation.setCollection4Annotation1_1((Collection4Annotation) visitCollection4Annotation(ctx.collection4Annotation(0)));
             oneLine4Annotation.setCollection4Annotation1_2((Collection4Annotation) visitCollection4Annotation(ctx.collection4Annotation(1)));
         }
-
-        oneLine4Annotation.setClosePar(ctx.CP_CONTENT_CLOSE_PAR().getSymbol().getText());
-
         return super.visitOneLine4Annotation(ctx);
     }
 
@@ -1000,6 +988,7 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
             arrayFuncRet4AnnotOneLine.setArithmeticLogics(arithmeticLogics);
         }
 
+        // TODO here it's or not and.
         if(ctx.propFuncRet4AnnotOneLine()!=null&&ctx.funcEndRet4AnnotOneLine()!=null){
             arrayFuncRet4AnnotOneLine.setPropFuncRet4AnnotOneLine((PropFuncRet4AnnotOneLine) visitPropFuncRet4AnnotOneLine(ctx.propFuncRet4AnnotOneLine()));
             arrayFuncRet4AnnotOneLine.setFuncEndRet4AnnotOneLine((FuncEndRet4AnnotOneLine) visitFuncEndRet4AnnotOneLine(ctx.funcEndRet4AnnotOneLine()));
@@ -1021,6 +1010,7 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
            propFuncRet4AnnotOneLine.setPropertyValue(propertyValues);
        }
 
+        // TODO here it's or not and
        if(ctx.arrayFuncRet4AnnotOneLine()!=null&&ctx.funcEndRet4AnnotOneLine()!=null){
 
            propFuncRet4AnnotOneLine.setArrayFuncRet4AnnotOneLine((ArrayFuncRet4AnnotOneLine) visitArrayFuncRet4AnnotOneLine(ctx.arrayFuncRet4AnnotOneLine()));
@@ -1046,7 +1036,8 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
              funcEndRet4AnnotOneLine.setFunctionParameters(parameters);
          }
 
-         if(ctx.arrayFuncRet4AnnotOneLine()!=null&&ctx.propFuncRet4AnnotOneLine()!=null){
+        // TODO here it's or not and
+        if(ctx.arrayFuncRet4AnnotOneLine()!=null&&ctx.propFuncRet4AnnotOneLine()!=null){
              funcEndRet4AnnotOneLine.setArrayFuncRet4AnnotOneLine((ArrayFuncRet4AnnotOneLine) visitArrayFuncRet4AnnotOneLine(ctx.arrayFuncRet4AnnotOneLine()));
               funcEndRet4AnnotOneLine.setPropFuncRet4AnnotOneLine((PropFuncRet4AnnotOneLine) visitPropFuncRet4AnnotOneLine(ctx.propFuncRet4AnnotOneLine()));
 
