@@ -416,9 +416,10 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
           if(ctx.collection4For1().size()>1){
               //note: i did add parameter collection4For1_1_2 in ast
               forExpression.setCollection4For1_1_2((Collection4For1) visitCollection4For1(ctx.collection4For1(1)));
-              // note :i think you must be to add terminal node (CP_CONTENT_EQUALS) to ForExpression in ast
-              // note :i think you must be to add terminal node (INDEX) to ForExpression in ast
-              // note :i think you must be to add terminal node (CP_CONTENT_SEMI_COLON) to ForExpression in ast
+              // note :i think you must be to add terminal node (CP_CONTENT_EQUALS) to ForExpression in ast // TODO no you don't
+              // note :i think you must be to add terminal node (INDEX) to ForExpression in ast // TODO no you don't
+              // note :i think you must be to add terminal node (CP_CONTENT_SEMI_COLON) to ForExpression in ast // TODO no you don't
+
 
           }
 
@@ -427,12 +428,8 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
        //For CpExpression role 2
         if(ctx.collection4For1()!=null&& ctx.collection4For3()!=null){
             forExpression.setCollection4For1_2_1((Collection4For1) visitCollection4For1(ctx.collection4For1(0)));
+            forExpression.setCollection4For1_2_2((Collection4For1) visitCollection4For1(ctx.collection4For1(1)));
             forExpression.setCollection4For3_2_1((Collection4For3) visitCollection4For3(ctx.collection4For3()));
-
-
-            if(ctx.collection4For1().size()>1){
-                forExpression.setCollection4For1_2_2((Collection4For1) visitCollection4For1(ctx.collection4For1(1)));
-            }
 
         }
 
@@ -525,27 +522,29 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
 
         OneLine4For2Condition oneLine4For2Condition=new OneLine4For2Condition();
 
-       if(ctx.CP_CONTENT_OPEN_PAR()!=null&&ctx.CP_CONTENT_CLOSE_PAR()!=null){
-           oneLine4For2Condition.setOpenPar(ctx.CP_CONTENT_OPEN_PAR().getSymbol().getText());
+        // TODO there is no importance to this if
+//       if(ctx.CP_CONTENT_OPEN_PAR()!=null&&ctx.CP_CONTENT_CLOSE_PAR()!=null){
+//           oneLine4For2Condition.setOpenPar(ctx.CP_CONTENT_OPEN_PAR().getSymbol().getText());
 
 
            if(ctx.logicComprison()!=null&& ctx.collection4For2()!=null){
                oneLine4For2Condition.setLogicComprison((LogicComprison) visitLogicComprison(ctx.logicComprison()));
-
                oneLine4For2Condition.setCollection4For2_1_1((Collection4For2) visitCollection4For2(ctx.collection4For2(0)));
+               oneLine4For2Condition.setCollection4For2_1_2((Collection4For2) visitCollection4For2(ctx.collection4For2(1)));
 
-              if(ctx.CP_CONTENT_QUESTION_MARK()!=null){
-                  oneLine4For2Condition.setQuestionMark(ctx.CP_CONTENT_QUESTION_MARK().getSymbol().getText());
-              }
+               // TODO it's wrong you don't need it
+//              if(ctx.CP_CONTENT_QUESTION_MARK()!=null){
+//                  oneLine4For2Condition.setQuestionMark(ctx.CP_CONTENT_QUESTION_MARK().getSymbol().getText());
+//              }
            }
-
-
-           if(ctx.collection4For2().size()>1){
-             oneLine4For2Condition.setCollection4For2_1_2((Collection4For2) visitCollection4For2(ctx.collection4For2(1)));
-           }
-            // maybe you think to add (Colon) to oneLine4For2Condition in ast
+           // TODO you don't need this condition
+//           if(ctx.collection4For2().size()>1){
+//           }
+            // maybe you think to add (Colon) to oneLine4For2Condition in ast // TODO no you don't
            oneLine4For2Condition.setClosePar(ctx.CP_CONTENT_CLOSE_PAR().getSymbol().getText());
-       }
+
+
+//       }
 
 
 
@@ -595,28 +594,13 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
 
         OneLine4For3Condition oneLine4For3Condition=new OneLine4For3Condition();
 
-        if(ctx.CP_CONTENT_OPEN_PAR()!=null&&ctx.CP_CONTENT_CLOSE_PAR()!=null){
-            oneLine4For3Condition.setOpenPar(ctx.CP_CONTENT_OPEN_PAR().getSymbol().getText());
 
-
-            if(ctx.logicComprison()!=null&& ctx.collection4For3()!=null){
+            if(ctx.logicComprison()!=null&& ctx.collection4For3()!=null) {
                 oneLine4For3Condition.setLogicComprison((LogicComprison) visitLogicComprison(ctx.logicComprison()));
-
                 oneLine4For3Condition.setCollection4For3_1_1((Collection4For3) visitCollection4For3(ctx.collection4For3(0)));
-
-                if(ctx.CP_CONTENT_QUESTION_MARK()!=null){
-                    oneLine4For3Condition.setQuestionMark(ctx.CP_CONTENT_QUESTION_MARK().getSymbol().getText());
-                }
-            }
-
-
-            if(ctx.collection4For3().size()>1){
                 oneLine4For3Condition.setCollection4For3_1_2((Collection4For3) visitCollection4For3(ctx.collection4For3(1)));
-            }
-            // maybe you think to add (Colon) to oneLine4For3Condition in ast
-            oneLine4For3Condition.setClosePar(ctx.CP_CONTENT_CLOSE_PAR().getSymbol().getText());
-        }
 
+            }
         return super.visitOneLine4For3Condition(ctx);
     }
 
@@ -684,27 +668,13 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
 
         OneLine4For4Condition oneLine4For4Condition = new OneLine4For4Condition();
 
-        if (ctx.CP_CONTENT_OPEN_PAR() != null && ctx.CP_CONTENT_CLOSE_PAR() != null) {
-            oneLine4For4Condition.setOpenPar(ctx.CP_CONTENT_OPEN_PAR().getSymbol().getText());
-
 
             if (ctx.logicComprison() != null && ctx.collection4For5() != null) {
                 oneLine4For4Condition.setLogicComprison((LogicComprison) visitLogicComprison(ctx.logicComprison()));
-
                 oneLine4For4Condition.setCollection4For5_1_1((Collection4For4) visitCollection4For5(ctx.collection4For5(0)));
-
-                if (ctx.CP_CONTENT_QUESTION_MARK() != null) {
-                    oneLine4For4Condition.setQuestionMark(ctx.CP_CONTENT_QUESTION_MARK().getSymbol().getText());
-                }
-            }
-
-
-            if (ctx.collection4For5().size() > 1) {
                 oneLine4For4Condition.setCollection4For5_1_2((Collection4For4) visitCollection4For5(ctx.collection4For5(1)));
+
             }
-            // maybe you think to add (Colon) to oneLine4For3Condition in ast
-            oneLine4For4Condition.setClosePar(ctx.CP_CONTENT_CLOSE_PAR().getSymbol().getText());
-        }
 
         return super.visitOneLine4For5Condition(ctx);
     }
@@ -834,6 +804,7 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
 //        : CP_CONTENT_NUMBER
         NUmber nUmber = new NUmber();
         if (ctx.CP_CONTENT_NUMBER() != null) {
+            // TODO i don't know if this is right or not
             double numberType = Double.valueOf(ctx.CP_CONTENT_NUMBER().getSymbol().getText());
             // For check what's the type of Number
             if (numberType == (int) numberType) {
