@@ -988,9 +988,12 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
             arrayFuncRet4AnnotOneLine.setArithmeticLogics(arithmeticLogics);
         }
 
-        // TODO here it's or not and.
-        if(ctx.propFuncRet4AnnotOneLine()!=null&&ctx.funcEndRet4AnnotOneLine()!=null){
+
+        if(ctx.propFuncRet4AnnotOneLine()!=null) {
             arrayFuncRet4AnnotOneLine.setPropFuncRet4AnnotOneLine((PropFuncRet4AnnotOneLine) visitPropFuncRet4AnnotOneLine(ctx.propFuncRet4AnnotOneLine()));
+
+        }
+        if(ctx.funcEndRet4AnnotOneLine()!=null){
             arrayFuncRet4AnnotOneLine.setFuncEndRet4AnnotOneLine((FuncEndRet4AnnotOneLine) visitFuncEndRet4AnnotOneLine(ctx.funcEndRet4AnnotOneLine()));
         }
 
@@ -1010,11 +1013,14 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
            propFuncRet4AnnotOneLine.setPropertyValue(propertyValues);
        }
 
-        // TODO here it's or not and
-       if(ctx.arrayFuncRet4AnnotOneLine()!=null&&ctx.funcEndRet4AnnotOneLine()!=null){
 
+       if(ctx.arrayFuncRet4AnnotOneLine()!=null){
            propFuncRet4AnnotOneLine.setArrayFuncRet4AnnotOneLine((ArrayFuncRet4AnnotOneLine) visitArrayFuncRet4AnnotOneLine(ctx.arrayFuncRet4AnnotOneLine()));
-           propFuncRet4AnnotOneLine.setFuncEndRet4AnnotOneLine((FuncEndRet4AnnotOneLine) visitFuncEndRet4AnnotOneLine(ctx.funcEndRet4AnnotOneLine()));
+
+       }
+       if(ctx.funcEndRet4AnnotOneLine()!=null){
+
+            propFuncRet4AnnotOneLine.setFuncEndRet4AnnotOneLine((FuncEndRet4AnnotOneLine) visitFuncEndRet4AnnotOneLine(ctx.funcEndRet4AnnotOneLine()));
 
 
        }
@@ -1029,17 +1035,18 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
          List<Parameters>parameters=new ArrayList<>();
 
          if(ctx.parameters()!=null){
-          //   funcEndRet4AnnotOneLine.setOpenPar(ctx.CP_CONTENT_OPEN_PAR().getSymbol().getText());
              for(int i=0;i<ctx.parameters().size();i++){ ;
                  parameters.add((Parameters)visitParameters(ctx.parameters(i)));
              }
              funcEndRet4AnnotOneLine.setFunctionParameters(parameters);
          }
 
-        // TODO here it's or not and
-        if(ctx.arrayFuncRet4AnnotOneLine()!=null&&ctx.propFuncRet4AnnotOneLine()!=null){
-             funcEndRet4AnnotOneLine.setArrayFuncRet4AnnotOneLine((ArrayFuncRet4AnnotOneLine) visitArrayFuncRet4AnnotOneLine(ctx.arrayFuncRet4AnnotOneLine()));
-              funcEndRet4AnnotOneLine.setPropFuncRet4AnnotOneLine((PropFuncRet4AnnotOneLine) visitPropFuncRet4AnnotOneLine(ctx.propFuncRet4AnnotOneLine()));
+
+        if(ctx.arrayFuncRet4AnnotOneLine()!=null){
+            funcEndRet4AnnotOneLine.setArrayFuncRet4AnnotOneLine((ArrayFuncRet4AnnotOneLine) visitArrayFuncRet4AnnotOneLine(ctx.arrayFuncRet4AnnotOneLine()));
+
+        }if(ctx.propFuncRet4AnnotOneLine()!=null){
+             funcEndRet4AnnotOneLine.setPropFuncRet4AnnotOneLine((PropFuncRet4AnnotOneLine) visitPropFuncRet4AnnotOneLine(ctx.propFuncRet4AnnotOneLine()));
 
          }
 
