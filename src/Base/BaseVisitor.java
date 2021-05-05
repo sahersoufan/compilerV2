@@ -626,7 +626,6 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
         //TODO you should solve this problem
 //: (CP_CONTENT_OPEN_BRACKETS  arithmeticLogic CP_CONTENT_CLOSE_BRACKETS)+ (functionCallFromVar | property)?
         ArrayCalling arrayCalling = new ArrayCalling();
-        ArrayList<OAC> oacs = new ArrayList<>();
 
 
         return super.visitArrayCalling(ctx);
