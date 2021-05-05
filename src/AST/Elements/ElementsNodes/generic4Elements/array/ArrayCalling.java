@@ -10,18 +10,16 @@ import java.util.List;
 
 
 public class ArrayCalling {
-    private List<OAC> oacs = new ArrayList<>();
-
+    private List<ArithmeticLogic> arithmeticLogic = new ArrayList<>();
     private FunctionCallFromVar functionCallFromVar;
     private Property property;
 
-
-    public List<OAC> getOacs() {
-        return oacs;
+    public List<ArithmeticLogic> getArithmeticLogic() {
+        return arithmeticLogic;
     }
 
-    public void setOacs(List<OAC> oacs) {
-        this.oacs = oacs;
+    public void setArithmeticLogic(List<ArithmeticLogic> arithmeticLogic) {
+        this.arithmeticLogic = arithmeticLogic;
     }
 
     public FunctionCallFromVar getFunctionCallFromVar() {

@@ -17,6 +17,18 @@ public interface HTMLParserVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitHtmlDocument(HTMLParser.HtmlDocumentContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link HTMLParser#htmlXML}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitHtmlXML(HTMLParser.HtmlXMLContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link HTMLParser#htmlEle}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitHtmlEle(HTMLParser.HtmlEleContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link HTMLParser#scriptletOrSeaWs}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -29,6 +41,12 @@ public interface HTMLParserVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitHtmlElements(HTMLParser.HtmlElementsContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link HTMLParser#htmlElementsComp}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitHtmlElementsComp(HTMLParser.HtmlElementsCompContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link HTMLParser#htmlElement}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -40,6 +58,12 @@ public interface HTMLParserVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitHtmlContent(HTMLParser.HtmlContentContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link HTMLParser#htmlContentComp}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitHtmlContentComp(HTMLParser.HtmlContentCompContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link HTMLParser#htmlAttribute}.
 	 * @param ctx the parse tree

@@ -9,40 +9,22 @@ import java.util.List;
 public class HtmlContent {
 
 
-    private List<HtmlCharData> htmlCharDataList = new ArrayList<>();
-    private List<HtmlElement> htmlElement = new ArrayList<>();
-    private List<String> htmlComment = new ArrayList<>();
-    private List<String> cDatas = new ArrayList<>();
+    private HtmlCharData htmlCharDataList;
+    private List<HtmlContentComp> htmlContentComps = new ArrayList<>();
 
-    public List<HtmlCharData> getHtmlCharDataList() {
+    public HtmlCharData getHtmlCharDataList() {
         return htmlCharDataList;
     }
 
-    public void setHtmlCharDataList(List<HtmlCharData> htmlCharDataList) {
+    public void setHtmlCharDataList(HtmlCharData htmlCharDataList) {
         this.htmlCharDataList = htmlCharDataList;
     }
 
-    public List<HtmlElement> getHtmlElement() {
-        return htmlElement;
+    public List<HtmlContentComp> getHtmlContentComps() {
+        return htmlContentComps;
     }
 
-    public void setHtmlElement(List<HtmlElement> htmlElement) {
-        this.htmlElement = htmlElement;
-    }
-
-    public List<String> getHtmlComment() {
-        return htmlComment;
-    }
-
-    public void setHtmlComment(List<String> htmlComment) {
-        this.htmlComment = htmlComment;
-    }
-
-    public List<String> getcDatas() {
-        return cDatas;
-    }
-
-    public void setcDatas(List<String> cDatas) {
-        this.cDatas = cDatas;
+    public void setHtmlContentComps(List<HtmlContentComp> htmlContentComps) {
+        this.htmlContentComps = htmlContentComps;
     }
 }
