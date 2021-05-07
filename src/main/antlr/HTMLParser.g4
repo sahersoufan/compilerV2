@@ -137,6 +137,10 @@ collection4For2
     | oneLine4For2Condition
     | arithmeticLogic
     ;
+
+
+
+
 oneLine4For2Condition
 : CP_CONTENT_OPEN_PAR logicComprison CP_CONTENT_QUESTION_MARK collection4For2 CP_CONTENT_COLON collection4For2 CP_CONTENT_CLOSE_PAR
 ;
@@ -303,7 +307,7 @@ trueOrFalse
 // ARRAY
 objArray
     : arrName arrayCalling
-    ;
+         ;
 arrName
     : CP_CONTENT_IDENTIFIER
     ;
@@ -399,6 +403,8 @@ comparisonOperator
 //
 
 // LOGIC
+
+
 logicComprison
     : ((CP_CONTENT_NOT)? ((collection4LogicRet) | (CP_CONTENT_OPEN_PAR logicComprison CP_CONTENT_CLOSE_PAR))) /// first
       middleAndLastLogicComparison*

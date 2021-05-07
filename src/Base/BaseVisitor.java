@@ -2,19 +2,42 @@ package Base;
 
 import AST.Elements.*;
 import AST.Elements.ElementsNodes.*;
-import AST.Elements.ElementsNodes.CpExpression.For.ForExpression;
+import AST.Elements.ElementsNodes.CpExpression.For.*;
 import AST.Elements.ElementsNodes.CpExpression.If.IfExpression;
+import AST.Elements.ElementsNodes.CpExpression.Switch.Collection4Switch1;
+import AST.Elements.ElementsNodes.CpExpression.Switch.OneLine4switch1;
 import AST.Elements.ElementsNodes.CpExpression.Switch.SwitchCaseExpression;
 import AST.Elements.ElementsNodes.CpExpression.Switch.SwitchExpression;
-import AST.Elements.ElementsNodes.CpExpression.annotation.AnnotationClickExpression;
-import AST.Elements.ElementsNodes.CpExpression.annotation.AnnotationOverExpression;
+import AST.Elements.ElementsNodes.CpExpression.annotation.*;
 import AST.Elements.ElementsNodes.CpExpression.app.AppExpression;
+import AST.Elements.ElementsNodes.CpExpression.app.Collection4App1;
+import AST.Elements.ElementsNodes.CpExpression.app.OneLine4AppCondition;
+import AST.Elements.ElementsNodes.CpExpression.model.Collection4Model1;
 import AST.Elements.ElementsNodes.CpExpression.model.ModelExpression;
+import AST.Elements.ElementsNodes.CpExpression.model.OneLine4ModelCondition;
 import AST.Elements.ElementsNodes.CpExpression.showHide.HideExpression;
 import AST.Elements.ElementsNodes.CpExpression.showHide.ShowExpression;
 import AST.Elements.ElementsNodes.generic4Elements.Collection4LogicRet;
+import AST.Elements.ElementsNodes.generic4Elements.Logic.ArithmeticLogic;
 import AST.Elements.ElementsNodes.generic4Elements.Logic.LogicComprison;
 import AST.Elements.ElementsNodes.generic4Elements.Logic.MiddleAndLastLogicComparison;
+import AST.Elements.ElementsNodes.generic4Elements.NUmber;
+import AST.Elements.ElementsNodes.generic4Elements.TrueOrFalse;
+import AST.Elements.ElementsNodes.generic4Elements.array.ArrName;
+import AST.Elements.ElementsNodes.generic4Elements.array.Array;
+import AST.Elements.ElementsNodes.generic4Elements.array.ArrayCalling;
+import AST.Elements.ElementsNodes.generic4Elements.array.ObjArray;
+import AST.Elements.ElementsNodes.generic4Elements.comparison.ComparisonExpression;
+import AST.Elements.ElementsNodes.generic4Elements.function.FunctionCall;
+import AST.Elements.ElementsNodes.generic4Elements.function.FunctionName;
+import AST.Elements.ElementsNodes.generic4Elements.function.Parameter;
+import AST.Elements.ElementsNodes.generic4Elements.function.Parameters;
+import AST.Elements.ElementsNodes.generic4Elements.object.Obj;
+import AST.Elements.ElementsNodes.generic4Elements.object.ObjBody;
+import AST.Elements.ElementsNodes.generic4Elements.object.SubObj;
+import AST.Elements.ElementsNodes.generic4Elements.property.PropertyValue;
+import AST.Elements.ElementsNodes.generic4Elements.variable.Variable;
+import AST.Elements.ElementsNodes.generic4Elements.variable.VariableName;
 import AST.Elements.ElementsNodes.mustacheExpression.MustacheExpression;
 import AST.HtmlDocument;
 import AST.HtmlEle;
@@ -24,6 +47,32 @@ import generatedGrammers.HTMLParserBaseVisitor;
 
 import java.util.ArrayList;
 import java.util.List;
+
+
+// For create new node in tree
+//-------------------Use this code---------------------------
+
+//SimpleTreeNode root = new SimpleTreeNode("root");
+//Notice "We have only one root and many children"
+
+//root.addChild(new SimpleTreeNode("Child 1"));
+// For adding endpoint child
+
+//SimpleTreeNode child3 = new SimpleTreeNode("Child 3");
+//For create new child that has many children
+
+//root.addChild(child3);
+// For adding child
+
+//new ListingTreePrinter().print(root);
+// For print tree
+
+//new TraditionalTreePrinter().print(root);
+// For print Traditional Tree
+
+//new TraditionalTreePrinter().print(new BorderTreeNodeDecorator(root));
+//for print Traditional Tree with Border
+
 
 public class BaseVisitor extends HTMLParserBaseVisitor {
     @Override
@@ -348,146 +397,660 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
     ///////////////////////// FATIMA /////////////////////////
     @Override
     public Object visitAppExpression(HTMLParser.AppExpressionContext ctx) {
+        AppExpression appExpression=new AppExpression();
+
+        if(ctx.collection4App1()!=null){
+            appExpression.setCollection4App1((Collection4App1) visitCollection4App1(ctx.collection4App1()));
+        }
+
         return super.visitAppExpression(ctx);
     }
 
     @Override
     public Object visitCollection4App1(HTMLParser.Collection4App1Context ctx) {
+
+        Collection4App1 collection4App1=new Collection4App1();
+
+        //collection4App1 role1
+        if(ctx.variable()!=null){
+            collection4App1.setVariable((Variable) visitVariable(ctx.variable()));
+        }
+        //collection4App1 role2
+
+        if(ctx.subObj()!=null){
+            collection4App1.setSubObj((SubObj) visitSubObj(ctx.subObj()));
+        }
+        //collection4App1  role 3
+        if(ctx.objArray()!=null){
+            collection4App1.setObjArray((ObjArray) visitObjArray(ctx.objArray()));
+        }
+
+        //collection4App1  role 4
+        if(ctx.functionCall()!=null){
+            collection4App1.setFunctionCall((FunctionCall) visitFunctionCall(ctx.functionCall()));
+        }
+
+        //collection4App1  role 5
+        if(ctx.oneLine4AppCondition()!=null){
+            collection4App1.setOneLine4AppCondition((OneLine4AppCondition) visitOneLine4AppCondition(ctx.oneLine4AppCondition()));
+        }
+
+
         return super.visitCollection4App1(ctx);
     }
 
     @Override
     public Object visitOneLine4AppCondition(HTMLParser.OneLine4AppConditionContext ctx) {
+
+        OneLine4AppCondition  oneLine4AppCondition=new OneLine4AppCondition();
+
+        if(ctx.logicComprison()!=null&& ctx.collection4App1()!=null){
+            oneLine4AppCondition.setLogicComprison((LogicComprison) visitLogicComprison(ctx.logicComprison()));
+            oneLine4AppCondition.setCollection4App1_1((Collection4App1) visitCollection4App1(ctx.collection4App1(0)));
+            oneLine4AppCondition.setCollection4App1_2((Collection4App1) visitCollection4App1(ctx.collection4App1(1)));
+        }
+
         return super.visitOneLine4AppCondition(ctx);
     }
 
+
+    ////////////////////// forExpression ////////////////////////
     @Override
     public Object visitForExpression(HTMLParser.ForExpressionContext ctx) {
+       ForExpression forExpression=new ForExpression();
+
+       //For CpExpression role 1
+       if(ctx.collection4For1()!=null&& ctx.collection4For2()!=null){
+           forExpression.setCollection4For1_1_1((Collection4For1) visitCollection4For1(ctx.collection4For1(0)));
+           forExpression.setCollection4For2_1_1((Collection4For2) visitCollection4For2(ctx.collection4For2()));
+
+          if(ctx.collection4For1().size()>1){
+              forExpression.setCollection4For1_1_2((Collection4For1) visitCollection4For1(ctx.collection4For1(1)));
+
+          }
+
+       }
+
+       //For CpExpression role 2
+        if(ctx.collection4For1()!=null&& ctx.collection4For3()!=null){
+            forExpression.setCollection4For1_2_1((Collection4For1) visitCollection4For1(ctx.collection4For1(0)));
+            forExpression.setCollection4For1_2_2((Collection4For1) visitCollection4For1(ctx.collection4For1(1)));
+            forExpression.setCollection4For3_2_1((Collection4For3) visitCollection4For3(ctx.collection4For3()));
+
+        }
+
+        //For CpExpression role 3
+        if(ctx.collection4For5()!=null){
+            forExpression.setCollection4For5_3_1((Collection4For4) visitCollection4For5(ctx.collection4For5()));
+        }
+
         return super.visitForExpression(ctx);
     }
 
     @Override
     public Object visitCollection4For1(HTMLParser.Collection4For1Context ctx) {
+
+      Collection4For1 collection4For1=new Collection4For1();
+
+      //Collection4For1  role 1
+      if(ctx.variable()!=null){
+          collection4For1.setVariable((Variable) visitVariable(ctx.variable()));
+      }
+      //Collection4For1  role 2
+      if(ctx.subObj()!=null){
+          collection4For1.setSubObj((SubObj) visitSubObj(ctx.subObj()));
+      }
+      //Collection4For1  role 3
+      if(ctx.objArray()!=null){
+          collection4For1.setObjArray((ObjArray) visitObjArray(ctx.objArray()));
+      }
+
         return super.visitCollection4For1(ctx);
     }
 
     @Override
     public Object visitCollection4For2(HTMLParser.Collection4For2Context ctx) {
+       Collection4For2 collection4For2=new Collection4For2();
+
+        //Collection4For2  role 1
+
+        if(ctx.variable()!=null){
+            collection4For2.setVariable((Variable) visitVariable(ctx.variable()));
+        }
+        //Collection4For2  role 2
+
+        if(ctx.CP_CONTENT_STRING()!=null){
+            collection4For2.setString(ctx.CP_CONTENT_STRING().getSymbol().getText());
+        }
+        //Collection4For2  role 3
+        if(ctx.number()!=null){
+            collection4For2.setNumber((NUmber) visitNumber(ctx.number()));
+        }
+        //Collection4For2  role 4
+        if(ctx.subObj()!=null){
+            collection4For2.setSubObj((SubObj) visitSubObj(ctx.subObj()));
+        }
+        //Collection4For2  role 5
+        if(ctx.objArray()!=null){
+            collection4For2.setObjArray((ObjArray) visitObjArray(ctx.objArray()));
+        }
+
+        //Collection4For2  role 6
+        if(ctx.array()!=null){
+            collection4For2.setArray((Array) visitArray(ctx.array()));
+        }
+
+        //Collection4For2  role 7
+        if(ctx.functionCall()!=null){
+            collection4For2.setFunctionCall((FunctionCall) visitFunctionCall(ctx.functionCall()));
+        }
+
+        //Collection4For2  role 8
+        if(ctx.oneLine4For2Condition()!=null){
+            collection4For2.setOneLine4For2Condition((OneLine4For2Condition) visitOneLine4For2Condition(ctx.oneLine4For2Condition()));
+        }
+
+        //Collection4For2  role 9
+        if(ctx.arithmeticLogic()!=null){
+            collection4For2.setArithmeticLogic((ArithmeticLogic) visitArithmeticLogic(ctx.arithmeticLogic()));
+        }
+
+
+
+
         return super.visitCollection4For2(ctx);
     }
 
     @Override
     public Object visitOneLine4For2Condition(HTMLParser.OneLine4For2ConditionContext ctx) {
+
+        // ex: (true && (a<b ?true :false ) && !c ? b : b)
+
+        OneLine4For2Condition oneLine4For2Condition=new OneLine4For2Condition();
+
+        oneLine4For2Condition.setOpenPar(ctx.CP_CONTENT_OPEN_PAR().getSymbol().getText());
+           if(ctx.logicComprison()!=null&& ctx.collection4For2()!=null){
+               oneLine4For2Condition.setLogicComprison((LogicComprison) visitLogicComprison(ctx.logicComprison()));
+               oneLine4For2Condition.setCollection4For2_1_1((Collection4For2) visitCollection4For2(ctx.collection4For2(0)));
+               oneLine4For2Condition.setCollection4For2_1_2((Collection4For2) visitCollection4For2(ctx.collection4For2(1)));
+           }
+
+
         return super.visitOneLine4For2Condition(ctx);
     }
 
     @Override
     public Object visitCollection4For3(HTMLParser.Collection4For3Context ctx) {
+       Collection4For3 collection4For3=new Collection4For3();
+
+       //Collection4For3 role 1
+        if(ctx.obj()!=null){
+            collection4For3.setObj((Obj) visitObj(ctx.obj()));
+        }
+
+        //Collection4For3 role 2
+        if(ctx.objBody()!=null){
+            collection4For3.setObjBody((ObjBody)visitObjBody(ctx.objBody()));
+        }
+
+        //Collection4For3 role 3
+        if(ctx.subObj()!=null){
+            collection4For3.setSubObj((SubObj) visitSubObj(ctx.subObj()));
+        }
+
+        //Collection4For3 role 4
+        if(ctx.objArray()!=null){
+            collection4For3.setObjArray((ObjArray) visitObjArray(ctx.objArray()));
+        }
+
+        //Collection4For3 role 5
+        if(ctx.functionCall()!=null){
+            collection4For3.setFunctionCall((FunctionCall) visitFunctionCall(ctx.functionCall()));
+        }
+
+        //Collection4For3 role 6
+        if(ctx.oneLine4For3Condition()!=null){
+            collection4For3.setOneLine4For3Condition((OneLine4For3Condition) visitOneLine4For3Condition(ctx.oneLine4For3Condition()));
+        }
+
+
         return super.visitCollection4For3(ctx);
     }
 
     @Override
     public Object visitOneLine4For3Condition(HTMLParser.OneLine4For3ConditionContext ctx) {
+
+        OneLine4For3Condition oneLine4For3Condition=new OneLine4For3Condition();
+
+
+            if(ctx.logicComprison()!=null&& ctx.collection4For3()!=null) {
+                oneLine4For3Condition.setLogicComprison((LogicComprison) visitLogicComprison(ctx.logicComprison()));
+                oneLine4For3Condition.setCollection4For3_1_1((Collection4For3) visitCollection4For3(ctx.collection4For3(0)));
+                oneLine4For3Condition.setCollection4For3_1_2((Collection4For3) visitCollection4For3(ctx.collection4For3(1)));
+
+            }
         return super.visitOneLine4For3Condition(ctx);
     }
 
     @Override
     public Object visitCollection4For5(HTMLParser.Collection4For5Context ctx) {
+
+        Collection4For4 collection4For4=new Collection4For4();
+
+        //Collection4For4 role 1
+        if(ctx.variable()!=null){
+            collection4For4.setVariable((Variable) visitVariable(ctx.variable()));
+        }
+
+        //Collection4For4 role 2
+        if(ctx.number()!=null){
+            collection4For4.setNumber((NUmber) visitNumber(ctx.number()));
+        }
+
+        //Collection4For4 role 3
+        if(ctx.trueOrFalse()!=null){
+            collection4For4.setTrueOrFalse((TrueOrFalse) visitTrueOrFalse(ctx.trueOrFalse()));
+        }
+
+        //Collection4For4 role 4
+        if(ctx.objArray()!=null){
+            collection4For4.setObjArray((ObjArray) visitObjArray(ctx.objArray()));
+        }
+
+        //Collection4For4 role 5
+        if(ctx.functionCall()!=null){
+            collection4For4.setFunctionCall((FunctionCall) visitFunctionCall(ctx.functionCall()));
+        }
+
+        //Collection4For4 role 6
+        if(ctx.subObj()!=null){
+            collection4For4.setSubObj((SubObj) visitSubObj(ctx.subObj()));
+        }
+
+        //Collection4For4 role 7
+        if(ctx.comparisonExpression()!=null){
+            collection4For4.setComparisonExpression((ComparisonExpression) visitComparisonExpression(ctx.comparisonExpression()));
+        }
+
+        //Collection4For4 role 8
+        if(ctx.oneLine4For5Condition()!=null){
+            collection4For4.setOneLine4For5Condition((OneLine4For4Condition) visitOneLine4For5Condition(ctx.oneLine4For5Condition()));
+        }
+
+        //Collection4For4 role 9
+        if(ctx.logicComprison()!=null){
+            collection4For4.setLogicComprison((LogicComprison) visitLogicComprison(ctx.logicComprison()));
+        }
+
+        //Collection4For4 role 10
+        if(ctx.arithmeticLogic()!=null){
+            collection4For4.setArithmeticLogic((ArithmeticLogic) visitArithmeticLogic(ctx.arithmeticLogic()));
+        }
+
+
         return super.visitCollection4For5(ctx);
     }
 
     @Override
     public Object visitOneLine4For5Condition(HTMLParser.OneLine4For5ConditionContext ctx) {
+
+        OneLine4For4Condition oneLine4For4Condition = new OneLine4For4Condition();
+
+
+            if (ctx.logicComprison() != null && ctx.collection4For5() != null) {
+                oneLine4For4Condition.setLogicComprison((LogicComprison) visitLogicComprison(ctx.logicComprison()));
+                oneLine4For4Condition.setCollection4For5_1_1((Collection4For4) visitCollection4For5(ctx.collection4For5(0)));
+                oneLine4For4Condition.setCollection4For5_1_2((Collection4For4) visitCollection4For5(ctx.collection4For5(1)));
+
+            }
+
         return super.visitOneLine4For5Condition(ctx);
     }
 
+   /////////////////////////// end forexprition ///////////////////////////
+
+    /////////////////////////// show exprition ///////////////////////////
     @Override
     public Object visitShowExpression(HTMLParser.ShowExpressionContext ctx) {
+
+        ShowExpression showExpression=new ShowExpression();
+        if(ctx.logicComprison()!=null){
+            showExpression.setLogicComprison((LogicComprison) visitLogicComprison(ctx.logicComprison()));
+        }
+
         return super.visitShowExpression(ctx);
     }
+    /////////////////////////// end show exprition ///////////////////////////
 
+    ///////////////////////////  Hide exprition ///////////////////////////
     @Override
     public Object visitHideExpression(HTMLParser.HideExpressionContext ctx) {
+        HideExpression hideExpression=new HideExpression();
+
+        if(ctx.logicComprison()!=null){
+            hideExpression.setLogicComprison((LogicComprison) visitLogicComprison(ctx.logicComprison()));
+        }
         return super.visitHideExpression(ctx);
     }
 
+    ///////////////////////////  end Hide exprition ///////////////////////////
+
+
+    ///////////////////////////  Switch exprition ///////////////////////////
     @Override
     public Object visitSwitchExpression(HTMLParser.SwitchExpressionContext ctx) {
+      SwitchExpression switchExpression=new SwitchExpression();
+
+      if(ctx.collection4Switch1()!=null){
+          switchExpression.setCollection4Switch1((Collection4Switch1) visitCollection4Switch1(ctx.collection4Switch1()));
+      }
+
         return super.visitSwitchExpression(ctx);
     }
 
     @Override
     public Object visitSwitchCaseExpression(HTMLParser.SwitchCaseExpressionContext ctx) {
+
+        SwitchCaseExpression switchCaseExpression=new SwitchCaseExpression();
+
+        if(ctx.collection4Switch1()!=null){
+            switchCaseExpression.setCollection4Switch1((Collection4Switch1) visitCollection4Switch1(ctx.collection4Switch1()));
+        }
         return super.visitSwitchCaseExpression(ctx);
     }
 
     @Override
     public Object visitCollection4Switch1(HTMLParser.Collection4Switch1Context ctx) {
+
+        Collection4Switch1 collection4Switch1=new Collection4Switch1();
+
+
+        //Collection4Switch1  role 1
+
+        if(ctx.variable()!=null){
+            collection4Switch1.setVariable((Variable) visitVariable(ctx.variable()));
+        }
+        //Collection4Switch1  role 2
+
+        if(ctx.CP_CONTENT_STRING()!=null){
+            collection4Switch1.setString(ctx.CP_CONTENT_STRING().getSymbol().getText());
+        }
+        //Collection4Switch1  role 3
+        if(ctx.number()!=null){
+            collection4Switch1.setNumber((NUmber) visitNumber(ctx.number()));
+        }
+        //Collection4Switch1  role 4
+        if(ctx.subObj()!=null){
+            collection4Switch1.setSubObj((SubObj) visitSubObj(ctx.subObj()));
+        }
+        //Collection4Switch1  role 5
+        if(ctx.objArray()!=null){
+            collection4Switch1.setObjArray((ObjArray) visitObjArray(ctx.objArray()));
+        }
+
+        //Collection4Switch1  role 6
+        if(ctx.oneLine4switch1()!=null){
+            collection4Switch1.setOneLine4switch1((OneLine4switch1) visitOneLine4switch1(ctx.oneLine4switch1()));
+        }
+
+        //Collection4Switch1  role 7
+        if(ctx.arithmeticLogic()!=null){
+            collection4Switch1.setArithmeticLogic((ArithmeticLogic) visitArithmeticLogic(ctx.arithmeticLogic()));
+        }
+
+
         return super.visitCollection4Switch1(ctx);
     }
 
     @Override
     public Object visitOneLine4switch1(HTMLParser.OneLine4switch1Context ctx) {
+
+        OneLine4switch1  oneLine4switch1=new OneLine4switch1 ();
+
+        if(ctx.logicComprison()!=null&& ctx.collection4Switch1()!=null){
+            oneLine4switch1.setLogicComprison((LogicComprison) visitLogicComprison(ctx.logicComprison()));
+            oneLine4switch1.setCollection4Switch1_1_1((Collection4Switch1) visitCollection4Switch1(ctx.collection4Switch1(0)));
+            oneLine4switch1.setCollection4Switch1_1_2((Collection4Switch1) visitCollection4Switch1(ctx.collection4Switch1(1)));
+        }
+
         return super.visitOneLine4switch1(ctx);
     }
 
+    ///////////////////////////   End Switch exprition ///////////////////////////
+
+    ///////////////////////////  If exprition ///////////////////////////
+
     @Override
     public Object visitIfExpression(HTMLParser.IfExpressionContext ctx) {
+
+        IfExpression ifExpression =new IfExpression();
+
+      if(ctx.logicComprison()!=null){
+          ifExpression.setLogicComprison((LogicComprison) visitLogicComprison(ctx.logicComprison()));
+      }
+
         return super.visitIfExpression(ctx);
     }
 
+    ///////////////////////////  end If exprition ///////////////////////////
+
+    ///////////////////////////  Model exprition ///////////////////////////
     @Override
     public Object visitModelExpression(HTMLParser.ModelExpressionContext ctx) {
+
+        ModelExpression modelExpression =new ModelExpression();
+
+        if(ctx.collection4Model1()!=null){
+            modelExpression.setCollection4Model1((Collection4Model1) visitCollection4Model1(ctx.collection4Model1()));
+        }
+
         return super.visitModelExpression(ctx);
     }
 
     @Override
     public Object visitCollection4Model1(HTMLParser.Collection4Model1Context ctx) {
+
+       Collection4Model1 collection4Model1=new Collection4Model1();
+
+        //Collection4Model1 role 1
+        if(ctx.variable()!=null){
+            collection4Model1.setVariable((Variable) visitVariable(ctx.variable()));
+        }
+
+
+        //Collection4Model1 role 2
+        if(ctx.objArray()!=null){
+            collection4Model1.setObjArray((ObjArray) visitObjArray(ctx.objArray()));
+        }
+
+        //Collection4Model1 role 3
+        if(ctx.functionCall()!=null){
+            collection4Model1.setFunctionCall((FunctionCall) visitFunctionCall(ctx.functionCall()));
+        }
+
+        //Collection4Model1 role 4
+        if(ctx.subObj()!=null){
+            collection4Model1.setSubObj((SubObj) visitSubObj(ctx.subObj()));
+        }
+
+        //Collection4Model1 role 5
+        if(ctx.oneLine4ModelCondition()!=null){
+            collection4Model1.setOneLine4ModelCondition((OneLine4ModelCondition) visitOneLine4ModelCondition(ctx.oneLine4ModelCondition()));
+        }
+
         return super.visitCollection4Model1(ctx);
     }
 
     @Override
     public Object visitOneLine4ModelCondition(HTMLParser.OneLine4ModelConditionContext ctx) {
+
+        OneLine4ModelCondition oneLine4ModelCondition=new OneLine4ModelCondition();
+
+        if(ctx.logicComprison()!=null&& ctx.collection4Model1()!=null){
+            oneLine4ModelCondition.setLogicComprison((LogicComprison) visitLogicComprison(ctx.logicComprison()));
+            oneLine4ModelCondition.setCollection4Model1_1_1((Collection4Model1) visitCollection4Model1(ctx.collection4Model1(0)));
+            oneLine4ModelCondition.setCollection4Model1_1_2((Collection4Model1) visitCollection4Model1(ctx.collection4Model1(1)));
+        }
+
         return super.visitOneLine4ModelCondition(ctx);
     }
+    /////////////////////////// End  Model exprition ///////////////////////////
+
+    ///////////////////////////  Annotation exprition ///////////////////////////
 
     @Override
     public Object visitAnnotationClickExpression(HTMLParser.AnnotationClickExpressionContext ctx) {
+       AnnotationClickExpression clickExpression =new AnnotationClickExpression();
+
+       if(ctx.collection4Annotation()!=null){
+           clickExpression.setCollection4Annotation((Collection4Annotation) visitCollection4Annotation(ctx.collection4Annotation()));
+       }
+
         return super.visitAnnotationClickExpression(ctx);
     }
 
     @Override
     public Object visitAnnotationOverExpression(HTMLParser.AnnotationOverExpressionContext ctx) {
+
+         AnnotationOverExpression overExpression =new AnnotationOverExpression ();
+
+        if(ctx.collection4Annotation()!=null){
+            overExpression.setCollection4Annotation((Collection4Annotation) visitCollection4Annotation(ctx.collection4Annotation()));
+        }
+
         return super.visitAnnotationOverExpression(ctx);
     }
 
     @Override
     public Object visitCollection4Annotation(HTMLParser.Collection4AnnotationContext ctx) {
+        Collection4Annotation collection4Annotation =new Collection4Annotation();
+
+        if(ctx.functionCall4AnnotOneLine()!=null){
+            collection4Annotation.setFunctionCall4AnnotOneLine((FunctionCall4AnnotOneLine) visitFunctionCall4AnnotOneLine(ctx.functionCall4AnnotOneLine()));
+        }
+
+        if(ctx.arrName()!=null && ctx.arrayFuncRet4AnnotOneLine()!=null){
+            collection4Annotation.setArrName((ArrName) visitArrName(ctx.arrName()));
+            collection4Annotation.setArrayFuncRet4AnnotOneLine((ArrayFuncRet4AnnotOneLine) visitFunctionCall4AnnotOneLine(ctx.functionCall4AnnotOneLine()));
+        }
+
+        if(ctx.obj()!=null && ctx.propFuncRet4AnnotOneLine()!=null){
+            collection4Annotation.setPropFuncRet4AnnotOneLine((PropFuncRet4AnnotOneLine) visitPropFuncRet4AnnotOneLine(ctx.propFuncRet4AnnotOneLine()));
+            collection4Annotation.setObj((Obj) visitObj(ctx.obj()));
+        }
+
+        if(ctx.oneLine4Annotation()!=null){
+            collection4Annotation.setOneLine4Annotation((OneLine4Annotation) visitOneLine4Annotation(ctx.oneLine4Annotation()));
+        }
+
+
         return super.visitCollection4Annotation(ctx);
     }
 
     @Override
     public Object visitOneLine4Annotation(HTMLParser.OneLine4AnnotationContext ctx) {
+
+          OneLine4Annotation oneLine4Annotation=new OneLine4Annotation();
+        if(ctx.logicComprison()!=null&& ctx.collection4Annotation()!=null){
+            oneLine4Annotation.setLogicComprison((LogicComprison) visitLogicComprison(ctx.logicComprison()));
+            oneLine4Annotation.setCollection4Annotation1_1((Collection4Annotation) visitCollection4Annotation(ctx.collection4Annotation(0)));
+            oneLine4Annotation.setCollection4Annotation1_2((Collection4Annotation) visitCollection4Annotation(ctx.collection4Annotation(1)));
+        }
         return super.visitOneLine4Annotation(ctx);
     }
 
     @Override
     public Object visitFunctionCall4AnnotOneLine(HTMLParser.FunctionCall4AnnotOneLineContext ctx) {
+
+       FunctionCall4AnnotOneLine functionCall4AnnotOneLine=new FunctionCall4AnnotOneLine();
+
+       if(ctx.funcEndRet4AnnotOneLine()!=null&&ctx.funcEndRet4AnnotOneLine()!=null){
+
+           functionCall4AnnotOneLine.setFuncEndRet4AnnotOneLine((FuncEndRet4AnnotOneLine) visitFuncEndRet4AnnotOneLine(ctx.funcEndRet4AnnotOneLine()));
+           functionCall4AnnotOneLine.setFunctionName((FunctionName) visitFunctionName(ctx.functionName()));
+       }
+
         return super.visitFunctionCall4AnnotOneLine(ctx);
     }
 
     @Override
     public Object visitArrayFuncRet4AnnotOneLine(HTMLParser.ArrayFuncRet4AnnotOneLineContext ctx) {
+
+        ArrayFuncRet4AnnotOneLine arrayFuncRet4AnnotOneLine=new ArrayFuncRet4AnnotOneLine();
+        List <ArithmeticLogic> arithmeticLogics=new ArrayList<>();
+
+
+        if(ctx.arithmeticLogic()!=null){
+
+            for(int i=0;i<ctx.arithmeticLogic().size();i++){
+                arithmeticLogics.add((ArithmeticLogic) visitArithmeticLogic(ctx.arithmeticLogic(i)));
+            }
+            arrayFuncRet4AnnotOneLine.setArithmeticLogics(arithmeticLogics);
+        }
+
+
+        if(ctx.propFuncRet4AnnotOneLine()!=null) {
+            arrayFuncRet4AnnotOneLine.setPropFuncRet4AnnotOneLine((PropFuncRet4AnnotOneLine) visitPropFuncRet4AnnotOneLine(ctx.propFuncRet4AnnotOneLine()));
+
+        }
+        if(ctx.funcEndRet4AnnotOneLine()!=null){
+            arrayFuncRet4AnnotOneLine.setFuncEndRet4AnnotOneLine((FuncEndRet4AnnotOneLine) visitFuncEndRet4AnnotOneLine(ctx.funcEndRet4AnnotOneLine()));
+        }
+
+
         return super.visitArrayFuncRet4AnnotOneLine(ctx);
     }
 
     @Override
     public Object visitPropFuncRet4AnnotOneLine(HTMLParser.PropFuncRet4AnnotOneLineContext ctx) {
+       PropFuncRet4AnnotOneLine propFuncRet4AnnotOneLine=new PropFuncRet4AnnotOneLine();
+       List <PropertyValue>propertyValues=new ArrayList<>();
+
+       if(ctx.propertyValue()!=null){
+           for(int i=0;i<ctx.propertyValue().size();i++){
+               propertyValues.add((PropertyValue) visitPropertyValue(ctx.propertyValue(i)));
+           }
+           propFuncRet4AnnotOneLine.setPropertyValue(propertyValues);
+       }
+
+
+       if(ctx.arrayFuncRet4AnnotOneLine()!=null){
+           propFuncRet4AnnotOneLine.setArrayFuncRet4AnnotOneLine((ArrayFuncRet4AnnotOneLine) visitArrayFuncRet4AnnotOneLine(ctx.arrayFuncRet4AnnotOneLine()));
+
+       }
+       if(ctx.funcEndRet4AnnotOneLine()!=null){
+
+            propFuncRet4AnnotOneLine.setFuncEndRet4AnnotOneLine((FuncEndRet4AnnotOneLine) visitFuncEndRet4AnnotOneLine(ctx.funcEndRet4AnnotOneLine()));
+
+
+       }
+
         return super.visitPropFuncRet4AnnotOneLine(ctx);
     }
 
     @Override
     public Object visitFuncEndRet4AnnotOneLine(HTMLParser.FuncEndRet4AnnotOneLineContext ctx) {
+
+         FuncEndRet4AnnotOneLine funcEndRet4AnnotOneLine=new FuncEndRet4AnnotOneLine();
+         List<Parameters>parameters=new ArrayList<>();
+
+         if(ctx.parameters()!=null){
+             for(int i=0;i<ctx.parameters().size();i++){ ;
+                 parameters.add((Parameters)visitParameters(ctx.parameters(i)));
+             }
+             funcEndRet4AnnotOneLine.setFunctionParameters(parameters);
+         }
+
+
+        if(ctx.arrayFuncRet4AnnotOneLine()!=null){
+            funcEndRet4AnnotOneLine.setArrayFuncRet4AnnotOneLine((ArrayFuncRet4AnnotOneLine) visitArrayFuncRet4AnnotOneLine(ctx.arrayFuncRet4AnnotOneLine()));
+
+        }if(ctx.propFuncRet4AnnotOneLine()!=null){
+             funcEndRet4AnnotOneLine.setPropFuncRet4AnnotOneLine((PropFuncRet4AnnotOneLine) visitPropFuncRet4AnnotOneLine(ctx.propFuncRet4AnnotOneLine()));
+
+         }
+
+
         return super.visitFuncEndRet4AnnotOneLine(ctx);
     }
 
@@ -501,36 +1064,91 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
 
     @Override
     public Object visitVariable(HTMLParser.VariableContext ctx) {
+        //: variableName
+        Variable variable = new Variable();
+        if (ctx.variableName() != null){
+            variable.setVariableName((VariableName) visitVariableName(ctx.variableName()));
+        }
+
         return super.visitVariable(ctx);
     }
 
     @Override
     public Object visitVariableName(HTMLParser.VariableNameContext ctx) {
+        //: CP_CONTENT_IDENTIFIER
+        VariableName variableName = new VariableName();
+        if (ctx.CP_CONTENT_IDENTIFIER() != null){
+            variableName.setIdentifier(ctx.CP_CONTENT_IDENTIFIER().getSymbol().getText());
+        }
         return super.visitVariableName(ctx);
     }
 
     @Override
     public Object visitNumber(HTMLParser.NumberContext ctx) {
+//        : CP_CONTENT_NUMBER
+        NUmber nUmber = new NUmber();
+        if (ctx.CP_CONTENT_NUMBER() != null) {
+            // TODO i don't know if this is right or not
+            double numberType = Double.valueOf(ctx.CP_CONTENT_NUMBER().getSymbol().getText());
+            // For check what's the type of Number
+            if (numberType == (int) numberType) {
+                nUmber.setNumber(Integer.parseInt(ctx.CP_CONTENT_NUMBER().getSymbol().getText()));
+            }
+            else if (numberType == (float)numberType){
+                nUmber.setNumber(Float.parseFloat(ctx
+                .CP_CONTENT_NUMBER().getSymbol().getText()));
+            }
+            else{
+                nUmber.setNumber(Double.parseDouble(ctx.CP_CONTENT_NUMBER().getSymbol().getText()));
+            }
+        }
         return super.visitNumber(ctx);
     }
 
     @Override
     public Object visitTrueOrFalse(HTMLParser.TrueOrFalseContext ctx) {
+//        :  (CP_CONTENT_TRUE | CP_CONTENT_FALSE)
+        TrueOrFalse trueOrFalse = new TrueOrFalse();
+        if (ctx.CP_CONTENT_TRUE() != null){
+            trueOrFalse.setTrue(true);
+        }
+
+        if (ctx.CP_CONTENT_FALSE() != null){
+            trueOrFalse.setFalse(false);
+        }
         return super.visitTrueOrFalse(ctx);
     }
 
     @Override
     public Object visitObjArray(HTMLParser.ObjArrayContext ctx) {
+//        : arrName arrayCalling
+        ObjArray objArray = new ObjArray();
+
+        if (ctx.arrName() != null){
+            objArray.setArrName((ArrName) visitArrName(ctx.arrName()));
+        }
+        if (ctx.arrayCalling() != null){
+            objArray.setArrayCalling((ArrayCalling) visitArrayCalling(ctx.arrayCalling()));
+        }
         return super.visitObjArray(ctx);
     }
 
     @Override
     public Object visitArrName(HTMLParser.ArrNameContext ctx) {
+//        : CP_CONTENT_IDENTIFIER
+        ArrName arrName = new ArrName();
+
+        if (ctx.CP_CONTENT_IDENTIFIER() != null){
+            arrName.setIdentifier(ctx.CP_CONTENT_IDENTIFIER().getSymbol().getText());
+        }
         return super.visitArrName(ctx);
     }
 
     @Override
     public Object visitArrayCalling(HTMLParser.ArrayCallingContext ctx) {
+//: (CP_CONTENT_OPEN_BRACKETS  arithmeticLogic CP_CONTENT_CLOSE_BRACKETS)+ (functionCallFromVar | property)?
+        ArrayCalling arrayCalling = new ArrayCalling();
+
         return super.visitArrayCalling(ctx);
     }
 
