@@ -32,6 +32,7 @@ import AST.HtmlXML;
 import generatedGrammers.HTMLParser;
 import generatedGrammers.HTMLParserBaseVisitor;
 import treePrinter.SimpleTreeNode;
+import treePrinter.printer.listing.ListingTreePrinter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,6 +64,7 @@ import java.util.List;
 
 
 public class BaseVisitor extends HTMLParserBaseVisitor {
+
     SimpleTreeNode root = new SimpleTreeNode("root");
     @Override
     public Object visitHtmlDocument(HTMLParser.HtmlDocumentContext ctx) {
@@ -94,6 +96,7 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
     @Override
     public Object visitScriptletOrSeaWs(HTMLParser.ScriptletOrSeaWsContext ctx) {
         ScriptLetOrSeaWs scriptLetOrSeaWs = new ScriptLetOrSeaWs();
+
         if (ctx.SCRIPTLET() != null){
             scriptLetOrSeaWs.setScriptLet(ctx.SCRIPTLET().getSymbol().getText());
         }
@@ -541,6 +544,9 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
     public Object visitVariable(HTMLParser.VariableContext ctx) {
         //: variableName
         Variable variable = new Variable();
+
+        SimpleTreeNode visitVariable = new SimpleTreeNode(variable.getClass().getName());
+
         if (ctx.variableName() != null){
             variable.setVariableName((VariableName) visitVariableName(ctx.variableName()));
         }
@@ -1083,14 +1089,18 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
 //: CP_CONTENT_ARITHMETIC (collection4Arithmetic | CP_CONTENT_OPEN_PAR arithmeticLogic CP_CONTENT_CLOSE_PAR)
 
         LastArithmeticLogic lastArithmeticLogic = new LastArithmeticLogic();
+        SimpleTreeNode lastArithmeticLogicNode = new SimpleTreeNode("lastArithmeticLogic");
 
         if (ctx.CP_CONTENT_ARITHMETIC() != null){
             lastArithmeticLogic.setArithmetic(ctx.CP_CONTENT_ARITHMETIC().getSymbol().getText());
+            SimpleTreeNode arithmeticNode = new SimpleTreeNode(ctx.CP_CONTENT_ARITHMETIC().getSymbol().getText());
+            lastArithmeticLogicNode.addChild(arithmeticNode);
         }
 
         // First OR between -----"collection4Arithmetic"  OR "arithmeticLogic"-----
         if (ctx.collection4Arithmetic() != null){
             lastArithmeticLogic.setCollection4Arithmetic((Collection4Arithmetic) visitCollection4Arithmetic(ctx.collection4Arithmetic()));
+
         }
         // OR
 
@@ -1205,6 +1215,7 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
 //                | oneLineArithCondition
 
         Collection4Arithmetic collection4Arithmetic = new Collection4Arithmetic();
+
 
         //variable
         if (ctx.variable()  != null){
@@ -1453,5 +1464,8 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
     }
     //////////////////////////////////////////////////
 
+    public void printTree(){
+        new ListingTreePrinter().print(root);
+    }
 
 }

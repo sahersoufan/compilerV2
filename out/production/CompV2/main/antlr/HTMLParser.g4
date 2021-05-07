@@ -3,8 +3,17 @@ parser grammar HTMLParser;
 options { tokenVocab=HTMLLexer; }
 
 htmlDocument
-    : scriptletOrSeaWs* XML? scriptletOrSeaWs* DTD? scriptletOrSeaWs* htmlElements*
+    : scriptletOrSeaWs* DTD?  htmlXML htmlEle
     ;
+
+htmlXML
+    : scriptletOrSeaWs* XML?
+    ;
+
+htmlEle
+    :  scriptletOrSeaWs* htmlElements*
+    ;
+
 
 scriptletOrSeaWs
     : SCRIPTLET
@@ -12,7 +21,11 @@ scriptletOrSeaWs
     ;
 
 htmlElements
-    : htmlMisc* htmlElement htmlMisc*
+    : htmlMisc* htmlElementsComp
+    ;
+
+htmlElementsComp
+    : htmlElement htmlMisc*
     ;
 
 htmlElement
@@ -26,7 +39,11 @@ htmlElement
 
 
 htmlContent
-    : htmlChardata? ((htmlElement | CDATA | htmlComment) htmlChardata?)*
+    : htmlChardata? htmlContentComp*
+    ;
+
+htmlContentComp
+    : (htmlElement | CDATA | htmlComment) htmlChardata?
     ;
 
                                    /* *********************************** */
@@ -286,7 +303,7 @@ trueOrFalse
 // ARRAY
 objArray
     : arrName arrayCalling
-    ;
+         ;
 arrName
     : CP_CONTENT_IDENTIFIER
     ;
