@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ModelName {
-    private List<String> mustachIdentifier = new ArrayList<>();
+    private String mustachIdentifier;
 
-    public List<String> getMustachIdentifier() {
+    public String getMustachIdentifier() {
         return mustachIdentifier;
     }
 
-    public void setMustachIdentifier(List<String> mustachIdentifier) {
+    public void setMustachIdentifier(String mustachIdentifier) {
         this.mustachIdentifier = mustachIdentifier;
     }
 }
