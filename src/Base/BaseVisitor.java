@@ -2,13 +2,14 @@ package Base;
 
 import AST.Elements.*;
 import AST.Elements.ElementsNodes.*;
-import AST.Elements.ElementsNodes.CpExpression.For.*;
+import AST.Elements.ElementsNodes.CpExpression.For.ForExpression;
 import AST.Elements.ElementsNodes.CpExpression.If.IfExpression;
 import AST.Elements.ElementsNodes.CpExpression.Switch.Collection4Switch1;
 import AST.Elements.ElementsNodes.CpExpression.Switch.OneLine4switch1;
 import AST.Elements.ElementsNodes.CpExpression.Switch.SwitchCaseExpression;
 import AST.Elements.ElementsNodes.CpExpression.Switch.SwitchExpression;
-import AST.Elements.ElementsNodes.CpExpression.annotation.*;
+import AST.Elements.ElementsNodes.CpExpression.annotation.AnnotationClickExpression;
+import AST.Elements.ElementsNodes.CpExpression.annotation.AnnotationOverExpression;
 import AST.Elements.ElementsNodes.CpExpression.app.AppExpression;
 import AST.Elements.ElementsNodes.CpExpression.app.Collection4App1;
 import AST.Elements.ElementsNodes.CpExpression.app.OneLine4AppCondition;
@@ -18,51 +19,22 @@ import AST.Elements.ElementsNodes.CpExpression.model.OneLine4ModelCondition;
 import AST.Elements.ElementsNodes.CpExpression.showHide.HideExpression;
 import AST.Elements.ElementsNodes.CpExpression.showHide.ShowExpression;
 import AST.Elements.ElementsNodes.generic4Elements.Collection4LogicRet;
-import AST.Elements.ElementsNodes.generic4Elements.Logic.ArithmeticLogic;
-import AST.Elements.ElementsNodes.generic4Elements.Logic.LastArithmeticLogic;
 import AST.Elements.ElementsNodes.generic4Elements.Logic.LogicComprison;
 import AST.Elements.ElementsNodes.generic4Elements.Logic.MiddleAndLastLogicComparison;
 import AST.Elements.ElementsNodes.generic4Elements.NUmber;
 import AST.Elements.ElementsNodes.generic4Elements.TrueOrFalse;
 import AST.Elements.ElementsNodes.generic4Elements.array.ArrName;
-import AST.Elements.ElementsNodes.generic4Elements.array.Array;
 import AST.Elements.ElementsNodes.generic4Elements.array.ArrayCalling;
 import AST.Elements.ElementsNodes.generic4Elements.array.ObjArray;
-import AST.Elements.ElementsNodes.generic4Elements.comparison.ComparisonExpression;
-import AST.Elements.ElementsNodes.generic4Elements.function.FunctionCall;
-import AST.Elements.ElementsNodes.generic4Elements.function.FunctionName;
-import AST.Elements.ElementsNodes.generic4Elements.function.Parameter;
-import AST.Elements.ElementsNodes.generic4Elements.function.Parameters;
-import AST.Elements.ElementsNodes.generic4Elements.object.Obj;
-import AST.Elements.ElementsNodes.generic4Elements.object.ObjBody;
-import AST.Elements.ElementsNodes.generic4Elements.object.SubObj;
-import AST.Elements.ElementsNodes.generic4Elements.property.PropertyValue;
 import AST.Elements.ElementsNodes.generic4Elements.variable.Variable;
 import AST.Elements.ElementsNodes.generic4Elements.variable.VariableName;
 import AST.Elements.ElementsNodes.mustacheExpression.MustacheExpression;
-import AST.Elements.ElementsNodes.mustacheExpression.filter.Filter;
-import AST.Elements.ElementsNodes.mustacheExpression.filter.FormatName;
-import AST.Elements.ElementsNodes.mustacheExpression.filter.ModelName;
-import AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.*;
-import AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.Logic.ArithmeticLogic4Must;
-import AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.Logic.LastArithmeticLogic4Must;
-import AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.Logic.LogicComprison4Must;
-import AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.Logic.MiddleAndLastLogicComparison4Must;
-import AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.array.ArrName4Must;
-import AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.array.ArrayCalling4Must;
-import AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.array.ObjArray4Must;
-import AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.comparison.*;
-import AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.function.*;
-import AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.object.SubObj4Must;
-import AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.property.Property4Must;
-import AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.property.PropertyValue4Must;
-import AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.value.MustacheValue;
-import AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.var.MustacheVariable;
 import AST.HtmlDocument;
 import AST.HtmlEle;
 import AST.HtmlXML;
 import generatedGrammers.HTMLParser;
 import generatedGrammers.HTMLParserBaseVisitor;
+import treePrinter.SimpleTreeNode;
 
 import javax.accessibility.AccessibleTable;
 import java.util.ArrayList;
@@ -95,6 +67,7 @@ import java.util.List;
 
 
 public class BaseVisitor extends HTMLParserBaseVisitor {
+    SimpleTreeNode root = new SimpleTreeNode("root");
     @Override
     public Object visitHtmlDocument(HTMLParser.HtmlDocumentContext ctx) {
         HtmlDocument htmlDocument = new HtmlDocument();
@@ -1150,6 +1123,8 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
         if (ctx.arrayCalling() != null){
             objArray.setArrayCalling((ArrayCalling) visitArrayCalling(ctx.arrayCalling()));
         }
+
+
         return super.visitObjArray(ctx);
     }
 
@@ -1169,101 +1144,362 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
 //: (CP_CONTENT_OPEN_BRACKETS  arithmeticLogic CP_CONTENT_CLOSE_BRACKETS)+ (functionCallFromVar | property)?
         ArrayCalling arrayCalling = new ArrayCalling();
 
+        List<ArithmeticLogic> arithmeticLogics = new ArrayList<>();
+        if (ctx.arithmeticLogic() != null){
+            for (int i = 0 ; i < ctx.arithmeticLogic().size() ; i ++){
+                arithmeticLogics.add((ArithmeticLogic) visitArithmeticLogic(ctx.arithmeticLogic(i)));
+            }
+            arrayCalling.setArithmeticLogic(arithmeticLogics);
+        }
+
+        if (ctx.functionCallFromVar() != null){
+            arrayCalling.setFunctionCallFromVar((FunctionCallFromVar) visitFunctionCallFromVar(ctx.functionCallFromVar()));
+        }
+
+        if (ctx.property() != null){
+            arrayCalling.setProperty((Property) visitProperty(ctx.property()));
+        }
+
         return super.visitArrayCalling(ctx);
     }
 
     @Override
     public Object visitArray(HTMLParser.ArrayContext ctx) {
+        Array array = new Array();
+
+
+        ArrayList<Collection4everything> internalCollections4EveryThings = new ArrayList<>();
+        if (ctx.collection4everything() != null){
+            for (int i =0 ; i<ctx.collection4everything().size();i++){
+                internalCollections4EveryThings.add((Collection4everything) visitCollection4everything(ctx.collection4everything(i)));
+            }
+            array.setInternalCollection4everythings(internalCollections4EveryThings);
+
+        }
         return super.visitArray(ctx);
     }
 
     @Override
     public Object visitObj(HTMLParser.ObjContext ctx) {
+//    : CP_CONTENT_IDENTIFIER
+
+        Obj obj = new Obj();
+
+        if (ctx.CP_CONTENT_IDENTIFIER() != null){
+            obj.setIdentifier(ctx.CP_CONTENT_IDENTIFIER().getSymbol().getText());
+        }
         return super.visitObj(ctx);
     }
 
     @Override
     public Object visitSubObj(HTMLParser.SubObjContext ctx) {
+//    : CP_CONTENT_IDENTIFIER property
+        SubObj subObj = new SubObj();
+
+        if (ctx.CP_CONTENT_IDENTIFIER() != null){
+            subObj.setIdentifier(ctx.CP_CONTENT_IDENTIFIER().getSymbol().getText());
+        }
+
+        if (ctx.property() != null){
+            subObj.setProperty((Property) visitProperty(ctx.property()));
+        }
         return super.visitSubObj(ctx);
     }
 
     @Override
     public Object visitObjBody(HTMLParser.ObjBodyContext ctx) {
+//: CP_CONTENT_OPEN_CURLY_BRACKETS (pair (CP_CONTENT_COMMA pair)*)* CP_CONTENT_CLOSE_CURLY_BRACKETS
+
+        ObjBody objBody = new ObjBody();
+
+        ArrayList<Pair> pairs = new ArrayList<>();
+        if (ctx.pair() != null){
+            for (int i=0 ; i< ctx.pair().size(); i++){
+                pairs.add((Pair) visitPair(ctx.pair(i)));
+            }
+            objBody.setPairs(pairs);
+        }
         return super.visitObjBody(ctx);
     }
 
     @Override
     public Object visitPair(HTMLParser.PairContext ctx) {
+//    : key CP_CONTENT_COLON collection4everything
+        Pair pair = new Pair();
+
+        if (ctx.key() != null){
+            pair.setKey((Key) visitKey(ctx.key()));
+        }
+
+        if (ctx.collection4everything() != null){
+            pair.setCollection4everything((Collection4everything) visitCollection4everything(ctx.collection4everything()));
+        }
         return super.visitPair(ctx);
     }
 
     @Override
     public Object visitKey(HTMLParser.KeyContext ctx) {
+//            : CP_CONTENT_IDENTIFIER
+
+        Key key = new Key();
+
+        if (ctx.CP_CONTENT_IDENTIFIER() != null){
+            key.setIdentifier(ctx.CP_CONTENT_IDENTIFIER().getSymbol().getText());
+        }
         return super.visitKey(ctx);
     }
 
     @Override
     public Object visitProperty(HTMLParser.PropertyContext ctx) {
+//        : (CP_CONTENT_DOT propertyValue)+ (arrayCalling | functionCallFromVar)?
+
+        Property property = new Property();
+
+        ArrayList<PropertyValue> propertyValues = new ArrayList<>();
+        if (ctx.propertyValue() != null){
+            for (int i=0; i<ctx.propertyValue().size();i++){
+                propertyValues.add((PropertyValue) visitPropertyValue(ctx.propertyValue(i)));
+            }
+            property.setPropertyValues(propertyValues);
+        }
+//        We have OR --"(arrayCalling | functionCallFromVar)?"--
+
+        if (ctx.arrayCalling() != null){
+            property.setArrayCalling((ArrayCalling) visitArrayCalling(ctx.arrayCalling()));
+        }
+        //OR
+        if (ctx.functionCallFromVar() != null){
+            property.setFunctionCallFromVar((FunctionCallFromVar) visitFunctionCallFromVar(ctx.functionCallFromVar()));
+        }
         return super.visitProperty(ctx);
     }
 
     @Override
     public Object visitPropertyValue(HTMLParser.PropertyValueContext ctx) {
+//        : CP_CONTENT_IDENTIFIER
+        PropertyValue propertyValue = new PropertyValue();
+        if (ctx.CP_CONTENT_IDENTIFIER() != null){
+            propertyValue.setIdentifier(ctx.CP_CONTENT_IDENTIFIER().getSymbol().getText());
+        }
         return super.visitPropertyValue(ctx);
     }
 
     @Override
     public Object visitFunctionCall(HTMLParser.FunctionCallContext ctx) {
+//    : functionName functionCallFromVar
+
+        FunctionCall functionCall = new FunctionCall();
+
+        if (ctx.functionName() != null){
+            functionCall.setFunctionName((FunctionName) visitFunctionName(ctx.functionName()));
+        }
+
+        if (ctx.functionCallFromVar() != null){
+            functionCall.setFunctionCallFromVar((FunctionCallFromVar) visitFunctionCallFromVar(ctx.functionCallFromVar()));
+        }
         return super.visitFunctionCall(ctx);
     }
 
     @Override
     public Object visitFunctionCallFromVar(HTMLParser.FunctionCallFromVarContext ctx) {
+//    : (CP_CONTENT_OPEN_PAR parameters? CP_CONTENT_CLOSE_PAR)+ (arrayCalling | property)?
+
+        FunctionCallFromVar functionCallFromVar = new FunctionCallFromVar();
+
+        ArrayList<Parameters> parametersArrayList = new ArrayList<>();
+        if (ctx.parameters() != null){
+            for (int i=0; i< ctx.parameters().size();i++){
+                parametersArrayList.add((Parameters) visitParameters(ctx.parameters(i)));
+            }
+            functionCallFromVar.setParameters(parametersArrayList);
+        }
+//        We have OR --"(arrayCalling | property)?"--
+        if (ctx.arrayCalling() != null){
+            functionCallFromVar.setArrayCalling((ArrayCalling) visitArrayCalling(ctx.arrayCalling()));
+        }
+        // --OR--
+
+        if (ctx.property() != null){
+            functionCallFromVar.setProperty((Property) visitProperty(ctx.property()));
+        }
+
         return super.visitFunctionCallFromVar(ctx);
     }
 
     @Override
     public Object visitFunctionName(HTMLParser.FunctionNameContext ctx) {
+//    : CP_CONTENT_IDENTIFIER
+
+        FunctionName functionName = new FunctionName();
+
+        if (ctx.CP_CONTENT_IDENTIFIER() != null){
+            functionName.setIdentifier(ctx.CP_CONTENT_IDENTIFIER().getSymbol().getText());
+        }
         return super.visitFunctionName(ctx);
     }
 
     @Override
     public Object visitParameters(HTMLParser.ParametersContext ctx) {
+//        : parameter (CP_CONTENT_COMMA parameter)*
+
+        Parameters parameters = new Parameters();
+
+        ArrayList<Parameter> parameterArrayList = new ArrayList<>();
+        if (ctx.parameter() != null){
+            for (int i=0; i< ctx.parameter().size();i++){
+                parameterArrayList.add((Parameter) visitParameter(ctx.parameter(i)));
+            }
+            parameters.setParameters(parameterArrayList);
+        }
         return super.visitParameters(ctx);
     }
 
     @Override
     public Object visitParameter(HTMLParser.ParameterContext ctx) {
+//: collection4everything
+        Parameter parameter = new Parameter();
+        if (ctx.collection4everything() != null){
+            parameter.setCollection4everything((Collection4everything) visitCollection4everything(ctx.collection4everything()));
+        }
+
         return super.visitParameter(ctx);
     }
 
     @Override
     public Object visitComparisonExpression(HTMLParser.ComparisonExpressionContext ctx) {
+//: collection4comparison comparisonOperator collection4comparison
+
+        ComparisonExpression comparisonExpression = new ComparisonExpression();
+
+        /**I use index (0) in parameter of visit for first collection4comparison
+         *  because we have same expression
+         * And index (1) for next collection4comparison
+         * And all of that because we have arrayList of collection4comparison from Parser
+        **/
+
+        if (ctx.collection4comparison() != null){
+            //index (0)
+            comparisonExpression.setCollection4comparison1((Collection4comparison) visitCollection4comparison(ctx.collection4comparison(0)));
+            // index(1)
+            comparisonExpression.setCollection4comparison2((Collection4comparison) visitCollection4comparison(ctx.collection4comparison(1)));
+        }
+
+        if (ctx.comparisonOperator() != null){
+            comparisonExpression.setComparisonOperator((ComparisonOperator) visitComparisonOperator(ctx.comparisonOperator()));
+        }
         return super.visitComparisonExpression(ctx);
     }
 
     @Override
     public Object visitOneLineCondition(HTMLParser.OneLineConditionContext ctx) {
+//: CP_CONTENT_OPEN_PAR logicComprison CP_CONTENT_QUESTION_MARK collection4everything CP_CONTENT_COLON collection4everything CP_CONTENT_CLOSE_PAR
+
+        OneLineCondition oneLineCondition = new OneLineCondition();
+        if (ctx.logicComprison() != null){
+            oneLineCondition.setLogicComprison((LogicComprison) visitLogicComprison(ctx.logicComprison()));
+        }
+
+
+        /**I use index (0) in parameter of visit for first collection4everything
+         *  because we have same expression
+         * And index (1) for next collection4comparison
+         * And all of that because we have arrayList of collection4comparison from Parser
+         **/
+        //index (0)
+        //index(1)
+        if (ctx.collection4everything() != null){
+            oneLineCondition.setCollection4everything1((Collection4everything) visitCollection4everything(ctx.collection4everything(0)));
+            oneLineCondition.setCollection4everything2((Collection4everything) visitCollection4everything(ctx.collection4everything(1)));
+        }
         return super.visitOneLineCondition(ctx);
     }
 
     @Override
     public Object visitOneLineBoolCondition(HTMLParser.OneLineBoolConditionContext ctx) {
+//: CP_CONTENT_OPEN_PAR logicComprison CP_CONTENT_QUESTION_MARK CP_CONTENT_TRUE CP_CONTENT_COLON CP_CONTENT_FALSE CP_CONTENT_CLOSE_PAR
+
+        OneLineBoolCondition oneLineBoolCondition = new OneLineBoolCondition();
+
+        if (ctx.logicComprison() != null){
+            oneLineBoolCondition.setLogicComprison((LogicComprison) visitLogicComprison(ctx.logicComprison()));
+        }
+
+        if (ctx.CP_CONTENT_FALSE() != null){
+            oneLineBoolCondition.setFalse(false);
+        }
+
+        if (ctx.CP_CONTENT_TRUE() != null){
+            oneLineBoolCondition.setTrue(true);
+        }
         return super.visitOneLineBoolCondition(ctx);
     }
 
     @Override
     public Object visitOneLineArithCondition(HTMLParser.OneLineArithConditionContext ctx) {
+//: CP_CONTENT_OPEN_PAR logicComprison CP_CONTENT_QUESTION_MARK arithmeticLogic CP_CONTENT_COLON arithmeticLogic CP_CONTENT_CLOSE_PAR
+
+        OneLineArithCondition oneLineArithCondition = new OneLineArithCondition();
+
+        if (ctx.logicComprison() != null){
+            oneLineArithCondition.setLogicComprison((LogicComprison) visitLogicComprison(ctx.logicComprison()));
+        }
+        /**I use index (0) in parameter of visit for first arithmeticLogic
+         *  because we have same expression
+         * And index (1) for next arithmeticLogic
+         * And all of that because we have arrayList of arithmeticLogic from Parser
+         **/
+
+        // Index (0)
+        // index(1)
+        if (ctx.arithmeticLogic() != null){
+            oneLineArithCondition.setArithmeticLogic1((ArithmeticLogic) visitArithmeticLogic(ctx.arithmeticLogic(0)));
+            oneLineArithCondition.setArithmeticLogic2((ArithmeticLogic) visitArithmeticLogic(ctx.arithmeticLogic(1)));
+        }
         return super.visitOneLineArithCondition(ctx);
     }
 
     @Override
     public Object visitComparisonOperator(HTMLParser.ComparisonOperatorContext ctx) {
+//          : CP_CONTENT_GREATER_THAN
+//                | CP_CONTENT_GREATER_EQ
+//                | CP_CONTENT_LESS_THAN
+//                | CP_CONTENT_LESS_EQ
+//                | CP_CONTENT_EQUAL_TO
+//                | CP_CONTENT_NOT_EQUAL
+
+        ComparisonOperator comparisonOperator = new ComparisonOperator();
+
+        //CP_CONTENT_GREATER_THAN
+        if (ctx.CP_CONTENT_GREATER_THAN() != null){
+            comparisonOperator.setComparisonOperator(ctx.CP_CONTENT_GREATER_THAN().getSymbol().getText());
+        }
+//        CP_CONTENT_GREATER_EQ
+        if (ctx.CP_CONTENT_GREATER_EQ() != null){
+            comparisonOperator.setComparisonOperator(ctx.CP_CONTENT_GREATER_EQ().getSymbol().getText());
+        }
+        //CP_CONTENT_LESS_THAN
+        if (ctx.CP_CONTENT_LESS_THAN() != null){
+            comparisonOperator.setComparisonOperator(ctx.CP_CONTENT_LESS_THAN().getSymbol().getText());
+        }
+        //CP_CONTENT_LESS_EQ
+        if (ctx.CP_CONTENT_LESS_EQ() != null){
+            comparisonOperator.setComparisonOperator(ctx.CP_CONTENT_LESS_EQ().getSymbol().getText());
+        }
+        //CP_CONTENT_EQUAL_TO
+        if (ctx.CP_CONTENT_EQUAL_TO() != null){
+            comparisonOperator.setComparisonOperator(ctx.CP_CONTENT_EQUAL_TO().getSymbol().getText());
+        }
+        //CP_CONTENT_NOT_EQUAL
+        if (ctx.CP_CONTENT_NOT_EQUAL() != null){
+            comparisonOperator.setComparisonOperator(ctx.CP_CONTENT_NOT_EQUAL().getSymbol().getText());
+        }
         return super.visitComparisonOperator(ctx);
     }
 
     @Override
     public Object visitLogicComprison(HTMLParser.LogicComprisonContext ctx) {
+//        : ((CP_CONTENT_NOT)? ((collection4LogicRet) | (CP_CONTENT_OPEN_PAR logicComprison CP_CONTENT_CLOSE_PAR))) /// first
+//        middleAndLastLogicComparison*
         LogicComprison logicComprison = new LogicComprison();
         if (ctx.CP_CONTENT_NOT() != null){
             logicComprison.setNotFirst(ctx.CP_CONTENT_NOT().getSymbol().getText());
@@ -1292,38 +1528,264 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
     }
     @Override
     public Object visitMiddleAndLastLogicComparison(HTMLParser.MiddleAndLastLogicComparisonContext ctx) {
+//           : ((CP_CONTENT_AND (CP_CONTENT_NOT)?) | (CP_CONTENT_OR (CP_CONTENT_NOT)?))   /// middle
+//        (collection4LogicRet | CP_CONTENT_OPEN_PAR logicComprison CP_CONTENT_CLOSE_PAR)
+
+        MiddleAndLastLogicComparison middleAndLastLogicComparison = new MiddleAndLastLogicComparison();
+        //First OR between ----- && or || -----
+
+        //Only && (&&)
+        if (ctx.CP_CONTENT_AND() != null){
+            middleAndLastLogicComparison.setAndMiddle(ctx.CP_CONTENT_AND().getSymbol().getText());
+            if (ctx.CP_CONTENT_NOT() != null){
+                middleAndLastLogicComparison.setNotAndMiddle(ctx.CP_CONTENT_NOT().getSymbol().getText());
+            }
+        }
+        // OR
+
+        //Only || (||)
+        if (ctx.CP_CONTENT_OR() != null){
+            middleAndLastLogicComparison.setAndMiddle(ctx.CP_CONTENT_OR().getSymbol().getText());
+            if (ctx.CP_CONTENT_NOT() != null){
+                middleAndLastLogicComparison.setNotOrMiddle(ctx.CP_CONTENT_NOT().getSymbol().getText());
+            }
+        }
+
+        //Second OR between ----- collection4LogicRet or CP_CONTENT_OPEN_PAR logicComprison CP_CONTENT_CLOSE_PAR -----
+
+        if (ctx.collection4LogicRet() != null){
+            middleAndLastLogicComparison.setCollection4LogicRet((Collection4LogicRet) visitCollection4LogicRet(ctx.collection4LogicRet()));
+        }
+
+        // OR
+
+        if (ctx.logicComprison() != null){
+            middleAndLastLogicComparison.setLogicComprisonLast((LogicComprison) visitLogicComprison(ctx.logicComprison()));
+        }
+
         return super.visitMiddleAndLastLogicComparison(ctx);
     }
     @Override
     public Object visitArithmeticLogic(HTMLParser.ArithmeticLogicContext ctx) {
+//: (collection4Arithmetic | CP_CONTENT_OPEN_PAR arithmeticLogic CP_CONTENT_CLOSE_PAR) lastArithmeticLogic*
+
+        ArithmeticLogic arithmeticLogic = new ArithmeticLogic();
+
+        //First OR  between ----"collection4Arithmetic" and "arithmeticLogic"----
+
+        if (ctx.collection4Arithmetic() != null){
+            arithmeticLogic.setCollection4Arithmetic((Collection4Arithmetic) visitCollection4Arithmetic(ctx.collection4Arithmetic()));
+        }
+        // OR
+
+        if (ctx.arithmeticLogic() != null){
+            arithmeticLogic.setArithmeticLogic((ArithmeticLogic) visitArithmeticLogic(ctx.arithmeticLogic()));
+        }
+
+        ArrayList<LastArithmeticLogic> lastArithmeticLogicArrayList = new ArrayList<>();
+        if (ctx.lastArithmeticLogic() != null){
+            for (int i=0; i< ctx.lastArithmeticLogic().size();i++){
+                lastArithmeticLogicArrayList.add((LastArithmeticLogic) visitLastArithmeticLogic(ctx.lastArithmeticLogic(i)));
+            }
+            arithmeticLogic.setLastArithmeticLogic(lastArithmeticLogicArrayList);
+        }
         return super.visitArithmeticLogic(ctx);
     }
     @Override
     public Object visitLastArithmeticLogic(HTMLParser.LastArithmeticLogicContext ctx) {
+//: CP_CONTENT_ARITHMETIC (collection4Arithmetic | CP_CONTENT_OPEN_PAR arithmeticLogic CP_CONTENT_CLOSE_PAR)
+
+        LastArithmeticLogic lastArithmeticLogic = new LastArithmeticLogic();
+
+        if (ctx.CP_CONTENT_ARITHMETIC() != null){
+            lastArithmeticLogic.setArithmetic(ctx.CP_CONTENT_ARITHMETIC().getSymbol().getText());
+        }
+
+        // First OR between -----"collection4Arithmetic"  OR "arithmeticLogic"-----
+        if (ctx.collection4Arithmetic() != null){
+            lastArithmeticLogic.setCollection4Arithmetic((Collection4Arithmetic) visitCollection4Arithmetic(ctx.collection4Arithmetic()));
+        }
+        // OR
+
+        if (ctx.arithmeticLogic() != null){
+            lastArithmeticLogic.setArithmeticLogic((ArithmeticLogic) visitArithmeticLogic(ctx.arithmeticLogic()));
+        }
         return super.visitLastArithmeticLogic(ctx);
     }
     @Override
     public Object visitValue(HTMLParser.ValueContext ctx) {
+//        : CP_CONTENT_STRING
+//                | number
+//                | trueOrFalse
+//                | CP_CONTENT_NULL
+
+        Value value = new Value();
+
+        if (ctx.CP_CONTENT_STRING() != null){
+            value.setString(ctx.CP_CONTENT_STRING().getSymbol().getText());
+        }
+        if (ctx.CP_CONTENT_NULL() != null){
+            value.setNull(null);
+        }
+
+
+        if (ctx.number() != null){
+            value.setNumber((NUmber) visitNumber(ctx.number()));
+        }
+        if (ctx.trueOrFalse() != null){
+            value.setTrueOrFalse((TrueOrFalse) visitTrueOrFalse(ctx.trueOrFalse()));
+        }
         return super.visitValue(ctx);
     }
 
     @Override
     public Object visitCollection4everything(HTMLParser.Collection4everythingContext ctx) {
+//         : variable
+//                | value
+//                | array
+//                | objArray
+//                | functionCall
+//                | subObj
+//                | oneLineCondition
+//                | comparisonExpression
+//                | logicComprison
+//                | arithmeticLogic
+
+        Collection4everything collection4everything = new Collection4everything();
+
+        //variable
+        if (ctx.variable()  != null){
+            collection4everything.setVariable((Variable) visitVariable(ctx.variable()));
+        }
+        //value
+        if (ctx.value()  != null){
+            collection4everything.setValue((Value) visitValue(ctx.value()));
+        }
+        //array
+        if (ctx.array()  != null){
+            collection4everything.setArray((Array) visitArray(ctx.array()));
+        }
+        //objArray
+        if (ctx.objArray()  != null){
+            collection4everything.setObjArray((ObjArray) visitObjArray(ctx.objArray()));
+        }
+        //functionCall
+        if (ctx.functionCall()  != null){
+            collection4everything.setFunctionCall((FunctionCall) visitFunctionCall(ctx.functionCall()));
+        }
+        //subObj
+        if (ctx.subObj()  != null){
+            collection4everything.setSubObj((SubObj) visitSubObj(ctx.subObj()));
+        }
+        //oneLineCondition
+        if (ctx.oneLineCondition()  != null){
+            collection4everything.setOneLineCondition((OneLineCondition) visitOneLineCondition(ctx.oneLineCondition()));
+        }
+        //comparisonExpression
+        if (ctx.comparisonExpression()  != null){
+            collection4everything.setComparisonExpression((ComparisonExpression) visitComparisonExpression(ctx.comparisonExpression()));
+        }
+        //logicComprison
+        if (ctx.logicComprison()  != null){
+            collection4everything.setLogicComprison((LogicComprison) visitLogicComprison(ctx.logicComprison()));
+        }
+        //arithmeticLogic
+        if (ctx.arithmeticLogic()  != null){
+            collection4everything.setArithmeticLogic((ArithmeticLogic) visitArithmeticLogic(ctx.arithmeticLogic()));
+        }
         return super.visitCollection4everything(ctx);
     }
 
     @Override
     public Object visitCollection4comparison(HTMLParser.Collection4comparisonContext ctx) {
+//            : arithmeticLogic
+
+        Collection4comparison collection4comparison = new Collection4comparison();
+        if (ctx.arithmeticLogic() != null){
+            collection4comparison.setArithmeticLogic((ArithmeticLogic) visitArithmeticLogic(ctx.arithmeticLogic()));
+        }
+
         return super.visitCollection4comparison(ctx);
     }
 
     @Override
     public Object visitCollection4Arithmetic(HTMLParser.Collection4ArithmeticContext ctx) {
+//         : variable
+//                | number
+//                | objArray
+//                | functionCall
+//                | subObj
+//                | oneLineArithCondition
+
+        Collection4Arithmetic collection4Arithmetic = new Collection4Arithmetic();
+
+        //variable
+        if (ctx.variable()  != null){
+            collection4Arithmetic.setVariable((Variable) visitVariable(ctx.variable()));
+        }
+        //number
+        if (ctx.number()  != null){
+            collection4Arithmetic.setNumber((NUmber) visitNumber(ctx.number()));
+        }
+        //objArray
+        if (ctx.objArray()  != null){
+            collection4Arithmetic.setObjArray((ObjArray) visitObjArray(ctx.objArray()));
+        }
+        //functionCall
+        if (ctx.functionCall()  != null){
+            collection4Arithmetic.setFunctionCall((FunctionCall) visitFunctionCall(ctx.functionCall()));
+        }
+        //subObj
+        if (ctx.subObj()  != null){
+            collection4Arithmetic.setSubObj((SubObj) visitSubObj(ctx.subObj()));
+        }
+        //oneLineArithCondition
+        if (ctx.oneLineArithCondition()  != null){
+            collection4Arithmetic.setOneLineArithCondition((OneLineArithCondition) visitOneLineArithCondition(ctx.oneLineArithCondition()));
+        }
         return super.visitCollection4Arithmetic(ctx);
     }
 
     @Override
     public Object visitCollection4LogicRet(HTMLParser.Collection4LogicRetContext ctx) {
+//        : variable
+//                | trueOrFalse
+//                | objArray
+//                | functionCall
+//                | subObj
+//                | comparisonExpression
+//                | oneLineBoolCondition
+
+        Collection4LogicRet collection4LogicRet = new Collection4LogicRet();
+
+        //variable
+        if (ctx.variable()  != null){
+            collection4LogicRet.setVariable((Variable) visitVariable(ctx.variable()));
+        }
+        //trueOrFalse
+        if (ctx.trueOrFalse()  != null){
+            collection4LogicRet.setTrueOrFalse((TrueOrFalse) visitTrueOrFalse(ctx.trueOrFalse()));
+        }
+        //objArray
+        if (ctx.objArray()  != null){
+            collection4LogicRet.setObjArray((ObjArray) visitObjArray(ctx.objArray()));
+        }
+        //functionCall
+        if (ctx.functionCall()  != null){
+            collection4LogicRet.setFunctionCall((FunctionCall) visitFunctionCall(ctx.functionCall()));
+        }
+        //subObj
+        if (ctx.subObj()  != null){
+            collection4LogicRet.setSubObj((SubObj) visitSubObj(ctx.subObj()));
+        }
+        //comparisonExpression
+        if (ctx.comparisonExpression()  != null){
+            collection4LogicRet.setComparisonExpression((ComparisonExpression) visitComparisonExpression(ctx.comparisonExpression()));
+        }
+        //oneLineBoolCondition
+        if (ctx.oneLineBoolCondition()  != null){
+            collection4LogicRet.setOneLineBoolCondition((OneLineBoolCondition) visitOneLineBoolCondition(ctx.oneLineBoolCondition()));
+        }
         return super.visitCollection4LogicRet(ctx);
     }
 

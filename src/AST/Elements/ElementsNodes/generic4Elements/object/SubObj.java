@@ -3,15 +3,15 @@ package AST.Elements.ElementsNodes.generic4Elements.object;
 import AST.Elements.ElementsNodes.generic4Elements.property.Property;
 
 public class SubObj {
-    private String objName;
+    private String identifier;
     private Property property;
 
-    public String getObjName() {
-        return objName;
+    public String getIdentifier() {
+        return identifier;
     }
 
-    public void setObjName(String objName) {
-        this.objName = objName;
+    public void setIdentifier(String objName) {
+        this.identifier = objName;
     }
 
     public Property getProperty() {
