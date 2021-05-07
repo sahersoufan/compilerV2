@@ -10,7 +10,7 @@ import java.util.List;
 
 public class ArrayCalling4Must {
     private String openBracket;
-    private ArithmeticLogic4Must arithmeticLogic4Must;
+    private List<ArithmeticLogic4Must> arithmeticLogic4Must = new ArrayList<>();
     private String closeBracket;
     private FunctionCallFromVar4Must functionCallFromVar4Must;
     private Property4Must property4Must;
@@ -23,11 +23,11 @@ public class ArrayCalling4Must {
         this.openBracket = openBracket;
     }
 
-    public ArithmeticLogic4Must getArithmeticLogic4Must() {
+    public List<ArithmeticLogic4Must> getArithmeticLogic4Must() {
         return arithmeticLogic4Must;
     }
 
-    public void setArithmeticLogic4Must(ArithmeticLogic4Must arithmeticLogic4Must) {
+    public void setArithmeticLogic4Must(List<ArithmeticLogic4Must> arithmeticLogic4Must) {
         this.arithmeticLogic4Must = arithmeticLogic4Must;
     }
 

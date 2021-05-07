@@ -19,6 +19,7 @@ import AST.Elements.ElementsNodes.CpExpression.showHide.HideExpression;
 import AST.Elements.ElementsNodes.CpExpression.showHide.ShowExpression;
 import AST.Elements.ElementsNodes.generic4Elements.Collection4LogicRet;
 import AST.Elements.ElementsNodes.generic4Elements.Logic.ArithmeticLogic;
+import AST.Elements.ElementsNodes.generic4Elements.Logic.LastArithmeticLogic;
 import AST.Elements.ElementsNodes.generic4Elements.Logic.LogicComprison;
 import AST.Elements.ElementsNodes.generic4Elements.Logic.MiddleAndLastLogicComparison;
 import AST.Elements.ElementsNodes.generic4Elements.NUmber;
@@ -39,12 +40,31 @@ import AST.Elements.ElementsNodes.generic4Elements.property.PropertyValue;
 import AST.Elements.ElementsNodes.generic4Elements.variable.Variable;
 import AST.Elements.ElementsNodes.generic4Elements.variable.VariableName;
 import AST.Elements.ElementsNodes.mustacheExpression.MustacheExpression;
+import AST.Elements.ElementsNodes.mustacheExpression.filter.Filter;
+import AST.Elements.ElementsNodes.mustacheExpression.filter.FormatName;
+import AST.Elements.ElementsNodes.mustacheExpression.filter.ModelName;
+import AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.*;
+import AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.Logic.ArithmeticLogic4Must;
+import AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.Logic.LastArithmeticLogic4Must;
+import AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.Logic.LogicComprison4Must;
+import AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.Logic.MiddleAndLastLogicComparison4Must;
+import AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.array.ArrName4Must;
+import AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.array.ArrayCalling4Must;
+import AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.array.ObjArray4Must;
+import AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.comparison.*;
+import AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.function.*;
+import AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.object.SubObj4Must;
+import AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.property.Property4Must;
+import AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.property.PropertyValue4Must;
+import AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.value.MustacheValue;
+import AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.var.MustacheVariable;
 import AST.HtmlDocument;
 import AST.HtmlEle;
 import AST.HtmlXML;
 import generatedGrammers.HTMLParser;
 import generatedGrammers.HTMLParserBaseVisitor;
 
+import javax.accessibility.AccessibleTable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -1322,164 +1342,629 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
     ///////////////////////// NOOR /////////////////////////
     @Override
     public Object visitMustacheExpression(HTMLParser.MustacheExpressionContext ctx) {
+        MustacheExpression mustacheExpression = new MustacheExpression();
+
+        if (ctx.collection4Mustache() != null){
+            mustacheExpression.setCollection4Mustache((Collection4Mustache) visitCollection4Mustache(ctx.collection4Mustache()));
+        }
+
+        if (ctx.filter() != null){
+            mustacheExpression.setFilter((Filter) visitFilter(ctx.filter()));
+        }
         return super.visitMustacheExpression(ctx);
     }
     @Override
     public Object visitCollection4Mustache(HTMLParser.Collection4MustacheContext ctx) {
+        Collection4Mustache collection4Mustache = new Collection4Mustache();
+
+        if (ctx.mustacheVariable() != null){
+            collection4Mustache.setMustacheVariable((MustacheVariable) visitMustacheVariable(ctx.mustacheVariable()));
+        }
+        if (ctx.mustacheValue() != null){
+            collection4Mustache.setMustacheValue((MustacheValue) visitMustacheValue(ctx.mustacheValue()));
+        }
+
+        if (ctx.objArray4Must() != null){
+            collection4Mustache.setObjArray4Must((ObjArray4Must) visitObjArray4Must(ctx.objArray4Must()));
+        }
+
+        if (ctx.functionCall4Must() != null){
+            collection4Mustache.setFunctionCall4Must((FunctionCall4Must) visitFunctionCall4Must(ctx.functionCall4Must()));
+        }
+
+        if (ctx.subObj4Must() != null){
+            collection4Mustache.setSubObj4Must((SubObj4Must) visitSubObj4Must(ctx.subObj4Must()));
+        }
+
+        if (ctx.oneLineCondition4Must() != null){
+            collection4Mustache.setOneLineCondition4Must((OneLineCondition4Must) visitOneLineCondition4Must(ctx.oneLineCondition4Must()));
+        }
+
+        if (ctx.oneLineArithCondition4Must() != null){
+            collection4Mustache.setOneLineArithCondithion4Must((OneLineArithCondition4Must) visitOneLineArithCondition4Must(ctx.oneLineArithCondition4Must()));
+        }
+
+        if (ctx.arithmeticLogic4Must() != null){
+            collection4Mustache.setArithmeticLogic4Must((ArithmeticLogic4Must) visitArithmeticLogic4Must(ctx.arithmeticLogic4Must()));
+        }
+
         return super.visitCollection4Mustache(ctx);
     }
 
     @Override
     public Object visitCollection4LogicRet4Must(HTMLParser.Collection4LogicRet4MustContext ctx) {
+        Collection4LogicRet4Must collection4LogicRet4Must = new Collection4LogicRet4Must();
+
+        if (ctx.mustacheVariable() != null){
+            collection4LogicRet4Must.setMustacheVariable((MustacheVariable) visitMustacheVariable(ctx.mustacheVariable()));
+        }
+
+        if (ctx.MUSTACHE_TRUE() != null){
+            collection4LogicRet4Must.setMustacheTrue(true);
+        }
+        if (ctx.MUSTACHE_FALSE() != null){
+            collection4LogicRet4Must.setMustacheFalse(false);
+        }
+
+        if (ctx.objArray4Must() != null){
+            collection4LogicRet4Must.setObjArray4Must((ObjArray4Must) visitObjArray4Must(ctx.objArray4Must()));
+        }
+
+        if (ctx.functionCall4Must() != null){
+            collection4LogicRet4Must.setFunctionCall4Must((FunctionCall4Must) visitFunctionCall4Must(ctx.functionCall4Must()));
+        }
+
+        if (ctx.subObj4Must() != null){
+            collection4LogicRet4Must.setSubObj4Must((SubObj4Must) visitSubObj4Must(ctx.subObj4Must()));
+        }
+
+        if (ctx.comparisonExp4Must() != null){
+            collection4LogicRet4Must.setComparisonExp4Must((ComparisonExp4Must) visitComparisonExp4Must(ctx.comparisonExp4Must()));
+        }
+
+        if (ctx.oneLineBoolCondition4Must() != null){
+            collection4LogicRet4Must.setOneLineBoolCondition4Must((OneLineBoolCondition4Must) visitOneLineBoolCondition4Must(ctx.oneLineBoolCondition4Must()));
+        }
         return super.visitCollection4LogicRet4Must(ctx);
     }
 
     @Override
     public Object visitCollection4CompMust(HTMLParser.Collection4CompMustContext ctx) {
+        Collection4CompMust collection4CompMust = new Collection4CompMust();
+
+        if (ctx.arithmeticLogic4Must() != null){
+            collection4CompMust.setArithmeticLogic4Must((ArithmeticLogic4Must) visitArithmeticLogic4Must(ctx.arithmeticLogic4Must()));
+        }
+
         return super.visitCollection4CompMust(ctx);
     }
 
     @Override
     public Object visitCollection4MUSTArithmetic(HTMLParser.Collection4MUSTArithmeticContext ctx) {
+        Collection4MUSTArithmetic collection4MUSTArithmetic = new Collection4MUSTArithmetic();
+
+        if (ctx.mustacheVariable() != null){
+            collection4MUSTArithmetic.setMustacheVariable((MustacheVariable) visitMustacheVariable(ctx.mustacheVariable()));
+        }
+
+        if (ctx.mustacheNumber() != null){
+            collection4MUSTArithmetic.setMustacheNumber((MustacheNumber) visitMustacheNumber(ctx.mustacheNumber()));
+        }
+
+        if (ctx.objArray4Must() != null){
+            collection4MUSTArithmetic.setObjArray4Must((ObjArray4Must) visitObjArray4Must(ctx.objArray4Must()));
+        }
+
+        if (ctx.functionCall4Must() != null){
+            collection4MUSTArithmetic.setFunctionCall4Must((FunctionCall4Must) visitFunctionCall4Must(ctx.functionCall4Must()));
+        }
+
+        if (ctx.subObj4Must() != null){
+            collection4MUSTArithmetic.setSubObj4Must((SubObj4Must) visitSubObj4Must(ctx.subObj4Must()));
+        }
+
+        if (ctx.oneLineArithCondition4Must() != null){
+            collection4MUSTArithmetic.setOneLineArithCondithion4Must1((OneLineArithCondition4Must) visitOneLineArithCondition4Must(ctx.oneLineArithCondition4Must()));
+        }
         return super.visitCollection4MUSTArithmetic(ctx);
     }
 
     @Override
     public Object visitLogicComprison4Must(HTMLParser.LogicComprison4MustContext ctx) {
+        LogicComprison4Must logicComprison4Must = new LogicComprison4Must();
+        // !
+        if (ctx.MUSTACHE_NOT() != null){
+            logicComprison4Must.setNotFirst(ctx.MUSTACHE_NOT().getSymbol().getText());
+        }
+        // this
+        if (ctx.collection4LogicRet4Must() != null){
+            logicComprison4Must.setCollection4LogicRetFirst((Collection4LogicRet4Must) visitCollection4LogicRet4Must(ctx.collection4LogicRet4Must()));
+        }
+        // or this
+        if (ctx.logicComprison4Must() != null){
+            logicComprison4Must.setLogicComprisonFirst((LogicComprison4Must) visitLogicComprison4Must(ctx.logicComprison4Must()));
+        }
+        // middle and last
+        List<MiddleAndLastLogicComparison4Must> middleAndLastLogicComparison4Musts = new ArrayList<>();
+        if (ctx.middleAndLastLogicComparison4Must() != null){
+            for (int i = 0 ; i < ctx.middleAndLastLogicComparison4Must().size() ; i ++){
+                middleAndLastLogicComparison4Musts.add((MiddleAndLastLogicComparison4Must) visitMiddleAndLastLogicComparison4Must(ctx.middleAndLastLogicComparison4Must(i)));
+            }
+            logicComprison4Must.setMiddleAndLastLogicComparisons(middleAndLastLogicComparison4Musts);
+        }
         return super.visitLogicComprison4Must(ctx);
     }
 
     @Override
     public Object visitMiddleAndLastLogicComparison4Must(HTMLParser.MiddleAndLastLogicComparison4MustContext ctx) {
+        MiddleAndLastLogicComparison4Must middleAndLastLogicComparison4Must = new MiddleAndLastLogicComparison4Must();
+        //middle
+        //this AND NOT?
+        if (ctx.MUSTACHE_AND() != null){
+            middleAndLastLogicComparison4Must.setAndMiddle(ctx.MUSTACHE_AND().getSymbol().getText());
+            if (ctx.MUSTACHE_NOT() != null){
+                middleAndLastLogicComparison4Must.setNotAndMiddle(ctx.MUSTACHE_NOT().getSymbol().getText());
+            }
+        }
+        // or this OR NOT?
+        if (ctx.MUSTACHE_OR() != null){
+            middleAndLastLogicComparison4Must.setOrMiddle(ctx.MUSTACHE_OR().getSymbol().getText());
+            if (ctx.MUSTACHE_NOT() != null){
+                middleAndLastLogicComparison4Must.setNotOrMiddle(ctx.MUSTACHE_NOT().getSymbol().getText());
+            }
+        }
+
+        //last
+        //this collection4LogicRet4Must
+        if (ctx.collection4LogicRet4Must()!= null){
+            middleAndLastLogicComparison4Must.setCollection4LogicRet((Collection4LogicRet4Must) visitCollection4LogicRet4Must(ctx.collection4LogicRet4Must()));
+        }
+        // or logicComprison4Must
+        if (ctx.logicComprison4Must() != null){
+            middleAndLastLogicComparison4Must.setLogicComprisonLast((LogicComprison4Must) visitLogicComprison4Must(ctx.logicComprison4Must()));
+        }
         return super.visitMiddleAndLastLogicComparison4Must(ctx);
     }
 
     @Override
     public Object visitArithmeticLogic4Must(HTMLParser.ArithmeticLogic4MustContext ctx) {
+        ArithmeticLogic4Must arithmeticLogic4Must = new ArithmeticLogic4Must();
+
+        //this collection4MUSTArithmetic
+        if (ctx.collection4MUSTArithmetic() != null){
+            arithmeticLogic4Must.setCollection4Arithmetic((Collection4MUSTArithmetic) visitCollection4MUSTArithmetic(ctx.collection4MUSTArithmetic()));
+        }
+
+        // or arithmeticLogic4Must
+        if (ctx.arithmeticLogic4Must() != null){
+            arithmeticLogic4Must.setArithmeticLogic((ArithmeticLogic4Must) visitArithmeticLogic4Must(ctx.arithmeticLogic4Must()));
+        }
+
+        List<LastArithmeticLogic4Must> lastArithmeticLogic4Musts = new ArrayList<>();
+        if (ctx.lastArithmeticLogic4Must() != null) {
+            for (int i = 0; i < ctx.lastArithmeticLogic4Must().size(); i++) {
+                lastArithmeticLogic4Musts.add((LastArithmeticLogic4Must) visitLastArithmeticLogic4Must(ctx.lastArithmeticLogic4Must(i)));
+            }
+            arithmeticLogic4Must.setLastArithmeticLogic(lastArithmeticLogic4Musts);
+        }
         return super.visitArithmeticLogic4Must(ctx);
     }
 
     @Override
     public Object visitLastArithmeticLogic4Must(HTMLParser.LastArithmeticLogic4MustContext ctx) {
+        LastArithmeticLogic4Must lastArithmeticLogic4Must = new LastArithmeticLogic4Must();
+
+        if (ctx.MUSTACHE_ARITHMETIC() != null){
+            lastArithmeticLogic4Must.setArithmetic(ctx.MUSTACHE_ARITHMETIC().getSymbol().getText());
+        }
+        //this
+        if (ctx.collection4MUSTArithmetic() != null){
+            lastArithmeticLogic4Must.setCollection4MUSTArithmetic((Collection4MUSTArithmetic) visitCollection4MUSTArithmetic(ctx.collection4MUSTArithmetic()));
+        }
+        //or
+        if (ctx.arithmeticLogic4Must() != null){
+            lastArithmeticLogic4Must.setArithmeticLogic((ArithmeticLogic4Must) visitArithmeticLogic4Must(ctx.arithmeticLogic4Must()));
+        }
+
         return super.visitLastArithmeticLogic4Must(ctx);
     }
     @Override
     public Object visitMustacheVariable(HTMLParser.MustacheVariableContext ctx) {
+        MustacheVariable mustacheVariable = new MustacheVariable();
+        if (ctx.MUSTACHE_IDENTIFIER() != null){
+            mustacheVariable.setMustacheVariable(ctx.MUSTACHE_IDENTIFIER().getSymbol().getText());
+        }
         return super.visitMustacheVariable(ctx);
     }
 
     @Override
     public Object visitMustacheNumber(HTMLParser.MustacheNumberContext ctx) {
+        MustacheNumber mustacheNumber = new MustacheNumber();
+        if (ctx.MUSTACHE_NUMBER() != null){
+            // TODO i don't know if this is right or not
+            double numberType = Double.valueOf(ctx.MUSTACHE_NUMBER().getSymbol().getText());
+            // For check what's the type of Number
+            if (numberType == (int) numberType) {
+                mustacheNumber.setNumber(Integer.parseInt(ctx.MUSTACHE_NUMBER().getSymbol().getText()));
+            }
+            else if (numberType == (float)numberType){
+                mustacheNumber.setNumber(Float.parseFloat(ctx
+                        .MUSTACHE_NUMBER().getSymbol().getText()));
+            }
+            else{
+                mustacheNumber.setNumber(Double.parseDouble(ctx.MUSTACHE_NUMBER().getSymbol().getText()));
+            }
+        }
+
         return super.visitMustacheNumber(ctx);
     }
 
     @Override
     public Object visitMustacheValue(HTMLParser.MustacheValueContext ctx) {
+        MustacheValue mustacheValue = new MustacheValue();
+
+        if (ctx.mustacheNumber() != null){
+            mustacheValue.setMustacheNumber((MustacheNumber) visitMustacheNumber(ctx.mustacheNumber()));
+        }
+
+        if (ctx.MUSTACHE_STRING() != null){
+            mustacheValue.setMustacheString(ctx.MUSTACHE_STRING().getSymbol().getText());
+        }
+
+        if (ctx.MUSTACHE_TRUE() != null){
+            mustacheValue.setMustacheTrue(true);
+        }
+
+        if (ctx.MUSTACHE_FALSE() != null){
+            mustacheValue.setMustacheFalse(false);
+        }
+
+        if (ctx.MUSTACHE_NULL() != null){
+            mustacheValue.setMUSTACHE_NULL(null);
+        }
+
         return super.visitMustacheValue(ctx);
     }
 
     @Override
     public Object visitObjArray4Must(HTMLParser.ObjArray4MustContext ctx) {
+        ObjArray4Must objArray4Must = new ObjArray4Must();
+
+        if (ctx.arrName4Must() != null){
+            objArray4Must.setArrName4Must1((ArrName4Must) visitArrName4Must(ctx.arrName4Must()));
+        }
+
+        if (ctx.arrayCalling4Must() != null){
+            objArray4Must.setArrayCalling4Must((ArrayCalling4Must) visitArrayCalling4Must(ctx.arrayCalling4Must()));
+        }
         return super.visitObjArray4Must(ctx);
     }
 
     @Override
     public Object visitArrName4Must(HTMLParser.ArrName4MustContext ctx) {
+        ArrName4Must arrName4Must = new ArrName4Must();
+        if (ctx.MUSTACHE_IDENTIFIER() != null){
+            arrName4Must.setArrName4Must(ctx.MUSTACHE_IDENTIFIER().getSymbol().getText());
+        }
         return super.visitArrName4Must(ctx);
     }
 
     @Override
     public Object visitArrayCalling4Must(HTMLParser.ArrayCalling4MustContext ctx) {
+        ArrayCalling4Must arrayCalling4Must = new ArrayCalling4Must();
+
+        List<ArithmeticLogic4Must> arithmeticLogic4Musts = new ArrayList<>();
+        if (ctx.arithmeticLogic4Must() != null){
+            for (int i = 0 ; i < ctx.arithmeticLogic4Must().size() ; i ++){
+                arithmeticLogic4Musts.add((ArithmeticLogic4Must) visitArithmeticLogic4Must(ctx.arithmeticLogic4Must(i)));
+            }
+            arrayCalling4Must.setArithmeticLogic4Must(arithmeticLogic4Musts);
+        }
+
+        if (ctx.functionCallFromVar4Must() != null){
+            arrayCalling4Must.setFunctionCallFromVar4Must((FunctionCallFromVar4Must) visitFunctionCallFromVar4Must(ctx.functionCallFromVar4Must()));
+        }
+
+        if (ctx.property4Must() != null){
+            arrayCalling4Must.setProperty4Must((Property4Must) visitProperty4Must(ctx.property4Must()));
+        }
         return super.visitArrayCalling4Must(ctx);
     }
 
     @Override
     public Object visitFunctionCall4Must(HTMLParser.FunctionCall4MustContext ctx) {
+        FunctionCall4Must functionCall4Must = new FunctionCall4Must();
+
+        if (ctx.functionName4Must() != null){
+            functionCall4Must.setFunctionName4Must1((FunctionName4Must) visitFunctionName4Must(ctx.functionName4Must()));
+        }
+
+        if (ctx.functionCallFromVar4Must() != null){
+            functionCall4Must.setFunctionCallFromVar4Must((FunctionCallFromVar4Must) visitFunctionCallFromVar4Must(ctx.functionCallFromVar4Must()));
+        }
+
         return super.visitFunctionCall4Must(ctx);
     }
 
     @Override
     public Object visitFunctionCallFromVar4Must(HTMLParser.FunctionCallFromVar4MustContext ctx) {
+        FunctionCallFromVar4Must functionCallFromVar4Must = new FunctionCallFromVar4Must();
+
+        List<Parameters4Must> parameters4Musts = new ArrayList<>();
+        if (ctx.parameters4Must() != null){
+            for (int i = 0 ; i < ctx.parameters4Must().size() ; i ++){
+                parameters4Musts.add((Parameters4Must) visitParameters4Must(ctx.parameters4Must(i)));
+            }
+            functionCallFromVar4Must.setParameters4Must(parameters4Musts);
+        }
+
+        if (ctx.arrayCalling4Must() != null){
+            functionCallFromVar4Must.setArrayCalling4Must((ArrayCalling4Must) visitArrayCalling4Must(ctx.arrayCalling4Must()));
+        }
+
+        if (ctx.property4Must() != null){
+            functionCallFromVar4Must.setProperty4Must((Property4Must) visitProperty4Must(ctx.property4Must()));
+        }
+
         return super.visitFunctionCallFromVar4Must(ctx);
     }
 
     @Override
     public Object visitFunctionName4Must(HTMLParser.FunctionName4MustContext ctx) {
+        FunctionName4Must functionName4Must = new FunctionName4Must();
+        if (ctx.MUSTACHE_IDENTIFIER() != null){
+            functionName4Must.setFunctionName4Must(ctx.MUSTACHE_IDENTIFIER().getSymbol().getText());
+        }
         return super.visitFunctionName4Must(ctx);
     }
 
     @Override
     public Object visitParameters4Must(HTMLParser.Parameters4MustContext ctx) {
+        Parameters4Must parameters4Must = new Parameters4Must();
+
+        List<Parameter4Must> parameter4Musts = new ArrayList<>();
+        if (ctx.parameter4Must() != null){
+            for (int i = 0 ; i < ctx.parameter4Must().size() ; i ++){
+                parameter4Musts.add((Parameter4Must) visitParameter4Must(ctx.parameter4Must(i)));
+            }
+            parameters4Must.setParameters4Musts(parameter4Musts);
+        }
         return super.visitParameters4Must(ctx);
     }
 
     @Override
     public Object visitParameter4Must(HTMLParser.Parameter4MustContext ctx) {
+        Parameter4Must parameter4Must = new Parameter4Must();
+
+        if (ctx.collection4Mustache() != null){
+            parameter4Must.setCollection4Mustache((Collection4Mustache) visitCollection4Mustache(ctx.collection4Mustache()));
+        }
+
         return super.visitParameter4Must(ctx);
     }
 
     @Override
     public Object visitSubObj4Must(HTMLParser.SubObj4MustContext ctx) {
+        SubObj4Must subObj4Must = new SubObj4Must();
+
+        if (ctx.MUSTACHE_IDENTIFIER() != null){
+            subObj4Must.setSubObj4MustName(ctx.MUSTACHE_IDENTIFIER().getSymbol().getText());
+        }
+
+        if (ctx.property4Must() != null){
+            subObj4Must.setProperty4Must((Property4Must) visitProperty4Must(ctx.property4Must()));
+        }
         return super.visitSubObj4Must(ctx);
     }
 
     @Override
     public Object visitProperty4Must(HTMLParser.Property4MustContext ctx) {
+        Property4Must property4Must = new Property4Must();
+
+        List<PropertyValue4Must> propertyValue4Musts = new ArrayList<>();
+        if (ctx.propertyValue4Must() != null){
+            for (int i = 0 ; i < ctx.propertyValue4Must().size() ; i ++){
+                propertyValue4Musts.add((PropertyValue4Must) visitPropertyValue4Must(ctx.propertyValue4Must(i)));
+            }
+            property4Must.setPropertyValue4Must(propertyValue4Musts);
+        }
+
+        if (ctx.arrayCalling4Must() != null){
+            property4Must.setArrayCalling4Must((ArrayCalling4Must) visitArrayCalling4Must(ctx.arrayCalling4Must()));
+        }
+
+        if (ctx.functionCallFromVar4Must() != null){
+            property4Must.setFunctionCallFromVar4Must((FunctionCallFromVar4Must) visitFunctionCallFromVar4Must(ctx.functionCallFromVar4Must()));
+        }
         return super.visitProperty4Must(ctx);
     }
 
     @Override
     public Object visitPropertyValue4Must(HTMLParser.PropertyValue4MustContext ctx) {
+        PropertyValue4Must propertyValue4Must = new PropertyValue4Must();
+
+        if (ctx.MUSTACHE_IDENTIFIER() != null){
+            propertyValue4Must.setPropertyValue4Must(ctx.MUSTACHE_IDENTIFIER().getSymbol().getText());
+        }
         return super.visitPropertyValue4Must(ctx);
     }
 
     @Override
     public Object visitOneLineCondition4Must(HTMLParser.OneLineCondition4MustContext ctx) {
+        OneLineCondition4Must oneLineCondition4Must = new OneLineCondition4Must();
+
+        if (ctx.logicComprison4Must() != null){
+            oneLineCondition4Must.setLogicComprison4Must((LogicComprison4Must) visitLogicComprison4Must(ctx.logicComprison4Must()));
+        }
+
+        if (ctx.collection4Mustache() != null){
+            oneLineCondition4Must.setCollection4Mustache1((Collection4Mustache) visitCollection4Mustache(ctx.collection4Mustache(0)));
+            oneLineCondition4Must.setCollection4Mustache2((Collection4Mustache) visitCollection4Mustache(ctx.collection4Mustache(1)));
+        }
+
         return super.visitOneLineCondition4Must(ctx);
     }
 
     @Override
     public Object visitOneLineArithCondition4Must(HTMLParser.OneLineArithCondition4MustContext ctx) {
+        OneLineArithCondition4Must oneLineArithCondition4Must = new OneLineArithCondition4Must();
+
+        if (ctx.logicComprison4Must() != null){
+            oneLineArithCondition4Must.setLogicComprison4Must((LogicComprison4Must) visitLogicComprison4Must(ctx.logicComprison4Must()));
+        }
+
+        if (ctx.arithmeticLogic4Must() != null){
+            oneLineArithCondition4Must.setArithmeticLogic4Must1((ArithmeticLogic4Must) visitArithmeticLogic4Must(ctx.arithmeticLogic4Must(0)));
+            oneLineArithCondition4Must.setArithmeticLogic4Must2((ArithmeticLogic4Must) visitArithmeticLogic4Must(ctx.arithmeticLogic4Must(1)));
+        }
         return super.visitOneLineArithCondition4Must(ctx);
     }
 
     @Override
     public Object visitOneLineBoolCondition4Must(HTMLParser.OneLineBoolCondition4MustContext ctx) {
+        OneLineBoolCondition4Must oneLineBoolCondition4Must = new OneLineBoolCondition4Must();
+
+        if (ctx.logicComprison4Must() != null){
+            oneLineBoolCondition4Must.setLogicComprison4Must((LogicComprison4Must) visitLogicComprison4Must(ctx.logicComprison4Must()));
+        }
+
+        if (ctx.MUSTACHE_TRUE() != null){
+            oneLineBoolCondition4Must.setTrue(true);
+        }
+        if (ctx.MUSTACHE_FALSE() != null){
+            oneLineBoolCondition4Must.setFalse(false);
+        }
         return super.visitOneLineBoolCondition4Must(ctx);
     }
 
     @Override
     public Object visitComparisonExp4Must(HTMLParser.ComparisonExp4MustContext ctx) {
+        ComparisonExp4Must comparisonExp4Must = new ComparisonExp4Must();
+
+        if (ctx.collection4CompMust() != null){
+            comparisonExp4Must.setCollection4CompMust((Collection4CompMust) visitCollection4CompMust(ctx.collection4CompMust(0)));
+            comparisonExp4Must.setCollection4CompMust2((Collection4CompMust) visitCollection4CompMust(ctx.collection4CompMust(1)));
+        }
+
+        if (ctx.mustacheComparisonOperator() != null){
+            comparisonExp4Must.setMustacheComparisonOperator((MustacheComparisonOperator) visitMustacheComparisonOperator(ctx.mustacheComparisonOperator()));
+        }
         return super.visitComparisonExp4Must(ctx);
     }
 
     @Override
     public Object visitMustacheComparisonOperator(HTMLParser.MustacheComparisonOperatorContext ctx) {
+        MustacheComparisonOperator mustacheComparisonOperator = new MustacheComparisonOperator();
+
+        if (ctx.MUSTACHE_GREATER_THAN() != null){
+
+            mustacheComparisonOperator.setOperator(ctx.MUSTACHE_GREATER_THAN().getSymbol().getText());
+        }
+
+        if (ctx.MUSTACHE_GREATER_EQ() != null){
+
+            mustacheComparisonOperator.setOperator(ctx.MUSTACHE_GREATER_EQ().getSymbol().getText());
+        }
+
+
+
+        if (ctx.MUSTACHE_LESS_THAN() != null){
+
+            mustacheComparisonOperator.setOperator(ctx.MUSTACHE_LESS_THAN().getSymbol().getText());
+        }
+
+
+        if (ctx.MUSTACHE_LESS_EQ() != null){
+
+            mustacheComparisonOperator.setOperator(ctx.MUSTACHE_LESS_EQ().getSymbol().getText());
+        }
+
+
+        if (ctx.MUSTACHE_EQUAL_TO() != null){
+
+            mustacheComparisonOperator.setOperator(ctx.MUSTACHE_EQUAL_TO().getSymbol().getText());
+        }
+        if (ctx.MUSTACHE_NOT_EQUAL() != null){
+
+            mustacheComparisonOperator.setOperator(ctx.MUSTACHE_NOT_EQUAL().getSymbol().getText());
+        }
+
         return super.visitMustacheComparisonOperator(ctx);
     }
 
     @Override
     public Object visitFilter(HTMLParser.FilterContext ctx) {
+        Filter filter = new Filter();
+
+        if (ctx.modelName() != null){
+            filter.setModelName((ModelName) visitModelName(ctx.modelName()));
+        }
+
+        if (ctx.MUSTACHE_FILTER() != null){
+            filter.setFilter(ctx.MUSTACHE_FILTER().getSymbol().getText());
+        }
+
+        if (ctx.formatName() != null){
+            filter.setFormatName((FormatName) visitFormatName(ctx.formatName()));
+        }
+
+        if (ctx.collection4Mustache() != null){
+            filter.setCollection4Mustache((Collection4Mustache) visitCollection4Mustache(ctx.collection4Mustache()));
+        }
         return super.visitFilter(ctx);
     }
 
     @Override
     public Object visitModelName(HTMLParser.ModelNameContext ctx) {
+        ModelName modelName = new ModelName();
+        if (ctx.MUSTACHE_IDENTIFIER() != null){
+            modelName.setMustachIdentifier(ctx.MUSTACHE_IDENTIFIER().getSymbol().getText());
+        }
         return super.visitModelName(ctx);
     }
 
     @Override
     public Object visitFormatName(HTMLParser.FormatNameContext ctx) {
+        FormatName formatName = new FormatName();
+        if (ctx.MUSTACHE_IDENTIFIER() != null){
+            formatName.setMustachIdentifier(ctx.MUSTACHE_IDENTIFIER().getSymbol().getText());
+        }
         return super.visitFormatName(ctx);
     }
 
     @Override
     public Object visitScript(HTMLParser.ScriptContext ctx) {
+        Script script = new Script();
+
+        if (ctx.SCRIPT_OPEN() != null){
+            script.setScriptOpen(ctx.SCRIPT_OPEN().getSymbol().getText());
+        }
+
+        if (ctx.SCRIPT_BODY() != null){
+            script.setScriptBody(ctx.SCRIPT_BODY().getSymbol().getText());
+        }
+
+        if (ctx.SCRIPT_SHORT_BODY() != null){
+            script.setScripShortBody(ctx.SCRIPT_SHORT_BODY().getSymbol().getText());
+        }
         return super.visitScript(ctx);
     }
 
     @Override
     public Object visitStyle(HTMLParser.StyleContext ctx) {
+        Style style = new Style();
+
+        if (ctx.STYLE_OPEN() != null){
+            style.setStyleOpen(ctx.STYLE_OPEN().getSymbol().getText());
+        }
+
+        if (ctx.STYLE_BODY() != null){
+            style.setStyleBody(ctx.STYLE_BODY().getSymbol().getText());
+        }
+
+        if (ctx.STYLE_SHORT_BODY() != null){
+            style.setStyleShort(ctx.STYLE_SHORT_BODY().getSymbol().getText());
+        }
         return super.visitStyle(ctx);
     }
     //////////////////////////////////////////////////

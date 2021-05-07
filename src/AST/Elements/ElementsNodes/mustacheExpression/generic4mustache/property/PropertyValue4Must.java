@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PropertyValue4Must {
-    private List<String> propertyValue4Must = new ArrayList<>();
+    private String propertyValue4Must;
 
-    public void setPropertyValue4Must(List<String> propertyValue4Must) {
-        this.propertyValue4Must = propertyValue4Must;
+    public String getPropertyValue4Must() {
+        return propertyValue4Must;
     }
 
-    public List<String> getPropertyValue4Must() {
-        return propertyValue4Must;
+    public void setPropertyValue4Must(String propertyValue4Must) {
+        this.propertyValue4Must = propertyValue4Must;
     }
 }
 
