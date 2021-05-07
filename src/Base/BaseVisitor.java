@@ -622,11 +622,24 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
 
     @Override
     public Object visitArrayCalling(HTMLParser.ArrayCallingContext ctx) {
-
-        //TODO you should solve this problem
-//: (CP_CONTENT_OPEN_BRACKETS  arithmeticLogic CP_CONTENT_CLOSE_BRACKETS)+ (functionCallFromVar | property)?
+        //: (CP_CONTENT_OPEN_BRACKETS  arithmeticLogic CP_CONTENT_CLOSE_BRACKETS)+ (functionCallFromVar | property)?
         ArrayCalling arrayCalling = new ArrayCalling();
 
+        List<ArithmeticLogic> arithmeticLogics = new ArrayList<>();
+        if (ctx.arithmeticLogic() != null){
+            for (int i = 0 ; i < ctx.arithmeticLogic().size() ; i ++){
+                arithmeticLogics.add((ArithmeticLogic) visitArithmeticLogic(ctx.arithmeticLogic(i)));
+            }
+            arrayCalling.setArithmeticLogic(arithmeticLogics);
+        }
+
+        if (ctx.functionCallFromVar() != null){
+            arrayCalling.setFunctionCallFromVar((FunctionCallFromVar) visitFunctionCallFromVar(ctx.functionCallFromVar()));
+        }
+
+        if (ctx.property() != null){
+            arrayCalling.setProperty((Property) visitProperty(ctx.property()));
+        }
 
         return super.visitArrayCalling(ctx);
     }
@@ -844,19 +857,17 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
          * And index (1) for next collection4comparison
          * And all of that because we have arrayList of collection4comparison from Parser
         **/
-        //index (0)
+
         if (ctx.collection4comparison() != null){
+            //index (0)
             comparisonExpression.setCollection4comparison1((Collection4comparison) visitCollection4comparison(ctx.collection4comparison(0)));
+            // index(1)
+            comparisonExpression.setCollection4comparison2((Collection4comparison) visitCollection4comparison(ctx.collection4comparison(1)));
         }
 
         if (ctx.comparisonOperator() != null){
             comparisonExpression.setComparisonOperator((ComparisonOperator) visitComparisonOperator(ctx.comparisonOperator()));
         }
-        // index(1)
-        if (ctx.collection4comparison() != null){
-            comparisonExpression.setCollection4comparison2((Collection4comparison) visitCollection4comparison(ctx.collection4comparison(1)));
-        }
-
         return super.visitComparisonExpression(ctx);
     }
 
@@ -869,10 +880,6 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
             oneLineCondition.setLogicComprison((LogicComprison) visitLogicComprison(ctx.logicComprison()));
         }
 
-        // "?"
-        if (ctx.CP_CONTENT_QUESTION_MARK() != null){
-            oneLineCondition.setQuestionMark(ctx.CP_CONTENT_QUESTION_MARK().getSymbol().getText());
-        }
 
         /**I use index (0) in parameter of visit for first collection4everything
          *  because we have same expression
@@ -880,15 +887,11 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
          * And all of that because we have arrayList of collection4comparison from Parser
          **/
         //index (0)
+        //index(1)
         if (ctx.collection4everything() != null){
             oneLineCondition.setCollection4everything1((Collection4everything) visitCollection4everything(ctx.collection4everything(0)));
-        }
-
-//        index(1)
-        if (ctx.collection4everything() != null){
             oneLineCondition.setCollection4everything2((Collection4everything) visitCollection4everything(ctx.collection4everything(1)));
         }
-
         return super.visitOneLineCondition(ctx);
     }
 
@@ -902,8 +905,12 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
             oneLineBoolCondition.setLogicComprison((LogicComprison) visitLogicComprison(ctx.logicComprison()));
         }
 
-        if (ctx.CP_CONTENT_QUESTION_MARK() != null){
-            oneLineBoolCondition.setQuestionMark(ctx.CP_CONTENT_QUESTION_MARK().getSymbol().getText());
+        if (ctx.CP_CONTENT_FALSE() != null){
+            oneLineBoolCondition.setFalse(false);
+        }
+
+        if (ctx.CP_CONTENT_TRUE() != null){
+            oneLineBoolCondition.setTrue(true);
         }
         return super.visitOneLineBoolCondition(ctx);
     }
@@ -917,11 +924,6 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
         if (ctx.logicComprison() != null){
             oneLineArithCondition.setLogicComprison((LogicComprison) visitLogicComprison(ctx.logicComprison()));
         }
-
-        if (ctx.CP_CONTENT_QUESTION_MARK() != null){
-            oneLineArithCondition.setQuestionMark(ctx.CP_CONTENT_QUESTION_MARK().getSymbol().getText());
-        }
-
         /**I use index (0) in parameter of visit for first arithmeticLogic
          *  because we have same expression
          * And index (1) for next arithmeticLogic
@@ -929,12 +931,9 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
          **/
 
         // Index (0)
+        // index(1)
         if (ctx.arithmeticLogic() != null){
             oneLineArithCondition.setArithmeticLogic1((ArithmeticLogic) visitArithmeticLogic(ctx.arithmeticLogic(0)));
-        }
-
-        // Index (1)
-        if (ctx.arithmeticLogic() != null){
             oneLineArithCondition.setArithmeticLogic2((ArithmeticLogic) visitArithmeticLogic(ctx.arithmeticLogic(1)));
         }
         return super.visitOneLineArithCondition(ctx);
@@ -990,11 +989,6 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
         if (ctx.collection4LogicRet() != null){
             logicComprison.setCollection4LogicRetFirst((Collection4LogicRet) visitCollection4LogicRet(ctx.collection4LogicRet()));
         }
-
-        if (ctx.CP_CONTENT_OPEN_PAR() != null){
-            logicComprison.setOpenParFirst(ctx.CP_CONTENT_OPEN_PAR().getSymbol().getText());
-        }
-
         if (ctx.logicComprison() != null){
             logicComprison.setLogicComprisonFirst((LogicComprison) visitLogicComprison(ctx.logicComprison()));
         }
@@ -1017,25 +1011,20 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
         //First OR between ----- && or || -----
 
         //Only && (&&)
-        if (ctx.CP_CONTENT_AND() != null && ctx.CP_CONTENT_NOT() == null){
+        if (ctx.CP_CONTENT_AND() != null){
             middleAndLastLogicComparison.setAndMiddle(ctx.CP_CONTENT_AND().getSymbol().getText());
+            if (ctx.CP_CONTENT_NOT() != null){
+                middleAndLastLogicComparison.setNotAndMiddle(ctx.CP_CONTENT_NOT().getSymbol().getText());
+            }
         }
-        // && and ! NOT (&& !)
-        if (ctx.CP_CONTENT_AND() != null && ctx.CP_CONTENT_NOT() != null){
-            middleAndLastLogicComparison.setNotAndMiddle(ctx.CP_CONTENT_AND().getSymbol().getText()
-                    + " " + ctx.CP_CONTENT_NOT().getSymbol().getText());
-        }
-
         // OR
 
         //Only || (||)
-        if (ctx.CP_CONTENT_OR() != null && ctx.CP_CONTENT_NOT() == null){
+        if (ctx.CP_CONTENT_OR() != null){
             middleAndLastLogicComparison.setAndMiddle(ctx.CP_CONTENT_OR().getSymbol().getText());
-        }
-        // || and ! NOT (|| !)
-        if (ctx.CP_CONTENT_OR() != null && ctx.CP_CONTENT_NOT() != null){
-            middleAndLastLogicComparison.setNotAndMiddle(ctx.CP_CONTENT_OR().getSymbol().getText()
-                    + " " + ctx.CP_CONTENT_NOT().getSymbol().getText());
+            if (ctx.CP_CONTENT_NOT() != null){
+                middleAndLastLogicComparison.setNotOrMiddle(ctx.CP_CONTENT_NOT().getSymbol().getText());
+            }
         }
 
         //Second OR between ----- collection4LogicRet or CP_CONTENT_OPEN_PAR logicComprison CP_CONTENT_CLOSE_PAR -----
@@ -1112,7 +1101,7 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
             value.setString(ctx.CP_CONTENT_STRING().getSymbol().getText());
         }
         if (ctx.CP_CONTENT_NULL() != null){
-            value.setString(ctx.CP_CONTENT_NULL().getSymbol().getText());
+            value.setNull(null);
         }
 
 
