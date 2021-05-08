@@ -21,19 +21,13 @@ public class Main {
 
 
 
-<<<<<<< HEAD
-=======
-        root.addChild(new SimpleTreeNode("Child 3"));
-        root.addChild(new SimpleTreeNode("Child 5"));
-        root.addChild(new SimpleTreeNode("Child 6"));
-        new ListingTreePrinter().print(root);
 
 
 
 
 
         try {
-            String source = "E:\\forth year\\COMP\\src\\sample.txt";
+            String source = "C:\\Users\\-new-LAPTOP-2318887-\\Desktop\\compilerV2\\src\\sample.txt";
             CharStream cs = fromFileName(source);
             HTMLLexer lexer = new HTMLLexer(cs);
             CommonTokenStream token = new CommonTokenStream(lexer);
@@ -45,12 +39,12 @@ public class Main {
             HtmlDocument doc = (HtmlDocument) base.visit(tree);
             System.out.println(doc);
             // mayar add function in baseVisitor to print the tree from object (base)
+            base.printTree();
 
 
 
         } catch (IOException e) {
             e.printStackTrace();
         }
->>>>>>> 0d94d1f2a0b4b83b4e0cf3f16a709c5b83142056
     }
 }
