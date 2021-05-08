@@ -231,11 +231,11 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
         //mustacheExpression
         HtmlElement htmlElement = new HtmlElement();
         if(ctx.TAG_NAME() != null){
-            if(ctx.TAG_OPEN(0) != null){
                 htmlElement.setTagName(ctx.TAG_OPEN(0).getSymbol().getText());
-            }
-            if (ctx.TAG_NAME(1) != null){
-                htmlElement.setTagName(ctx.TAG_OPEN(1).getSymbol().getText());
+            if (ctx.TAG_SLASH_CLOSE() == null){
+                if (ctx.TAG_NAME(1) != null){
+                    htmlElement.setTagName2(ctx.TAG_OPEN(1).getSymbol().getText());
+                }
             }
         }
 
