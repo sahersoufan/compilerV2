@@ -1,18 +1,24 @@
-<!-- for stmt 2-->
+<!--1-->
+<!-- If stmt-->
 <html>
 <head>
-    <nav class="globalNav main-nav">
+    <nav class="globalNav" data-module="nav">
         <header>
-            <div cp-show="showItem()">
-                <ul class="navProvider unordered-list" cp-for="obj in t">
-                <li>{{i}} : {{obj.fistName}} {{obj.lastName}}</li>
+            <div id="navAuth" cp-if="isAuthenitcated">
+                <ul class="navProvider">
+                    <li id="mvpdLogo">
+					   <span>free text</span>
+					</li>
+                    <li id="mvpdLogo1"></li>
+                    <li id="mvpdLogo2"></li>
+                    <li id="mvpdLogo3"></li>
                 </ul>
+            </div>
+            <div id="outside-div">
+                <p>Not auth</p>
             </div>
         </header>
     </nav>
 </head>
-<body>
-// TODO check
-  <input name="search" @change="handleChange(event)" @focus="handleFocus()" />
-</body>
+<body></body>
 </html>
