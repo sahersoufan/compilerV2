@@ -53,14 +53,10 @@ import AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.property.P
 import AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.value.MustacheValue;
 import AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.var.MustacheVariable;
 import AST.HtmlDocument;
-import AST.HtmlEle;
-import AST.HtmlXML;
 import generatedGrammers.HTMLParser;
 import generatedGrammers.HTMLParserBaseVisitor;
 import treePrinter.SimpleTreeNode;
 
-import javax.accessibility.AccessibleTable;
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -98,8 +94,8 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
         System.out.println("visit html document");
 
 
-        List<ScriptLetOrSeaWs> ObjscriptletOrSeaWs = new ArrayList<>();
-        if(ctx.scriptletOrSeaWs().size() != 0){
+        if(!ctx.scriptletOrSeaWs().isEmpty()){
+            List<ScriptLetOrSeaWs> ObjscriptletOrSeaWs = new ArrayList<>();
             for (int i =0 ; i <  ctx.scriptletOrSeaWs().size() ; i++){
                 ObjscriptletOrSeaWs.add( (ScriptLetOrSeaWs) visitScriptletOrSeaWs(ctx.scriptletOrSeaWs(i)));
             }
@@ -110,13 +106,18 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
             htmlDocument.setDTD(ctx.DTD().getSymbol().getText());
         }
 
-        if (ctx.htmlXML() != null){
-            htmlDocument.setHtmlXML((HtmlXML) visitHtmlXML(ctx.htmlXML()));
+        if (!ctx.htmlElements().isEmpty()){
+            List<HtmlElements> htmlElements = new ArrayList<>();
+            for (int i =0 ; i <  ctx.scriptletOrSeaWs().size() ; i++){
+                htmlElements.add( (HtmlElements) visitHtmlElements(ctx.htmlElements(i)));
+            }
+            htmlDocument.setHtmlElements(htmlElements);
         }
 
-        if (ctx.htmlEle() != null){
-            htmlDocument.setHtmlEle((HtmlEle) visitHtmlEle(ctx.htmlEle()));
+        if (ctx.XML() != null){
+            htmlDocument.setXML(ctx.XML().getSymbol().getText());
         }
+
         return htmlDocument;
     }
 
@@ -134,81 +135,23 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
     }
 
     @Override
-    public Object visitHtmlXML(HTMLParser.HtmlXMLContext ctx) {
-         HtmlXML htmlXML = new HtmlXML();
-
-        List<ScriptLetOrSeaWs> ObjscriptletOrSeaWs = new ArrayList<>();
-        if(ctx.scriptletOrSeaWs().size() != 0){
-            for (int i =0 ; i <  ctx.scriptletOrSeaWs().size() ; i++){
-                ObjscriptletOrSeaWs.add( (ScriptLetOrSeaWs) visitScriptletOrSeaWs(ctx.scriptletOrSeaWs(i)));
-            }
-            htmlXML.setScriptLetOrSeaWs(ObjscriptletOrSeaWs);
-        }
-
-        if (ctx.XML() != null){
-            htmlXML.setXML(ctx.XML().getSymbol().getText());
-        }
-        return super.visitHtmlXML(ctx);
-    }
-
-    @Override
-    public Object visitHtmlEle(HTMLParser.HtmlEleContext ctx) {
-        HtmlEle htmlEle = new HtmlEle();
-
-        List<ScriptLetOrSeaWs> ObjscriptletOrSeaWs = new ArrayList<>();
-        if(ctx.scriptletOrSeaWs().size() != 0){
-            for (int i =0 ; i <  ctx.scriptletOrSeaWs().size() ; i++){
-                ObjscriptletOrSeaWs.add( (ScriptLetOrSeaWs) visitScriptletOrSeaWs(ctx.scriptletOrSeaWs(i)));
-            }
-            htmlEle.setScriptLetOrSeaWs(ObjscriptletOrSeaWs);
-        }
-        List<HtmlElements> htmlElements = new ArrayList<>();
-        if (ctx.htmlElements().size() != 0){
-            for (int i =0 ; i <  ctx.htmlElements().size() ; i++) {
-            htmlElements.add((HtmlElements) visitHtmlElements(ctx.htmlElements(i)));
-            }
-            htmlEle.setHtmlElements(htmlElements);
-        }
-        return super.visitHtmlEle(ctx);
-    }
-
-    @Override
     public Object visitHtmlElements(HTMLParser.HtmlElementsContext ctx) {
         HtmlElements htmlElements = new HtmlElements();
-        List<HtmlMisc> htmlMiscs = new ArrayList<>();
 
-        if (ctx.htmlMisc().size() != 0){
+        if (!ctx.htmlMisc().isEmpty()){
+            List<HtmlMisc> htmlMiscs = new ArrayList<>();
             for (int i = 0 ; i < ctx.htmlMisc().size() ; i ++ ){
                 htmlMiscs.add((HtmlMisc) visitHtmlMisc(ctx.htmlMisc(i)));
             }
             htmlElements.setMisc(htmlMiscs);
         }
 
-        if (ctx.htmlElementsComp() != null){
-            htmlElements.setHtmlElement((HtmlElementsComp) visitHtmlElementsComp(ctx.htmlElementsComp()));
+        if (ctx.htmlElement() != null){
+            htmlElements.setHtmlElement((HtmlElement) visitHtmlElement(ctx.htmlElement()));
         }
+
 
         return super.visitHtmlElements(ctx);
-    }
-
-    @Override
-    public Object visitHtmlElementsComp(HTMLParser.HtmlElementsCompContext ctx) {
-        HtmlElementsComp htmlElementsComp = new HtmlElementsComp();
-
-        if (ctx.htmlElement() != null){
-            htmlElementsComp.setHtmlElement((HtmlElement) visitHtmlElement(ctx.htmlElement()));
-        }
-
-        List<HtmlMisc> htmlMiscs = new ArrayList<>();
-
-        if (ctx.htmlMisc().size() != 0){
-            for (int i = 0 ; i < ctx.htmlMisc().size() ; i ++ ){
-                htmlMiscs.add((HtmlMisc) visitHtmlMisc(ctx.htmlMisc(i)));
-            }
-            htmlElementsComp.setHtmlMiscList(htmlMiscs);
-        }
-
-        return super.visitHtmlElementsComp(ctx);
     }
 
     @Override
@@ -245,7 +188,7 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
         }
 
         List<HtmlAttribute> htmlAttributeList = new ArrayList<>();
-        if (ctx.htmlAttribute().size() != 0) {
+        if (!ctx.htmlAttribute().isEmpty()) {
             for (int i = 0; i < ctx.htmlAttribute().size(); i++) {
                 htmlAttributeList.add((HtmlAttribute) visitHtmlAttribute(ctx.htmlAttribute(i)));
             }
@@ -283,39 +226,39 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
         // ((htmlElement | CDATA | htmlComment) htmlChardata?)*
         HtmlContent htmlContent = new HtmlContent();
 
-        if (ctx.htmlChardata() != null){
-            htmlContent.setHtmlCharDataList((HtmlCharData) visitHtmlChardata(ctx.htmlChardata()));
-        }
-        List<HtmlContentComp> htmlContentComps = new ArrayList<>();
-        if (ctx.htmlContentComp().size() != 0){
-            for (int i = 0 ; i < ctx.htmlContentComp().size() ; i ++){
-                htmlContentComps.add((HtmlContentComp) visitHtmlContentComp(ctx.htmlContentComp(i)));
+        if (!ctx.htmlComment().isEmpty()){
+            List<HtmlComment> htmlComments = new ArrayList<>();
+            for (int i = 0; i < ctx.htmlComment().size(); i++) {
+                htmlComments.add((HtmlComment) visitHtmlComment(ctx.htmlComment(i)));
             }
-            htmlContent.setHtmlContentComps(htmlContentComps);
+            htmlContent.setHtmlComment(htmlComments);
         }
+
+        if (!ctx.CDATA().isEmpty()){
+            List<String> cData = new ArrayList<>();
+            for (int i = 0; i < ctx.CDATA().size(); i++) {
+                cData.add((String) ctx.CDATA(i).getSymbol().getText());
+            }
+            htmlContent.setCDATA(cData);
+        }
+
+        if (!ctx.htmlChardata().isEmpty()){
+            List<HtmlCharData> htmlCharData = new ArrayList<>();
+            for (int i = 0; i < ctx.htmlChardata().size(); i++) {
+                htmlCharData.add((HtmlCharData) visitHtmlChardata(ctx.htmlChardata(i)));
+            }
+            htmlContent.setHtmlCharData(htmlCharData);
+        }
+
+        if (!ctx.htmlElement().isEmpty()){
+            List<HtmlElement> htmlElements = new ArrayList<>();
+            for (int i = 0; i < ctx.htmlElement().size(); i++) {
+                htmlElements.add((HtmlElement) visitHtmlElement(ctx.htmlElement(i)));
+            }
+            htmlContent.setHtmlElement(htmlElements);
+        }
+
         return super.visitHtmlContent(ctx);
-    }
-
-    @Override
-    public Object visitHtmlContentComp(HTMLParser.HtmlContentCompContext ctx) {
-        HtmlContentComp htmlContentComp = new HtmlContentComp();
-
-        if (ctx.htmlElement() != null){
-            htmlContentComp.setHtmlElement((HtmlElement) visitHtmlElement(ctx.htmlElement()));
-        }
-
-        if (ctx.CDATA() != null){
-            htmlContentComp.setCDATA(ctx.CDATA().getSymbol().getText());
-        }
-
-        if (ctx.htmlComment() != null){
-            htmlContentComp.setHtmlComment((HtmlComment) visitHtmlComment(ctx.htmlComment()));
-        }
-
-        if (ctx.htmlChardata() != null){
-            htmlContentComp.setHtmlCharData((HtmlCharData) visitHtmlChardata(ctx.htmlChardata()));
-        }
-        return super.visitHtmlContentComp(ctx);
     }
 
     @Override
@@ -1172,8 +1115,8 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
 //: (CP_CONTENT_OPEN_BRACKETS  arithmeticLogic CP_CONTENT_CLOSE_BRACKETS)+ (functionCallFromVar | property)?
         ArrayCalling arrayCalling = new ArrayCalling();
 
-        List<ArithmeticLogic> arithmeticLogics = new ArrayList<>();
-        if (ctx.arithmeticLogic().size() != 0){
+        if (!ctx.arithmeticLogic().isEmpty()){
+            List<ArithmeticLogic> arithmeticLogics = new ArrayList<>();
             for (int i = 0 ; i < ctx.arithmeticLogic().size() ; i ++){
                 arithmeticLogics.add((ArithmeticLogic) visitArithmeticLogic(ctx.arithmeticLogic(i)));
             }
@@ -1196,8 +1139,8 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
         Array array = new Array();
 
 
-        ArrayList<Collection4everything> internalCollections4EveryThings = new ArrayList<>();
-        if (ctx.collection4everything().size() != 0){
+        if (!ctx.collection4everything().isEmpty()){
+            ArrayList<Collection4everything> internalCollections4EveryThings = new ArrayList<>();
             for (int i =0 ; i<ctx.collection4everything().size();i++){
                 internalCollections4EveryThings.add((Collection4everything) visitCollection4everything(ctx.collection4everything(i)));
             }
@@ -1240,8 +1183,8 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
 
         ObjBody objBody = new ObjBody();
 
-        ArrayList<Pair> pairs = new ArrayList<>();
-        if (ctx.pair().size() != 0){
+        if (!ctx.pair().isEmpty()){
+            ArrayList<Pair> pairs = new ArrayList<>();
             for (int i=0 ; i< ctx.pair().size(); i++){
                 pairs.add((Pair) visitPair(ctx.pair(i)));
             }
@@ -1283,8 +1226,8 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
 
         Property property = new Property();
 
-        ArrayList<PropertyValue> propertyValues = new ArrayList<>();
-        if (ctx.propertyValue().size() != 0){
+        if (!ctx.propertyValue().isEmpty()){
+            ArrayList<PropertyValue> propertyValues = new ArrayList<>();
             for (int i=0; i<ctx.propertyValue().size();i++){
                 propertyValues.add((PropertyValue) visitPropertyValue(ctx.propertyValue(i)));
             }
@@ -1334,8 +1277,8 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
 
         FunctionCallFromVar functionCallFromVar = new FunctionCallFromVar();
 
-        ArrayList<Parameters> parametersArrayList = new ArrayList<>();
-        if (ctx.parameters().size() != 0){
+        if (!ctx.parameters().isEmpty()){
+            ArrayList<Parameters> parametersArrayList = new ArrayList<>();
             for (int i=0; i< ctx.parameters().size();i++){
                 parametersArrayList.add((Parameters) visitParameters(ctx.parameters(i)));
             }
@@ -1372,8 +1315,8 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
 
         Parameters parameters = new Parameters();
 
-        ArrayList<Parameter> parameterArrayList = new ArrayList<>();
-        if (ctx.parameter().size() != 0){
+        if (!ctx.parameter().isEmpty()){
+            ArrayList<Parameter> parameterArrayList = new ArrayList<>();
             for (int i=0; i< ctx.parameter().size();i++){
                 parameterArrayList.add((Parameter) visitParameter(ctx.parameter(i)));
             }
@@ -1545,8 +1488,8 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
             logicComprison.setLogicComprisonFirst((LogicComprison) visitLogicComprison(ctx.logicComprison()));
         }
 
-        List<MiddleAndLastLogicComparison> middleAndLastLogicComparisons = new ArrayList<>();
-        if (ctx.middleAndLastLogicComparison().size() != 0){
+        if (!ctx.middleAndLastLogicComparison().isEmpty()){
+            List<MiddleAndLastLogicComparison> middleAndLastLogicComparisons = new ArrayList<>();
             for (int i = 0 ; i < ctx.middleAndLastLogicComparison().size() ; i++){
                 middleAndLastLogicComparisons.add((MiddleAndLastLogicComparison) visitMiddleAndLastLogicComparison(ctx.middleAndLastLogicComparison(i)));
             }
@@ -1610,8 +1553,8 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
             arithmeticLogic.setArithmeticLogic((ArithmeticLogic) visitArithmeticLogic(ctx.arithmeticLogic()));
         }
 
-        ArrayList<LastArithmeticLogic> lastArithmeticLogicArrayList = new ArrayList<>();
-        if (ctx.lastArithmeticLogic().size() != 0){
+        if (!ctx.lastArithmeticLogic().isEmpty()){
+            ArrayList<LastArithmeticLogic> lastArithmeticLogicArrayList = new ArrayList<>();
             for (int i=0; i< ctx.lastArithmeticLogic().size();i++){
                 lastArithmeticLogicArrayList.add((LastArithmeticLogic) visitLastArithmeticLogic(ctx.lastArithmeticLogic(i)));
             }
@@ -1975,8 +1918,8 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
             logicComprison4Must.setLogicComprisonFirst((LogicComprison4Must) visitLogicComprison4Must(ctx.logicComprison4Must()));
         }
         // middle and last
-        List<MiddleAndLastLogicComparison4Must> middleAndLastLogicComparison4Musts = new ArrayList<>();
-        if (ctx.middleAndLastLogicComparison4Must().size() != 0){
+        if (!ctx.middleAndLastLogicComparison4Must().isEmpty()){
+            List<MiddleAndLastLogicComparison4Must> middleAndLastLogicComparison4Musts = new ArrayList<>();
             for (int i = 0 ; i < ctx.middleAndLastLogicComparison4Must().size() ; i ++){
                 middleAndLastLogicComparison4Musts.add((MiddleAndLastLogicComparison4Must) visitMiddleAndLastLogicComparison4Must(ctx.middleAndLastLogicComparison4Must(i)));
             }
@@ -2030,8 +1973,8 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
             arithmeticLogic4Must.setArithmeticLogic((ArithmeticLogic4Must) visitArithmeticLogic4Must(ctx.arithmeticLogic4Must()));
         }
 
-        List<LastArithmeticLogic4Must> lastArithmeticLogic4Musts = new ArrayList<>();
-        if (ctx.lastArithmeticLogic4Must().size() != 0) {
+        if (!ctx.lastArithmeticLogic4Must().isEmpty()) {
+            List<LastArithmeticLogic4Must> lastArithmeticLogic4Musts = new ArrayList<>();
             for (int i = 0; i < ctx.lastArithmeticLogic4Must().size(); i++) {
                 lastArithmeticLogic4Musts.add((LastArithmeticLogic4Must) visitLastArithmeticLogic4Must(ctx.lastArithmeticLogic4Must(i)));
             }
@@ -2143,8 +2086,8 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
     public Object visitArrayCalling4Must(HTMLParser.ArrayCalling4MustContext ctx) {
         ArrayCalling4Must arrayCalling4Must = new ArrayCalling4Must();
 
-        List<ArithmeticLogic4Must> arithmeticLogic4Musts = new ArrayList<>();
-        if (ctx.arithmeticLogic4Must().size() != 0){
+        if (!ctx.arithmeticLogic4Must().isEmpty()){
+            List<ArithmeticLogic4Must> arithmeticLogic4Musts = new ArrayList<>();
             for (int i = 0 ; i < ctx.arithmeticLogic4Must().size() ; i ++){
                 arithmeticLogic4Musts.add((ArithmeticLogic4Must) visitArithmeticLogic4Must(ctx.arithmeticLogic4Must(i)));
             }
@@ -2180,8 +2123,8 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
     public Object visitFunctionCallFromVar4Must(HTMLParser.FunctionCallFromVar4MustContext ctx) {
         FunctionCallFromVar4Must functionCallFromVar4Must = new FunctionCallFromVar4Must();
 
-        List<Parameters4Must> parameters4Musts = new ArrayList<>();
-        if (ctx.parameters4Must().size() != 0){
+        if (!ctx.parameters4Must().isEmpty()){
+            List<Parameters4Must> parameters4Musts = new ArrayList<>();
             for (int i = 0 ; i < ctx.parameters4Must().size() ; i ++){
                 parameters4Musts.add((Parameters4Must) visitParameters4Must(ctx.parameters4Must(i)));
             }
@@ -2212,8 +2155,8 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
     public Object visitParameters4Must(HTMLParser.Parameters4MustContext ctx) {
         Parameters4Must parameters4Must = new Parameters4Must();
 
-        List<Parameter4Must> parameter4Musts = new ArrayList<>();
-        if (ctx.parameter4Must().size() != 0){
+        if (!ctx.parameter4Must().isEmpty()){
+            List<Parameter4Must> parameter4Musts = new ArrayList<>();
             for (int i = 0 ; i < ctx.parameter4Must().size() ; i ++){
                 parameter4Musts.add((Parameter4Must) visitParameter4Must(ctx.parameter4Must(i)));
             }
@@ -2251,8 +2194,8 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
     public Object visitProperty4Must(HTMLParser.Property4MustContext ctx) {
         Property4Must property4Must = new Property4Must();
 
-        List<PropertyValue4Must> propertyValue4Musts = new ArrayList<>();
-        if (ctx.propertyValue4Must().size() != 0){
+        if (!ctx.propertyValue4Must().isEmpty()){
+            List<PropertyValue4Must> propertyValue4Musts = new ArrayList<>();
             for (int i = 0 ; i < ctx.propertyValue4Must().size() ; i ++){
                 propertyValue4Musts.add((PropertyValue4Must) visitPropertyValue4Must(ctx.propertyValue4Must(i)));
             }
