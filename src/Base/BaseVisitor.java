@@ -117,7 +117,7 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
 
         if (!ctx.htmlElements().isEmpty()){
             List<HtmlElements> htmlElements = new ArrayList<>();
-            for (int i =0 ; i <  ctx.scriptletOrSeaWs().size() ; i++){
+            for (int i =0 ; i <  ctx.htmlElements().size() ; i++){
                 htmlElements.add( (HtmlElements) visitHtmlElements(ctx.htmlElements(i)));
             }
             htmlDocument.setHtmlElements(htmlElements);
@@ -195,14 +195,14 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
         //TODO We have problem here
         if(ctx.TAG_NAME() != null){
                 htmlElement.setTagName(ctx.TAG_NAME(0).getSymbol().getText());
-                SimpleTreeNode tagName1Node = new SimpleTreeNode(ctx.TAG_OPEN(0).getSymbol().getText());
+                SimpleTreeNode tagName1Node = new SimpleTreeNode(ctx.TAG_NAME(0).getSymbol().getText());
                 htmlElementNode.addChild(tagName1Node);
             }
 
             if (ctx.TAG_SLASH_CLOSE() == null){
                 if (ctx.TAG_NAME(1) != null){
                     htmlElement.setTagName2(ctx.TAG_NAME(1).getSymbol().getText());
-                    SimpleTreeNode tagName2Node = new SimpleTreeNode(ctx.TAG_OPEN(1).getSymbol().getText());
+                    SimpleTreeNode tagName2Node = new SimpleTreeNode(ctx.TAG_NAME(1).getSymbol().getText());
                     htmlElementNode.addChild(tagName2Node);
                 }
 

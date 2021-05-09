@@ -17,31 +17,38 @@ public class HtmlContent {
         return htmlElement;
     }
 
-    public void setHtmlElement(List<HtmlElement> htmlElement) {
-        this.htmlElement = htmlElement;
-    }
+
 
     public List<String> getCDATA() {
         return CDATA;
     }
 
-    public void setCDATA(List<String> CDATA) {
-        this.CDATA = CDATA;
-    }
+
 
     public List<HtmlComment> getHtmlComment() {
         return htmlComment;
     }
 
-    public void setHtmlComment(List<HtmlComment> htmlComment) {
-        this.htmlComment = htmlComment;
-    }
 
     public List<HtmlCharData> getHtmlCharData() {
         return htmlCharData;
     }
 
+
+
+    public void setHtmlComment(List<HtmlComment> htmlComments) {
+        this.htmlComment=htmlComments;
+    }
+
+    public void setCDATA(List<String> cData) {
+        this.CDATA = CDATA;
+    }
+
     public void setHtmlCharData(List<HtmlCharData> htmlCharData) {
         this.htmlCharData = htmlCharData;
+    }
+
+    public void setHtmlElement(List<HtmlElement> htmlElements) {
+        this.htmlElement = htmlElement;
     }
 }
