@@ -124,7 +124,7 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
             htmlDocument.setHtmlEle((HtmlEle) visitHtmlEle(ctx.htmlEle()));
         }
         root.addChild(htmlDocumentNode);
-        return super.visitHtmlDocument(ctx);
+        return htmlDocument;
     }
 
     @Override

@@ -27,7 +27,7 @@ public class Main {
 
 
         try {
-            String source = "D:\\compilerV2\\src\\sample.txt";
+            String source = "C:\\Users\\-new-LAPTOP-2318887-\\Desktop\\compilerV2\\src\\sample.txt";
             CharStream cs = fromFileName(source);
             HTMLLexer lexer = new HTMLLexer(cs);
             CommonTokenStream token = new CommonTokenStream(lexer);
