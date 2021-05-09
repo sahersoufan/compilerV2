@@ -194,23 +194,19 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
         SimpleTreeNode htmlElementNode = new SimpleTreeNode("Visit htmlElement");
         //TODO We have problem here
         if(ctx.TAG_NAME() != null){
-                htmlElement.setTagName(ctx.TAG_OPEN(0).getSymbol().getText());
-
+                htmlElement.setTagName(ctx.TAG_NAME(0).getSymbol().getText());
                 SimpleTreeNode tagName1Node = new SimpleTreeNode(ctx.TAG_OPEN(0).getSymbol().getText());
                 htmlElementNode.addChild(tagName1Node);
             }
-            if (ctx.TAG_NAME(1) != null){
-                htmlElement.setTagName(ctx.TAG_OPEN(1).getSymbol().getText());
-                SimpleTreeNode tagName2Node = new SimpleTreeNode(ctx.TAG_OPEN(1).getSymbol().getText());
-                htmlElementNode.addChild(tagName2Node);
 
             if (ctx.TAG_SLASH_CLOSE() == null){
                 if (ctx.TAG_NAME(1) != null){
-                    htmlElement.setTagName2(ctx.TAG_OPEN(1).getSymbol().getText());
+                    htmlElement.setTagName2(ctx.TAG_NAME(1).getSymbol().getText());
+                    SimpleTreeNode tagName2Node = new SimpleTreeNode(ctx.TAG_OPEN(1).getSymbol().getText());
+                    htmlElementNode.addChild(tagName2Node);
                 }
 
             }
-        }
 
         List<HtmlAttribute> htmlAttributeList = new ArrayList<>();
         if (!ctx.htmlAttribute().isEmpty()) {
