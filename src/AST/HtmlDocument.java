@@ -9,8 +9,9 @@ import java.util.List;
 public class HtmlDocument {
     private List<ScriptLetOrSeaWs> scriptLetORSeaWs = new ArrayList<>();
     private String DTD;
-    private HtmlXML htmlXML;
-    private HtmlEle htmlEle;
+    private String XML;
+    private List<HtmlElements> htmlElements = new ArrayList<>();
+
 
     public List<ScriptLetOrSeaWs> getScriptLetORSeaWs() {
         return scriptLetORSeaWs;
@@ -28,19 +29,19 @@ public class HtmlDocument {
         this.DTD = DTD;
     }
 
-    public HtmlXML getHtmlXML() {
-        return htmlXML;
+    public String getXML() {
+        return XML;
     }
 
-    public void setHtmlXML(HtmlXML htmlXML) {
-        this.htmlXML = htmlXML;
+    public void setXML(String XML) {
+        this.XML = XML;
     }
 
-    public HtmlEle getHtmlEle() {
-        return htmlEle;
+    public List<HtmlElements> getHtmlElements() {
+        return htmlElements;
     }
 
-    public void setHtmlEle(HtmlEle htmlEle) {
-        this.htmlEle = htmlEle;
+    public void setHtmlElements(List<HtmlElements> htmlElements) {
+        this.htmlElements = htmlElements;
     }
 }
