@@ -103,3 +103,6 @@ public class Collection4For4 {
         this.arithmeticLogic = arithmeticLogic;
     }
 }
+
+
+// FUCK

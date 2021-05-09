@@ -63,3 +63,5 @@ public class OneLine4For3Condition {
         this.collection4For3_1_2 = collection4For3_1_2;
     }
 }
+
+// FUCK
