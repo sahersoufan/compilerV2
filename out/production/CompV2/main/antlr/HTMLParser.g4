@@ -101,7 +101,7 @@ oneLine4AppCondition
 forExpression
     : collection4For1 IN   collection4For2 (CP_CONTENT_SEMI_COLON collection4For1 CP_CONTENT_EQUALS INDEX)?
     | collection4For1 CP_CONTENT_COMMA collection4For1 IN collection4For3
-    | collection4For5
+    | collection4For4
     ;
 
 collection4For1
@@ -140,7 +140,7 @@ oneLine4For3Condition
 : CP_CONTENT_OPEN_PAR logicComprison CP_CONTENT_QUESTION_MARK collection4For3 CP_CONTENT_SEMI_COLON collection4For3 CP_CONTENT_CLOSE_PAR
 ;
 
-collection4For5
+collection4For4
     : variable
     | number
     | trueOrFalse
@@ -148,12 +148,12 @@ collection4For5
     | functionCall
     | subObj
     | comparisonExpression
-    | oneLine4For5Condition
+    | oneLine4For4Condition
     | logicComprison
     | arithmeticLogic
     ;
-oneLine4For5Condition
-    : CP_CONTENT_OPEN_PAR logicComprison CP_CONTENT_QUESTION_MARK collection4For5 CP_CONTENT_SEMI_COLON collection4For5 CP_CONTENT_CLOSE_PAR
+oneLine4For4Condition
+    : CP_CONTENT_OPEN_PAR logicComprison CP_CONTENT_QUESTION_MARK collection4For4 CP_CONTENT_SEMI_COLON collection4For4 CP_CONTENT_CLOSE_PAR
     ;
 //
 

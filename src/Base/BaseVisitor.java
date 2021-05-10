@@ -493,8 +493,8 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
         }
 
         //For CpExpression role 3
-        if(ctx.collection4For5()!=null){
-            forExpression.setCollection4For5_3_1((Collection4For4) visitCollection4For5(ctx.collection4For5()));
+        if(ctx.collection4For4()!=null){
+            forExpression.setCollection4For4_3_1((Collection4For4) visitCollection4For4(ctx.collection4For4()));
         }
         root.addChild(forExpressionNode);
 
@@ -655,7 +655,7 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
     }
 
     @Override
-    public Object visitCollection4For5(HTMLParser.Collection4For5Context ctx) {
+    public Object visitCollection4For4(HTMLParser.Collection4For4Context ctx) {
 
         Collection4For4 collection4For4=new Collection4For4();
         SimpleTreeNode collection4For4Node = new SimpleTreeNode("Visit collection4For4");
@@ -696,8 +696,8 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
         }
 
         //Collection4For4 role 8
-        if(ctx.oneLine4For5Condition()!=null){
-            collection4For4.setOneLine4For5Condition((OneLine4For4Condition) visitOneLine4For5Condition(ctx.oneLine4For5Condition()));
+        if(ctx.oneLine4For4Condition()!=null){
+            collection4For4.setOneLine4For4Condition((OneLine4For4Condition) visitOneLine4For4Condition(ctx.oneLine4For4Condition()));
         }
 
         //Collection4For4 role 9
@@ -710,24 +710,24 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
             collection4For4.setArithmeticLogic((ArithmeticLogic) visitArithmeticLogic(ctx.arithmeticLogic()));
         }
         root.addChild(collection4For4Node);
-        return super.visitCollection4For5(ctx);
+        return super.visitCollection4For4(ctx);
     }
 
     @Override
-    public Object visitOneLine4For5Condition(HTMLParser.OneLine4For5ConditionContext ctx) {
+    public Object visitOneLine4For4Condition(HTMLParser.OneLine4For4ConditionContext ctx) {
 
         OneLine4For4Condition oneLine4For4Condition = new OneLine4For4Condition();
         SimpleTreeNode oneLine4For4ConditionNode = new SimpleTreeNode("Visit oneLine4For4Condition");
 
 
-            if (ctx.logicComprison() != null && ctx.collection4For5() != null) {
+            if (ctx.logicComprison() != null && ctx.collection4For4() != null) {
                 oneLine4For4Condition.setLogicComprison((LogicComprison) visitLogicComprison(ctx.logicComprison()));
-                oneLine4For4Condition.setCollection4For5_1_1((Collection4For4) visitCollection4For5(ctx.collection4For5(0)));
-                oneLine4For4Condition.setCollection4For5_1_2((Collection4For4) visitCollection4For5(ctx.collection4For5(1)));
+                oneLine4For4Condition.setCollection4For4_1_1((Collection4For4) visitCollection4For4(ctx.collection4For4(0)));
+                oneLine4For4Condition.setCollection4For4_1_2((Collection4For4) visitCollection4For4(ctx.collection4For4(1)));
 
             }
             root.addChild(oneLine4For4ConditionNode);
-        return super.visitOneLine4For5Condition(ctx);
+        return super.visitOneLine4For4Condition(ctx);
     }
 
    /////////////////////////// end forexprition ///////////////////////////

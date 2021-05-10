@@ -9,7 +9,7 @@ public class ForExpression {
     private Collection4For1 collection4For1_2_2;
     private Collection4For3 collection4For3_2_1;
 
-    private Collection4For4 collection4For5_3_1;
+    private Collection4For4 collection4For4_3_1;
 
     public Collection4For1 getCollection4For1_1_1() {
         return collection4For1_1_1;
@@ -61,11 +61,11 @@ public class ForExpression {
         this.collection4For3_2_1 = collection4For3_2_1;
     }
 
-    public Collection4For4 getCollection4For5_3_1() {
-        return collection4For5_3_1;
+    public Collection4For4 getCollection4For4_3_1() {
+        return collection4For4_3_1;
     }
 
-    public void setCollection4For5_3_1(Collection4For4 collection4For5_3_1) {
-        this.collection4For5_3_1 = collection4For5_3_1;
+    public void setCollection4For4_3_1(Collection4For4 collection4For4_3_1) {
+        this.collection4For4_3_1 = collection4For4_3_1;
     }
 }
