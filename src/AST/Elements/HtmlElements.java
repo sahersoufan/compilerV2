@@ -20,7 +20,7 @@ public class HtmlElements {
         return htmlElement;
     }
 
-    public void setHtmlElement(HtmlElement htmlElement) {
+    public void setHtmlElement(HtmlElement visitHtmlElement) {
         this.htmlElement = htmlElement;
     }
 }
