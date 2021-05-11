@@ -27,7 +27,7 @@ public class Main {
 
 
         try {
-            String source = "E:\\forth year\\1\\CompV2\\src\\main\\sample.txt";
+            String source = "C:\\Users\\-new-LAPTOP-2318887-\\Desktop\\compilerV2\\src\\sample.txt";
             CharStream cs = fromFileName(source);
             HTMLLexer lexer = new HTMLLexer(cs);
             CommonTokenStream token = new CommonTokenStream(lexer);
@@ -37,8 +37,9 @@ public class Main {
             BaseVisitor base = new BaseVisitor();
             //visit antlr tree and save nodes in mayar tree
             HtmlDocument doc = (HtmlDocument) base.visit(tree);
-            System.out.println(doc);
+
             // mayar add function in baseVisitor to print the tree from object (base)
+            System.out.println();
             base.printTree();
 
 

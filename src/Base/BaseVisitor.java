@@ -55,6 +55,7 @@ import AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.var.Mustac
 import AST.HtmlDocument;
 import generatedGrammers.HTMLParser;
 import generatedGrammers.HTMLParserBaseVisitor;
+import org.antlr.v4.runtime.ParserRuleContext;
 import treePrinter.SimpleTreeNode;
 import treePrinter.decorator.BorderTreeNodeDecorator;
 import treePrinter.printer.listing.ListingTreePrinter;
@@ -94,16 +95,25 @@ import java.util.List;
 public class BaseVisitor extends HTMLParserBaseVisitor {
 
     SimpleTreeNode root = new SimpleTreeNode("root");
+    Node node = new Node();
+
+
     @Override
     public Object visitHtmlDocument(HTMLParser.HtmlDocumentContext ctx) {
         HtmlDocument htmlDocument = new HtmlDocument();
         SimpleTreeNode htmlDocumentNode = new SimpleTreeNode("Visit htmlDocument");
+        node.setNode(htmlDocumentNode);
+
+        root.addChild(node.getNode());
 
 
         if(!ctx.scriptletOrSeaWs().isEmpty()){
             List<ScriptLetOrSeaWs> ObjscriptletOrSeaWs = new ArrayList<>();
             for (int i =0 ; i <  ctx.scriptletOrSeaWs().size() ; i++){
                 ObjscriptletOrSeaWs.add( (ScriptLetOrSeaWs) visitScriptletOrSeaWs(ctx.scriptletOrSeaWs(i)));
+                SimpleTreeNode scriptletOrSeaWsNode = new SimpleTreeNode("Visit scriptletOrSeaWs");
+                node.setNode(scriptletOrSeaWsNode);
+                htmlDocumentNode.addChild(node.getNode());
             }
             htmlDocument.setScriptLetORSeaWs(ObjscriptletOrSeaWs);
         }
@@ -111,64 +121,75 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
         if(ctx.DTD() != null){
             htmlDocument.setDTD(ctx.DTD().getSymbol().getText());
             SimpleTreeNode DTD_Node = new SimpleTreeNode(htmlDocument.getDTD());
-            System.out.println(htmlDocument.getDTD());
             htmlDocumentNode.addChild(DTD_Node);
         }
 
         if (!ctx.htmlElements().isEmpty()){
             List<HtmlElements> htmlElements = new ArrayList<>();
             for (int i =0 ; i <  ctx.htmlElements().size() ; i++){
+
+                htmlDocumentNode.addChild(addNode("htmlElements"));
                 htmlElements.add( (HtmlElements) visitHtmlElements(ctx.htmlElements(i)));
+
             }
             htmlDocument.setHtmlElements(htmlElements);
         }
 
         if (ctx.XML() != null){
             htmlDocument.setXML(ctx.XML().getSymbol().getText());
+
+            htmlDocumentNode.addChild(new SimpleTreeNode(htmlDocument.getXML()));
         }
-        root.addChild(htmlDocumentNode);
+
         return htmlDocument;
     }
 
     @Override
     public Object visitScriptletOrSeaWs(HTMLParser.ScriptletOrSeaWsContext ctx) {
         ScriptLetOrSeaWs scriptLetOrSeaWs = new ScriptLetOrSeaWs();
-        SimpleTreeNode scriptLetOrSeaWsNode = new SimpleTreeNode("Visit scriptLetOrSeaWs");
+        SimpleTreeNode scriptLetOrSeaWsNode = node.getNode();
 
         if (ctx.SCRIPTLET() != null){
+
             scriptLetOrSeaWs.setScriptLet(ctx.SCRIPTLET().getSymbol().getText());
-            SimpleTreeNode SCRIPTLET_Node = new SimpleTreeNode(scriptLetOrSeaWs.getScriptLet());
-            scriptLetOrSeaWsNode.addChild(SCRIPTLET_Node);
+
+
         }
         if (ctx.SEA_WS() != null){
+            scriptLetOrSeaWsNode.addChild(addNode("SEA_WS"));
             scriptLetOrSeaWs.setSeaWs(ctx.SEA_WS().getSymbol().getText());
-            SimpleTreeNode SeaWs_Node = new SimpleTreeNode(scriptLetOrSeaWs.getSeaWs());
-            scriptLetOrSeaWsNode.addChild(SeaWs_Node);
-        }
-        root.addChild(scriptLetOrSeaWsNode);
 
-        return super.visitScriptletOrSeaWs(ctx);
+        }
+
+
+        return scriptLetOrSeaWs;
     }
+
 
     @Override
     public Object visitHtmlElements(HTMLParser.HtmlElementsContext ctx) {
         HtmlElements htmlElements = new HtmlElements();
+        SimpleTreeNode htmlElementsNode = node.getNode();
 
         if (!ctx.htmlMisc().isEmpty()){
             List<HtmlMisc> htmlMiscs = new ArrayList<>();
             for (int i = 0 ; i < ctx.htmlMisc().size() ; i ++ ){
+                htmlElementsNode.addChild(addNode("htmlMisc"));
                 htmlMiscs.add((HtmlMisc) visitHtmlMisc(ctx.htmlMisc(i)));
             }
             htmlElements.setMisc(htmlMiscs);
         }
 
         if (ctx.htmlElement() != null){
+            htmlElementsNode.addChild(addNode("htmlElement"));
             htmlElements.setHtmlElement((HtmlElement) visitHtmlElement(ctx.htmlElement()));
+
         }
 
 
-        return super.visitHtmlElements(ctx);
+        return htmlElements;
     }
+
 
     @Override
     public Object visitHtmlElement(HTMLParser.HtmlElementContext ctx) {
@@ -191,56 +212,64 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
         ////////or
         //mustacheExpression
         HtmlElement htmlElement = new HtmlElement();
-        SimpleTreeNode htmlElementNode = new SimpleTreeNode("Visit htmlElement");
+        SimpleTreeNode htmlElementNode = node.getNode();
+
         //TODO We have problem here
         if(ctx.TAG_NAME() != null){
                 htmlElement.setTagName(ctx.TAG_NAME(0).getSymbol().getText());
-                SimpleTreeNode tagName1Node = new SimpleTreeNode(ctx.TAG_NAME(0).getSymbol().getText());
-                htmlElementNode.addChild(tagName1Node);
+                htmlElementNode.addChild( new SimpleTreeNode(ctx.TAG_NAME(0).getSymbol().getText()));
             }
 
             if (ctx.TAG_SLASH_CLOSE() == null){
                 if (ctx.TAG_NAME(1) != null){
                     htmlElement.setTagName2(ctx.TAG_NAME(1).getSymbol().getText());
-                    SimpleTreeNode tagName2Node = new SimpleTreeNode(ctx.TAG_NAME(1).getSymbol().getText());
-                    htmlElementNode.addChild(tagName2Node);
+
+                    htmlElementNode.addChild(new SimpleTreeNode(ctx.TAG_NAME(1).getSymbol().getText()));
                 }
 
             }
 
-        List<HtmlAttribute> htmlAttributeList = new ArrayList<>();
+
         if (!ctx.htmlAttribute().isEmpty()) {
+            List<HtmlAttribute> htmlAttributeList = new ArrayList<>();
             for (int i = 0; i < ctx.htmlAttribute().size(); i++) {
+                htmlElementNode.addChild(addNode("htmlAttribute"));
                 htmlAttributeList.add((HtmlAttribute) visitHtmlAttribute(ctx.htmlAttribute(i)));
+
+
             }
             htmlElement.setHtmlAttributeList(htmlAttributeList);
         }
 
         if (ctx.htmlContent() != null){
+            htmlElementNode.addChild(addNode("htmlContent"));
             htmlElement.setHtmlContent((HtmlContent) visitHtmlContent(ctx.htmlContent()));
         }
 
         if (ctx.SCRIPTLET() != null){
             htmlElement.setScriptLet(ctx.SCRIPTLET().getSymbol().getText());
-            SimpleTreeNode ScriptLet_Node = new SimpleTreeNode(htmlElement.getScriptLet());
-            htmlElementNode.addChild(ScriptLet_Node);
+            htmlElementNode.addChild(new SimpleTreeNode(htmlElement.getScriptLet()));
         }
 
         if (ctx.script() != null){
+            htmlElementNode.addChild(addNode("script"));
             htmlElement.setScript((Script) visitScript(ctx.script()));
         }
 
         if (ctx.style() != null){
+            htmlElementNode.addChild(addNode("style"));
             htmlElement.setStyle((Style) visitStyle(ctx.style()));
         }
 
         if (ctx.mustacheExpression() != null){
+            htmlElementNode.addChild(addNode("mustacheExpression"));
             htmlElement.setMustacheExpression((MustacheExpression) visitMustacheExpression(ctx.mustacheExpression()));
         }
 
-        root.addChild(htmlElementNode);
-        return super.visitHtmlElement(ctx);
+
+        return htmlElement;
     }
+
 
     @Override
     public Object visitHtmlContent(HTMLParser.HtmlContentContext ctx) {
@@ -248,11 +277,12 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
         // htmlCharData?
         // ((htmlElement | CDATA | htmlComment) htmlChardata?)*
         HtmlContent htmlContent = new HtmlContent();
-        SimpleTreeNode htmlContentNode = new SimpleTreeNode("Visit htmlContent");
+        SimpleTreeNode htmlContentNode = node.getNode();
 
         if (!ctx.htmlComment().isEmpty()){
             List<HtmlComment> htmlComments = new ArrayList<>();
             for (int i = 0; i < ctx.htmlComment().size(); i++) {
+                htmlContentNode.addChild(addNode("htmlComment"));
                 htmlComments.add((HtmlComment) visitHtmlComment(ctx.htmlComment(i)));
             }
             htmlContent.setHtmlComment(htmlComments);
@@ -261,6 +291,7 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
         if (!ctx.CDATA().isEmpty()){
             List<String> cData = new ArrayList<>();
             for (int i = 0; i < ctx.CDATA().size(); i++) {
+                htmlContentNode.addChild(new SimpleTreeNode(ctx.CDATA(i).getSymbol().getText()));
                 cData.add((String) ctx.CDATA(i).getSymbol().getText());
             }
             htmlContent.setCDATA(cData);
@@ -269,6 +300,7 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
         if (!ctx.htmlChardata().isEmpty()){
             List<HtmlCharData> htmlCharData = new ArrayList<>();
             for (int i = 0; i < ctx.htmlChardata().size(); i++) {
+                htmlContentNode.addChild(addNode("htmlChardata"));
                 htmlCharData.add((HtmlCharData) visitHtmlChardata(ctx.htmlChardata(i)));
             }
             htmlContent.setHtmlCharData(htmlCharData);
@@ -277,127 +309,133 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
         if (!ctx.htmlElement().isEmpty()){
             List<HtmlElement> htmlElements = new ArrayList<>();
             for (int i = 0; i < ctx.htmlElement().size(); i++) {
+                htmlContentNode.addChild(addNode("htmlElement"));
                 htmlElements.add((HtmlElement) visitHtmlElement(ctx.htmlElement(i)));
             }
             htmlContent.setHtmlElement(htmlElements);
         }
 
-        return super.visitHtmlContent(ctx);
+        return htmlContent;
     }
 
     @Override
     public Object visitHtmlAttribute(HTMLParser.HtmlAttributeContext ctx) {
         HtmlAttribute htmlAttribute = new HtmlAttribute();
-        SimpleTreeNode htmlAttributeNode = new SimpleTreeNode("Visit htmlAttribute");
+        SimpleTreeNode htmlAttributeNode = node.getNode();
+
+
         //app
         if (ctx.appExpression() != null){
+            htmlAttributeNode.addChild(addNode("appExpression"));
             htmlAttribute.setAppExpression((AppExpression) visitAppExpression(ctx.appExpression()));
         }
         //for
         if (ctx.forExpression() != null){
+            htmlAttributeNode.addChild(addNode("forExpression"));
             htmlAttribute.setForExpression((ForExpression) visitForExpression(ctx.forExpression()));
         }
         //show
         if (ctx.showExpression() != null){
+            htmlAttributeNode.addChild(addNode("showExpression"));
             htmlAttribute.setShowExpression((ShowExpression) visitShowExpression(ctx.showExpression()));
         }
         //hide
         if (ctx.hideExpression() != null){
+            htmlAttributeNode.addChild(addNode("hideExpression"));
             htmlAttribute.setHideExpression((HideExpression) visitHideExpression(ctx.hideExpression()));
         }
         //switch
         if (ctx.switchExpression() != null){
+            htmlAttributeNode.addChild(addNode("switchExpression"));
             htmlAttribute.setSwitchExpression((SwitchExpression) visitSwitchExpression(ctx.switchExpression()));
         }
         //switchCase
         if(ctx.switchCaseExpression() != null){
+            htmlAttributeNode.addChild(addNode("switchCaseExpression"));
             htmlAttribute.setSwitchCaseExpression((SwitchCaseExpression) visitSwitchCaseExpression(ctx.switchCaseExpression()));
         }
         //switchDefault // TODO may we need to check it
 
         //if
         if (ctx.ifExpression() != null){
+            htmlAttributeNode.addChild(addNode("ifExpression"));
             htmlAttribute.setIfExpression((IfExpression) visitIfExpression(ctx.ifExpression()));
         }
         //model
         if(ctx.modelExpression() != null){
+            htmlAttributeNode.addChild(addNode("modelExpression"));
             htmlAttribute.setModelExpression((ModelExpression) visitModelExpression(ctx.modelExpression()));
         }
         //click
         if (ctx.annotationClickExpression() != null){
+            htmlAttributeNode.addChild(addNode("annotationClickExpression"));
             htmlAttribute.setAnnotationClickExpression((AnnotationClickExpression) visitAnnotationClickExpression(ctx.annotationClickExpression()));
         }
         //Over
         if (ctx.annotationOverExpression() != null){
+            htmlAttributeNode.addChild(addNode("annotationOverExpression"));
             htmlAttribute.setAnnotationOverExpression((AnnotationOverExpression) visitAnnotationOverExpression(ctx.annotationOverExpression()));
         }
         //generic
         if (ctx.TAG_NAME() != null){
             htmlAttribute.setTagName(ctx.TAG_NAME().getSymbol().getText());
-            SimpleTreeNode tagNameNode = new SimpleTreeNode(htmlAttribute.getTagName());
-            htmlAttributeNode.addChild(tagNameNode);
+            htmlAttributeNode.addChild(new SimpleTreeNode(ctx.TAG_NAME().getSymbol().getText()));
         }
         if (ctx.ATTVALUE_VALUE() != null){
             htmlAttribute.setAttValue(ctx.ATTVALUE_VALUE().getSymbol().getText());
-            SimpleTreeNode attValueNode = new SimpleTreeNode(htmlAttribute.getAttValue());
-            htmlAttributeNode.addChild(attValueNode);
+            htmlAttributeNode.addChild(new SimpleTreeNode(ctx.ATTVALUE_VALUE().getSymbol().getText()));
         }
-        root.addChild(htmlAttributeNode);
-        return super.visitHtmlAttribute(ctx);
+
+        return htmlAttribute;
     }
 
     @Override
     public Object visitHtmlChardata(HTMLParser.HtmlChardataContext ctx) {
         HtmlCharData htmlCharData = new HtmlCharData();
-        SimpleTreeNode htmlCharDataNode = new SimpleTreeNode("Visit htmlCharData");
+        SimpleTreeNode htmlCharDataNode = node.getNode();
         if (ctx.HTML_TEXT() != null){
             htmlCharData.setHtmlText(ctx.HTML_TEXT().getSymbol().getText());
-            SimpleTreeNode htmlTextNode = new SimpleTreeNode(htmlCharData.getHtmlText());
-            htmlCharDataNode.addChild(htmlTextNode);
+            htmlCharDataNode.addChild(new SimpleTreeNode(htmlCharData.getHtmlText()));
         }
 
         if (ctx.SEA_WS() != null){
             htmlCharData.setSeaWs(ctx.SEA_WS().getSymbol().getText());
-            SimpleTreeNode seaWsNode = new SimpleTreeNode(htmlCharData.getSeaWs());
-            htmlCharDataNode.addChild(seaWsNode);
+            htmlCharDataNode.addChild(new SimpleTreeNode(htmlCharData.getSeaWs()));
         }
-        root.addChild(htmlCharDataNode);
-        return super.visitHtmlChardata(ctx);
+
+        return htmlCharData;
     }
 
     @Override
     public Object visitHtmlMisc(HTMLParser.HtmlMiscContext ctx) {
         HtmlMisc htmlMisc = new HtmlMisc();
-        SimpleTreeNode htmlMiscNode = new SimpleTreeNode("Visit htmlMisc");
+        SimpleTreeNode htmlMiscNode = node.getNode();
         if (ctx.htmlComment() != null){
+            htmlMiscNode.addChild(addNode("htmlComment"));
             htmlMisc.setHtmlComment((HtmlComment) visitHtmlComment(ctx.htmlComment()));
         }
         if (ctx.SEA_WS() != null){
             htmlMisc.setSeaWs(ctx.SEA_WS().getSymbol().getText());
-            SimpleTreeNode seaWsNode = new SimpleTreeNode(htmlMisc.getSeaWs());
-            htmlMiscNode.addChild(seaWsNode);
+            htmlMiscNode.addChild(new SimpleTreeNode(htmlMisc.getSeaWs()));
         }
-        root.addChild(htmlMiscNode);
-        return super.visitHtmlMisc(ctx);
+        return htmlMisc;
     }
 
     @Override
     public Object visitHtmlComment(HTMLParser.HtmlCommentContext ctx) {
         HtmlComment htmlComment = new HtmlComment();
-        SimpleTreeNode htmlCommentNode = new SimpleTreeNode("Visit htmlComment");
+        SimpleTreeNode htmlCommentNode = node.getNode();
         if (ctx.HTML_COMMENT() != null){
             htmlComment.setHtmlComment(ctx.HTML_COMMENT().getSymbol().getText());
-            SimpleTreeNode htmlCommentInternalNode = new SimpleTreeNode(htmlComment.getHtmlComment());
-            htmlCommentNode.addChild(htmlCommentInternalNode);
+            htmlCommentNode.addChild(new SimpleTreeNode(htmlComment.getHtmlComment()));
         }
 
         if (ctx.HTML_CONDITIONAL_COMMENT() != null){
             htmlComment.setHtmlConditionalComment(ctx.HTML_CONDITIONAL_COMMENT().getSymbol().getText());
-            SimpleTreeNode htmlConditionalCommentNode = new SimpleTreeNode(htmlComment.getHtmlConditionalComment());
-            htmlCommentNode.addChild(htmlConditionalCommentNode);
+            htmlCommentNode.addChild(new SimpleTreeNode(htmlComment.getHtmlConditionalComment()));
         }
-        root.addChild(htmlCommentNode);
-        return super.visitHtmlComment(ctx);
+
+        return htmlComment;
     }
 
 
@@ -407,62 +445,69 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
     @Override
     public Object visitAppExpression(HTMLParser.AppExpressionContext ctx) {
         AppExpression appExpression=new AppExpression();
-        SimpleTreeNode appExpressionNode = new SimpleTreeNode("Visit appExpression");
+        SimpleTreeNode appExpressionNode = node.getNode();
 
         if(ctx.collection4App1()!=null){
+            appExpressionNode.addChild(addNode("collection4App1"));
             appExpression.setCollection4App1((Collection4App1) visitCollection4App1(ctx.collection4App1()));
         }
-        root.addChild(appExpressionNode);
-        return super.visitAppExpression(ctx);
+        return appExpression;
     }
 
     @Override
     public Object visitCollection4App1(HTMLParser.Collection4App1Context ctx) {
 
         Collection4App1 collection4App1=new Collection4App1();
-        SimpleTreeNode collection4App1Node = new SimpleTreeNode("Visit collection4App1");
+        SimpleTreeNode collection4App1Node = node.getNode();
         //collection4App1 role1
         if(ctx.variable()!=null){
+            collection4App1Node.addChild(addNode("variable"));
             collection4App1.setVariable((Variable) visitVariable(ctx.variable()));
         }
         //collection4App1 role2
 
         if(ctx.subObj()!=null){
+            collection4App1Node.addChild(addNode("subObj"));
             collection4App1.setSubObj((SubObj) visitSubObj(ctx.subObj()));
         }
         //collection4App1  role 3
         if(ctx.objArray()!=null){
+            collection4App1Node.addChild(addNode("objArray"));
             collection4App1.setObjArray((ObjArray) visitObjArray(ctx.objArray()));
         }
 
         //collection4App1  role 4
         if(ctx.functionCall()!=null){
+            collection4App1Node.addChild(addNode("functionCall"));
             collection4App1.setFunctionCall((FunctionCall) visitFunctionCall(ctx.functionCall()));
         }
 
         //collection4App1  role 5
         if(ctx.oneLine4AppCondition()!=null){
-            collection4App1.setOneLine4AppCondition((OneLine4AppCondition) visitOneLine4AppCondition(ctx.oneLine4AppCondition()));
-        }
+            collection4App1Node.addChild(addNode("oneLine4AppCondition"));
+        collection4App1.setOneLine4AppCondition((OneLine4AppCondition) visitOneLine4AppCondition(ctx.oneLine4AppCondition()));
+    }
 
-        root.addChild(collection4App1Node);
-
-        return super.visitCollection4App1(ctx);
+        return collection4App1;
     }
 
     @Override
     public Object visitOneLine4AppCondition(HTMLParser.OneLine4AppConditionContext ctx) {
 
         OneLine4AppCondition  oneLine4AppCondition=new OneLine4AppCondition();
-        SimpleTreeNode oneLine4AppConditionNode = new SimpleTreeNode("Visit oneLine4AppCondition");
+        SimpleTreeNode oneLine4AppConditionNode = node.getNode();
 
         if(ctx.logicComprison()!=null&& ctx.collection4App1()!=null){
+            oneLine4AppConditionNode.addChild(addNode("logicComprison"));
             oneLine4AppCondition.setLogicComprison((LogicComprison) visitLogicComprison(ctx.logicComprison()));
+
+            oneLine4AppConditionNode.addChild(addNode("Collection4App1_1"));
             oneLine4AppCondition.setCollection4App1_1((Collection4App1) visitCollection4App1(ctx.collection4App1(0)));
+
+            oneLine4AppConditionNode.addChild(addNode("Collection4App1_2"));
             oneLine4AppCondition.setCollection4App1_2((Collection4App1) visitCollection4App1(ctx.collection4App1(1)));
         }
-        root.addChild(oneLine4AppConditionNode);
-        return super.visitOneLine4AppCondition(ctx);
+        return oneLine4AppCondition;
     }
 
 
@@ -470,14 +515,19 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
     @Override
     public Object visitForExpression(HTMLParser.ForExpressionContext ctx) {
        ForExpression forExpression=new ForExpression();
-       SimpleTreeNode forExpressionNode = new SimpleTreeNode("Visit forExpression");
+       SimpleTreeNode forExpressionNode = node.getNode();
 
        //For CpExpression role 1
        if(ctx.collection4For1()!=null&& ctx.collection4For2()!=null){
+           forExpressionNode.addChild(addNode("collection4For1"));
            forExpression.setCollection4For1_1_1((Collection4For1) visitCollection4For1(ctx.collection4For1(0)));
+
+           //
+           forExpressionNode.addChild(addNode("Collection4For2_1_1"));
            forExpression.setCollection4For2_1_1((Collection4For2) visitCollection4For2(ctx.collection4For2()));
 
           if(ctx.collection4For1().size()>1){
+              forExpressionNode.addChild(addNode("Collection4For1_1_2"));
               forExpression.setCollection4For1_1_2((Collection4For1) visitCollection4For1(ctx.collection4For1(1)));
 
           }
@@ -486,96 +536,113 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
 
        //For CpExpression role 2
         if(ctx.collection4For1()!=null&& ctx.collection4For3()!=null){
+            forExpressionNode.addChild(addNode("collection4For1"));
             forExpression.setCollection4For1_2_1((Collection4For1) visitCollection4For1(ctx.collection4For1(0)));
+
+            //
+            forExpressionNode.addChild(addNode("Collection4For1_2_2"));
             forExpression.setCollection4For1_2_2((Collection4For1) visitCollection4For1(ctx.collection4For1(1)));
+
+            //
+            forExpressionNode.addChild(addNode("Collection4For3_2_1"));
             forExpression.setCollection4For3_2_1((Collection4For3) visitCollection4For3(ctx.collection4For3()));
 
         }
 
         //For CpExpression role 3
         if(ctx.collection4For4()!=null){
+            forExpressionNode.addChild(addNode("collection4For4"));
             forExpression.setCollection4For4_3_1((Collection4For4) visitCollection4For4(ctx.collection4For4()));
         }
-        root.addChild(forExpressionNode);
 
-        return super.visitForExpression(ctx);
+
+        return forExpression;
     }
 
     @Override
     public Object visitCollection4For1(HTMLParser.Collection4For1Context ctx) {
 
       Collection4For1 collection4For1=new Collection4For1();
-      SimpleTreeNode collection4For1Node = new SimpleTreeNode("Visit collection4For1");
+      SimpleTreeNode collection4For1Node = node.getNode();
 
       //Collection4For1  role 1
       if(ctx.variable()!=null){
+          collection4For1Node.addChild(addNode("variable"));
           collection4For1.setVariable((Variable) visitVariable(ctx.variable()));
       }
       //Collection4For1  role 2
       if(ctx.subObj()!=null){
+          collection4For1Node.addChild(addNode("subObj"));
           collection4For1.setSubObj((SubObj) visitSubObj(ctx.subObj()));
       }
       //Collection4For1  role 3
       if(ctx.objArray()!=null){
+          collection4For1Node.addChild(addNode("objArray"));
           collection4For1.setObjArray((ObjArray) visitObjArray(ctx.objArray()));
       }
-      root.addChild(collection4For1Node);
-        return super.visitCollection4For1(ctx);
+
+        return collection4For1;
     }
 
     @Override
     public Object visitCollection4For2(HTMLParser.Collection4For2Context ctx) {
        Collection4For2 collection4For2=new Collection4For2();
-       SimpleTreeNode collection4For2Node = new SimpleTreeNode("Visit collection4For2");
+       SimpleTreeNode collection4For2Node = node.getNode();
 
         //Collection4For2  role 1
 
         if(ctx.variable()!=null){
+            collection4For2Node.addChild(addNode("variable"));
             collection4For2.setVariable((Variable) visitVariable(ctx.variable()));
         }
         //Collection4For2  role 2
 
         if(ctx.CP_CONTENT_STRING()!=null){
             collection4For2.setString(ctx.CP_CONTENT_STRING().getSymbol().getText());
-            SimpleTreeNode stringNode = new SimpleTreeNode(collection4For2.getString());
-            collection4For2Node.addChild(stringNode);
+            collection4For2Node.addChild(new SimpleTreeNode(collection4For2.getString()));
         }
         //Collection4For2  role 3
         if(ctx.number()!=null){
+            collection4For2Node.addChild(addNode("number"));
             collection4For2.setNumber((NUmber) visitNumber(ctx.number()));
         }
         //Collection4For2  role 4
         if(ctx.subObj()!=null){
+            collection4For2Node.addChild(addNode("subObj"));
             collection4For2.setSubObj((SubObj) visitSubObj(ctx.subObj()));
         }
         //Collection4For2  role 5
         if(ctx.objArray()!=null){
+            collection4For2Node.addChild(addNode("objArray"));
             collection4For2.setObjArray((ObjArray) visitObjArray(ctx.objArray()));
         }
 
         //Collection4For2  role 6
         if(ctx.array()!=null){
+            collection4For2Node.addChild(addNode("array"));
             collection4For2.setArray((Array) visitArray(ctx.array()));
         }
 
         //Collection4For2  role 7
         if(ctx.functionCall()!=null){
+            collection4For2Node.addChild(addNode("functionCall"));
             collection4For2.setFunctionCall((FunctionCall) visitFunctionCall(ctx.functionCall()));
         }
 
         //Collection4For2  role 8
         if(ctx.oneLine4For2Condition()!=null){
+            collection4For2Node.addChild(addNode("oneLine4For2Condition"));
             collection4For2.setOneLine4For2Condition((OneLine4For2Condition) visitOneLine4For2Condition(ctx.oneLine4For2Condition()));
         }
 
         //Collection4For2  role 9
         if(ctx.arithmeticLogic()!=null){
+            collection4For2Node.addChild(addNode("arithmeticLogic"));
             collection4For2.setArithmeticLogic((ArithmeticLogic) visitArithmeticLogic(ctx.arithmeticLogic()));
         }
 
-        root.addChild(collection4For2Node);
 
-        return super.visitCollection4For2(ctx);
+        return collection4For2;
     }
 
     @Override
@@ -584,150 +651,187 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
         // ex: (true && (a<b ?true :false ) && !c ? b : b)
 
         OneLine4For2Condition oneLine4For2Condition=new OneLine4For2Condition();
-        SimpleTreeNode oneLine4For2ConditionNode = new SimpleTreeNode("Visit oneLine4For2Condition");
+        SimpleTreeNode oneLine4For2ConditionNode = node.getNode();
 
         oneLine4For2Condition.setOpenPar(ctx.CP_CONTENT_OPEN_PAR().getSymbol().getText());
-        SimpleTreeNode openParNode = new SimpleTreeNode(oneLine4For2Condition.getOpenPar());
-        oneLine4For2ConditionNode.addChild(openParNode);
+        oneLine4For2ConditionNode.addChild(new SimpleTreeNode(oneLine4For2Condition.getOpenPar()));
+
            if(ctx.logicComprison()!=null&& ctx.collection4For2()!=null){
+               oneLine4For2ConditionNode.addChild(addNode("logicComprison"));
                oneLine4For2Condition.setLogicComprison((LogicComprison) visitLogicComprison(ctx.logicComprison()));
+
+               //
+               oneLine4For2ConditionNode.addChild(addNode("Collection4For2_1_1"));
                oneLine4For2Condition.setCollection4For2_1_1((Collection4For2) visitCollection4For2(ctx.collection4For2(0)));
+
+               //
+               oneLine4For2ConditionNode.addChild(addNode("Collection4For2_1_2"));
                oneLine4For2Condition.setCollection4For2_1_2((Collection4For2) visitCollection4For2(ctx.collection4For2(1)));
            }
 
-           root.addChild(oneLine4For2ConditionNode);
-        return super.visitOneLine4For2Condition(ctx);
+
+        return oneLine4For2Condition;
     }
 
     @Override
     public Object visitCollection4For3(HTMLParser.Collection4For3Context ctx) {
        Collection4For3 collection4For3=new Collection4For3();
-       SimpleTreeNode collection4For3Node = new SimpleTreeNode("Visit collection4For3");
+       SimpleTreeNode collection4For3Node = node.getNode();
 
        //Collection4For3 role 1
         if(ctx.obj()!=null){
+            collection4For3Node.addChild(addNode("obj"));
             collection4For3.setObj((Obj) visitObj(ctx.obj()));
         }
 
         //Collection4For3 role 2
         if(ctx.objBody()!=null){
+            collection4For3Node.addChild(addNode("objBody"));
             collection4For3.setObjBody((ObjBody)visitObjBody(ctx.objBody()));
         }
 
         //Collection4For3 role 3
         if(ctx.subObj()!=null){
+            collection4For3Node.addChild(addNode("subObj"));
             collection4For3.setSubObj((SubObj) visitSubObj(ctx.subObj()));
         }
 
         //Collection4For3 role 4
         if(ctx.objArray()!=null){
+            collection4For3Node.addChild(addNode("objArray"));
             collection4For3.setObjArray((ObjArray) visitObjArray(ctx.objArray()));
         }
 
         //Collection4For3 role 5
         if(ctx.functionCall()!=null){
+            collection4For3Node.addChild(addNode("functionCall"));
             collection4For3.setFunctionCall((FunctionCall) visitFunctionCall(ctx.functionCall()));
         }
 
         //Collection4For3 role 6
         if(ctx.oneLine4For3Condition()!=null){
+            collection4For3Node.addChild(addNode("oneLine4For3Condition"));
             collection4For3.setOneLine4For3Condition((OneLine4For3Condition) visitOneLine4For3Condition(ctx.oneLine4For3Condition()));
         }
-        root.addChild(collection4For3Node);
-        return super.visitCollection4For3(ctx);
+        return collection4For3;
     }
 
     @Override
     public Object visitOneLine4For3Condition(HTMLParser.OneLine4For3ConditionContext ctx) {
 
         OneLine4For3Condition oneLine4For3Condition=new OneLine4For3Condition();
-        SimpleTreeNode oneLine4For3ConditionNode = new SimpleTreeNode("Visit oneLine4For3Condition");
+        SimpleTreeNode oneLine4For3ConditionNode = node.getNode();
 
 
             if(ctx.logicComprison()!=null&& ctx.collection4For3()!=null) {
+                oneLine4For3ConditionNode.addChild(addNode("logicComprison"));
                 oneLine4For3Condition.setLogicComprison((LogicComprison) visitLogicComprison(ctx.logicComprison()));
+
+                //
+
+                oneLine4For3ConditionNode.addChild(addNode("Collection4For3_1_1"));
                 oneLine4For3Condition.setCollection4For3_1_1((Collection4For3) visitCollection4For3(ctx.collection4For3(0)));
+
+                //
+
+                oneLine4For3ConditionNode.addChild(addNode("Collection4For3_1_2"));
                 oneLine4For3Condition.setCollection4For3_1_2((Collection4For3) visitCollection4For3(ctx.collection4For3(1)));
 
             }
-            root.addChild(oneLine4For3ConditionNode);
-        return super.visitOneLine4For3Condition(ctx);
+        return oneLine4For3Condition;
     }
 
     @Override
     public Object visitCollection4For4(HTMLParser.Collection4For4Context ctx) {
 
         Collection4For4 collection4For4=new Collection4For4();
-        SimpleTreeNode collection4For4Node = new SimpleTreeNode("Visit collection4For4");
+        SimpleTreeNode collection4For4Node = node.getNode();
 
         //Collection4For4 role 1
         if(ctx.variable()!=null){
+            collection4For4Node.addChild(addNode("variable"));
             collection4For4.setVariable((Variable) visitVariable(ctx.variable()));
         }
 
         //Collection4For4 role 2
         if(ctx.number()!=null){
+            collection4For4Node.addChild(addNode("number"));
             collection4For4.setNumber((NUmber) visitNumber(ctx.number()));
         }
 
         //Collection4For4 role 3
         if(ctx.trueOrFalse()!=null){
+            collection4For4Node.addChild(addNode("trueOrFalse"));
             collection4For4.setTrueOrFalse((TrueOrFalse) visitTrueOrFalse(ctx.trueOrFalse()));
         }
 
         //Collection4For4 role 4
         if(ctx.objArray()!=null){
+            collection4For4Node.addChild(addNode("objArray"));
             collection4For4.setObjArray((ObjArray) visitObjArray(ctx.objArray()));
         }
 
         //Collection4For4 role 5
         if(ctx.functionCall()!=null){
+            collection4For4Node.addChild(addNode("functionCall"));
             collection4For4.setFunctionCall((FunctionCall) visitFunctionCall(ctx.functionCall()));
         }
 
         //Collection4For4 role 6
         if(ctx.subObj()!=null){
+            collection4For4Node.addChild(addNode("subObj"));
             collection4For4.setSubObj((SubObj) visitSubObj(ctx.subObj()));
         }
 
         //Collection4For4 role 7
         if(ctx.comparisonExpression()!=null){
+            collection4For4Node.addChild(addNode("comparisonExpression"));
             collection4For4.setComparisonExpression((ComparisonExpression) visitComparisonExpression(ctx.comparisonExpression()));
         }
 
         //Collection4For4 role 8
         if(ctx.oneLine4For4Condition()!=null){
+            collection4For4Node.addChild(addNode("oneLine4For4Condition"));
             collection4For4.setOneLine4For4Condition((OneLine4For4Condition) visitOneLine4For4Condition(ctx.oneLine4For4Condition()));
         }
 
         //Collection4For4 role 9
         if(ctx.logicComprison()!=null){
+            collection4For4Node.addChild(addNode("logicComprison"));
             collection4For4.setLogicComprison((LogicComprison) visitLogicComprison(ctx.logicComprison()));
         }
 
         //Collection4For4 role 10
         if(ctx.arithmeticLogic()!=null){
+            collection4For4Node.addChild(addNode("arithmeticLogic"));
             collection4For4.setArithmeticLogic((ArithmeticLogic) visitArithmeticLogic(ctx.arithmeticLogic()));
         }
-        root.addChild(collection4For4Node);
-        return super.visitCollection4For4(ctx);
+        return collection4For4;
     }
 
     @Override
     public Object visitOneLine4For4Condition(HTMLParser.OneLine4For4ConditionContext ctx) {
 
         OneLine4For4Condition oneLine4For4Condition = new OneLine4For4Condition();
-        SimpleTreeNode oneLine4For4ConditionNode = new SimpleTreeNode("Visit oneLine4For4Condition");
+        SimpleTreeNode oneLine4For4ConditionNode = node.getNode();
 
 
             if (ctx.logicComprison() != null && ctx.collection4For4() != null) {
+                oneLine4For4ConditionNode.addChild(addNode("logicComprison"));
                 oneLine4For4Condition.setLogicComprison((LogicComprison) visitLogicComprison(ctx.logicComprison()));
+
+                //
+
+                oneLine4For4ConditionNode.addChild(addNode("Collection4For4_1_1"));
                 oneLine4For4Condition.setCollection4For4_1_1((Collection4For4) visitCollection4For4(ctx.collection4For4(0)));
+
+                //
+
+                oneLine4For4ConditionNode.addChild(addNode("Collection4For4_1_2"));
                 oneLine4For4Condition.setCollection4For4_1_2((Collection4For4) visitCollection4For4(ctx.collection4For4(1)));
 
             }
-            root.addChild(oneLine4For4ConditionNode);
-        return super.visitOneLine4For4Condition(ctx);
+        return oneLine4For4Condition;
     }
 
    /////////////////////////// end forexprition ///////////////////////////
@@ -737,12 +841,12 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
     public Object visitShowExpression(HTMLParser.ShowExpressionContext ctx) {
 
         ShowExpression showExpression=new ShowExpression();
-        SimpleTreeNode showExpressionNode = new SimpleTreeNode("Visit showExpression");
+        SimpleTreeNode showExpressionNode = node.getNode();
         if(ctx.logicComprison()!=null){
+            showExpressionNode.addChild(addNode("logicComprison"));
             showExpression.setLogicComprison((LogicComprison) visitLogicComprison(ctx.logicComprison()));
         }
-        root.addChild(showExpressionNode);
-        return super.visitShowExpression(ctx);
+        return showExpression;
     }
     /////////////////////////// end show exprition ///////////////////////////
 
@@ -750,13 +854,13 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
     @Override
     public Object visitHideExpression(HTMLParser.HideExpressionContext ctx) {
         HideExpression hideExpression=new HideExpression();
-        SimpleTreeNode hideExpressionNode = new SimpleTreeNode("Visit hideExpression");
+        SimpleTreeNode hideExpressionNode = node.getNode();
 
         if(ctx.logicComprison()!=null){
+            hideExpressionNode.addChild(addNode("logicComprison"));
             hideExpression.setLogicComprison((LogicComprison) visitLogicComprison(ctx.logicComprison()));
         }
-        root.addChild(hideExpressionNode);
-        return super.visitHideExpression(ctx);
+        return hideExpression;
     }
 
     ///////////////////////////  end Hide exprition ///////////////////////////
@@ -766,87 +870,101 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
     @Override
     public Object visitSwitchExpression(HTMLParser.SwitchExpressionContext ctx) {
       SwitchExpression switchExpression=new SwitchExpression();
-      SimpleTreeNode switchExpressionNode = new SimpleTreeNode("Visit switchExpression");
+      SimpleTreeNode switchExpressionNode = node.getNode();
 
       if(ctx.collection4Switch1()!=null){
+          switchExpressionNode.addChild(addNode("collection4Switch1"));
           switchExpression.setCollection4Switch1((Collection4Switch1) visitCollection4Switch1(ctx.collection4Switch1()));
       }
-      root.addChild(switchExpressionNode);
-        return super.visitSwitchExpression(ctx);
+
+        return switchExpression;
     }
 
     @Override
     public Object visitSwitchCaseExpression(HTMLParser.SwitchCaseExpressionContext ctx) {
 
         SwitchCaseExpression switchCaseExpression=new SwitchCaseExpression();
-        SimpleTreeNode switchCaseExpressionNode = new SimpleTreeNode("Visit switchCaseExpression");
+        SimpleTreeNode switchCaseExpressionNode = node.getNode();
 
         if(ctx.collection4Switch1()!=null){
+            switchCaseExpressionNode.addChild(addNode("collection4Switch1"));
             switchCaseExpression.setCollection4Switch1((Collection4Switch1) visitCollection4Switch1(ctx.collection4Switch1()));
         }
-        root.addChild(switchCaseExpressionNode);
-        return super.visitSwitchCaseExpression(ctx);
+
+        return switchCaseExpression;
     }
 
     @Override
     public Object visitCollection4Switch1(HTMLParser.Collection4Switch1Context ctx) {
 
         Collection4Switch1 collection4Switch1=new Collection4Switch1();
-        SimpleTreeNode collection4Switch1Node = new SimpleTreeNode("Visit collection4Switch1");
+        SimpleTreeNode collection4Switch1Node = node.getNode();
 
 
         //Collection4Switch1  role 1
 
         if(ctx.variable()!=null){
+            collection4Switch1Node.addChild(addNode("variable"));
             collection4Switch1.setVariable((Variable) visitVariable(ctx.variable()));
         }
         //Collection4Switch1  role 2
 
         if(ctx.CP_CONTENT_STRING()!=null){
             collection4Switch1.setString(ctx.CP_CONTENT_STRING().getSymbol().getText());
-            SimpleTreeNode stringNode = new SimpleTreeNode(collection4Switch1.getString());
-            collection4Switch1Node.addChild(stringNode);
+            collection4Switch1Node.addChild(new SimpleTreeNode(collection4Switch1.getString()));
         }
         //Collection4Switch1  role 3
         if(ctx.number()!=null){
+            collection4Switch1Node.addChild(addNode("number"));
             collection4Switch1.setNumber((NUmber) visitNumber(ctx.number()));
         }
         //Collection4Switch1  role 4
         if(ctx.subObj()!=null){
+            collection4Switch1Node.addChild(addNode("subObj"));
             collection4Switch1.setSubObj((SubObj) visitSubObj(ctx.subObj()));
         }
         //Collection4Switch1  role 5
         if(ctx.objArray()!=null){
+            collection4Switch1Node.addChild(addNode("objArray"));
             collection4Switch1.setObjArray((ObjArray) visitObjArray(ctx.objArray()));
         }
 
         //Collection4Switch1  role 6
         if(ctx.oneLine4switch1()!=null){
+            collection4Switch1Node.addChild(addNode("oneLine4switch1"));
             collection4Switch1.setOneLine4switch1((OneLine4switch1) visitOneLine4switch1(ctx.oneLine4switch1()));
         }
 
         //Collection4Switch1  role 7
         if(ctx.arithmeticLogic()!=null){
+            collection4Switch1Node.addChild(addNode("arithmeticLogic"));
             collection4Switch1.setArithmeticLogic((ArithmeticLogic) visitArithmeticLogic(ctx.arithmeticLogic()));
         }
-        root.addChild(collection4Switch1Node);
 
-        return super.visitCollection4Switch1(ctx);
+        return collection4Switch1;
     }
 
     @Override
     public Object visitOneLine4switch1(HTMLParser.OneLine4switch1Context ctx) {
 
         OneLine4switch1  oneLine4switch1=new OneLine4switch1 ();
-        SimpleTreeNode oneLine4switch1Node = new SimpleTreeNode("Visit oneLine4switch1");
+        SimpleTreeNode oneLine4switch1Node = node.getNode();
 
         if(ctx.logicComprison()!=null&& ctx.collection4Switch1()!=null){
+            oneLine4switch1Node.addChild(addNode("logicComprison"));
             oneLine4switch1.setLogicComprison((LogicComprison) visitLogicComprison(ctx.logicComprison()));
+
+            //
+
+            oneLine4switch1Node.addChild(addNode("Collection4Switch1_1_1"));
             oneLine4switch1.setCollection4Switch1_1_1((Collection4Switch1) visitCollection4Switch1(ctx.collection4Switch1(0)));
+
+            //
+
+            oneLine4switch1Node.addChild(addNode("Collection4Switch1_1_2"));
             oneLine4switch1.setCollection4Switch1_1_2((Collection4Switch1) visitCollection4Switch1(ctx.collection4Switch1(1)));
         }
-        root.addChild(oneLine4switch1Node);
-        return super.visitOneLine4switch1(ctx);
+        return oneLine4switch1;
     }
 
     ///////////////////////////   End Switch exprition ///////////////////////////
@@ -857,13 +975,14 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
     public Object visitIfExpression(HTMLParser.IfExpressionContext ctx) {
 
         IfExpression ifExpression =new IfExpression();
-        SimpleTreeNode ifExpressionNode = new SimpleTreeNode("Visit ifExpression");
+        SimpleTreeNode ifExpressionNode = node.getNode();
 
       if(ctx.logicComprison()!=null){
+          ifExpressionNode.addChild(addNode("logicComprison"));
           ifExpression.setLogicComprison((LogicComprison) visitLogicComprison(ctx.logicComprison()));
       }
-      root.addChild(ifExpressionNode);
-        return super.visitIfExpression(ctx);
+
+        return ifExpression;
     }
 
     ///////////////////////////  end If exprition ///////////////////////////
@@ -873,63 +992,76 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
     public Object visitModelExpression(HTMLParser.ModelExpressionContext ctx) {
 
         ModelExpression modelExpression =new ModelExpression();
-        SimpleTreeNode modelExpressionNode  = new SimpleTreeNode("Visit modelExpression");
+        SimpleTreeNode modelExpressionNode  = node.getNode();
 
         if(ctx.collection4Model1()!=null){
+            modelExpressionNode.addChild(addNode("collection4Model1"));
             modelExpression.setCollection4Model1((Collection4Model1) visitCollection4Model1(ctx.collection4Model1()));
         }
-        root.addChild(modelExpressionNode);
-        return super.visitModelExpression(ctx);
+        return modelExpression;
     }
 
     @Override
     public Object visitCollection4Model1(HTMLParser.Collection4Model1Context ctx) {
 
        Collection4Model1 collection4Model1=new Collection4Model1();
-       SimpleTreeNode collection4Model1Node = new SimpleTreeNode("Visit collection4Model1");
+       SimpleTreeNode collection4Model1Node = node.getNode();
 
         //Collection4Model1 role 1
         if(ctx.variable()!=null){
+            collection4Model1Node.addChild(addNode("variable"));
             collection4Model1.setVariable((Variable) visitVariable(ctx.variable()));
         }
 
 
         //Collection4Model1 role 2
         if(ctx.objArray()!=null){
+            collection4Model1Node.addChild(addNode("objArray"));
             collection4Model1.setObjArray((ObjArray) visitObjArray(ctx.objArray()));
         }
 
         //Collection4Model1 role 3
         if(ctx.functionCall()!=null){
+            collection4Model1Node.addChild(addNode("functionCall"));
             collection4Model1.setFunctionCall((FunctionCall) visitFunctionCall(ctx.functionCall()));
         }
 
         //Collection4Model1 role 4
         if(ctx.subObj()!=null){
+            collection4Model1Node.addChild(addNode("subObj"));
             collection4Model1.setSubObj((SubObj) visitSubObj(ctx.subObj()));
         }
 
         //Collection4Model1 role 5
         if(ctx.oneLine4ModelCondition()!=null){
+            collection4Model1Node.addChild(addNode("oneLine4ModelCondition"));
             collection4Model1.setOneLine4ModelCondition((OneLine4ModelCondition) visitOneLine4ModelCondition(ctx.oneLine4ModelCondition()));
         }
-        root.addChild(collection4Model1Node);
-        return super.visitCollection4Model1(ctx);
+
+        return collection4Model1;
     }
 
     @Override
     public Object visitOneLine4ModelCondition(HTMLParser.OneLine4ModelConditionContext ctx) {
 
         OneLine4ModelCondition oneLine4ModelCondition=new OneLine4ModelCondition();
-        SimpleTreeNode oneLine4ModelConditionNode = new SimpleTreeNode("Visit oneLine4ModelCondition");
+        SimpleTreeNode oneLine4ModelConditionNode = node.getNode();
 
         if(ctx.logicComprison()!=null&& ctx.collection4Model1()!=null){
+            oneLine4ModelConditionNode.addChild(addNode("logicComprison"));
             oneLine4ModelCondition.setLogicComprison((LogicComprison) visitLogicComprison(ctx.logicComprison()));
+
+            //
+
+            oneLine4ModelConditionNode.addChild(addNode("Collection4Model1_1_1"));
             oneLine4ModelCondition.setCollection4Model1_1_1((Collection4Model1) visitCollection4Model1(ctx.collection4Model1(0)));
+
+            //
+
+            oneLine4ModelConditionNode.addChild(addNode("Collection4Model1_1_2"));
             oneLine4ModelCondition.setCollection4Model1_1_2((Collection4Model1) visitCollection4Model1(ctx.collection4Model1(1)));
         }
-        root.addChild(oneLine4ModelConditionNode);
-        return super.visitOneLine4ModelCondition(ctx);
+        return oneLine4ModelCondition;
     }
     /////////////////////////// End  Model exprition ///////////////////////////
 
@@ -938,94 +1070,119 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
     @Override
     public Object visitAnnotationClickExpression(HTMLParser.AnnotationClickExpressionContext ctx) {
        AnnotationClickExpression clickExpression =new AnnotationClickExpression();
-       SimpleTreeNode clickExpressionNode = new SimpleTreeNode("Visit clickExpression");
+       SimpleTreeNode clickExpressionNode = node.getNode();
 
        if(ctx.collection4Annotation()!=null){
+           clickExpressionNode.addChild(addNode("collection4Annotation"));
            clickExpression.setCollection4Annotation((Collection4Annotation) visitCollection4Annotation(ctx.collection4Annotation()));
        }
-       root.addChild(clickExpressionNode);
-        return super.visitAnnotationClickExpression(ctx);
+        return clickExpression;
     }
 
     @Override
     public Object visitAnnotationOverExpression(HTMLParser.AnnotationOverExpressionContext ctx) {
 
          AnnotationOverExpression overExpression =new AnnotationOverExpression ();
-         SimpleTreeNode overExpressionNode  = new SimpleTreeNode("Visit overExpression");
+         SimpleTreeNode overExpressionNode  = node.getNode();
 
         if(ctx.collection4Annotation()!=null){
+            overExpressionNode.addChild(addNode("collection4Annotation"));
             overExpression.setCollection4Annotation((Collection4Annotation) visitCollection4Annotation(ctx.collection4Annotation()));
         }
-        root.addChild(overExpressionNode);
-        return super.visitAnnotationOverExpression(ctx);
+
+        return overExpression;
     }
 
     @Override
     public Object visitCollection4Annotation(HTMLParser.Collection4AnnotationContext ctx) {
         Collection4Annotation collection4Annotation =new Collection4Annotation();
-        SimpleTreeNode collection4AnnotationNode = new SimpleTreeNode("Visit collection4Annotation");
+        SimpleTreeNode collection4AnnotationNode = node.getNode();
 
         if(ctx.functionCall4AnnotOneLine()!=null){
+            collection4AnnotationNode.addChild(addNode("functionCall4AnnotOneLine"));
             collection4Annotation.setFunctionCall4AnnotOneLine((FunctionCall4AnnotOneLine) visitFunctionCall4AnnotOneLine(ctx.functionCall4AnnotOneLine()));
         }
 
         if(ctx.arrName()!=null && ctx.arrayFuncRet4AnnotOneLine()!=null){
+            collection4AnnotationNode.addChild(addNode("arrName"));
             collection4Annotation.setArrName((ArrName) visitArrName(ctx.arrName()));
+
+            //
+
+            collection4AnnotationNode.addChild(addNode("ArrayFuncRet4AnnotOneLine"));
             collection4Annotation.setArrayFuncRet4AnnotOneLine((ArrayFuncRet4AnnotOneLine) visitFunctionCall4AnnotOneLine(ctx.functionCall4AnnotOneLine()));
         }
 
         if(ctx.obj()!=null && ctx.propFuncRet4AnnotOneLine()!=null){
+            collection4AnnotationNode.addChild(addNode("obj"));
             collection4Annotation.setPropFuncRet4AnnotOneLine((PropFuncRet4AnnotOneLine) visitPropFuncRet4AnnotOneLine(ctx.propFuncRet4AnnotOneLine()));
+
+            //
+
+            collection4AnnotationNode.addChild(addNode("propFuncRet4AnnotOneLine"));
             collection4Annotation.setObj((Obj) visitObj(ctx.obj()));
         }
 
         if(ctx.oneLine4Annotation()!=null){
+            collection4AnnotationNode.addChild(addNode("oneLine4Annotation"));
             collection4Annotation.setOneLine4Annotation((OneLine4Annotation) visitOneLine4Annotation(ctx.oneLine4Annotation()));
         }
-        root.addChild(collection4AnnotationNode);
-        return super.visitCollection4Annotation(ctx);
+
+        return collection4Annotation;
     }
 
     @Override
     public Object visitOneLine4Annotation(HTMLParser.OneLine4AnnotationContext ctx) {
 
           OneLine4Annotation oneLine4Annotation=new OneLine4Annotation();
-          SimpleTreeNode oneLine4AnnotationNode = new SimpleTreeNode("Visit oneLine4Annotation");
+          SimpleTreeNode oneLine4AnnotationNode = node.getNode();
+
         if(ctx.logicComprison()!=null&& ctx.collection4Annotation()!=null){
+            oneLine4AnnotationNode.addChild(addNode("logicComprison"));
             oneLine4Annotation.setLogicComprison((LogicComprison) visitLogicComprison(ctx.logicComprison()));
+
+            //
+
+            oneLine4AnnotationNode.addChild(addNode("Collection4Annotation1_1"));
             oneLine4Annotation.setCollection4Annotation1_1((Collection4Annotation) visitCollection4Annotation(ctx.collection4Annotation(0)));
+
+            //
+
+            oneLine4AnnotationNode.addChild(addNode("Collection4Annotation1_2"));
             oneLine4Annotation.setCollection4Annotation1_2((Collection4Annotation) visitCollection4Annotation(ctx.collection4Annotation(1)));
         }
-        root.addChild(oneLine4AnnotationNode);
-        return super.visitOneLine4Annotation(ctx);
+        return oneLine4Annotation;
     }
 
     @Override
     public Object visitFunctionCall4AnnotOneLine(HTMLParser.FunctionCall4AnnotOneLineContext ctx) {
 
        FunctionCall4AnnotOneLine functionCall4AnnotOneLine=new FunctionCall4AnnotOneLine();
-       SimpleTreeNode functionCall4AnnotOneLineNode = new SimpleTreeNode("Visit functionCall4AnnotOneLine");
+       SimpleTreeNode functionCall4AnnotOneLineNode = node.getNode();
 
-       if(ctx.funcEndRet4AnnotOneLine()!=null&&ctx.funcEndRet4AnnotOneLine()!=null){
-
+       if(ctx.funcEndRet4AnnotOneLine()!=null&&ctx.functionName()!=null){
+           functionCall4AnnotOneLineNode.addChild(addNode("funcEndRet4AnnotOneLine"));
            functionCall4AnnotOneLine.setFuncEndRet4AnnotOneLine((FuncEndRet4AnnotOneLine) visitFuncEndRet4AnnotOneLine(ctx.funcEndRet4AnnotOneLine()));
+
+           //
+
+           functionCall4AnnotOneLineNode.addChild(addNode("functionName"));
            functionCall4AnnotOneLine.setFunctionName((FunctionName) visitFunctionName(ctx.functionName()));
        }
-       root.addChild(functionCall4AnnotOneLineNode);
-        return super.visitFunctionCall4AnnotOneLine(ctx);
+        return functionCall4AnnotOneLine;
     }
 
     @Override
     public Object visitArrayFuncRet4AnnotOneLine(HTMLParser.ArrayFuncRet4AnnotOneLineContext ctx) {
 
         ArrayFuncRet4AnnotOneLine arrayFuncRet4AnnotOneLine=new ArrayFuncRet4AnnotOneLine();
-        SimpleTreeNode arrayFuncRet4AnnotOneLineNode = new SimpleTreeNode("Visit arrayFuncRet4AnnotOneLine");
-        List <ArithmeticLogic> arithmeticLogics=new ArrayList<>();
+        SimpleTreeNode arrayFuncRet4AnnotOneLineNode = node.getNode();
 
 
         if(ctx.arithmeticLogic()!=null){
-
+            List <ArithmeticLogic> arithmeticLogics=new ArrayList<>();
             for(int i=0;i<ctx.arithmeticLogic().size();i++){
+                arrayFuncRet4AnnotOneLineNode.addChild(addNode("arithmeticLogic"));
                 arithmeticLogics.add((ArithmeticLogic) visitArithmeticLogic(ctx.arithmeticLogic(i)));
             }
             arrayFuncRet4AnnotOneLine.setArithmeticLogics(arithmeticLogics);
@@ -1033,25 +1190,29 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
 
 
         if(ctx.propFuncRet4AnnotOneLine()!=null) {
+            arrayFuncRet4AnnotOneLineNode.addChild(addNode("propFuncRet4AnnotOneLine"));
             arrayFuncRet4AnnotOneLine.setPropFuncRet4AnnotOneLine((PropFuncRet4AnnotOneLine) visitPropFuncRet4AnnotOneLine(ctx.propFuncRet4AnnotOneLine()));
 
         }
         if(ctx.funcEndRet4AnnotOneLine()!=null){
+            arrayFuncRet4AnnotOneLineNode.addChild(addNode("funcEndRet4AnnotOneLine"));
             arrayFuncRet4AnnotOneLine.setFuncEndRet4AnnotOneLine((FuncEndRet4AnnotOneLine) visitFuncEndRet4AnnotOneLine(ctx.funcEndRet4AnnotOneLine()));
         }
 
-        root.addChild(arrayFuncRet4AnnotOneLineNode);
-        return super.visitArrayFuncRet4AnnotOneLine(ctx);
+
+        return arrayFuncRet4AnnotOneLine;
     }
 
     @Override
     public Object visitPropFuncRet4AnnotOneLine(HTMLParser.PropFuncRet4AnnotOneLineContext ctx) {
        PropFuncRet4AnnotOneLine propFuncRet4AnnotOneLine=new PropFuncRet4AnnotOneLine();
-       SimpleTreeNode propFuncRet4AnnotOneLineNode = new SimpleTreeNode("Visit propFuncRet4AnnotOneLine");
-       List <PropertyValue>propertyValues=new ArrayList<>();
+       SimpleTreeNode propFuncRet4AnnotOneLineNode = node.getNode();
+
 
        if(ctx.propertyValue()!=null){
+           List <PropertyValue>propertyValues=new ArrayList<>();
            for(int i=0;i<ctx.propertyValue().size();i++){
+               propFuncRet4AnnotOneLineNode.addChild(addNode("propertyValue"));
                propertyValues.add((PropertyValue) visitPropertyValue(ctx.propertyValue(i)));
            }
            propFuncRet4AnnotOneLine.setPropertyValue(propertyValues);
@@ -1059,28 +1220,31 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
 
 
        if(ctx.arrayFuncRet4AnnotOneLine()!=null){
+           propFuncRet4AnnotOneLineNode.addChild(addNode("arrayFuncRet4AnnotOneLine"));
            propFuncRet4AnnotOneLine.setArrayFuncRet4AnnotOneLine((ArrayFuncRet4AnnotOneLine) visitArrayFuncRet4AnnotOneLine(ctx.arrayFuncRet4AnnotOneLine()));
 
        }
        if(ctx.funcEndRet4AnnotOneLine()!=null){
-
+           propFuncRet4AnnotOneLineNode.addChild(addNode("funcEndRet4AnnotOneLine"));
             propFuncRet4AnnotOneLine.setFuncEndRet4AnnotOneLine((FuncEndRet4AnnotOneLine) visitFuncEndRet4AnnotOneLine(ctx.funcEndRet4AnnotOneLine()));
 
 
        }
-       root.addChild(propFuncRet4AnnotOneLineNode);
-        return super.visitPropFuncRet4AnnotOneLine(ctx);
+
+        return propFuncRet4AnnotOneLine;
     }
 
     @Override
     public Object visitFuncEndRet4AnnotOneLine(HTMLParser.FuncEndRet4AnnotOneLineContext ctx) {
 
          FuncEndRet4AnnotOneLine funcEndRet4AnnotOneLine=new FuncEndRet4AnnotOneLine();
-         SimpleTreeNode funcEndRet4AnnotOneLineNode = new SimpleTreeNode("Visit funcEndRet4AnnotOneLine");
-         List<Parameters>parameters=new ArrayList<>();
+         SimpleTreeNode funcEndRet4AnnotOneLineNode = node.getNode();
+
 
          if(ctx.parameters()!=null){
-             for(int i=0;i<ctx.parameters().size();i++){ ;
+             List<Parameters>parameters=new ArrayList<>();
+             for(int i=0;i<ctx.parameters().size();i++){
+                 funcEndRet4AnnotOneLineNode.addChild(addNode("parameters"));
                  parameters.add((Parameters)visitParameters(ctx.parameters(i)));
              }
              funcEndRet4AnnotOneLine.setFunctionParameters(parameters);
@@ -1088,14 +1252,16 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
 
 
         if(ctx.arrayFuncRet4AnnotOneLine()!=null){
+            funcEndRet4AnnotOneLineNode.addChild(addNode("arrayFuncRet4AnnotOneLine"));
             funcEndRet4AnnotOneLine.setArrayFuncRet4AnnotOneLine((ArrayFuncRet4AnnotOneLine) visitArrayFuncRet4AnnotOneLine(ctx.arrayFuncRet4AnnotOneLine()));
 
         }if(ctx.propFuncRet4AnnotOneLine()!=null){
+            funcEndRet4AnnotOneLineNode.addChild(addNode("propFuncRet4AnnotOneLine"));
              funcEndRet4AnnotOneLine.setPropFuncRet4AnnotOneLine((PropFuncRet4AnnotOneLine) visitPropFuncRet4AnnotOneLine(ctx.propFuncRet4AnnotOneLine()));
 
          }
-        root.addChild(funcEndRet4AnnotOneLineNode);
-        return super.visitFuncEndRet4AnnotOneLine(ctx);
+
+        return funcEndRet4AnnotOneLine;
     }
 
 
@@ -1110,37 +1276,38 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
     public Object visitVariable(HTMLParser.VariableContext ctx) {
         //: variableName
         Variable variable = new Variable();
-        SimpleTreeNode variableNode = new SimpleTreeNode("Visit variable");
+        SimpleTreeNode variableNode = node.getNode();
 
 
 
         if (ctx.variableName() != null){
+
+            variableNode.addChild(addNode("variableName"));
             variable.setVariableName((VariableName) visitVariableName(ctx.variableName()));
         }
-        root.addChild(variableNode);
-        return super.visitVariable(ctx);
+
+        return variable;
     }
 
     @Override
     public Object visitVariableName(HTMLParser.VariableNameContext ctx) {
         //: CP_CONTENT_IDENTIFIER
         VariableName variableName = new VariableName();
-        SimpleTreeNode variableNameNode = new SimpleTreeNode("Visit variableName");
+        SimpleTreeNode variableNameNode =node.getNode();
 
         if (ctx.CP_CONTENT_IDENTIFIER() != null){
             variableName.setIdentifier(ctx.CP_CONTENT_IDENTIFIER().getSymbol().getText());
-            SimpleTreeNode identifierNode = new SimpleTreeNode(variableName.getIdentifier());
-            variableNameNode.addChild(identifierNode);
+            variableNameNode.addChild(new SimpleTreeNode(variableName.getIdentifier()));
         }
-        root.addChild(variableNameNode);
-        return super.visitVariableName(ctx);
+
+        return variableName;
     }
 
     @Override
     public Object visitNumber(HTMLParser.NumberContext ctx) {
 //        : CP_CONTENT_NUMBER
         NUmber nUmber = new NUmber();
-        SimpleTreeNode nUmberNode = new SimpleTreeNode("Visit nUmber");
+        SimpleTreeNode nUmberNode = node.getNode();
 
         if (ctx.CP_CONTENT_NUMBER() != null) {
             // TODO i don't know if this is right or not
@@ -1148,117 +1315,115 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
             // For check what's the type of Number
             if (numberType == (int) numberType) {
                 nUmber.setNumber(Integer.parseInt(ctx.CP_CONTENT_NUMBER().getSymbol().getText()));
-                SimpleTreeNode numberNode = new SimpleTreeNode(nUmber.getNumber().toString());
-                nUmberNode.addChild(numberNode);
+                nUmberNode.addChild(new SimpleTreeNode(nUmber.getNumber().toString()));
             }
             else if (numberType == (float)numberType){
                 nUmber.setNumber(Float.parseFloat(ctx
                 .CP_CONTENT_NUMBER().getSymbol().getText()));
-                SimpleTreeNode numberNode = new SimpleTreeNode(nUmber.getNumber().toString());
-                nUmberNode.addChild(numberNode);
+                nUmberNode.addChild(new SimpleTreeNode(nUmber.getNumber().toString()));
             }
             else{
                 nUmber.setNumber(Double.parseDouble(ctx.CP_CONTENT_NUMBER().getSymbol().getText()));
-                SimpleTreeNode numberNode = new SimpleTreeNode(nUmber.getNumber().toString());
-                nUmberNode.addChild(numberNode);
+                nUmberNode.addChild(new SimpleTreeNode(nUmber.getNumber().toString()));
             }
         }
-        root.addChild(nUmberNode);
-        return super.visitNumber(ctx);
+
+        return nUmber;
     }
 
     @Override
     public Object visitTrueOrFalse(HTMLParser.TrueOrFalseContext ctx) {
 //        :  (CP_CONTENT_TRUE | CP_CONTENT_FALSE)
         TrueOrFalse trueOrFalse = new TrueOrFalse();
-        SimpleTreeNode trueOrFalseNode = new SimpleTreeNode("Visit trueOrFalse");
+        SimpleTreeNode trueOrFalseNode = node.getNode();
         if (ctx.CP_CONTENT_TRUE() != null){
             trueOrFalse.setTrue(true);
-            SimpleTreeNode trueNode = new SimpleTreeNode("True");
-            trueOrFalseNode.addChild(trueNode);
+            trueOrFalseNode.addChild(new SimpleTreeNode("True"));
         }
 
         if (ctx.CP_CONTENT_FALSE() != null){
             trueOrFalse.setFalse(false);
-            SimpleTreeNode falseNode = new SimpleTreeNode("False");
-            trueOrFalseNode.addChild(falseNode);
+            trueOrFalseNode.addChild(new SimpleTreeNode("False"));
         }
-        root.addChild(trueOrFalseNode);
-        return super.visitTrueOrFalse(ctx);
+
+        return trueOrFalse;
     }
 
     @Override
     public Object visitObjArray(HTMLParser.ObjArrayContext ctx) {
 //        : arrName arrayCalling
         ObjArray objArray = new ObjArray();
-        SimpleTreeNode objArrayNode = new SimpleTreeNode("Visit objArray");
+        SimpleTreeNode objArrayNode = node.getNode();
 
         if (ctx.arrName() != null){
+            objArrayNode.addChild(addNode("arrName"));
             objArray.setArrName((ArrName) visitArrName(ctx.arrName()));
         }
         if (ctx.arrayCalling() != null){
+            objArrayNode.addChild(addNode("arrayCalling"));
             objArray.setArrayCalling((ArrayCalling) visitArrayCalling(ctx.arrayCalling()));
         }
-        root.addChild(objArrayNode);
-        return super.visitObjArray(ctx);
+
+        return objArray;
     }
 
     @Override
     public Object visitArrName(HTMLParser.ArrNameContext ctx) {
 //        : CP_CONTENT_IDENTIFIER
         ArrName arrName = new ArrName();
-        SimpleTreeNode arrNameNode  = new SimpleTreeNode("Visit arrName");
+        SimpleTreeNode arrNameNode  = node.getNode();
 
         if (ctx.CP_CONTENT_IDENTIFIER() != null){
             arrName.setIdentifier(ctx.CP_CONTENT_IDENTIFIER().getSymbol().getText());
-            SimpleTreeNode identifierNode  = new SimpleTreeNode(arrName.getIdentifier());
-            arrNameNode.addChild(identifierNode);
+            arrNameNode.addChild(new SimpleTreeNode(arrName.getIdentifier()));
         }
-        root.addChild(arrNameNode);
-        return super.visitArrName(ctx);
+        return arrName;
     }
 
     @Override
     public Object visitArrayCalling(HTMLParser.ArrayCallingContext ctx) {
 //: (CP_CONTENT_OPEN_BRACKETS  arithmeticLogic CP_CONTENT_CLOSE_BRACKETS)+ (functionCallFromVar | property)?
         ArrayCalling arrayCalling = new ArrayCalling();
-        SimpleTreeNode arrayCallingNode  = new SimpleTreeNode("Visit arrayCalling");
+        SimpleTreeNode arrayCallingNode  = node.getNode();
 
         if (!ctx.arithmeticLogic().isEmpty()){
             List<ArithmeticLogic> arithmeticLogics = new ArrayList<>();
             for (int i = 0 ; i < ctx.arithmeticLogic().size() ; i ++){
+                arrayCallingNode.addChild(addNode("arithmeticLogic"));
                 arithmeticLogics.add((ArithmeticLogic) visitArithmeticLogic(ctx.arithmeticLogic(i)));
             }
             arrayCalling.setArithmeticLogic(arithmeticLogics);
         }
 
         if (ctx.functionCallFromVar() != null){
+            arrayCallingNode.addChild(addNode("functionCallFromVar"));
             arrayCalling.setFunctionCallFromVar((FunctionCallFromVar) visitFunctionCallFromVar(ctx.functionCallFromVar()));
         }
 
         if (ctx.property() != null){
+            arrayCallingNode.addChild(addNode("functionCallFromVar"));
             arrayCalling.setProperty((Property) visitProperty(ctx.property()));
         }
-        root.addChild(arrayCallingNode);
-        return super.visitArrayCalling(ctx);
+
+        return arrayCalling;
     }
 
     @Override
     public Object visitArray(HTMLParser.ArrayContext ctx) {
         Array array = new Array();
-        SimpleTreeNode arrayNode = new SimpleTreeNode("Visit array");
+        SimpleTreeNode arrayNode = node.getNode();
 
 
         if (!ctx.collection4everything().isEmpty()){
             ArrayList<Collection4everything> internalCollections4EveryThings = new ArrayList<>();
             for (int i =0 ; i<ctx.collection4everything().size();i++){
+                arrayNode.addChild(addNode("collection4everything"));
                 internalCollections4EveryThings.add((Collection4everything) visitCollection4everything(ctx.collection4everything(i)));
             }
             array.setInternalCollection4everythings(internalCollections4EveryThings);
 
         }
-        root.addChild(arrayNode);
-        return super.visitArray(ctx);
+        return array;
     }
 
     @Override
@@ -1266,34 +1431,33 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
 //    : CP_CONTENT_IDENTIFIER
 
         Obj obj = new Obj();
-        SimpleTreeNode objNode = new SimpleTreeNode("Visit obj");
+        SimpleTreeNode objNode = node.getNode();
 
         if (ctx.CP_CONTENT_IDENTIFIER() != null){
             obj.setIdentifier(ctx.CP_CONTENT_IDENTIFIER().getSymbol().getText());
-            SimpleTreeNode identifierNode = new SimpleTreeNode(obj.getIdentifier());
-            objNode.addChild(identifierNode);
+            objNode.addChild(new SimpleTreeNode(obj.getIdentifier()));
         }
-        root.addChild(objNode);
-        return super.visitObj(ctx);
+
+        return obj;
     }
 
     @Override
     public Object visitSubObj(HTMLParser.SubObjContext ctx) {
 //    : CP_CONTENT_IDENTIFIER property
         SubObj subObj = new SubObj();
-        SimpleTreeNode subObjNode = new SimpleTreeNode("Visit subObj");
+        SimpleTreeNode subObjNode = node.getNode();
 
         if (ctx.CP_CONTENT_IDENTIFIER() != null){
             subObj.setIdentifier(ctx.CP_CONTENT_IDENTIFIER().getSymbol().getText());
-            SimpleTreeNode identifierNode = new SimpleTreeNode(subObj.getIdentifier());
-            subObjNode.addChild(identifierNode);
+            subObjNode.addChild(new SimpleTreeNode(subObj.getIdentifier()));
         }
 
         if (ctx.property() != null){
+            subObjNode.addChild(addNode("property"));
             subObj.setProperty((Property) visitProperty(ctx.property()));
         }
-        root.addChild(subObjNode);
-        return super.visitSubObj(ctx);
+
+        return subObj;
     }
 
     @Override
@@ -1301,34 +1465,37 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
 //: CP_CONTENT_OPEN_CURLY_BRACKETS (pair (CP_CONTENT_COMMA pair)*)* CP_CONTENT_CLOSE_CURLY_BRACKETS
 
         ObjBody objBody = new ObjBody();
-        SimpleTreeNode objBodyNode = new SimpleTreeNode("Visit objBody");
+        SimpleTreeNode objBodyNode = node.getNode();
 
         if (!ctx.pair().isEmpty()){
             ArrayList<Pair> pairs = new ArrayList<>();
             for (int i=0 ; i< ctx.pair().size(); i++){
+                objBodyNode.addChild(addNode("pair"));
                 pairs.add((Pair) visitPair(ctx.pair(i)));
             }
             objBody.setPairs(pairs);
         }
-        root.addChild(objBodyNode);
-        return super.visitObjBody(ctx);
+
+        return objBody;
     }
 
     @Override
     public Object visitPair(HTMLParser.PairContext ctx) {
 //    : key CP_CONTENT_COLON collection4everything
         Pair pair = new Pair();
-        SimpleTreeNode pairNode  = new SimpleTreeNode("Visit pair");
+        SimpleTreeNode pairNode  = node.getNode();
 
         if (ctx.key() != null){
+            pairNode.addChild(addNode("key"));
             pair.setKey((Key) visitKey(ctx.key()));
         }
 
         if (ctx.collection4everything() != null){
+            pairNode.addChild(addNode("collection4everything"));
             pair.setCollection4everything((Collection4everything) visitCollection4everything(ctx.collection4everything()));
         }
-        root.addChild(pairNode);
-        return super.visitPair(ctx);
+
+        return pair;
     }
 
     @Override
@@ -1336,15 +1503,14 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
 //            : CP_CONTENT_IDENTIFIER
 
         Key key = new Key();
-        SimpleTreeNode keyNode = new SimpleTreeNode("Visit key");
+        SimpleTreeNode keyNode = node.getNode();
 
         if (ctx.CP_CONTENT_IDENTIFIER() != null){
             key.setIdentifier(ctx.CP_CONTENT_IDENTIFIER().getSymbol().getText());
-            SimpleTreeNode identifierNode = new SimpleTreeNode(key.getIdentifier());
-            keyNode.addChild(identifierNode);
+            keyNode.addChild(new SimpleTreeNode(key.getIdentifier()));
         }
-        root.addChild(keyNode);
-        return super.visitKey(ctx);
+
+        return key;
     }
 
     @Override
@@ -1352,11 +1518,12 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
 //        : (CP_CONTENT_DOT propertyValue)+ (arrayCalling | functionCallFromVar)?
 
         Property property = new Property();
-        SimpleTreeNode propertyNode = new SimpleTreeNode("Visit property");
+        SimpleTreeNode propertyNode = node.getNode();
 
         if (!ctx.propertyValue().isEmpty()){
             ArrayList<PropertyValue> propertyValues = new ArrayList<>();
             for (int i=0; i<ctx.propertyValue().size();i++){
+                propertyNode.addChild(addNode("propertyValue"));
                 propertyValues.add((PropertyValue) visitPropertyValue(ctx.propertyValue(i)));
             }
             property.setPropertyValues(propertyValues);
@@ -1364,28 +1531,30 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
 //        We have OR --"(arrayCalling | functionCallFromVar)?"--
 
         if (ctx.arrayCalling() != null){
+            propertyNode.addChild(addNode("arrayCalling"));
             property.setArrayCalling((ArrayCalling) visitArrayCalling(ctx.arrayCalling()));
         }
         //OR
         if (ctx.functionCallFromVar() != null){
+            propertyNode.addChild(addNode("functionCallFromVar"));
             property.setFunctionCallFromVar((FunctionCallFromVar) visitFunctionCallFromVar(ctx.functionCallFromVar()));
         }
-        root.addChild(propertyNode);
-        return super.visitProperty(ctx);
+
+        return property;
     }
 
     @Override
     public Object visitPropertyValue(HTMLParser.PropertyValueContext ctx) {
 //        : CP_CONTENT_IDENTIFIER
         PropertyValue propertyValue = new PropertyValue();
-        SimpleTreeNode propertyValueNode = new SimpleTreeNode("Visit propertyValue");
+        SimpleTreeNode propertyValueNode = node.getNode();
+
         if (ctx.CP_CONTENT_IDENTIFIER() != null){
             propertyValue.setIdentifier(ctx.CP_CONTENT_IDENTIFIER().getSymbol().getText());
-            SimpleTreeNode identifierNode = new SimpleTreeNode(propertyValue.getIdentifier());
-            propertyValueNode.addChild(identifierNode);
+            propertyValueNode.addChild(new SimpleTreeNode(propertyValue.getIdentifier()));
         }
-        root.addChild(propertyValueNode);
-        return super.visitPropertyValue(ctx);
+
+        return propertyValue;
     }
 
     @Override
@@ -1393,17 +1562,19 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
 //    : functionName functionCallFromVar
 
         FunctionCall functionCall = new FunctionCall();
-        SimpleTreeNode functionCallNode = new SimpleTreeNode("Visit functionCall");
+        SimpleTreeNode functionCallNode = node.getNode();
 
         if (ctx.functionName() != null){
+            functionCallNode.addChild(addNode("functionName"));
             functionCall.setFunctionName((FunctionName) visitFunctionName(ctx.functionName()));
         }
 
         if (ctx.functionCallFromVar() != null){
+            functionCallNode.addChild(addNode("functionCallFromVar"));
             functionCall.setFunctionCallFromVar((FunctionCallFromVar) visitFunctionCallFromVar(ctx.functionCallFromVar()));
         }
-        root.addChild(functionCallNode);
-        return super.visitFunctionCall(ctx);
+
+        return functionCall;
     }
 
     @Override
@@ -1411,26 +1582,29 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
 //    : (CP_CONTENT_OPEN_PAR parameters? CP_CONTENT_CLOSE_PAR)+ (arrayCalling | property)?
 
         FunctionCallFromVar functionCallFromVar = new FunctionCallFromVar();
-        SimpleTreeNode functionCallFromVarNode = new SimpleTreeNode("Visit functionCallFromVar");
+        SimpleTreeNode functionCallFromVarNode = node.getNode();
 
         if (!ctx.parameters().isEmpty()){
             ArrayList<Parameters> parametersArrayList = new ArrayList<>();
             for (int i=0; i< ctx.parameters().size();i++){
+                functionCallFromVarNode.addChild(addNode("parameters"));
                 parametersArrayList.add((Parameters) visitParameters(ctx.parameters(i)));
             }
             functionCallFromVar.setParameters(parametersArrayList);
         }
 //        We have OR --"(arrayCalling | property)?"--
         if (ctx.arrayCalling() != null){
+            functionCallFromVarNode.addChild(addNode("arrayCalling"));
             functionCallFromVar.setArrayCalling((ArrayCalling) visitArrayCalling(ctx.arrayCalling()));
         }
         // --OR--
 
         if (ctx.property() != null){
+            functionCallFromVarNode.addChild(addNode("property"));
             functionCallFromVar.setProperty((Property) visitProperty(ctx.property()));
         }
-        root.addChild(functionCallFromVarNode);
-        return super.visitFunctionCallFromVar(ctx);
+
+        return functionCallFromVar;
     }
 
     @Override
@@ -1438,15 +1612,14 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
 //    : CP_CONTENT_IDENTIFIER
 
         FunctionName functionName = new FunctionName();
-        SimpleTreeNode functionNameNode = new SimpleTreeNode("Visit functionName");
+        SimpleTreeNode functionNameNode = node.getNode();
 
         if (ctx.CP_CONTENT_IDENTIFIER() != null){
             functionName.setIdentifier(ctx.CP_CONTENT_IDENTIFIER().getSymbol().getText());
-            SimpleTreeNode identifierNode = new SimpleTreeNode(functionName.getIdentifier());
-            functionNameNode.addChild(identifierNode);
+            functionNameNode.addChild(new SimpleTreeNode(functionName.getIdentifier()));
         }
-        root.addChild(functionNameNode);
-        return super.visitFunctionName(ctx);
+
+        return functionName;
     }
 
     @Override
@@ -1454,29 +1627,31 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
 //        : parameter (CP_CONTENT_COMMA parameter)*
 
         Parameters parameters = new Parameters();
-        SimpleTreeNode parametersNode = new SimpleTreeNode("Visit parameters");
+        SimpleTreeNode parametersNode = node.getNode();
 
         if (!ctx.parameter().isEmpty()){
             ArrayList<Parameter> parameterArrayList = new ArrayList<>();
             for (int i=0; i< ctx.parameter().size();i++){
+                parametersNode.addChild(addNode("parameter"));
                 parameterArrayList.add((Parameter) visitParameter(ctx.parameter(i)));
             }
             parameters.setParameters(parameterArrayList);
         }
-        root.addChild(parametersNode);
-        return super.visitParameters(ctx);
+
+        return parameters;
     }
 
     @Override
     public Object visitParameter(HTMLParser.ParameterContext ctx) {
 //: collection4everything
         Parameter parameter = new Parameter();
-        SimpleTreeNode parameterNode = new SimpleTreeNode("Visit parameter");
+        SimpleTreeNode parameterNode = node.getNode();
         if (ctx.collection4everything() != null){
+            parameterNode.addChild(addNode("collection4everything"));
             parameter.setCollection4everything((Collection4everything) visitCollection4everything(ctx.collection4everything()));
         }
-        root.addChild(parameterNode);
-        return super.visitParameter(ctx);
+
+        return parameter;
     }
 
     @Override
@@ -1484,7 +1659,7 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
 //: collection4comparison comparisonOperator collection4comparison
 
         ComparisonExpression comparisonExpression = new ComparisonExpression();
-        SimpleTreeNode comparisonExpressionNode = new SimpleTreeNode("Visit comparisonExpression");
+        SimpleTreeNode comparisonExpressionNode = node.getNode();
 
         /**I use index (0) in parameter of visit for first collection4comparison
          *  because we have same expression
@@ -1494,16 +1669,19 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
 
         if (ctx.collection4comparison() != null){
             //index (0)
+            comparisonExpressionNode.addChild(addNode("Collection4comparison1"));
             comparisonExpression.setCollection4comparison1((Collection4comparison) visitCollection4comparison(ctx.collection4comparison(0)));
             // index(1)
+            comparisonExpressionNode.addChild(addNode("Collection4comparison2"));
             comparisonExpression.setCollection4comparison2((Collection4comparison) visitCollection4comparison(ctx.collection4comparison(1)));
         }
 
         if (ctx.comparisonOperator() != null){
+            comparisonExpressionNode.addChild(addNode("comparisonOperator"));
             comparisonExpression.setComparisonOperator((ComparisonOperator) visitComparisonOperator(ctx.comparisonOperator()));
         }
-        root.addChild(comparisonExpressionNode);
-        return super.visitComparisonExpression(ctx);
+
+        return comparisonExpression;
     }
 
     @Override
@@ -1511,8 +1689,9 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
 //: CP_CONTENT_OPEN_PAR logicComprison CP_CONTENT_QUESTION_MARK collection4everything CP_CONTENT_COLON collection4everything CP_CONTENT_CLOSE_PAR
 
         OneLineCondition oneLineCondition = new OneLineCondition();
-        SimpleTreeNode oneLineConditionNode = new SimpleTreeNode("Visit oneLineCondition");
+        SimpleTreeNode oneLineConditionNode = node.getNode();
         if (ctx.logicComprison() != null){
+            oneLineConditionNode.addChild(addNode("logicComparison"));
             oneLineCondition.setLogicComprison((LogicComprison) visitLogicComprison(ctx.logicComprison()));
         }
 
@@ -1525,11 +1704,13 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
         //index (0)
         //index(1)
         if (ctx.collection4everything() != null){
+            oneLineConditionNode.addChild(addNode("Collection4everything1"));
             oneLineCondition.setCollection4everything1((Collection4everything) visitCollection4everything(ctx.collection4everything(0)));
+            oneLineConditionNode.addChild(addNode("Collection4everything2"));
             oneLineCondition.setCollection4everything2((Collection4everything) visitCollection4everything(ctx.collection4everything(1)));
         }
-        root.addChild(oneLineConditionNode);
-        return super.visitOneLineCondition(ctx);
+
+        return oneLineCondition;
     }
 
     @Override
@@ -1537,25 +1718,23 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
 //: CP_CONTENT_OPEN_PAR logicComprison CP_CONTENT_QUESTION_MARK CP_CONTENT_TRUE CP_CONTENT_COLON CP_CONTENT_FALSE CP_CONTENT_CLOSE_PAR
 
         OneLineBoolCondition oneLineBoolCondition = new OneLineBoolCondition();
-        SimpleTreeNode oneLineBoolConditionNode = new SimpleTreeNode("Visit oneLineBoolCondition");
+        SimpleTreeNode oneLineBoolConditionNode = node.getNode();
 
         if (ctx.logicComprison() != null){
+            oneLineBoolConditionNode.addChild(addNode("logicComparison"));
             oneLineBoolCondition.setLogicComprison((LogicComprison) visitLogicComprison(ctx.logicComprison()));
         }
 
         if (ctx.CP_CONTENT_FALSE() != null){
             oneLineBoolCondition.setFalse(false);
-            SimpleTreeNode falseNode = new SimpleTreeNode("False");
-            oneLineBoolConditionNode.addChild(falseNode);
+            oneLineBoolConditionNode.addChild(new SimpleTreeNode("False"));
         }
 
         if (ctx.CP_CONTENT_TRUE() != null){
             oneLineBoolCondition.setTrue(true);
-            SimpleTreeNode trueNode = new SimpleTreeNode("True");
-            oneLineBoolConditionNode.addChild(trueNode);
+            oneLineBoolConditionNode.addChild(new SimpleTreeNode("True"));
         }
-        root.addChild(oneLineBoolConditionNode);
-        return super.visitOneLineBoolCondition(ctx);
+        return oneLineBoolCondition;
     }
 
     @Override
@@ -1563,9 +1742,10 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
 //: CP_CONTENT_OPEN_PAR logicComprison CP_CONTENT_QUESTION_MARK arithmeticLogic CP_CONTENT_COLON arithmeticLogic CP_CONTENT_CLOSE_PAR
 
         OneLineArithCondition oneLineArithCondition = new OneLineArithCondition();
-        SimpleTreeNode oneLineArithConditionNode = new SimpleTreeNode("Visit oneLineArithCondition");
+        SimpleTreeNode oneLineArithConditionNode = node.getNode();
 
         if (ctx.logicComprison() != null){
+            oneLineArithConditionNode.addChild(addNode("logicComparison"));
             oneLineArithCondition.setLogicComprison((LogicComprison) visitLogicComprison(ctx.logicComprison()));
         }
         /**I use index (0) in parameter of visit for first arithmeticLogic
@@ -1577,11 +1757,13 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
         // Index (0)
         // index(1)
         if (ctx.arithmeticLogic() != null){
+            oneLineArithConditionNode.addChild(addNode("ArithmeticLogic1"));
             oneLineArithCondition.setArithmeticLogic1((ArithmeticLogic) visitArithmeticLogic(ctx.arithmeticLogic(0)));
+            oneLineArithConditionNode.addChild(addNode("ArithmeticLogic2"));
             oneLineArithCondition.setArithmeticLogic2((ArithmeticLogic) visitArithmeticLogic(ctx.arithmeticLogic(1)));
         }
-        root.addChild(oneLineArithConditionNode);
-        return super.visitOneLineArithCondition(ctx);
+
+        return oneLineArithCondition;
     }
 
     @Override
@@ -1594,46 +1776,40 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
 //                | CP_CONTENT_NOT_EQUAL
 
         ComparisonOperator comparisonOperator = new ComparisonOperator();
-        SimpleTreeNode comparisonOperatorNode = new SimpleTreeNode("Visit comparisonOperator");
+        SimpleTreeNode comparisonOperatorNode = node.getNode();
 
         //CP_CONTENT_GREATER_THAN
         if (ctx.CP_CONTENT_GREATER_THAN() != null){
             comparisonOperator.setComparisonOperator(ctx.CP_CONTENT_GREATER_THAN().getSymbol().getText());
-            SimpleTreeNode comparisonOperatorInternalNode = new SimpleTreeNode(comparisonOperator.getComparisonOperator());
-            comparisonOperatorNode.addChild(comparisonOperatorInternalNode);
+            comparisonOperatorNode.addChild(new SimpleTreeNode(comparisonOperator.getComparisonOperator()));
         }
 //        CP_CONTENT_GREATER_EQ
         if (ctx.CP_CONTENT_GREATER_EQ() != null){
             comparisonOperator.setComparisonOperator(ctx.CP_CONTENT_GREATER_EQ().getSymbol().getText());
-            SimpleTreeNode comparisonOperatorInternalNode = new SimpleTreeNode(comparisonOperator.getComparisonOperator());
-            comparisonOperatorNode.addChild(comparisonOperatorInternalNode);
+            comparisonOperatorNode.addChild(new SimpleTreeNode(comparisonOperator.getComparisonOperator()));
         }
         //CP_CONTENT_LESS_THAN
         if (ctx.CP_CONTENT_LESS_THAN() != null){
             comparisonOperator.setComparisonOperator(ctx.CP_CONTENT_LESS_THAN().getSymbol().getText());
-            SimpleTreeNode comparisonOperatorInternalNode = new SimpleTreeNode(comparisonOperator.getComparisonOperator());
-            comparisonOperatorNode.addChild(comparisonOperatorInternalNode);
+            comparisonOperatorNode.addChild(new SimpleTreeNode(comparisonOperator.getComparisonOperator()));
         }
         //CP_CONTENT_LESS_EQ
         if (ctx.CP_CONTENT_LESS_EQ() != null){
             comparisonOperator.setComparisonOperator(ctx.CP_CONTENT_LESS_EQ().getSymbol().getText());
-            SimpleTreeNode comparisonOperatorInternalNode = new SimpleTreeNode(comparisonOperator.getComparisonOperator());
-            comparisonOperatorNode.addChild(comparisonOperatorInternalNode);
+            comparisonOperatorNode.addChild(new SimpleTreeNode(comparisonOperator.getComparisonOperator()));
         }
         //CP_CONTENT_EQUAL_TO
         if (ctx.CP_CONTENT_EQUAL_TO() != null){
             comparisonOperator.setComparisonOperator(ctx.CP_CONTENT_EQUAL_TO().getSymbol().getText());
-            SimpleTreeNode comparisonOperatorInternalNode = new SimpleTreeNode(comparisonOperator.getComparisonOperator());
-            comparisonOperatorNode.addChild(comparisonOperatorInternalNode);
+            comparisonOperatorNode.addChild(new SimpleTreeNode(comparisonOperator.getComparisonOperator()));
         }
         //CP_CONTENT_NOT_EQUAL
         if (ctx.CP_CONTENT_NOT_EQUAL() != null){
             comparisonOperator.setComparisonOperator(ctx.CP_CONTENT_NOT_EQUAL().getSymbol().getText());
-            SimpleTreeNode comparisonOperatorInternalNode = new SimpleTreeNode(comparisonOperator.getComparisonOperator());
-            comparisonOperatorNode.addChild(comparisonOperatorInternalNode);
+            comparisonOperatorNode.addChild(new SimpleTreeNode(comparisonOperator.getComparisonOperator()));
         }
-        root.addChild(comparisonOperatorNode);
-        return super.visitComparisonOperator(ctx);
+
+        return comparisonOperator;
     }
 
     @Override
@@ -1641,36 +1817,38 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
 //        : ((CP_CONTENT_NOT)? ((collection4LogicRet) | (CP_CONTENT_OPEN_PAR logicComprison CP_CONTENT_CLOSE_PAR))) /// first
 //        middleAndLastLogicComparison*
         LogicComprison logicComprison = new LogicComprison();
-        SimpleTreeNode logicComprisonNode = new SimpleTreeNode("Visit logicComprison");
+        SimpleTreeNode logicComprisonNode = node.getNode();
         if (ctx.CP_CONTENT_NOT() != null){
             logicComprison.setNotFirst(ctx.CP_CONTENT_NOT().getSymbol().getText());
-            SimpleTreeNode notFirstNode = new SimpleTreeNode(logicComprison.getNotFirst());
-            logicComprisonNode.addChild(notFirstNode);
+            logicComprisonNode.addChild(new SimpleTreeNode(logicComprison.getNotFirst()));
         }
 
         if (ctx.collection4LogicRet() != null){
+
+            logicComprisonNode.addChild(addNode("collection4LogicRet"));
             logicComprison.setCollection4LogicRetFirst((Collection4LogicRet) visitCollection4LogicRet(ctx.collection4LogicRet()));
         }
 
         if (ctx.CP_CONTENT_OPEN_PAR() != null){
             logicComprison.setOpenParFirst(ctx.CP_CONTENT_OPEN_PAR().getSymbol().getText());
-            SimpleTreeNode openParFirstNode = new SimpleTreeNode(logicComprison.getOpenParFirst());
-            logicComprisonNode.addChild(openParFirstNode);
+            logicComprisonNode.addChild(new SimpleTreeNode(logicComprison.getOpenParFirst()));
         }
 
         if (ctx.logicComprison() != null){
+            logicComprisonNode.addChild(addNode("logicComprison"));
             logicComprison.setLogicComprisonFirst((LogicComprison) visitLogicComprison(ctx.logicComprison()));
         }
 
         if (!ctx.middleAndLastLogicComparison().isEmpty()){
             List<MiddleAndLastLogicComparison> middleAndLastLogicComparisons = new ArrayList<>();
             for (int i = 0 ; i < ctx.middleAndLastLogicComparison().size() ; i++){
+                logicComprisonNode.addChild(addNode("middleAndLastLogicComparison"));
                 middleAndLastLogicComparisons.add((MiddleAndLastLogicComparison) visitMiddleAndLastLogicComparison(ctx.middleAndLastLogicComparison(i)));
             }
             logicComprison.setMiddleAndLastLogicComparisons(middleAndLastLogicComparisons);
         }
-        root.addChild(logicComprisonNode);
-        return super.visitLogicComprison(ctx);
+
+        return logicComprison;
     }
     @Override
     public Object visitMiddleAndLastLogicComparison(HTMLParser.MiddleAndLastLogicComparisonContext ctx) {
@@ -1678,18 +1856,16 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
 //        (collection4LogicRet | CP_CONTENT_OPEN_PAR logicComprison CP_CONTENT_CLOSE_PAR)
 
         MiddleAndLastLogicComparison middleAndLastLogicComparison = new MiddleAndLastLogicComparison();
-        SimpleTreeNode middleAndLastLogicComparisonNode = new SimpleTreeNode("Visit middleAndLastLogicComparison");
+        SimpleTreeNode middleAndLastLogicComparisonNode = node.getNode();
         //First OR between ----- && or || -----
 
         //Only && (&&)
         if (ctx.CP_CONTENT_AND() != null){
             middleAndLastLogicComparison.setAndMiddle(ctx.CP_CONTENT_AND().getSymbol().getText());
-            SimpleTreeNode andMiddleNode = new SimpleTreeNode(middleAndLastLogicComparison.getAndMiddle());
-            middleAndLastLogicComparisonNode.addChild(andMiddleNode);
+            middleAndLastLogicComparisonNode.addChild(new SimpleTreeNode(middleAndLastLogicComparison.getAndMiddle()));
             if (ctx.CP_CONTENT_NOT() != null){
                 middleAndLastLogicComparison.setNotAndMiddle(ctx.CP_CONTENT_NOT().getSymbol().getText());
-                SimpleTreeNode notAndMiddleNode = new SimpleTreeNode(middleAndLastLogicComparison.getNotAndMiddle());
-                middleAndLastLogicComparisonNode.addChild(notAndMiddleNode);
+                middleAndLastLogicComparisonNode.addChild(new SimpleTreeNode(middleAndLastLogicComparison.getNotAndMiddle()));
             }
         }
         // OR
@@ -1697,82 +1873,86 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
         //Only || (||)
         if (ctx.CP_CONTENT_OR() != null){
             middleAndLastLogicComparison.setOrMiddle(ctx.CP_CONTENT_OR().getSymbol().getText());
-            SimpleTreeNode orMiddleNode = new SimpleTreeNode(middleAndLastLogicComparison.getOrMiddle());
-            middleAndLastLogicComparisonNode.addChild(orMiddleNode);
+            middleAndLastLogicComparisonNode.addChild(new SimpleTreeNode(middleAndLastLogicComparison.getOrMiddle()));
             if (ctx.CP_CONTENT_NOT() != null){
                 middleAndLastLogicComparison.setNotOrMiddle(ctx.CP_CONTENT_NOT().getSymbol().getText());
-                SimpleTreeNode notOrMiddleNode = new SimpleTreeNode(middleAndLastLogicComparison.getNotOrMiddle());
-                middleAndLastLogicComparisonNode.addChild(notOrMiddleNode);
+                middleAndLastLogicComparisonNode.addChild(new SimpleTreeNode(middleAndLastLogicComparison.getNotOrMiddle()));
             }
         }
 
         //Second OR between ----- collection4LogicRet or CP_CONTENT_OPEN_PAR logicComprison CP_CONTENT_CLOSE_PAR -----
 
         if (ctx.collection4LogicRet() != null){
+            middleAndLastLogicComparisonNode.addChild(addNode("collection4LogicRet"));
             middleAndLastLogicComparison.setCollection4LogicRet((Collection4LogicRet) visitCollection4LogicRet(ctx.collection4LogicRet()));
         }
 
         // OR
 
         if (ctx.logicComprison() != null){
+            middleAndLastLogicComparisonNode.addChild(addNode("logicComprison"));
             middleAndLastLogicComparison.setLogicComprisonLast((LogicComprison) visitLogicComprison(ctx.logicComprison()));
         }
-        root.addChild(middleAndLastLogicComparisonNode);
-        return super.visitMiddleAndLastLogicComparison(ctx);
+
+        return middleAndLastLogicComparison;
     }
     @Override
     public Object visitArithmeticLogic(HTMLParser.ArithmeticLogicContext ctx) {
 //: (collection4Arithmetic | CP_CONTENT_OPEN_PAR arithmeticLogic CP_CONTENT_CLOSE_PAR) lastArithmeticLogic*
 
         ArithmeticLogic arithmeticLogic = new ArithmeticLogic();
-        SimpleTreeNode arithmeticLogicNode = new SimpleTreeNode("Visit arithmeticLogic");
+        SimpleTreeNode arithmeticLogicNode = node.getNode();
 
         //First OR  between ----"collection4Arithmetic" and "arithmeticLogic"----
 
         if (ctx.collection4Arithmetic() != null){
+            arithmeticLogicNode.addChild(addNode("collection4Arithmetic"));
             arithmeticLogic.setCollection4Arithmetic((Collection4Arithmetic) visitCollection4Arithmetic(ctx.collection4Arithmetic()));
         }
         // OR
 
         if (ctx.arithmeticLogic() != null){
+            arithmeticLogicNode.addChild(addNode("arithmeticLogic"));
             arithmeticLogic.setArithmeticLogic((ArithmeticLogic) visitArithmeticLogic(ctx.arithmeticLogic()));
         }
 
         if (!ctx.lastArithmeticLogic().isEmpty()){
             ArrayList<LastArithmeticLogic> lastArithmeticLogicArrayList = new ArrayList<>();
             for (int i=0; i< ctx.lastArithmeticLogic().size();i++){
+                arithmeticLogicNode.addChild(addNode("lastArithmeticLogic"));
                 lastArithmeticLogicArrayList.add((LastArithmeticLogic) visitLastArithmeticLogic(ctx.lastArithmeticLogic(i)));
             }
             arithmeticLogic.setLastArithmeticLogic(lastArithmeticLogicArrayList);
         }
-        root.addChild(arithmeticLogicNode);
-        return super.visitArithmeticLogic(ctx);
+
+        return arithmeticLogic;
     }
     @Override
     public Object visitLastArithmeticLogic(HTMLParser.LastArithmeticLogicContext ctx) {
 //: CP_CONTENT_ARITHMETIC (collection4Arithmetic | CP_CONTENT_OPEN_PAR arithmeticLogic CP_CONTENT_CLOSE_PAR)
 
         LastArithmeticLogic lastArithmeticLogic = new LastArithmeticLogic();
-        SimpleTreeNode lastArithmeticLogicNode = new SimpleTreeNode("Visit lastArithmeticLogic");
+        SimpleTreeNode lastArithmeticLogicNode = node.getNode();
 
         if (ctx.CP_CONTENT_ARITHMETIC() != null){
             lastArithmeticLogic.setArithmetic(ctx.CP_CONTENT_ARITHMETIC().getSymbol().getText());
-            SimpleTreeNode arithmeticNode = new SimpleTreeNode(lastArithmeticLogic.getArithmetic());
-            lastArithmeticLogicNode.addChild(arithmeticNode);
+            lastArithmeticLogicNode.addChild(new SimpleTreeNode(lastArithmeticLogic.getArithmetic()));
         }
 
         // First OR between -----"collection4Arithmetic"  OR "arithmeticLogic"-----
         if (ctx.collection4Arithmetic() != null){
+            lastArithmeticLogicNode.addChild(addNode("collection4Arithmetic"));
             lastArithmeticLogic.setCollection4Arithmetic((Collection4Arithmetic) visitCollection4Arithmetic(ctx.collection4Arithmetic()));
 
         }
         // OR
 
         if (ctx.arithmeticLogic() != null){
+            lastArithmeticLogicNode.addChild(addNode("arithmeticLogic"));
             lastArithmeticLogic.setArithmeticLogic((ArithmeticLogic) visitArithmeticLogic(ctx.arithmeticLogic()));
         }
-        root.addChild(lastArithmeticLogicNode);
-        return super.visitLastArithmeticLogic(ctx);
+
+        return lastArithmeticLogic;
     }
     @Override
     public Object visitValue(HTMLParser.ValueContext ctx) {
@@ -1782,28 +1962,28 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
 //                | CP_CONTENT_NULL
 
         Value value = new Value();
-        SimpleTreeNode valueNode = new SimpleTreeNode("Visit value");
+        SimpleTreeNode valueNode = node.getNode();
 
         if (ctx.CP_CONTENT_STRING() != null){
             value.setString(ctx.CP_CONTENT_STRING().getSymbol().getText());
-            SimpleTreeNode stringNode = new SimpleTreeNode(value.getString());
-            valueNode.addChild(stringNode);
+            valueNode.addChild(new SimpleTreeNode(value.getString()));
         }
         if (ctx.CP_CONTENT_NULL() != null){
             value.setNull(null);
-            SimpleTreeNode nullNode = new SimpleTreeNode(value.getNull().toString());
-            valueNode.addChild(nullNode);
+            valueNode.addChild(new SimpleTreeNode(value.getNull().toString()));
         }
 
 
         if (ctx.number() != null){
+            valueNode.addChild(addNode("number"));
             value.setNumber((NUmber) visitNumber(ctx.number()));
         }
         if (ctx.trueOrFalse() != null){
+            valueNode.addChild(addNode("trueOrFalse"));
             value.setTrueOrFalse((TrueOrFalse) visitTrueOrFalse(ctx.trueOrFalse()));
         }
-        root.addChild(valueNode);
-        return super.visitValue(ctx);
+
+        return value;
     }
 
     @Override
@@ -1820,50 +2000,60 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
 //                | arithmeticLogic
 
         Collection4everything collection4everything = new Collection4everything();
-        SimpleTreeNode collection4everythingNode = new SimpleTreeNode("Visit collection4everything");
+        SimpleTreeNode collection4everythingNode = node.getNode();
 
         //variable
         if (ctx.variable()  != null){
+            collection4everythingNode.addChild(addNode("variable"));
             collection4everything.setVariable((Variable) visitVariable(ctx.variable()));
         }
         //value
         if (ctx.value()  != null){
+            collection4everythingNode.addChild(addNode("value"));
             collection4everything.setValue((Value) visitValue(ctx.value()));
         }
         //array
         if (ctx.array()  != null){
+            collection4everythingNode.addChild(addNode("array"));
             collection4everything.setArray((Array) visitArray(ctx.array()));
         }
         //objArray
         if (ctx.objArray()  != null){
+            collection4everythingNode.addChild(addNode("objArray"));
             collection4everything.setObjArray((ObjArray) visitObjArray(ctx.objArray()));
         }
         //functionCall
         if (ctx.functionCall()  != null){
+            collection4everythingNode.addChild(addNode("functionCall"));
             collection4everything.setFunctionCall((FunctionCall) visitFunctionCall(ctx.functionCall()));
         }
         //subObj
         if (ctx.subObj()  != null){
+            collection4everythingNode.addChild(addNode("subObj"));
             collection4everything.setSubObj((SubObj) visitSubObj(ctx.subObj()));
         }
         //oneLineCondition
         if (ctx.oneLineCondition()  != null){
+            collection4everythingNode.addChild(addNode("oneLineCondition"));
             collection4everything.setOneLineCondition((OneLineCondition) visitOneLineCondition(ctx.oneLineCondition()));
         }
         //comparisonExpression
         if (ctx.comparisonExpression()  != null){
+            collection4everythingNode.addChild(addNode("comparisonExpression"));
             collection4everything.setComparisonExpression((ComparisonExpression) visitComparisonExpression(ctx.comparisonExpression()));
         }
         //logicComprison
         if (ctx.logicComprison()  != null){
+            collection4everythingNode.addChild(addNode("logicComprison"));
             collection4everything.setLogicComprison((LogicComprison) visitLogicComprison(ctx.logicComprison()));
         }
         //arithmeticLogic
         if (ctx.arithmeticLogic()  != null){
+            collection4everythingNode.addChild(addNode("arithmeticLogic"));
             collection4everything.setArithmeticLogic((ArithmeticLogic) visitArithmeticLogic(ctx.arithmeticLogic()));
         }
-        root.addChild(collection4everythingNode);
-        return super.visitCollection4everything(ctx);
+
+        return collection4everything;
     }
 
     @Override
@@ -1871,12 +2061,13 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
 //            : arithmeticLogic
 
         Collection4comparison collection4comparison = new Collection4comparison();
-        SimpleTreeNode collection4comparisonNode = new SimpleTreeNode("Visit collection4comparison");
+        SimpleTreeNode collection4comparisonNode = node.getNode();
         if (ctx.arithmeticLogic() != null){
+            collection4comparisonNode.addChild(addNode("arithmeticLogic"));
             collection4comparison.setArithmeticLogic((ArithmeticLogic) visitArithmeticLogic(ctx.arithmeticLogic()));
         }
-        root.addChild(collection4comparisonNode);
-        return super.visitCollection4comparison(ctx);
+
+        return collection4comparison;
     }
 
     @Override
@@ -1889,35 +2080,41 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
 //                | oneLineArithCondition
 
         Collection4Arithmetic collection4Arithmetic = new Collection4Arithmetic();
-        SimpleTreeNode collection4ArithmeticNode = new SimpleTreeNode("Visit collection4Arithmetic");
+        SimpleTreeNode collection4ArithmeticNode = node.getNode();
 
 
         //variable
         if (ctx.variable()  != null){
+            collection4ArithmeticNode.addChild(addNode("variable"));
             collection4Arithmetic.setVariable((Variable) visitVariable(ctx.variable()));
         }
         //number
         if (ctx.number()  != null){
+            collection4ArithmeticNode.addChild(addNode("number"));
             collection4Arithmetic.setNumber((NUmber) visitNumber(ctx.number()));
         }
         //objArray
         if (ctx.objArray()  != null){
+            collection4ArithmeticNode.addChild(addNode("objArray"));
             collection4Arithmetic.setObjArray((ObjArray) visitObjArray(ctx.objArray()));
         }
         //functionCall
         if (ctx.functionCall()  != null){
+            collection4ArithmeticNode.addChild(addNode("functionCall"));
             collection4Arithmetic.setFunctionCall((FunctionCall) visitFunctionCall(ctx.functionCall()));
         }
         //subObj
         if (ctx.subObj()  != null){
+            collection4ArithmeticNode.addChild(addNode("subObj"));
             collection4Arithmetic.setSubObj((SubObj) visitSubObj(ctx.subObj()));
         }
         //oneLineArithCondition
         if (ctx.oneLineArithCondition()  != null){
+            collection4ArithmeticNode.addChild(addNode("oneLineArithCondition"));
             collection4Arithmetic.setOneLineArithCondition((OneLineArithCondition) visitOneLineArithCondition(ctx.oneLineArithCondition()));
         }
-        root.addChild(collection4ArithmeticNode);
-        return super.visitCollection4Arithmetic(ctx);
+
+        return collection4Arithmetic;
     }
 
     @Override
@@ -1931,38 +2128,45 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
 //                | oneLineBoolCondition
 
         Collection4LogicRet collection4LogicRet = new Collection4LogicRet();
-        SimpleTreeNode collection4LogicRetNode = new SimpleTreeNode("Visit collection4LogicRet");
+        SimpleTreeNode collection4LogicRetNode = node.getNode();
 
         //variable
         if (ctx.variable()  != null){
+            collection4LogicRetNode.addChild(addNode("variable"));
             collection4LogicRet.setVariable((Variable) visitVariable(ctx.variable()));
         }
         //trueOrFalse
         if (ctx.trueOrFalse()  != null){
+            collection4LogicRetNode.addChild(addNode("trueOrFalse"));
             collection4LogicRet.setTrueOrFalse((TrueOrFalse) visitTrueOrFalse(ctx.trueOrFalse()));
         }
         //objArray
         if (ctx.objArray()  != null){
+            collection4LogicRetNode.addChild(addNode("objArray"));
             collection4LogicRet.setObjArray((ObjArray) visitObjArray(ctx.objArray()));
         }
         //functionCall
         if (ctx.functionCall()  != null){
+            collection4LogicRetNode.addChild(addNode("functionCall"));;
             collection4LogicRet.setFunctionCall((FunctionCall) visitFunctionCall(ctx.functionCall()));
         }
         //subObj
         if (ctx.subObj()  != null){
+            collection4LogicRetNode.addChild(addNode("subObj"));
             collection4LogicRet.setSubObj((SubObj) visitSubObj(ctx.subObj()));
         }
         //comparisonExpression
         if (ctx.comparisonExpression()  != null){
+            collection4LogicRetNode.addChild(addNode("comparisonExpression"));
             collection4LogicRet.setComparisonExpression((ComparisonExpression) visitComparisonExpression(ctx.comparisonExpression()));
         }
         //oneLineBoolCondition
         if (ctx.oneLineBoolCondition()  != null){
+            collection4LogicRetNode.addChild(addNode("oneLineBoolCondition"));
             collection4LogicRet.setOneLineBoolCondition((OneLineBoolCondition) visitOneLineBoolCondition(ctx.oneLineBoolCondition()));
         }
-        root.addChild(collection4LogicRetNode);
-        return super.visitCollection4LogicRet(ctx);
+
+        return collection4LogicRet;
     }
 
 
@@ -1981,621 +2185,663 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
     @Override
     public Object visitMustacheExpression(HTMLParser.MustacheExpressionContext ctx) {
         MustacheExpression mustacheExpression = new MustacheExpression();
-        SimpleTreeNode mustacheExpressionNode = new SimpleTreeNode("Visit mustacheExpression");
+        SimpleTreeNode mustacheExpressionNode = node.getNode();
 
         if (ctx.collection4Mustache() != null){
+            mustacheExpressionNode.addChild(addNode("collection4Mustache"));
             mustacheExpression.setCollection4Mustache((Collection4Mustache) visitCollection4Mustache(ctx.collection4Mustache()));
         }
 
         if (ctx.filter() != null){
+            mustacheExpressionNode.addChild(addNode("filter"));
             mustacheExpression.setFilter((Filter) visitFilter(ctx.filter()));
         }
-        root.addChild(mustacheExpressionNode);
-        return super.visitMustacheExpression(ctx);
+
+        return mustacheExpression;
     }
     @Override
     public Object visitCollection4Mustache(HTMLParser.Collection4MustacheContext ctx) {
         Collection4Mustache collection4Mustache = new Collection4Mustache();
-        SimpleTreeNode collection4MustacheNode = new SimpleTreeNode("Visit collection4Mustache");
+        SimpleTreeNode collection4MustacheNode = node.getNode();
 
         if (ctx.mustacheVariable() != null){
+            collection4MustacheNode.addChild(addNode("mustacheVariable"));
             collection4Mustache.setMustacheVariable((MustacheVariable) visitMustacheVariable(ctx.mustacheVariable()));
         }
         if (ctx.mustacheValue() != null){
+            collection4MustacheNode.addChild(addNode("mustacheValue"));
             collection4Mustache.setMustacheValue((MustacheValue) visitMustacheValue(ctx.mustacheValue()));
         }
 
         if (ctx.objArray4Must() != null){
+            collection4MustacheNode.addChild(addNode("objArray4Must"));
             collection4Mustache.setObjArray4Must((ObjArray4Must) visitObjArray4Must(ctx.objArray4Must()));
         }
 
         if (ctx.functionCall4Must() != null){
+            collection4MustacheNode.addChild(addNode("functionCall4Must"));
             collection4Mustache.setFunctionCall4Must((FunctionCall4Must) visitFunctionCall4Must(ctx.functionCall4Must()));
         }
 
         if (ctx.subObj4Must() != null){
+            collection4MustacheNode.addChild(addNode("subObj4Must"));
             collection4Mustache.setSubObj4Must((SubObj4Must) visitSubObj4Must(ctx.subObj4Must()));
         }
 
         if (ctx.oneLineCondition4Must() != null){
+            collection4MustacheNode.addChild(addNode("oneLineCondition4Must"));
             collection4Mustache.setOneLineCondition4Must((OneLineCondition4Must) visitOneLineCondition4Must(ctx.oneLineCondition4Must()));
         }
 
         if (ctx.oneLineArithCondition4Must() != null){
+            collection4MustacheNode.addChild(addNode("oneLineArithCondition4Must"));
             collection4Mustache.setOneLineArithCondithion4Must((OneLineArithCondition4Must) visitOneLineArithCondition4Must(ctx.oneLineArithCondition4Must()));
         }
 
         if (ctx.arithmeticLogic4Must() != null){
+            collection4MustacheNode.addChild(addNode("arithmeticLogic4Must"));
             collection4Mustache.setArithmeticLogic4Must((ArithmeticLogic4Must) visitArithmeticLogic4Must(ctx.arithmeticLogic4Must()));
         }
-        root.addChild(collection4MustacheNode);
-        return super.visitCollection4Mustache(ctx);
+
+        return collection4Mustache;
     }
 
     @Override
     public Object visitCollection4LogicRet4Must(HTMLParser.Collection4LogicRet4MustContext ctx) {
         Collection4LogicRet4Must collection4LogicRet4Must = new Collection4LogicRet4Must();
-        SimpleTreeNode collection4LogicRet4MustNode = new SimpleTreeNode("Visit collection4LogicRet4Must");
+        SimpleTreeNode collection4LogicRet4MustNode = node.getNode();
 
         if (ctx.mustacheVariable() != null){
+            collection4LogicRet4MustNode.addChild(addNode("mustacheVariable"));
             collection4LogicRet4Must.setMustacheVariable((MustacheVariable) visitMustacheVariable(ctx.mustacheVariable()));
         }
 
         if (ctx.MUSTACHE_TRUE() != null){
             collection4LogicRet4Must.setMustacheTrue(true);
-            SimpleTreeNode mustacheTrueNode = new SimpleTreeNode("True");
-            collection4LogicRet4MustNode.addChild(mustacheTrueNode);
+            collection4LogicRet4MustNode.addChild(new SimpleTreeNode("True"));
         }
         if (ctx.MUSTACHE_FALSE() != null){
             collection4LogicRet4Must.setMustacheFalse(false);
-            SimpleTreeNode mustacheFalseNode = new SimpleTreeNode("False");
-            collection4LogicRet4MustNode.addChild(mustacheFalseNode);
+            collection4LogicRet4MustNode.addChild(new SimpleTreeNode("False"));
         }
 
         if (ctx.objArray4Must() != null){
+            collection4LogicRet4MustNode.addChild(addNode("objArray4Must"));
             collection4LogicRet4Must.setObjArray4Must((ObjArray4Must) visitObjArray4Must(ctx.objArray4Must()));
         }
 
         if (ctx.functionCall4Must() != null){
+            collection4LogicRet4MustNode.addChild(addNode("functionCall4Must"));
             collection4LogicRet4Must.setFunctionCall4Must((FunctionCall4Must) visitFunctionCall4Must(ctx.functionCall4Must()));
         }
 
         if (ctx.subObj4Must() != null){
+            collection4LogicRet4MustNode.addChild(addNode("subObj4Must"));
             collection4LogicRet4Must.setSubObj4Must((SubObj4Must) visitSubObj4Must(ctx.subObj4Must()));
         }
 
         if (ctx.comparisonExp4Must() != null){
+            collection4LogicRet4MustNode.addChild(addNode("comparisonExp4Must"));
             collection4LogicRet4Must.setComparisonExp4Must((ComparisonExp4Must) visitComparisonExp4Must(ctx.comparisonExp4Must()));
         }
 
         if (ctx.oneLineBoolCondition4Must() != null){
+            collection4LogicRet4MustNode.addChild(addNode("oneLineBoolCondition4Must"));
             collection4LogicRet4Must.setOneLineBoolCondition4Must((OneLineBoolCondition4Must) visitOneLineBoolCondition4Must(ctx.oneLineBoolCondition4Must()));
         }
-        root.addChild(collection4LogicRet4MustNode);
-        return super.visitCollection4LogicRet4Must(ctx);
+
+        return collection4LogicRet4Must;
     }
 
     @Override
     public Object visitCollection4CompMust(HTMLParser.Collection4CompMustContext ctx) {
         Collection4CompMust collection4CompMust = new Collection4CompMust();
-        SimpleTreeNode collection4CompMustNode = new SimpleTreeNode("Visit collection4CompMust");
+        SimpleTreeNode collection4CompMustNode = node.getNode();
 
         if (ctx.arithmeticLogic4Must() != null){
+            collection4CompMustNode.addChild(addNode("arithmeticLogic4Must"));
             collection4CompMust.setArithmeticLogic4Must((ArithmeticLogic4Must) visitArithmeticLogic4Must(ctx.arithmeticLogic4Must()));
         }
-        root.addChild(collection4CompMustNode);
-        return super.visitCollection4CompMust(ctx);
+
+        return collection4CompMust;
     }
 
     @Override
     public Object visitCollection4MUSTArithmetic(HTMLParser.Collection4MUSTArithmeticContext ctx) {
         Collection4MUSTArithmetic collection4MUSTArithmetic = new Collection4MUSTArithmetic();
-        SimpleTreeNode collection4MUSTArithmeticNode = new SimpleTreeNode("Visit collection4MUSTArithmetic");
+        SimpleTreeNode collection4MUSTArithmeticNode = node.getNode();
 
         if (ctx.mustacheVariable() != null){
+            collection4MUSTArithmeticNode.addChild(addNode("mustacheVariable"));
             collection4MUSTArithmetic.setMustacheVariable((MustacheVariable) visitMustacheVariable(ctx.mustacheVariable()));
         }
 
         if (ctx.mustacheNumber() != null){
+            collection4MUSTArithmeticNode.addChild(addNode("mustacheNumber"));
             collection4MUSTArithmetic.setMustacheNumber((MustacheNumber) visitMustacheNumber(ctx.mustacheNumber()));
         }
 
         if (ctx.objArray4Must() != null){
+            collection4MUSTArithmeticNode.addChild(addNode("objArray4Must"));
             collection4MUSTArithmetic.setObjArray4Must((ObjArray4Must) visitObjArray4Must(ctx.objArray4Must()));
         }
 
         if (ctx.functionCall4Must() != null){
+            collection4MUSTArithmeticNode.addChild(addNode("functionCall4Must"));
             collection4MUSTArithmetic.setFunctionCall4Must((FunctionCall4Must) visitFunctionCall4Must(ctx.functionCall4Must()));
         }
 
         if (ctx.subObj4Must() != null){
+            collection4MUSTArithmeticNode.addChild(addNode("subObj4Must"));
             collection4MUSTArithmetic.setSubObj4Must((SubObj4Must) visitSubObj4Must(ctx.subObj4Must()));
         }
 
         if (ctx.oneLineArithCondition4Must() != null){
+            collection4MUSTArithmeticNode.addChild(addNode("oneLineArithCondition4Must"));
             collection4MUSTArithmetic.setOneLineArithCondithion4Must1((OneLineArithCondition4Must) visitOneLineArithCondition4Must(ctx.oneLineArithCondition4Must()));
         }
-        root.addChild(collection4MUSTArithmeticNode);
-        return super.visitCollection4MUSTArithmetic(ctx);
+
+        return collection4MUSTArithmetic;
     }
 
     @Override
     public Object visitLogicComprison4Must(HTMLParser.LogicComprison4MustContext ctx) {
         LogicComprison4Must logicComprison4Must = new LogicComprison4Must();
-        SimpleTreeNode logicComprison4MustNode = new SimpleTreeNode("Visit logicComprison4Must");
+        SimpleTreeNode logicComprison4MustNode =node.getNode();
         // !
         if (ctx.MUSTACHE_NOT() != null){
             logicComprison4Must.setNotFirst(ctx.MUSTACHE_NOT().getSymbol().getText());
-            SimpleTreeNode notFirstNode = new SimpleTreeNode(logicComprison4Must.getNotFirst());
-            logicComprison4MustNode.addChild(notFirstNode);
+            logicComprison4MustNode.addChild(new SimpleTreeNode(logicComprison4Must.getNotFirst()));
         }
         // this
         if (ctx.collection4LogicRet4Must() != null){
+            logicComprison4MustNode.addChild(addNode("collection4LogicRet4Must"));
             logicComprison4Must.setCollection4LogicRetFirst((Collection4LogicRet4Must) visitCollection4LogicRet4Must(ctx.collection4LogicRet4Must()));
         }
         // or this
         if (ctx.logicComprison4Must() != null){
+            logicComprison4MustNode.addChild(addNode("logicComprison4Must"));
             logicComprison4Must.setLogicComprisonFirst((LogicComprison4Must) visitLogicComprison4Must(ctx.logicComprison4Must()));
         }
         // middle and last
         if (!ctx.middleAndLastLogicComparison4Must().isEmpty()){
             List<MiddleAndLastLogicComparison4Must> middleAndLastLogicComparison4Musts = new ArrayList<>();
             for (int i = 0 ; i < ctx.middleAndLastLogicComparison4Must().size() ; i ++){
+                logicComprison4MustNode.addChild(addNode("middleAndLastLogicComparison4Must"));
                 middleAndLastLogicComparison4Musts.add((MiddleAndLastLogicComparison4Must) visitMiddleAndLastLogicComparison4Must(ctx.middleAndLastLogicComparison4Must(i)));
             }
             logicComprison4Must.setMiddleAndLastLogicComparisons(middleAndLastLogicComparison4Musts);
         }
-        root.addChild(logicComprison4MustNode);
-        return super.visitLogicComprison4Must(ctx);
+
+        return logicComprison4Must;
     }
 
     @Override
     public Object visitMiddleAndLastLogicComparison4Must(HTMLParser.MiddleAndLastLogicComparison4MustContext ctx) {
         MiddleAndLastLogicComparison4Must middleAndLastLogicComparison4Must = new MiddleAndLastLogicComparison4Must();
-        SimpleTreeNode middleAndLastLogicComparison4MustNode = new SimpleTreeNode("Visit middleAndLastLogicComparison4Must");
+        SimpleTreeNode middleAndLastLogicComparison4MustNode = node.getNode();
         //middle
         //this AND NOT?
         if (ctx.MUSTACHE_AND() != null){
             middleAndLastLogicComparison4Must.setAndMiddle(ctx.MUSTACHE_AND().getSymbol().getText());
-            SimpleTreeNode andMiddleNode = new SimpleTreeNode(middleAndLastLogicComparison4Must.getAndMiddle());
-            middleAndLastLogicComparison4MustNode.addChild(andMiddleNode);
+            middleAndLastLogicComparison4MustNode.addChild(new SimpleTreeNode(middleAndLastLogicComparison4Must.getAndMiddle()));
             if (ctx.MUSTACHE_NOT() != null){
                 middleAndLastLogicComparison4Must.setNotAndMiddle(ctx.MUSTACHE_NOT().getSymbol().getText());
-                SimpleTreeNode notAndMiddleNode = new SimpleTreeNode(middleAndLastLogicComparison4Must.getNotAndMiddle());
-                middleAndLastLogicComparison4MustNode.addChild(notAndMiddleNode);
+                middleAndLastLogicComparison4MustNode.addChild(new SimpleTreeNode(middleAndLastLogicComparison4Must.getNotAndMiddle()));
             }
         }
         // or this OR NOT?
         if (ctx.MUSTACHE_OR() != null){
             middleAndLastLogicComparison4Must.setOrMiddle(ctx.MUSTACHE_OR().getSymbol().getText());
-            SimpleTreeNode orMiddleNode = new SimpleTreeNode(middleAndLastLogicComparison4Must.getOrMiddle());
-            middleAndLastLogicComparison4MustNode.addChild(orMiddleNode);
+            middleAndLastLogicComparison4MustNode.addChild(new SimpleTreeNode(middleAndLastLogicComparison4Must.getOrMiddle()));
             if (ctx.MUSTACHE_NOT() != null){
                 middleAndLastLogicComparison4Must.setNotOrMiddle(ctx.MUSTACHE_NOT().getSymbol().getText());
-                SimpleTreeNode notOrMiddleNode = new SimpleTreeNode(middleAndLastLogicComparison4Must.getNotOrMiddle());
-                middleAndLastLogicComparison4MustNode.addChild(notOrMiddleNode);
+                middleAndLastLogicComparison4MustNode.addChild(new SimpleTreeNode(middleAndLastLogicComparison4Must.getNotOrMiddle()));
             }
         }
 
         //last
         //this collection4LogicRet4Must
         if (ctx.collection4LogicRet4Must()!= null){
+            middleAndLastLogicComparison4MustNode.addChild(addNode("collection4LogicRet4Must"));
             middleAndLastLogicComparison4Must.setCollection4LogicRet((Collection4LogicRet4Must) visitCollection4LogicRet4Must(ctx.collection4LogicRet4Must()));
         }
         // or logicComprison4Must
         if (ctx.logicComprison4Must() != null){
+            middleAndLastLogicComparison4MustNode.addChild(addNode("logicComprison4Must"));
             middleAndLastLogicComparison4Must.setLogicComprisonLast((LogicComprison4Must) visitLogicComprison4Must(ctx.logicComprison4Must()));
         }
-        root.addChild(middleAndLastLogicComparison4MustNode);
-        return super.visitMiddleAndLastLogicComparison4Must(ctx);
+
+        return middleAndLastLogicComparison4Must;
     }
 
     @Override
     public Object visitArithmeticLogic4Must(HTMLParser.ArithmeticLogic4MustContext ctx) {
         ArithmeticLogic4Must arithmeticLogic4Must = new ArithmeticLogic4Must();
-        SimpleTreeNode arithmeticLogic4MustNode = new SimpleTreeNode("Visit arithmeticLogic4Must");
+        SimpleTreeNode arithmeticLogic4MustNode = node.getNode();
 
         //this collection4MUSTArithmetic
         if (ctx.collection4MUSTArithmetic() != null){
+            arithmeticLogic4MustNode.addChild(addNode("collection4MUSTArithmetic"));
             arithmeticLogic4Must.setCollection4Arithmetic((Collection4MUSTArithmetic) visitCollection4MUSTArithmetic(ctx.collection4MUSTArithmetic()));
         }
 
         // or arithmeticLogic4Must
         if (ctx.arithmeticLogic4Must() != null){
+            arithmeticLogic4MustNode.addChild(addNode("arithmeticLogic4Must"));
             arithmeticLogic4Must.setArithmeticLogic((ArithmeticLogic4Must) visitArithmeticLogic4Must(ctx.arithmeticLogic4Must()));
         }
 
         if (!ctx.lastArithmeticLogic4Must().isEmpty()) {
             List<LastArithmeticLogic4Must> lastArithmeticLogic4Musts = new ArrayList<>();
             for (int i = 0; i < ctx.lastArithmeticLogic4Must().size(); i++) {
+                arithmeticLogic4MustNode.addChild(addNode("lastArithmeticLogic4Must"));
                 lastArithmeticLogic4Musts.add((LastArithmeticLogic4Must) visitLastArithmeticLogic4Must(ctx.lastArithmeticLogic4Must(i)));
             }
             arithmeticLogic4Must.setLastArithmeticLogic(lastArithmeticLogic4Musts);
         }
-        root.addChild(arithmeticLogic4MustNode);
-        return super.visitArithmeticLogic4Must(ctx);
+
+        return arithmeticLogic4Must;
     }
 
     @Override
     public Object visitLastArithmeticLogic4Must(HTMLParser.LastArithmeticLogic4MustContext ctx) {
         LastArithmeticLogic4Must lastArithmeticLogic4Must = new LastArithmeticLogic4Must();
-        SimpleTreeNode lastArithmeticLogic4MustNode = new SimpleTreeNode("Visit lastArithmeticLogic4Must");
+        SimpleTreeNode lastArithmeticLogic4MustNode = node.getNode();
 
         if (ctx.MUSTACHE_ARITHMETIC() != null){
             lastArithmeticLogic4Must.setArithmetic(ctx.MUSTACHE_ARITHMETIC().getSymbol().getText());
-            SimpleTreeNode arithmeticNode = new SimpleTreeNode(lastArithmeticLogic4Must.getArithmetic());
-            lastArithmeticLogic4MustNode.addChild(arithmeticNode);
+            lastArithmeticLogic4MustNode.addChild(new SimpleTreeNode(lastArithmeticLogic4Must.getArithmetic()));
         }
         //this
         if (ctx.collection4MUSTArithmetic() != null){
+            lastArithmeticLogic4MustNode.addChild(addNode("collection4MUSTArithmetic"));
             lastArithmeticLogic4Must.setCollection4MUSTArithmetic((Collection4MUSTArithmetic) visitCollection4MUSTArithmetic(ctx.collection4MUSTArithmetic()));
         }
         //or
         if (ctx.arithmeticLogic4Must() != null){
+            lastArithmeticLogic4MustNode.addChild(addNode("arithmeticLogic4Must"));
             lastArithmeticLogic4Must.setArithmeticLogic((ArithmeticLogic4Must) visitArithmeticLogic4Must(ctx.arithmeticLogic4Must()));
         }
-        root.addChild(lastArithmeticLogic4MustNode);
-        return super.visitLastArithmeticLogic4Must(ctx);
+
+        return lastArithmeticLogic4Must;
     }
     @Override
     public Object visitMustacheVariable(HTMLParser.MustacheVariableContext ctx) {
         MustacheVariable mustacheVariable = new MustacheVariable();
-        SimpleTreeNode mustacheVariableNode = new SimpleTreeNode("Visit mustacheVariable");
+        SimpleTreeNode mustacheVariableNode = node.getNode();
         if (ctx.MUSTACHE_IDENTIFIER() != null){
             mustacheVariable.setMustacheVariable(ctx.MUSTACHE_IDENTIFIER().getSymbol().getText());
-            SimpleTreeNode mustacheVariableInternalNode = new SimpleTreeNode(mustacheVariable.getMustacheVariable());
-            mustacheVariableNode.addChild(mustacheVariableInternalNode);
+            mustacheVariableNode.addChild(new SimpleTreeNode(mustacheVariable.getMustacheVariable()));
         }
-        root.addChild(mustacheVariableNode);
-        return super.visitMustacheVariable(ctx);
+
+        return mustacheVariable;
     }
 
     @Override
     public Object visitMustacheNumber(HTMLParser.MustacheNumberContext ctx) {
         MustacheNumber mustacheNumber = new MustacheNumber();
-        SimpleTreeNode mustacheNumberNode = new SimpleTreeNode("Visit mustacheNumber");
+        SimpleTreeNode mustacheNumberNode = node.getNode();
         if (ctx.MUSTACHE_NUMBER() != null){
             // TODO i don't know if this is right or not
             double numberType = Double.parseDouble(ctx.MUSTACHE_NUMBER().getSymbol().getText());
             // For check what's the type of Number
             if (numberType == (int) numberType) {
                 mustacheNumber.setNumber(Integer.parseInt(ctx.MUSTACHE_NUMBER().getSymbol().getText()));
-                SimpleTreeNode numberNode = new SimpleTreeNode(mustacheNumber.getNumber().toString());
-                mustacheNumberNode.addChild(numberNode);
+                mustacheNumberNode.addChild(new SimpleTreeNode(mustacheNumber.getNumber().toString()));
             }
             else if (numberType == (float)numberType){
                 mustacheNumber.setNumber(Float.parseFloat(ctx
                         .MUSTACHE_NUMBER().getSymbol().getText()));
-                SimpleTreeNode numberNode = new SimpleTreeNode(mustacheNumber.getNumber().toString());
-                mustacheNumberNode.addChild(numberNode);
+                mustacheNumberNode.addChild(new SimpleTreeNode(mustacheNumber.getNumber().toString()));
             }
             else{
                 mustacheNumber.setNumber(Double.parseDouble(ctx.MUSTACHE_NUMBER().getSymbol().getText()));
-                SimpleTreeNode numberNode = new SimpleTreeNode(mustacheNumber.getNumber().toString());
-                mustacheNumberNode.addChild(numberNode);
+                mustacheNumberNode.addChild(new SimpleTreeNode(mustacheNumber.getNumber().toString()));
             }
         }
-        root.addChild(mustacheNumberNode);
-        return super.visitMustacheNumber(ctx);
+
+        return mustacheNumber;
     }
 
     @Override
     public Object visitMustacheValue(HTMLParser.MustacheValueContext ctx) {
         MustacheValue mustacheValue = new MustacheValue();
-        SimpleTreeNode mustacheValueNode = new SimpleTreeNode("Visit mustacheValue");
+        SimpleTreeNode mustacheValueNode = node.getNode();
 
         if (ctx.mustacheNumber() != null){
+            mustacheValueNode.addChild(addNode("mustacheNumber"));
             mustacheValue.setMustacheNumber((MustacheNumber) visitMustacheNumber(ctx.mustacheNumber()));
         }
 
         if (ctx.MUSTACHE_STRING() != null){
             mustacheValue.setMustacheString(ctx.MUSTACHE_STRING().getSymbol().getText());
-            SimpleTreeNode mustacheStringNode = new SimpleTreeNode(mustacheValue.getMustacheString());
-            mustacheStringNode.addChild(mustacheStringNode);
+            mustacheValueNode.addChild(new SimpleTreeNode(mustacheValue.getMustacheString()));
         }
 
         if (ctx.MUSTACHE_TRUE() != null){
             mustacheValue.setMustacheTrue(true);
-            SimpleTreeNode mustacheTrueNode = new SimpleTreeNode("True");
-            mustacheValueNode.addChild(mustacheTrueNode);
+            mustacheValueNode.addChild(new SimpleTreeNode("True"));
         }
 
         if (ctx.MUSTACHE_FALSE() != null){
             mustacheValue.setMustacheFalse(false);
-            SimpleTreeNode mustacheFalseNode = new SimpleTreeNode("False");
-            mustacheValueNode.addChild(mustacheFalseNode);
+            mustacheValueNode.addChild(new SimpleTreeNode("False"));
         }
 
         if (ctx.MUSTACHE_NULL() != null){
             mustacheValue.setMUSTACHE_NULL(null);
-            SimpleTreeNode mustacheNullNode = new SimpleTreeNode("Null");
-            mustacheValueNode.addChild(mustacheNullNode);
+            mustacheValueNode.addChild(new SimpleTreeNode("Null"));
         }
-        root.addChild(mustacheValueNode);
-        return super.visitMustacheValue(ctx);
+
+        return mustacheValue;
     }
 
     @Override
     public Object visitObjArray4Must(HTMLParser.ObjArray4MustContext ctx) {
         ObjArray4Must objArray4Must = new ObjArray4Must();
-        SimpleTreeNode objArray4MustNode = new SimpleTreeNode("Visit objArray4Must");
+        SimpleTreeNode objArray4MustNode = node.getNode();
 
         if (ctx.arrName4Must() != null){
+            objArray4MustNode.addChild(addNode("arrName4Must"));
             objArray4Must.setArrName4Must1((ArrName4Must) visitArrName4Must(ctx.arrName4Must()));
         }
 
         if (ctx.arrayCalling4Must() != null){
+            objArray4MustNode.addChild(addNode("arrayCalling4Must"));
             objArray4Must.setArrayCalling4Must((ArrayCalling4Must) visitArrayCalling4Must(ctx.arrayCalling4Must()));
         }
-        root.addChild(objArray4MustNode);
-        return super.visitObjArray4Must(ctx);
+
+        return objArray4Must;
     }
 
     @Override
     public Object visitArrName4Must(HTMLParser.ArrName4MustContext ctx) {
         ArrName4Must arrName4Must = new ArrName4Must();
-        SimpleTreeNode arrName4MustNode = new SimpleTreeNode("Visit arrName4Must");
+        SimpleTreeNode arrName4MustNode = node.getNode();
         if (ctx.MUSTACHE_IDENTIFIER() != null){
             arrName4Must.setArrName4Must(ctx.MUSTACHE_IDENTIFIER().getSymbol().getText());
-            SimpleTreeNode arrName4MustIdentifierNode = new SimpleTreeNode(arrName4Must.getArrName4Must());
-            arrName4MustNode.addChild(arrName4MustIdentifierNode);
+            arrName4MustNode.addChild(new SimpleTreeNode(arrName4Must.getArrName4Must()));
         }
-        root.addChild(arrName4MustNode);
-        return super.visitArrName4Must(ctx);
+
+        return arrName4Must;
     }
 
     @Override
     public Object visitArrayCalling4Must(HTMLParser.ArrayCalling4MustContext ctx) {
         ArrayCalling4Must arrayCalling4Must = new ArrayCalling4Must();
-        SimpleTreeNode arrayCalling4MustNode = new SimpleTreeNode("Visit arrayCalling4Must");
+        SimpleTreeNode arrayCalling4MustNode = node.getNode();
 
         if (!ctx.arithmeticLogic4Must().isEmpty()){
             List<ArithmeticLogic4Must> arithmeticLogic4Musts = new ArrayList<>();
             for (int i = 0 ; i < ctx.arithmeticLogic4Must().size() ; i ++){
+                arrayCalling4MustNode.addChild(addNode("arithmeticLogic4Must"));
                 arithmeticLogic4Musts.add((ArithmeticLogic4Must) visitArithmeticLogic4Must(ctx.arithmeticLogic4Must(i)));
             }
             arrayCalling4Must.setArithmeticLogic4Must(arithmeticLogic4Musts);
         }
 
         if (ctx.functionCallFromVar4Must() != null){
+            arrayCalling4MustNode.addChild(addNode("functionCallFromVar4Must"));
             arrayCalling4Must.setFunctionCallFromVar4Must((FunctionCallFromVar4Must) visitFunctionCallFromVar4Must(ctx.functionCallFromVar4Must()));
         }
 
         if (ctx.property4Must() != null){
+            arrayCalling4MustNode.addChild(addNode("property4Must"));
             arrayCalling4Must.setProperty4Must((Property4Must) visitProperty4Must(ctx.property4Must()));
         }
-        root.addChild(arrayCalling4MustNode);
-        return super.visitArrayCalling4Must(ctx);
+
+        return arrayCalling4Must;
     }
 
     @Override
     public Object visitFunctionCall4Must(HTMLParser.FunctionCall4MustContext ctx) {
         FunctionCall4Must functionCall4Must = new FunctionCall4Must();
-        SimpleTreeNode functionCall4MustNode = new SimpleTreeNode("Visit functionCall4Must");
+        SimpleTreeNode functionCall4MustNode = node.getNode();
 
         if (ctx.functionName4Must() != null){
+            functionCall4MustNode.addChild(addNode("functionName4Must"));
             functionCall4Must.setFunctionName4Must1((FunctionName4Must) visitFunctionName4Must(ctx.functionName4Must()));
         }
 
         if (ctx.functionCallFromVar4Must() != null){
+            functionCall4MustNode.addChild(addNode("functionCallFromVar4Must"));
             functionCall4Must.setFunctionCallFromVar4Must((FunctionCallFromVar4Must) visitFunctionCallFromVar4Must(ctx.functionCallFromVar4Must()));
         }
-        root.addChild(functionCall4MustNode);
-        return super.visitFunctionCall4Must(ctx);
+
+        return functionCall4Must;
     }
 
     @Override
     public Object visitFunctionCallFromVar4Must(HTMLParser.FunctionCallFromVar4MustContext ctx) {
         FunctionCallFromVar4Must functionCallFromVar4Must = new FunctionCallFromVar4Must();
-        SimpleTreeNode functionCallFromVar4MustNode = new SimpleTreeNode("Visit functionCallFromVar4Must");
+        SimpleTreeNode functionCallFromVar4MustNode = node.getNode();
 
         if (!ctx.parameters4Must().isEmpty()){
             List<Parameters4Must> parameters4Musts = new ArrayList<>();
             for (int i = 0 ; i < ctx.parameters4Must().size() ; i ++){
+                functionCallFromVar4MustNode.addChild(addNode("parameters4Must"));
                 parameters4Musts.add((Parameters4Must) visitParameters4Must(ctx.parameters4Must(i)));
             }
             functionCallFromVar4Must.setParameters4Must(parameters4Musts);
         }
 
         if (ctx.arrayCalling4Must() != null){
+            functionCallFromVar4MustNode.addChild(addNode("arrayCalling4Must"));
             functionCallFromVar4Must.setArrayCalling4Must((ArrayCalling4Must) visitArrayCalling4Must(ctx.arrayCalling4Must()));
         }
 
         if (ctx.property4Must() != null){
+            functionCallFromVar4MustNode.addChild(addNode("property4Must"));
             functionCallFromVar4Must.setProperty4Must((Property4Must) visitProperty4Must(ctx.property4Must()));
         }
-        root.addChild(functionCallFromVar4MustNode);
-        return super.visitFunctionCallFromVar4Must(ctx);
+
+        return functionCallFromVar4Must;
     }
 
     @Override
     public Object visitFunctionName4Must(HTMLParser.FunctionName4MustContext ctx) {
         FunctionName4Must functionName4Must = new FunctionName4Must();
-        SimpleTreeNode functionName4MustNode = new SimpleTreeNode("Visit functionName4Must");
+        SimpleTreeNode functionName4MustNode = node.getNode();
         if (ctx.MUSTACHE_IDENTIFIER() != null){
             functionName4Must.setFunctionName4Must(ctx.MUSTACHE_IDENTIFIER().getSymbol().getText());
-            SimpleTreeNode functionName4MustIdentifierNode = new SimpleTreeNode(functionName4Must.getFunctionName4Must());
-            functionName4MustNode.addChild(functionName4MustIdentifierNode);
+            functionName4MustNode.addChild(new SimpleTreeNode(functionName4Must.getFunctionName4Must()));
         }
-        root.addChild(functionName4MustNode);
-        return super.visitFunctionName4Must(ctx);
+
+        return functionName4Must;
     }
 
     @Override
     public Object visitParameters4Must(HTMLParser.Parameters4MustContext ctx) {
         Parameters4Must parameters4Must = new Parameters4Must();
-        SimpleTreeNode parameters4MustNode = new SimpleTreeNode("Visit parameters4Must");
+        SimpleTreeNode parameters4MustNode = node.getNode();
 
         if (!ctx.parameter4Must().isEmpty()){
             List<Parameter4Must> parameter4Musts = new ArrayList<>();
             for (int i = 0 ; i < ctx.parameter4Must().size() ; i ++){
+                parameters4MustNode.addChild(addNode("parameter4Must"));
                 parameter4Musts.add((Parameter4Must) visitParameter4Must(ctx.parameter4Must(i)));
             }
             parameters4Must.setParameters4Musts(parameter4Musts);
         }
-        root.addChild(parameters4MustNode);
-        return super.visitParameters4Must(ctx);
+
+        return parameters4Must;
     }
 
     @Override
     public Object visitParameter4Must(HTMLParser.Parameter4MustContext ctx) {
         Parameter4Must parameter4Must = new Parameter4Must();
-        SimpleTreeNode parameter4MustNode = new SimpleTreeNode("Visit parameter4Must");
+        SimpleTreeNode parameter4MustNode = node.getNode();
 
         if (ctx.collection4Mustache() != null){
+            parameter4MustNode.addChild(addNode("collection4Mustache"));
             parameter4Must.setCollection4Mustache((Collection4Mustache) visitCollection4Mustache(ctx.collection4Mustache()));
         }
-        root.addChild(parameter4MustNode);
-        return super.visitParameter4Must(ctx);
+        return parameter4Must;
     }
 
     @Override
     public Object visitSubObj4Must(HTMLParser.SubObj4MustContext ctx) {
         SubObj4Must subObj4Must = new SubObj4Must();
-        SimpleTreeNode subObj4MustNode = new SimpleTreeNode("Visit subObj4Must");
+        SimpleTreeNode subObj4MustNode = node.getNode();
 
         if (ctx.MUSTACHE_IDENTIFIER() != null){
             subObj4Must.setSubObj4MustName(ctx.MUSTACHE_IDENTIFIER().getSymbol().getText());
-            SimpleTreeNode subObj4MustIdentifierNameNode = new SimpleTreeNode(subObj4Must.getSubObj4MustName());
-            subObj4MustNode.addChild(subObj4MustIdentifierNameNode);
+            subObj4MustNode.addChild(new SimpleTreeNode(subObj4Must.getSubObj4MustName()));
         }
 
         if (ctx.property4Must() != null){
+            subObj4MustNode.addChild(addNode("property4Must"));
             subObj4Must.setProperty4Must((Property4Must) visitProperty4Must(ctx.property4Must()));
         }
-        root.addChild(subObj4MustNode);
-        return super.visitSubObj4Must(ctx);
+
+        return subObj4Must;
     }
 
     @Override
     public Object visitProperty4Must(HTMLParser.Property4MustContext ctx) {
         Property4Must property4Must = new Property4Must();
-        SimpleTreeNode property4MustNode = new SimpleTreeNode("Visit property4Must");
+        SimpleTreeNode property4MustNode = node.getNode();
 
         if (!ctx.propertyValue4Must().isEmpty()){
             List<PropertyValue4Must> propertyValue4Musts = new ArrayList<>();
             for (int i = 0 ; i < ctx.propertyValue4Must().size() ; i ++){
+                property4MustNode.addChild(addNode("propertyValue4Must"));
                 propertyValue4Musts.add((PropertyValue4Must) visitPropertyValue4Must(ctx.propertyValue4Must(i)));
             }
             property4Must.setPropertyValue4Must(propertyValue4Musts);
         }
 
         if (ctx.arrayCalling4Must() != null){
+            property4MustNode.addChild(addNode("arrayCalling4Must"));
             property4Must.setArrayCalling4Must((ArrayCalling4Must) visitArrayCalling4Must(ctx.arrayCalling4Must()));
         }
 
         if (ctx.functionCallFromVar4Must() != null){
+            property4MustNode.addChild(addNode("functionCallFromVar4Must"));
             property4Must.setFunctionCallFromVar4Must((FunctionCallFromVar4Must) visitFunctionCallFromVar4Must(ctx.functionCallFromVar4Must()));
         }
-        root.addChild(property4MustNode);
-        return super.visitProperty4Must(ctx);
+
+        return property4Must;
     }
 
     @Override
     public Object visitPropertyValue4Must(HTMLParser.PropertyValue4MustContext ctx) {
         PropertyValue4Must propertyValue4Must = new PropertyValue4Must();
-        SimpleTreeNode propertyValue4MustNode = new SimpleTreeNode("Visit propertyValue4Must");
+        SimpleTreeNode propertyValue4MustNode = node.getNode();
 
         if (ctx.MUSTACHE_IDENTIFIER() != null){
             propertyValue4Must.setPropertyValue4Must(ctx.MUSTACHE_IDENTIFIER().getSymbol().getText());
-            SimpleTreeNode propertyValue4MustIdentifierNode = new SimpleTreeNode(propertyValue4Must.getPropertyValue4Must());
-            propertyValue4MustNode.addChild(propertyValue4MustIdentifierNode);
+            propertyValue4MustNode.addChild(new SimpleTreeNode(propertyValue4Must.getPropertyValue4Must()));
         }
-        root.addChild(propertyValue4MustNode);
-        return super.visitPropertyValue4Must(ctx);
+        return propertyValue4Must;
     }
 
     @Override
     public Object visitOneLineCondition4Must(HTMLParser.OneLineCondition4MustContext ctx) {
         OneLineCondition4Must oneLineCondition4Must = new OneLineCondition4Must();
-        SimpleTreeNode oneLineCondition4MustNode = new SimpleTreeNode("Visit oneLineCondition4Must");
+        SimpleTreeNode oneLineCondition4MustNode = node.getNode();
 
         if (ctx.logicComprison4Must() != null){
+            oneLineCondition4MustNode.addChild(addNode("logicComprison4Must"));
             oneLineCondition4Must.setLogicComprison4Must((LogicComprison4Must) visitLogicComprison4Must(ctx.logicComprison4Must()));
         }
 
         if (ctx.collection4Mustache() != null){
+            oneLineCondition4MustNode.addChild(addNode("Collection4Mustache1"));
             oneLineCondition4Must.setCollection4Mustache1((Collection4Mustache) visitCollection4Mustache(ctx.collection4Mustache(0)));
+
+            //
+
+            oneLineCondition4MustNode.addChild(addNode("Collection4Mustache2"));
             oneLineCondition4Must.setCollection4Mustache2((Collection4Mustache) visitCollection4Mustache(ctx.collection4Mustache(1)));
         }
-        root.addChild(oneLineCondition4MustNode);
-        return super.visitOneLineCondition4Must(ctx);
+        return oneLineCondition4Must;
     }
 
     @Override
     public Object visitOneLineArithCondition4Must(HTMLParser.OneLineArithCondition4MustContext ctx) {
         OneLineArithCondition4Must oneLineArithCondition4Must = new OneLineArithCondition4Must();
-        SimpleTreeNode oneLineArithCondition4MustNode = new SimpleTreeNode("Visit oneLineArithCondition4Must");
+        SimpleTreeNode oneLineArithCondition4MustNode = node.getNode();
 
         if (ctx.logicComprison4Must() != null){
+            oneLineArithCondition4MustNode.addChild(addNode("logicComprison4Must"));
             oneLineArithCondition4Must.setLogicComprison4Must((LogicComprison4Must) visitLogicComprison4Must(ctx.logicComprison4Must()));
         }
 
         if (ctx.arithmeticLogic4Must() != null){
+            oneLineArithCondition4MustNode.addChild(addNode("ArithmeticLogic4Must1"));
             oneLineArithCondition4Must.setArithmeticLogic4Must1((ArithmeticLogic4Must) visitArithmeticLogic4Must(ctx.arithmeticLogic4Must(0)));
+
+            //
+
+            oneLineArithCondition4MustNode.addChild(addNode("ArithmeticLogic4Must2"));
             oneLineArithCondition4Must.setArithmeticLogic4Must2((ArithmeticLogic4Must) visitArithmeticLogic4Must(ctx.arithmeticLogic4Must(1)));
         }
-        root.addChild(oneLineArithCondition4MustNode);
-        return super.visitOneLineArithCondition4Must(ctx);
+
+        return oneLineArithCondition4Must;
     }
 
     @Override
     public Object visitOneLineBoolCondition4Must(HTMLParser.OneLineBoolCondition4MustContext ctx) {
         OneLineBoolCondition4Must oneLineBoolCondition4Must = new OneLineBoolCondition4Must();
-        SimpleTreeNode oneLineBoolCondition4MustNode = new SimpleTreeNode("Visit oneLineBoolCondition4Must");
+        SimpleTreeNode oneLineBoolCondition4MustNode = node.getNode();
 
         if (ctx.logicComprison4Must() != null){
+            oneLineBoolCondition4MustNode.addChild(addNode("logicComprison4Must"));
             oneLineBoolCondition4Must.setLogicComprison4Must((LogicComprison4Must) visitLogicComprison4Must(ctx.logicComprison4Must()));
         }
 
         if (ctx.MUSTACHE_TRUE() != null){
             oneLineBoolCondition4Must.setTrue(true);
-            SimpleTreeNode trueNode = new SimpleTreeNode("True");
-            oneLineBoolCondition4MustNode.addChild(trueNode);
+            oneLineBoolCondition4MustNode.addChild(new SimpleTreeNode("True"));
         }
         if (ctx.MUSTACHE_FALSE() != null){
             oneLineBoolCondition4Must.setFalse(false);
-            SimpleTreeNode falseNode = new SimpleTreeNode("False");
-            oneLineBoolCondition4MustNode.addChild(falseNode);
+            oneLineBoolCondition4MustNode.addChild(new SimpleTreeNode("False"));
         }
-        root.addChild(oneLineBoolCondition4MustNode);
-        return super.visitOneLineBoolCondition4Must(ctx);
+
+        return oneLineBoolCondition4Must;
     }
 
     @Override
     public Object visitComparisonExp4Must(HTMLParser.ComparisonExp4MustContext ctx) {
         ComparisonExp4Must comparisonExp4Must = new ComparisonExp4Must();
-        SimpleTreeNode comparisonExp4MustNode = new SimpleTreeNode("Visit comparisonExp4Must");
+        SimpleTreeNode comparisonExp4MustNode = node.getNode();
 
         if (ctx.collection4CompMust() != null){
+            comparisonExp4MustNode.addChild(addNode("Collection4CompMust"));
             comparisonExp4Must.setCollection4CompMust((Collection4CompMust) visitCollection4CompMust(ctx.collection4CompMust(0)));
+
+            //
+
+            comparisonExp4MustNode.addChild(addNode("Collection4CompMust2"));
             comparisonExp4Must.setCollection4CompMust2((Collection4CompMust) visitCollection4CompMust(ctx.collection4CompMust(1)));
         }
 
         if (ctx.mustacheComparisonOperator() != null){
+            comparisonExp4MustNode.addChild(addNode("mustacheComparisonOperator"));
             comparisonExp4Must.setMustacheComparisonOperator((MustacheComparisonOperator) visitMustacheComparisonOperator(ctx.mustacheComparisonOperator()));
         }
-        root.addChild(comparisonExp4MustNode);
-        return super.visitComparisonExp4Must(ctx);
+
+        return comparisonExp4Must;
     }
 
     @Override
     public Object visitMustacheComparisonOperator(HTMLParser.MustacheComparisonOperatorContext ctx) {
         MustacheComparisonOperator mustacheComparisonOperator = new MustacheComparisonOperator();
-        SimpleTreeNode mustacheComparisonOperatorNode = new SimpleTreeNode("Visit mustacheComparisonOperator");
+        SimpleTreeNode mustacheComparisonOperatorNode = node.getNode();
 
         if (ctx.MUSTACHE_GREATER_THAN() != null){
 
             mustacheComparisonOperator.setOperator(ctx.MUSTACHE_GREATER_THAN().getSymbol().getText());
-            SimpleTreeNode operatorNode = new SimpleTreeNode(mustacheComparisonOperator.getOperator());
-            mustacheComparisonOperatorNode.addChild(operatorNode);
+            mustacheComparisonOperatorNode.addChild(new SimpleTreeNode(mustacheComparisonOperator.getOperator()));
         }
 
         if (ctx.MUSTACHE_GREATER_EQ() != null){
 
             mustacheComparisonOperator.setOperator(ctx.MUSTACHE_GREATER_EQ().getSymbol().getText());
-            SimpleTreeNode operatorNode = new SimpleTreeNode(mustacheComparisonOperator.getOperator());
-            mustacheComparisonOperatorNode.addChild(operatorNode);
+            mustacheComparisonOperatorNode.addChild(new SimpleTreeNode(mustacheComparisonOperator.getOperator()));
         }
 
 
@@ -2603,137 +2849,125 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
         if (ctx.MUSTACHE_LESS_THAN() != null){
 
             mustacheComparisonOperator.setOperator(ctx.MUSTACHE_LESS_THAN().getSymbol().getText());
-            SimpleTreeNode operatorNode = new SimpleTreeNode(mustacheComparisonOperator.getOperator());
-            mustacheComparisonOperatorNode.addChild(operatorNode);
+            mustacheComparisonOperatorNode.addChild(new SimpleTreeNode(mustacheComparisonOperator.getOperator()));
         }
 
 
         if (ctx.MUSTACHE_LESS_EQ() != null){
 
             mustacheComparisonOperator.setOperator(ctx.MUSTACHE_LESS_EQ().getSymbol().getText());
-            SimpleTreeNode operatorNode = new SimpleTreeNode(mustacheComparisonOperator.getOperator());
-            mustacheComparisonOperatorNode.addChild(operatorNode);
+            mustacheComparisonOperatorNode.addChild(new SimpleTreeNode(mustacheComparisonOperator.getOperator()));
         }
 
 
         if (ctx.MUSTACHE_EQUAL_TO() != null){
 
             mustacheComparisonOperator.setOperator(ctx.MUSTACHE_EQUAL_TO().getSymbol().getText());
-            SimpleTreeNode operatorNode = new SimpleTreeNode(mustacheComparisonOperator.getOperator());
-            mustacheComparisonOperatorNode.addChild(operatorNode);
+            mustacheComparisonOperatorNode.addChild(new SimpleTreeNode(mustacheComparisonOperator.getOperator()));
         }
         if (ctx.MUSTACHE_NOT_EQUAL() != null){
 
             mustacheComparisonOperator.setOperator(ctx.MUSTACHE_NOT_EQUAL().getSymbol().getText());
-            SimpleTreeNode operatorNode = new SimpleTreeNode(mustacheComparisonOperator.getOperator());
-            mustacheComparisonOperatorNode.addChild(operatorNode);
+            mustacheComparisonOperatorNode.addChild(new SimpleTreeNode(mustacheComparisonOperator.getOperator()));
         }
-        root.addChild(mustacheComparisonOperatorNode);
-        return super.visitMustacheComparisonOperator(ctx);
+
+        return mustacheComparisonOperator;
     }
 
     @Override
     public Object visitFilter(HTMLParser.FilterContext ctx) {
         Filter filter = new Filter();
-        SimpleTreeNode filterNode = new SimpleTreeNode("Visit filter");
+        SimpleTreeNode filterNode = node.getNode();
 
         if (ctx.modelName() != null){
+            filterNode.addChild(addNode("modelName"));
             filter.setModelName((ModelName) visitModelName(ctx.modelName()));
         }
 
         if (ctx.MUSTACHE_FILTER() != null){
             filter.setFilter(ctx.MUSTACHE_FILTER().getSymbol().getText());
-            SimpleTreeNode filterInternalNode = new SimpleTreeNode(filter.getFilter());
-            filterNode.addChild(filterInternalNode);
+            filterNode.addChild(new SimpleTreeNode(filter.getFilter()));
         }
 
         if (ctx.formatName() != null){
+            filterNode.addChild(addNode("formatName"));
             filter.setFormatName((FormatName) visitFormatName(ctx.formatName()));
         }
 
         if (ctx.collection4Mustache() != null){
+            filterNode.addChild(addNode("collection4Mustache"));
             filter.setCollection4Mustache((Collection4Mustache) visitCollection4Mustache(ctx.collection4Mustache()));
         }
-        root.addChild(filterNode);
-        return super.visitFilter(ctx);
+        return filter;
     }
 
     @Override
     public Object visitModelName(HTMLParser.ModelNameContext ctx) {
         ModelName modelName = new ModelName();
-        SimpleTreeNode modelNameNode = new SimpleTreeNode("Visit modelName");
+        SimpleTreeNode modelNameNode = node.getNode();
         if (ctx.MUSTACHE_IDENTIFIER() != null){
             modelName.setMustachIdentifier(ctx.MUSTACHE_IDENTIFIER().getSymbol().getText());
-            SimpleTreeNode mustacheIdentifierNode = new SimpleTreeNode(modelName.getMustachIdentifier());
-            modelNameNode.addChild(mustacheIdentifierNode);
+            modelNameNode.addChild(new SimpleTreeNode(modelName.getMustachIdentifier()));
         }
-        root.addChild(modelNameNode);
-        return super.visitModelName(ctx);
+
+        return modelName;
     }
 
     @Override
     public Object visitFormatName(HTMLParser.FormatNameContext ctx) {
         FormatName formatName = new FormatName();
-        SimpleTreeNode formatNameNode = new SimpleTreeNode("Visit formatName");
+        SimpleTreeNode formatNameNode = node.getNode();
         if (ctx.MUSTACHE_IDENTIFIER() != null){
             formatName.setMustachIdentifier(ctx.MUSTACHE_IDENTIFIER().getSymbol().getText());
-            SimpleTreeNode mustacheIdentifierNode = new SimpleTreeNode(formatName.getMustachIdentifier());
-            formatNameNode.addChild(mustacheIdentifierNode);
+            formatNameNode.addChild(new SimpleTreeNode(formatName.getMustachIdentifier()));
         }
-        root.addChild(formatNameNode);
-        return super.visitFormatName(ctx);
+        return formatName;
     }
 
     @Override
     public Object visitScript(HTMLParser.ScriptContext ctx) {
         Script script = new Script();
-        SimpleTreeNode scriptNode = new SimpleTreeNode("Visit script");
+        SimpleTreeNode scriptNode = node.getNode();
 
         if (ctx.SCRIPT_OPEN() != null){
             script.setScriptOpen(ctx.SCRIPT_OPEN().getSymbol().getText());
-            SimpleTreeNode scriptOpenNode = new SimpleTreeNode(script.getScriptOpen());
-            scriptNode.addChild(scriptOpenNode);
+            scriptNode.addChild(new SimpleTreeNode(script.getScriptOpen()));
         }
 
         if (ctx.SCRIPT_BODY() != null){
             script.setScriptBody(ctx.SCRIPT_BODY().getSymbol().getText());
-            SimpleTreeNode scriptBodyNode = new SimpleTreeNode(script.getScriptBody());
-            scriptNode.addChild(scriptBodyNode);
+            scriptNode.addChild(new SimpleTreeNode(script.getScriptBody()));
         }
 
         if (ctx.SCRIPT_SHORT_BODY() != null){
             script.setScripShortBody(ctx.SCRIPT_SHORT_BODY().getSymbol().getText());
-            SimpleTreeNode scriptShortBodyNode = new SimpleTreeNode(script.getScripShortBody());
-            scriptNode.addChild(scriptShortBodyNode);
+            scriptNode.addChild(new SimpleTreeNode(script.getScripShortBody()));
         }
-        root.addChild(scriptNode);
-        return super.visitScript(ctx);
+
+        return script;
     }
 
     @Override
     public Object visitStyle(HTMLParser.StyleContext ctx) {
         Style style = new Style();
-        SimpleTreeNode styleNode = new SimpleTreeNode("Visit style");
+        SimpleTreeNode styleNode = node.getNode();
 
         if (ctx.STYLE_OPEN() != null){
             style.setStyleOpen(ctx.STYLE_OPEN().getSymbol().getText());
-            SimpleTreeNode styleOpenNode = new SimpleTreeNode(style.getStyleOpen());
-            styleNode.addChild(styleOpenNode);
+            styleNode.addChild(new SimpleTreeNode(style.getStyleOpen()));
         }
 
         if (ctx.STYLE_BODY() != null){
             style.setStyleBody(ctx.STYLE_BODY().getSymbol().getText());
-            SimpleTreeNode styleBodyNode = new SimpleTreeNode(style.getStyleBody());
-            styleNode.addChild(styleBodyNode);
+            styleNode.addChild(new SimpleTreeNode(style.getStyleBody()));
         }
 
         if (ctx.STYLE_SHORT_BODY() != null){
             style.setStyleShort(ctx.STYLE_SHORT_BODY().getSymbol().getText());
-            SimpleTreeNode styleShortNode = new SimpleTreeNode(style.getStyleShort());
-            styleNode.addChild(styleShortNode);
+            styleNode.addChild( new SimpleTreeNode(style.getStyleShort()));
         }
-        root.addChild(styleNode);
-        return super.visitStyle(ctx);
+
+        return style;
     }
     //////////////////////////////////////////////////
 
@@ -2741,5 +2975,9 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
 
         new ListingTreePrinter().print(root);
     }
-
+    public SimpleTreeNode addNode(String text){
+        SimpleTreeNode tempNode = new SimpleTreeNode("Visit " +text );
+        node.setNode(tempNode);
+        return node.getNode();
+    }
 }
