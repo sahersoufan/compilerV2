@@ -214,8 +214,7 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
         HtmlElement htmlElement = new HtmlElement();
         SimpleTreeNode htmlElementNode = node.getNode();
 
-        //TODO We have problem here
-        if(ctx.TAG_NAME() != null){
+        if(!ctx.TAG_NAME().isEmpty()){
                 htmlElement.setTagName(ctx.TAG_NAME(0).getSymbol().getText());
                 htmlElementNode.addChild( new SimpleTreeNode(ctx.TAG_NAME(0).getSymbol().getText()));
             }
