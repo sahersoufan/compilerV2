@@ -6,7 +6,7 @@ public class Filter {
         private ModelName modelName;
         private String Filter;
        private FormatName formatName;
-   private Collection4Mustache collection4Mustache;
+   private String mustacheString;
 
     public ModelName getModelName() {
         return modelName;
@@ -32,11 +32,11 @@ public class Filter {
         this.formatName = formatName;
     }
 
-    public Collection4Mustache getCollection4Mustache() {
-        return collection4Mustache;
+    public String getMustacheString() {
+        return mustacheString;
     }
 
-    public void setCollection4Mustache(Collection4Mustache collection4Mustache) {
-        this.collection4Mustache = collection4Mustache;
+    public void setMustacheString(String mustacheString) {
+        this.mustacheString = mustacheString;
     }
 }

@@ -618,7 +618,7 @@ mustacheComparisonOperator
 
 // FILTER
 filter
-    : modelName MUSTACHE_FILTER formatName (MUSTACHE_COLON collection4Mustache)?
+    : modelName MUSTACHE_FILTER formatName (MUSTACHE_COLON MUSTACHE_STRING)?
     ;
 
 modelName

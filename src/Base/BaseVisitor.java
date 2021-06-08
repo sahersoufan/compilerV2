@@ -2893,9 +2893,9 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
             filter.setFormatName((FormatName) visitFormatName(ctx.formatName()));
         }
 
-        if (ctx.collection4Mustache() != null){
-            filterNode.addChild(addNode("collection4Mustache"));
-            filter.setCollection4Mustache((Collection4Mustache) visitCollection4Mustache(ctx.collection4Mustache()));
+        if (ctx.MUSTACHE_STRING() != null){
+            filterNode.addChild(addNode("mustacheString"));
+            filter.setMustacheString(ctx.MUSTACHE_STRING().getSymbol().getText());
         }
         return filter;
     }
