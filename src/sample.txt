@@ -1,7 +1,5 @@
 <html>
-<img>
-
-{{time | upper:""}}
+<img cp-model="a" cp-app="case" >
 
 </img>
 </html>

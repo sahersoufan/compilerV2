@@ -19,16 +19,8 @@ public class Main {
 
     public static void main(String[] args) {
 	// write your code here
-
-
-
-
-
-
-
-
         try {
-/*            String source = "E:\\forth year\\1\\CompV2\\src\\sample.txt";
+/*          String source = "E:\\forth year\\1\\CompV2\\src\\sample.txt";
             CharStream cs = fromFileName(source);
             HTMLLexer lexer = new HTMLLexer(cs);
             CommonTokenStream token = new CommonTokenStream(lexer);
@@ -44,10 +36,6 @@ public class Main {
             base.printTree();*/
             CheckSymbols checkSymbols = new CheckSymbols();
             checkSymbols.process();
-
-
-
-
 
         } catch (IOException e) {
             e.printStackTrace();

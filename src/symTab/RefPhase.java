@@ -18,6 +18,7 @@ public class RefPhase extends HTMLParserBaseListener {
     Scope currentScope;
     Stack<String> elementNames = new Stack<>();
     String thisElement = null;
+    boolean justOneCp = false;
     public RefPhase(GlobalScope globals, ParseTreeProperty<Scope> scopes) {
         this.scopes = scopes;
         this.globals = globals;
@@ -42,6 +43,10 @@ public class RefPhase extends HTMLParserBaseListener {
             if (ctx.TAG_NAME(0) != null){
                     thisElement = ctx.TAG_NAME(0).getSymbol().getText();
                     elementNames.push(thisElement);
+                    justOneCp = false;
+
+
+
                     boolean thereIsNoUlOrOl = false;
                     if (thisElement.equals("li")){
                         for (String s : elementNames){
@@ -58,8 +63,11 @@ public class RefPhase extends HTMLParserBaseListener {
                     if (thisElement.equals("img")){
                         if (!ctx.htmlAttribute().isEmpty()){
                             for (int i = 0 ; i < ctx.htmlAttribute().size() ; i++){
-                                if (ctx.htmlAttribute(i).TAG_NAME().getSymbol().getText().equals("src")){
-                                 thereIsSrc = true;
+                                if (ctx.htmlAttribute(i).TAG_NAME() != null){
+                                    if (ctx.htmlAttribute(i).TAG_NAME().getSymbol().getText().equals("src")) {
+                                        thereIsSrc = true;
+                                        break;
+                                    }
                                 }
                             }
                         }
@@ -72,8 +80,11 @@ public class RefPhase extends HTMLParserBaseListener {
                 if (thisElement.equals("a")){
                     if (!ctx.htmlAttribute().isEmpty()){
                         for (int i = 0 ; i < ctx.htmlAttribute().size() ; i++) {
-                            if (ctx.htmlAttribute(i).TAG_NAME().getSymbol().getText().equals("href")) {
-                                thereIsHref = true;
+                            if (ctx.htmlAttribute(i).TAG_NAME() != null) {
+                                if (ctx.htmlAttribute(i).TAG_NAME().getSymbol().getText().equals("href")) {
+                                    thereIsHref = true;
+                                    break;
+                                }
                             }
                         }
                     }
@@ -121,6 +132,9 @@ public class RefPhase extends HTMLParserBaseListener {
 
     @Override
     public void enterAppExpression(HTMLParser.AppExpressionContext ctx) {
+        if (justOneCp){
+            System.err.println("you can't add more than one cp attribute here, idiot !!! ");
+        }
         if (currentScope.getName().contains("App")){
             System.err.println("APP , it's repeated, idiot !!! ");
         }
@@ -134,6 +148,10 @@ public class RefPhase extends HTMLParserBaseListener {
     @Override
     public void enterForExpression(HTMLParser.ForExpressionContext ctx) {
         currentScope = scopes.get(ctx);
+        if (justOneCp){
+            System.err.println("you can't add more than one cp attribute here, idiot !!! ");
+        }
+        justOneCp = true;
     }
 
     boolean addItToColl4For1 = false;
@@ -174,9 +192,36 @@ public class RefPhase extends HTMLParserBaseListener {
         saveItInPreviousScope = false;
     }
 
+
+    @Override
+    public void enterShowExpression(HTMLParser.ShowExpressionContext ctx) {
+        if (justOneCp){
+            System.err.println("you can't add more than one cp attribute here, idiot !!! ");
+        }
+        justOneCp = true;
+    }
+
+    @Override
+    public void enterHideExpression(HTMLParser.HideExpressionContext ctx) {
+        if (justOneCp){
+            System.err.println("you can't add more than one cp attribute here, idiot !!! ");
+        }
+        justOneCp = true;
+    }
+
+    @Override
+    public void enterSwitchExpression(HTMLParser.SwitchExpressionContext ctx) {
+        if (justOneCp){
+            System.err.println("you can't add more than one cp attribute here, idiot !!! ");
+        }
+    }
+
     @Override
     public void enterSwitchCaseExpression(HTMLParser.SwitchCaseExpressionContext ctx) {
-
+        if (justOneCp){
+            System.err.println("you can't add more than one cp attribute here, idiot !!! ");
+        }
+        justOneCp = true;
     }
 
     @Override
@@ -187,7 +232,10 @@ public class RefPhase extends HTMLParserBaseListener {
 
     @Override
     public void enterIfExpression(HTMLParser.IfExpressionContext ctx) {
-
+        if (justOneCp){
+            System.err.println("you can't add more than one cp attribute here, idiot !!! ");
+        }
+        justOneCp = true;
     }
 
     @Override
@@ -195,6 +243,29 @@ public class RefPhase extends HTMLParserBaseListener {
         currentScope = scopes.get(ctx);
 
     }
+
+    @Override
+    public void enterModelExpression(HTMLParser.ModelExpressionContext ctx) {
+        if (justOneCp){
+            System.err.println("you can't add more than one cp attribute here, idiot !!! ");
+        }
+    }
+
+    @Override
+    public void enterAnnotationClickExpression(HTMLParser.AnnotationClickExpressionContext ctx) {
+        if (justOneCp){
+            System.err.println("you can't add more than one cp attribute here, idiot !!! ");
+        }
+    }
+
+    @Override
+    public void enterAnnotationOverExpression(HTMLParser.AnnotationOverExpressionContext ctx) {
+        if (justOneCp){
+            System.err.println("you can't add more than one cp attribute here, idiot !!! ");
+        }
+    }
+
+
 
     @Override
     public void enterVariableName(HTMLParser.VariableNameContext ctx) {
