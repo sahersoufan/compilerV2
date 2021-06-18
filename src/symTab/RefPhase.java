@@ -158,7 +158,6 @@ public class RefPhase extends HTMLParserBaseListener {
     @Override
     public void enterCollection4For1(HTMLParser.Collection4For1Context ctx) {
     addItToColl4For1 = true;
-
     }
 
     boolean saveItInPreviousScope = false;

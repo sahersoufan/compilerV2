@@ -45,6 +45,7 @@ public class CheckSymbols {
         if (tempScope.getEnclosingScope() != null) {
             tempScope = tempScope.getEnclosingScope();
 
+            // TODO are you sure that you need to get every scope
             while (tempScope.getEnclosingScope() != null) {
                 if (tempScope.resolve(nameToken.getText()) != null) {
                     return false;
