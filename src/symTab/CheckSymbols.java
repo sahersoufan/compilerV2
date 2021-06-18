@@ -71,22 +71,17 @@ public class CheckSymbols {
 
         value = value.replace("\"","");
         if (typeOfFormat.equals("date")){
-            String[] temp = value.split("-");
-            if (temp.length == 3){
-                if (temp[0].length() == 4){
-                    if (temp[1].length() == 2){
-                        if (temp[2].length() == 2){
-                            return true;
-                        }else {
-                            return false;
-                        }
-                    }else{
-                        return false;
-                    }
-                }else{
-                    return false;
-                }
-            }else{
+            if (value.equals("dd/mm/yyyy h:m") || value.equals("dd/mm/yyyy h:m:s")) {
+                return true;
+            }else if(value.equals("mm/dd/yyyy h:m") || value.equals("mm/dd/yyyy h:m:s")){
+                return true;
+            }else if(value.equals("dd-mm-yyyy h:m") || value.equals("dd-mm-yyyy h:m:s")){
+                return true;
+            }else if(value.equals("mm-dd-yyyy h:m") || value.equals("mm-dd-yyyy h:m:s")){
+                return  true;
+            }else if (value.equals("mm-yyyy")){
+                return true;
+            }else if (value.equals("mm-yy")){
                 return false;
             }
         }else if(typeOfFormat.equals("currency")){

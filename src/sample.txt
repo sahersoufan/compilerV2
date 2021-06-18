@@ -1,5 +1,5 @@
 <html>
 <img cp-model="a" cp-app="case" >
-
+{{hello | date:"mm-dd-yyyy h:"}}
 </img>
 </html>
