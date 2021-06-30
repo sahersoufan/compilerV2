@@ -26,7 +26,7 @@ public class Main {
                 System.out.println("don't continue");
             }else {
             System.out.println("continue");
-            String source = "E:\\forth year\\1\\CompV2\\src\\sample.txt";
+            String source = "C:\\Users\\FATIMA\\Desktop\\compilerV2\\src\\sample.txt";
             CharStream cs = fromFileName(source);
             HTMLLexer lexer = new HTMLLexer(cs);
             CommonTokenStream token = new CommonTokenStream(lexer);

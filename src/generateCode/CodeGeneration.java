@@ -2,6 +2,7 @@ package generateCode;
 
 import AST.Elements.ElementsNodes.CpExpression.model.ModelExpression;
 import AST.Elements.ElementsNodes.HtmlAttribute;
+import AST.Elements.ElementsNodes.generic4Elements.object.SubObj;
 import AST.Elements.ElementsNodes.mustacheExpression.MustacheExpression;
 import AST.Elements.HtmlElement;
 import AST.Elements.HtmlElements;
@@ -61,6 +62,7 @@ public class CodeGeneration {
     }
 
 
+
     // CP-MODEL
     public void dealWIthModel(List<HtmlAttribute> attributes){
 
@@ -75,7 +77,9 @@ public class CodeGeneration {
             }
             if (ha.getTagName() != null) {
                 if (ha.getTagName().equals("id")) {
-                    id = ha.getAttValue();
+                    id = ha.getAttValue().substring(1,ha.getAttValue().length()-1);
+
+
                 }
             }
         }
@@ -86,35 +90,109 @@ public class CodeGeneration {
 
         // Get Model Value
         if (modelExp.getCollection4Model1().getVariable() != null) {
-            modelValue = modelExp.getCollection4Model1().getVariable().getVariableName().getIdentifier();
+            ModelVarible(modelExp,id);
+
         } else if (modelExp.getCollection4Model1().getSubObj() != null) {
-            StringBuilder tempValue = new StringBuilder();
-            tempValue.append(modelExp.getCollection4Model1().getSubObj().getIdentifier());
-            for (int i = 0; i < modelExp.getCollection4Model1().getSubObj().getProperty().getPropertyValues().size(); i++) {
-                tempValue.append(".");
-                tempValue.append(modelExp.getCollection4Model1().getSubObj().getProperty().getPropertyValues().get(i).getIdentifier());
-            }
-            modelValue = tempValue.toString();
+            ModelSubobj(modelExp,id);
+        }else if(modelExp.getCollection4Model1().getOneLine4ModelCondition()!=null){
+            ModelOneLine4ModelCondition(modelExp,id);
         }
 
-        JSContent.append("        document.getElementById(\""+id+"\").value = forthyear."+modelValue+";\n");
-//TODO check if int or string
-        JSContent.append("        var "+id+"Changes = function (event) {\n" +
-                "            forthyear."+modelValue+" = document.getElementById(\""+id+"\").value;\n" +
-                "        };\n");
 
 
         JSContent.append("        document.getElementById(\""+id+"\").addEventListener(\"input\", function(event) {\n" +
                 "            changes.push("+id+"Changes);\n" +
                 "        });\n" +
-                "        changes.push(\"+id+\"Changes);\n");
+                "        changes.push("+id+"Changes);\n");
     }
+
+    public void ModelVarible(ModelExpression modelExp ,String id){
+
+
+        String modelValue = null;
+
+        modelValue = modelExp.getCollection4Model1().getVariable().getVariableName().getIdentifier();
+        JSContent.append("        document.getElementById(\""+id+"\").value = forthyear."+modelValue+";\n");
+    }
+    public void ModelSubobj(ModelExpression modelExp,String id ){
+
+        String modelValue = null;
+        ;
+        modelValue = dealWithSubobj(modelExp.getCollection4Model1().getSubObj()).toString();
+        JSContent.append("        var "+id+"Changes = function (event) {\n" +
+                "            forthyear."+modelValue+" = document.getElementById(\""+id+"\").value;\n" +
+                "        };\n");
+    }
+    public void ModelObjArray(ModelExpression modelExp,String id){
+
+    }
+    public void ModelFunctioncall(ModelExpression modelExp,String id){
+
+    };
+    public void ModelOneLine4ModelCondition(ModelExpression modelExp,String id) {
+        String modelValue = null;
+
+        StringBuilder tempValue = new StringBuilder();
+        tempValue.append("(");
+
+        //Collection4Model1_1_1
+        if (modelExp.getCollection4Model1().getOneLine4ModelCondition().getCollection4Model1_1_1().getVariable() != null) {
+            ModelVarible(modelExp,id);
+        } else if (modelExp.getCollection4Model1().getOneLine4ModelCondition().getCollection4Model1_1_1().getSubObj() != null){
+            ModelSubobj(modelExp,id);
+        }
+        else if(modelExp.getCollection4Model1().getOneLine4ModelCondition().getCollection4Model1_1_1().getObjArray()!=null){
+            ModelObjArray(modelExp,id);
+        }else if(modelExp.getCollection4Model1().getOneLine4ModelCondition().getCollection4Model1_1_1().getFunctionCall()!=null){
+            ModelFunctioncall(modelExp,id);
+        }
+
+        //LogicComprison
+        if(modelExp.getCollection4Model1().getOneLine4ModelCondition().getLogicComprison()!=null){
+
+        }
+
+        //getCollection4Model1_1_2
+        if(modelExp.getCollection4Model1().getOneLine4ModelCondition().getCollection4Model1_1_2().getVariable()!=null){
+            ModelVarible(modelExp,id);
+        } else if (modelExp.getCollection4Model1().getOneLine4ModelCondition().getCollection4Model1_1_2().getSubObj() != null){
+            ModelSubobj(modelExp,id);
+        }
+        else if(modelExp.getCollection4Model1().getOneLine4ModelCondition().getCollection4Model1_1_2().getObjArray()!=null){
+            ModelObjArray(modelExp,id);
+        }else if(modelExp.getCollection4Model1().getOneLine4ModelCondition().getCollection4Model1_1_2().getFunctionCall()!=null){
+            ModelFunctioncall(modelExp,id);
+        }
+
+
+
+
+    }
+
+
+    //subobj
+    public StringBuilder dealWithSubobj(SubObj sb){
+
+        StringBuilder tempValue = new StringBuilder();
+        tempValue.append(sb.getIdentifier());
+        for (int i = 0; i < sb.getProperty().getPropertyValues().size(); i++) {
+            tempValue.append(".");
+            tempValue.append(sb.getProperty().getPropertyValues().get(i).getIdentifier());
+        }
+        return tempValue;
+    }
+
+
+
+
+
 
 
     // CP-MUSTACHE
     public void dealWithMustacheExp(String id, MustacheExpression me){
         String MustValue;
 
+        id=id.substring(1,id.length()-1);
         if (id == null) {
             throw new NullPointerException(id);
         }
@@ -124,7 +202,6 @@ public class CodeGeneration {
             JSContent.append("        var "+id+"Changes4Must = function (event) {\n" +
                     "            var defaultText = \"My Text is: {{"+MustValue+"}}\";\n" +
                     "            document.getElementById(\""+id+"\").innerHTML = defaultText.replace(\"{{"+MustValue+"}}\", forthyear."+MustValue+");\n" +
-                    "            renders.push("+id+"Changes4Must);\n   "+
                     "        };\n " +
                     "renders.push("+id+"Changes4Must);\n");
         }

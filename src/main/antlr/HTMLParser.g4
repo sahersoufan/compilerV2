@@ -220,6 +220,7 @@ collection4Model1
         | subObj
         | oneLine4ModelCondition
     ;
+
 oneLine4ModelCondition
     : CP_CONTENT_OPEN_PAR logicComprison CP_CONTENT_QUESTION_MARK collection4Model1 CP_CONTENT_COLON collection4Model1 CP_CONTENT_CLOSE_PAR
     ;
@@ -387,7 +388,8 @@ comparisonOperator
 
 // LOGIC
 
-
+// ((a>b? 5 :3) > (1 < 3 ? ( c > o ? 1 : ( 2 > 8 ? a :d)))? 2 : 3)
+     //( ?2:3)
 logicComprison
     : ((CP_CONTENT_NOT)? ((collection4LogicRet) | (CP_CONTENT_OPEN_PAR logicComprison CP_CONTENT_CLOSE_PAR))) /// first
       middleAndLastLogicComparison*

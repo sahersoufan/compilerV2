@@ -98,7 +98,7 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
     SimpleTreeNode root = new SimpleTreeNode("root");
     Node node = new Node();
     public Boolean InsideBody = false;
-    String javaScript = "E:\\forth year\\1\\CompV2\\src\\JS.js";
+    String javaScript = "C:\\Users\\FATIMA\\Desktop\\compilerV2\\src\\JS.js";
     CodeGeneration cg = new CodeGeneration(javaScript);
     String id = null;
 
