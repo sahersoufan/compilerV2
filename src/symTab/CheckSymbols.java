@@ -117,9 +117,9 @@ public class CheckSymbols {
     }
 
     public boolean process() throws Exception {
-        String source = "E:\\forth year\\1\\CompV2\\src\\sample.txt";
-        String errorsFile = "E:\\forth year\\1\\CompV2\\src\\Errors.txt";
-        String STFile = "E:\\forth year\\1\\CompV2\\src\\ST.txt";
+        String source = "C:\\Users\\FATIMA\\Desktop\\compilerV2\\src\\sample.txt";
+        String errorsFile = "C:\\Users\\FATIMA\\Desktop\\compilerV2\\src\\Errors.txt";
+        String STFile = "C:\\Users\\FATIMA\\Desktop\\compilerV2\\src\\ST.txt";
         File EF1 = new File(errorsFile);
         if (EF1.exists()){
             EF1.delete();

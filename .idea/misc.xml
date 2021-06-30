@@ -16,8 +16,8 @@
         <PerGrammarGenerationSettings>
           <option name="fileName" value="$PROJECT_DIR$/src/main/antlr/HTMLParser.g4" />
           <option name="autoGen" value="true" />
-          <option name="outputDir" value="E:\forth year\1\CompV2\src" />
-          <option name="libDir" value="E:\forth year\1\CompV2\src\main\antlr\" />
+          <option name="outputDir" value="C:\Users\FATIMA\Desktop\compilerV2\src" />
+          <option name="libDir" value="C:\Users\FATIMA\Desktop\compilerV2\src\main\antlr" />
           <option name="encoding" value="" />
           <option name="pkg" value="generatedGrammers" />
           <option name="language" value="" />
@@ -29,7 +29,7 @@
   <component name="ProjectKey">
     <option name="state" value="project://e2804f05-5315-4fc6-a121-c522a6c26470" />
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_15" default="true" project-jdk-name="15" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_14" default="true" project-jdk-name="15" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
 </project>
