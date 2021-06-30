@@ -316,19 +316,6 @@ public class DefPhase extends HTMLParserBaseListener {
         }
     }
 
-    @Override
-    public void enterModelName(HTMLParser.ModelNameContext ctx) {
-        super.enterModelName(ctx);
-    }
-
-    @Override
-    public void exitModelName(HTMLParser.ModelNameContext ctx) {
-
-
-        if (ctx.MUSTACHE_IDENTIFIER() != null){
-            defineVar(ctx.MUSTACHE_IDENTIFIER().getSymbol());
-        }
-    }
 
 
     @Override

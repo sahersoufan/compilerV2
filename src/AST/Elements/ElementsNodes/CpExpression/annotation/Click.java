@@ -1,7 +1,6 @@
 package AST.Elements.ElementsNodes.CpExpression.annotation;
 
-public class AnnotationClickExpression {
-
+public class Click {
     private Collection4Annotation collection4Annotation;
 
     public void setCollection4Annotation(Collection4Annotation collection4Annotation) {
@@ -11,7 +10,6 @@ public class AnnotationClickExpression {
     public Collection4Annotation getCollection4Annotation() {
         return collection4Annotation;
     }
-
 
 
 }

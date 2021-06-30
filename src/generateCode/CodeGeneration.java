@@ -2,6 +2,15 @@ package generateCode;
 
 import AST.Elements.ElementsNodes.CpExpression.model.ModelExpression;
 import AST.Elements.ElementsNodes.HtmlAttribute;
+import AST.Elements.ElementsNodes.generic4Elements.Logic.LogicComprison;
+import AST.Elements.ElementsNodes.generic4Elements.Logic.MiddleAndLastLogicComparison;
+import AST.Elements.ElementsNodes.generic4Elements.array.ArrayCalling;
+import AST.Elements.ElementsNodes.generic4Elements.array.ObjArray;
+import AST.Elements.ElementsNodes.generic4Elements.function.FunctionCall;
+import AST.Elements.ElementsNodes.generic4Elements.function.Parameter;
+import AST.Elements.ElementsNodes.generic4Elements.function.Parameters;
+import AST.Elements.ElementsNodes.generic4Elements.object.SubObj;
+import AST.Elements.ElementsNodes.generic4Elements.property.Property;
 import AST.Elements.ElementsNodes.mustacheExpression.MustacheExpression;
 import AST.Elements.HtmlElement;
 import AST.Elements.HtmlElements;
@@ -118,7 +127,7 @@ public class CodeGeneration {
         if (id == null) {
             throw new NullPointerException(id);
         }
-
+/*
         if (me.getCollection4Mustache() != null){
             MustValue = me.getCollection4Mustache().getMustacheVariable().getMustacheVariable();
             JSContent.append("        var "+id+"Changes4Must = function (event) {\n" +
@@ -127,7 +136,135 @@ public class CodeGeneration {
                     "            renders.push("+id+"Changes4Must);\n   "+
                     "        };\n " +
                     "renders.push("+id+"Changes4Must);\n");
+        }*/
+    }
+
+
+
+
+
+
+
+    // LOGIC COMPARISON
+    public void dealWithLogicComparison(LogicComprison logicComprison){
+
+        // start
+        if (logicComprison.getCollection4LogicRetFirst() != null){
+            // just one
+        }else if(logicComprison.getLogicComprisonFirst() != null){
+            //add (
+            // repeat logicComparison
+            //add )
+            dealWithLogicComparison(logicComprison.getLogicComprisonFirst());
+
+            if (!logicComprison.getMiddleAndLastLogicComparisons().isEmpty()){
+                for (int i = 0 ; i <logicComprison.getMiddleAndLastLogicComparisons().size(); i ++) {
+                    // add middle and last
+                    MiddleAndLastLogicComparison middleAndLastLogicComparison = logicComprison.getMiddleAndLastLogicComparisons().get(i);
+                    if (middleAndLastLogicComparison.getAndMiddle() != null){
+                        if (middleAndLastLogicComparison.getNotAndMiddle() != null) {
+                            //add !
+                        }
+                            //add (
+                            if (middleAndLastLogicComparison.getCollection4LogicRet() != null){
+                                // get it
+                            }
+                            // add )
+                    }else if (middleAndLastLogicComparison.getOrMiddle() != null){
+                        if (middleAndLastLogicComparison.getNotOrMiddle() != null){
+                            // add !
+                        }
+                        //add (
+                        if (middleAndLastLogicComparison.getLogicComprisonLast() != null){
+                            // repeat logic comparison
+                        }
+                        // add )
+                    }
+                }
+            }
         }
     }
 
+
+
+    public void dealWithObjArray(ObjArray OA){
+
+        if (OA.getArrName() != null){
+            // add it
+        }
+
+        if (OA.getArrayCalling() != null){
+            if (OA.getArrayCalling().getArithmeticLogic() != null){
+                // get from array calling
+            }
+            if (OA.getArrayCalling().getProperty() != null){
+                // get from property
+            }else if (OA.getArrayCalling().getFunctionCallFromVar() != null){
+                // get from function
+            }
+        }
+
+    }
+
+    public void dealWithArrayCalling(ArrayCalling AC){
+
+        for (int i = 0 ; i < AC.getArithmeticLogic().size() ;i++){
+            // add [
+            // add from arithmetic logic
+            // add ]
+        }
+        // return
+    }
+
+    public void dealWithSubObj(SubObj SO){
+
+//        SO.getIdentifier() add this
+
+        // add property
+        dealWithProperty(SO.getProperty());
+
+        //return
+    }
+
+    public void dealWithProperty(Property p){
+        for (int i = 0 ; i < p.getPropertyValues().size() ; i++){
+//            add .
+//            p.getPropertyValues().get(i);  add it
+        }
+    }
+
+    public void dealWithFunctionCall(FunctionCall FC){
+
+//        FC.getFunctionName()
+
+        for (int i = 0 ; i < FC.getFunctionCallFromVar().getParameters().size() ; i ++){
+            //        FC.getFunctionCallFromVar().getOpenPar()
+            parameters4FunctionCall(FC.getFunctionCallFromVar().getParameters().get(i));
+            //        FC.getFunctionCallFromVar().getClosePar()
+
+        }
+
+
+        if (FC.getFunctionCallFromVar().getProperty() != null){
+            dealWithProperty(FC.getFunctionCallFromVar().getProperty());
+        }
+
+        if (FC.getFunctionCallFromVar().getArrayCalling() != null){
+            dealWithArrayCalling(FC.getFunctionCallFromVar().getArrayCalling());
+        }
+
+        // return value
+    }
+
+    public void parameters4FunctionCall(Parameters p){
+
+        for (int i = 0 ; i < p.getParameters().size() ; i++){
+            Parameter parameter =  p.getParameters().get(i);
+//            if (parameter .... )
+            // add ,
+        }
+
+
+        // return
+    }
 }

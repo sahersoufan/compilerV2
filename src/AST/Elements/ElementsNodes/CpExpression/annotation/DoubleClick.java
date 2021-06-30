@@ -1,6 +1,6 @@
 package AST.Elements.ElementsNodes.CpExpression.annotation;
 
-public class AnnotationOverExpression {
+public class DoubleClick {
 
     private Collection4Annotation collection4Annotation;
 

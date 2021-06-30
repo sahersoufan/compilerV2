@@ -3,18 +3,9 @@ package AST.Elements.ElementsNodes.mustacheExpression.filter;
 import AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.Collection4Mustache;
 
 public class Filter {
-        private ModelName modelName;
         private String Filter;
        private FormatName formatName;
    private String mustacheString;
-
-    public ModelName getModelName() {
-        return modelName;
-    }
-
-    public void setModelName(ModelName modelName) {
-        this.modelName = modelName;
-    }
 
     public String getFilter() {
         return Filter;

@@ -36,7 +36,6 @@ import AST.Elements.ElementsNodes.generic4Elements.variable.VariableName;
 import AST.Elements.ElementsNodes.mustacheExpression.MustacheExpression;
 import AST.Elements.ElementsNodes.mustacheExpression.filter.Filter;
 import AST.Elements.ElementsNodes.mustacheExpression.filter.FormatName;
-import AST.Elements.ElementsNodes.mustacheExpression.filter.ModelName;
 import AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.*;
 import AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.Logic.ArithmeticLogic4Must;
 import AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.Logic.LastArithmeticLogic4Must;
@@ -56,14 +55,9 @@ import AST.HtmlDocument;
 import generateCode.CodeGeneration;
 import generatedGrammers.HTMLParser;
 import generatedGrammers.HTMLParserBaseVisitor;
-import org.antlr.v4.runtime.ParserRuleContext;
 import treePrinter.SimpleTreeNode;
-import treePrinter.decorator.BorderTreeNodeDecorator;
 import treePrinter.printer.listing.ListingTreePrinter;
-import treePrinter.printer.traditional.TraditionalTreePrinter;
 
-import javax.accessibility.AccessibleTable;
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -262,9 +256,9 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
                         System.out.println("cp-switch");
                     }else if (ha.getSwitchCaseExpression() != null){
                         System.out.println("cp-case");
-                    }else if (ha.getAnnotationClickExpression() != null){
+                    }else if (ha.getClick() != null){
                         System.out.println("cp-click");
-                    }else if (ha.getAnnotationOverExpression() != null){
+                    }else if (ha.getDoubleClick() != null){
                         System.out.println("cp-Over");
                     }else if (ha.getTagName() != null){
                         if (ha.getTagName().equals("id")) {
@@ -407,14 +401,14 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
             htmlAttribute.setModelExpression((ModelExpression) visitModelExpression(ctx.modelExpression()));
         }
         //click
-        if (ctx.annotationClickExpression() != null){
-            htmlAttributeNode.addChild(addNode("annotationClickExpression"));
-            htmlAttribute.setAnnotationClickExpression((AnnotationClickExpression) visitAnnotationClickExpression(ctx.annotationClickExpression()));
+        if (ctx.click() != null){
+            htmlAttributeNode.addChild(addNode("click"));
+            htmlAttribute.setClick((Click) visitClick(ctx.click()));
         }
         //Over
-        if (ctx.annotationOverExpression() != null){
-            htmlAttributeNode.addChild(addNode("annotationOverExpression"));
-            htmlAttribute.setAnnotationOverExpression((AnnotationOverExpression) visitAnnotationOverExpression(ctx.annotationOverExpression()));
+        if (ctx.doubleClick() != null){
+            htmlAttributeNode.addChild(addNode("doubleClick"));
+            htmlAttribute.setDoubleClick((DoubleClick) visitDoubleClick(ctx.doubleClick()));
         }
         //generic
         if (ctx.TAG_NAME() != null){
@@ -1107,30 +1101,29 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
 
     ///////////////////////////  Annotation exprition ///////////////////////////
 
-    @Override
-    public Object visitAnnotationClickExpression(HTMLParser.AnnotationClickExpressionContext ctx) {
-       AnnotationClickExpression clickExpression =new AnnotationClickExpression();
-       SimpleTreeNode clickExpressionNode = node.getNode();
 
-       if(ctx.collection4Annotation()!=null){
-           clickExpressionNode.addChild(addNode("collection4Annotation"));
-           clickExpression.setCollection4Annotation((Collection4Annotation) visitCollection4Annotation(ctx.collection4Annotation()));
-       }
-        return clickExpression;
+    @Override
+    public Object visitClick(HTMLParser.ClickContext ctx) {
+        Click click = new Click();
+        SimpleTreeNode clickExpressionNode = node.getNode();
+
+        if(ctx.collection4Annotation()!=null){
+            clickExpressionNode.addChild(addNode("collection4Annotation"));
+            click.setCollection4Annotation((Collection4Annotation) visitCollection4Annotation(ctx.collection4Annotation()));
+        }
+        return click;
     }
 
     @Override
-    public Object visitAnnotationOverExpression(HTMLParser.AnnotationOverExpressionContext ctx) {
-
-         AnnotationOverExpression overExpression =new AnnotationOverExpression ();
-         SimpleTreeNode overExpressionNode  = node.getNode();
+    public Object visitDoubleClick(HTMLParser.DoubleClickContext ctx) {
+        DoubleClick doubleClick = new DoubleClick();
+        SimpleTreeNode clickExpressionNode = node.getNode();
 
         if(ctx.collection4Annotation()!=null){
-            overExpressionNode.addChild(addNode("collection4Annotation"));
-            overExpression.setCollection4Annotation((Collection4Annotation) visitCollection4Annotation(ctx.collection4Annotation()));
+            clickExpressionNode.addChild(addNode("collection4Annotation"));
+            doubleClick.setCollection4Annotation((Collection4Annotation) visitCollection4Annotation(ctx.collection4Annotation()));
         }
-
-        return overExpression;
+        return doubleClick;
     }
 
     @Override
@@ -2227,16 +2220,22 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
         MustacheExpression mustacheExpression = new MustacheExpression();
         SimpleTreeNode mustacheExpressionNode = node.getNode();
 
-        if (ctx.collection4Mustache() != null){
+        if (!ctx.collection4Mustache().isEmpty()){
             mustacheExpressionNode.addChild(addNode("collection4Mustache"));
-            mustacheExpression.setCollection4Mustache((Collection4Mustache) visitCollection4Mustache(ctx.collection4Mustache()));
-        }
+            List<org.antlr.v4.runtime.misc.Pair<Collection4Mustache, Filter>> mustacheContent = new ArrayList<>();
 
-        if (ctx.filter() != null){
-            mustacheExpressionNode.addChild(addNode("filter"));
-            mustacheExpression.setFilter((Filter) visitFilter(ctx.filter()));
+            for (int i = 0 ; i < ctx.collection4Mustache().size() ; i ++){
+                Collection4Mustache cm = (Collection4Mustache) visitCollection4Mustache(ctx.collection4Mustache(i));
+                if (ctx.filter() != null){
+                    mustacheExpressionNode.addChild(addNode("filter"));
+                    Filter f = (Filter) visitFilter(ctx.filter(i));
+                    mustacheContent.add(new org.antlr.v4.runtime.misc.Pair<>(cm,f));
+                    continue;
+                }
+                mustacheContent.add(new org.antlr.v4.runtime.misc.Pair<>(cm,null));
+            }
+            mustacheExpression.setMustacheContent(mustacheContent);
         }
-
         return mustacheExpression;
     }
     @Override
@@ -2919,11 +2918,6 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
         Filter filter = new Filter();
         SimpleTreeNode filterNode = node.getNode();
 
-        if (ctx.modelName() != null){
-            filterNode.addChild(addNode("modelName"));
-            filter.setModelName((ModelName) visitModelName(ctx.modelName()));
-        }
-
         if (ctx.MUSTACHE_FILTER() != null){
             filter.setFilter(ctx.MUSTACHE_FILTER().getSymbol().getText());
             filterNode.addChild(new SimpleTreeNode(filter.getFilter()));
@@ -2939,18 +2933,6 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
             filter.setMustacheString(ctx.MUSTACHE_STRING().getSymbol().getText());
         }
         return filter;
-    }
-
-    @Override
-    public Object visitModelName(HTMLParser.ModelNameContext ctx) {
-        ModelName modelName = new ModelName();
-        SimpleTreeNode modelNameNode = node.getNode();
-        if (ctx.MUSTACHE_IDENTIFIER() != null){
-            modelName.setMustachIdentifier(ctx.MUSTACHE_IDENTIFIER().getSymbol().getText());
-            modelNameNode.addChild(new SimpleTreeNode(modelName.getMustachIdentifier()));
-        }
-
-        return modelName;
     }
 
     @Override
