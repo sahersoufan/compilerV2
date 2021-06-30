@@ -2,7 +2,6 @@ package generateCode;
 
 import AST.Elements.ElementsNodes.CpExpression.model.ModelExpression;
 import AST.Elements.ElementsNodes.HtmlAttribute;
-<<<<<<<<< Temporary merge branch 1
 import AST.Elements.ElementsNodes.generic4Elements.Logic.LogicComprison;
 import AST.Elements.ElementsNodes.generic4Elements.Logic.MiddleAndLastLogicComparison;
 import AST.Elements.ElementsNodes.generic4Elements.array.ArrayCalling;
@@ -12,14 +11,8 @@ import AST.Elements.ElementsNodes.generic4Elements.function.Parameter;
 import AST.Elements.ElementsNodes.generic4Elements.function.Parameters;
 import AST.Elements.ElementsNodes.generic4Elements.object.SubObj;
 import AST.Elements.ElementsNodes.generic4Elements.property.Property;
-=========
-import AST.Elements.ElementsNodes.generic4Elements.object.SubObj;
->>>>>>>>> Temporary merge branch 2
 import AST.Elements.ElementsNodes.mustacheExpression.MustacheExpression;
-import AST.Elements.HtmlElement;
-import AST.Elements.HtmlElements;
-import AST.HtmlDocument;
-import org.antlr.v4.runtime.misc.Pair;
+
 
 import java.io.File;
 import java.io.FileWriter;
