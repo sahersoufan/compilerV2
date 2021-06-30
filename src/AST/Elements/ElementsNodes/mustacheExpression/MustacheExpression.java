@@ -2,24 +2,19 @@ package AST.Elements.ElementsNodes.mustacheExpression;
 
 import AST.Elements.ElementsNodes.mustacheExpression.filter.Filter;
 import AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.Collection4Mustache;
+import org.antlr.v4.runtime.misc.Pair;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MustacheExpression {
-    private Collection4Mustache collection4Mustache;
-    private Filter filter;
+    List<Pair<Collection4Mustache, Filter>> MustacheContent = new ArrayList<>();
 
-    public void setCollection4Mustache(Collection4Mustache collection4Mustache) {
-        this.collection4Mustache = collection4Mustache;
+    public List<Pair<Collection4Mustache, Filter>> getMustacheContent() {
+        return MustacheContent;
     }
 
-    public void setFilter(Filter filter) {
-        this.filter = filter;
-    }
-
-    public Collection4Mustache getCollection4Mustache() {
-        return collection4Mustache;
-    }
-
-    public Filter getFilter() {
-        return filter;
+    public void setMustacheContent(List<Pair<Collection4Mustache, Filter>> mustacheContent) {
+        MustacheContent = mustacheContent;
     }
 }

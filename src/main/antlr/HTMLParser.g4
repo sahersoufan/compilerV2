@@ -46,10 +46,10 @@ htmlAttribute
     | CP_IF CP_EQUALS CP_OPEN_DOUBLE_QUOTE ifExpression CP_CONTENT_CLOSE_DOUBLE_QUOTE
 
     | CP_MODEL CP_EQUALS CP_OPEN_DOUBLE_QUOTE modelExpression CP_CONTENT_CLOSE_DOUBLE_QUOTE
-//TODO we don't know :)
-    | CP_CLICK CP_EQUALS CP_OPEN_DOUBLE_QUOTE annotationClickExpression CP_CONTENT_CLOSE_DOUBLE_QUOTE
-    | CP_MOUSEOVER CP_EQUALS CP_OPEN_DOUBLE_QUOTE annotationOverExpression CP_CONTENT_CLOSE_DOUBLE_QUOTE
-    //
+
+    | CP_CLICK CP_EQUALS CP_OPEN_DOUBLE_QUOTE click CP_CONTENT_CLOSE_DOUBLE_QUOTE
+    | CP_DOUBLE_CLICK CP_EQUALS CP_OPEN_DOUBLE_QUOTE doubleClick CP_CONTENT_CLOSE_DOUBLE_QUOTE
+
     | TAG_NAME (TAG_EQUALS ATTVALUE_VALUE)?
     ;
 
@@ -230,10 +230,10 @@ oneLine4ModelCondition
 
 
 // ANNOTATION
-annotationClickExpression
+click
     : collection4Annotation
     ;
-annotationOverExpression
+doubleClick
     : collection4Annotation
     ;
 collection4Annotation
@@ -457,8 +457,7 @@ collection4LogicRet
  ///////////////////////// MUSTACHE /////////////////////////
 
 mustacheExpression
-    : OPEN_MUSTACHE collection4Mustache CLOSE_MUSTACHE
-    | OPEN_MUSTACHE filter CLOSE_MUSTACHE
+    : OPEN_MUSTACHE (collection4Mustache filter?)+ CLOSE_MUSTACHE
     ;
 
 collection4Mustache
@@ -620,11 +619,7 @@ mustacheComparisonOperator
 
 // FILTER
 filter
-    : modelName MUSTACHE_FILTER formatName (MUSTACHE_COLON MUSTACHE_STRING)?
-    ;
-
-modelName
-    : MUSTACHE_IDENTIFIER
+    : MUSTACHE_FILTER formatName (MUSTACHE_COLON MUSTACHE_STRING)?
     ;
 
 formatName

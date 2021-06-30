@@ -155,7 +155,7 @@ public class RefPhase extends HTMLParserBaseListener {
         ctx.CP_HIDE() != null ||
         ctx.CP_IF() != null ||
         ctx.CP_MODEL() != null ||
-        ctx.CP_MOUSEOVER() != null ||
+        ctx.CP_DOUBLE_CLICK() != null ||
         ctx.CP_SHOW() != null ||
         ctx.CP_SWITCH() != null ||
         ctx.CP_SWITCH_CASE() != null ||
@@ -299,8 +299,10 @@ public class RefPhase extends HTMLParserBaseListener {
         }
     }
 
+
+
     @Override
-    public void enterAnnotationClickExpression(HTMLParser.AnnotationClickExpressionContext ctx) {
+    public void enterClick(HTMLParser.ClickContext ctx) {
         if (justOneCp){
             System.err.println("you can't add more than one cp attribute here, idiot !!! ");
             fwInErrorFile("you can't add more than one cp attribute here, idiot !!! ");
@@ -309,15 +311,13 @@ public class RefPhase extends HTMLParserBaseListener {
     }
 
     @Override
-    public void enterAnnotationOverExpression(HTMLParser.AnnotationOverExpressionContext ctx) {
+    public void enterDoubleClick(HTMLParser.DoubleClickContext ctx) {
         if (justOneCp){
             System.err.println("you can't add more than one cp attribute here, idiot !!! ");
             fwInErrorFile("you can't add more than one cp attribute here, idiot !!! ");
 
         }
     }
-
-
 
     @Override
     public void enterVariableName(HTMLParser.VariableNameContext ctx) {
@@ -651,29 +651,12 @@ public class RefPhase extends HTMLParserBaseListener {
             String value = ctx.MUSTACHE_STRING().getSymbol().getText();
             if (!CheckSymbols.CheckTypeOfFormat(value)){
                 CheckSymbols.error(ctx.MUSTACHE_STRING().getSymbol(), "it's not good for the format, idiot !!! ");
+                fwInErrorFile(ctx.MUSTACHE_STRING().getSymbol() + "it's not good for the format, idiot !!! ");
             }
         }
     }
 
-    @Override
-    public void enterModelName(HTMLParser.ModelNameContext ctx) {
-        String name = ctx.MUSTACHE_IDENTIFIER().getSymbol().getText();
-        if (CheckSymbols.checKResolve(currentScope,name) &&
-                CheckSymbols.checkScope(currentScope,ctx.MUSTACHE_IDENTIFIER().getSymbol())){
 
-            System.out.println();
-            System.out.println(currentScope.getName());
-            fwInSTFile(currentScope.getName());
-            Symbol var = currentScope.resolve(name);
-            if (var == null){
-                CheckSymbols.error(ctx.MUSTACHE_IDENTIFIER().getSymbol(), "it's null, idiot !!! ");
-            }
-            else{
-                System.out.println("ModelNameMust = "+var.getName());
-                fwInSTFile("ModelNameMust = "+var.getName());
-            }
-        }
-    }
 
     @Override
     public void enterFormatName(HTMLParser.FormatNameContext ctx) {

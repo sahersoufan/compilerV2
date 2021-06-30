@@ -5,13 +5,12 @@ import AST.Elements.ElementsNodes.CpExpression.For.ForExpression;
 import AST.Elements.ElementsNodes.CpExpression.If.IfExpression;
 import AST.Elements.ElementsNodes.CpExpression.Switch.SwitchCaseExpression;
 import AST.Elements.ElementsNodes.CpExpression.Switch.SwitchExpression;
-import AST.Elements.ElementsNodes.CpExpression.annotation.AnnotationClickExpression;
-import AST.Elements.ElementsNodes.CpExpression.annotation.AnnotationOverExpression;
+import AST.Elements.ElementsNodes.CpExpression.annotation.Click;
+import AST.Elements.ElementsNodes.CpExpression.annotation.DoubleClick;
 import AST.Elements.ElementsNodes.CpExpression.app.AppExpression;
 import AST.Elements.ElementsNodes.CpExpression.model.ModelExpression;
 import AST.Elements.ElementsNodes.CpExpression.showHide.HideExpression;
 import AST.Elements.ElementsNodes.CpExpression.showHide.ShowExpression;
-import treePrinter.SimpleTreeNode;
 
 public class HtmlAttribute {
 
@@ -26,8 +25,8 @@ public class HtmlAttribute {
     private SwitchCaseExpression switchCaseExpression;
     private IfExpression ifExpression;
     private ModelExpression modelExpression;
-    private AnnotationClickExpression annotationClickExpression;
-    private AnnotationOverExpression annotationOverExpression;
+    private Click click;
+    private DoubleClick doubleClick;
 
 
 
@@ -111,19 +110,19 @@ public class HtmlAttribute {
         this.modelExpression = modelExpression;
     }
 
-    public AnnotationClickExpression getAnnotationClickExpression() {
-        return annotationClickExpression;
+    public Click getClick() {
+        return click;
     }
 
-    public void setAnnotationClickExpression(AnnotationClickExpression annotationClickExpression) {
-        this.annotationClickExpression = annotationClickExpression;
+    public void setClick(Click click) {
+        this.click = click;
     }
 
-    public AnnotationOverExpression getAnnotationOverExpression() {
-        return annotationOverExpression;
+    public DoubleClick getDoubleClick() {
+        return doubleClick;
     }
 
-    public void setAnnotationOverExpression(AnnotationOverExpression annotationOverExpression) {
-        this.annotationOverExpression = annotationOverExpression;
+    public void setDoubleClick(DoubleClick doubleClick) {
+        this.doubleClick = doubleClick;
     }
 }
