@@ -95,12 +95,20 @@ public class CodeGeneration {
 
         // Get Model Value
         if (modelExp.getCollection4Model1().getVariable() != null) {
-            ModelVarible(modelExp,id);
+            modelValue=ModelVarible(modelExp,id);
+            JSContent.append("        document.getElementById(\""+id+"\").value = forthyear."+modelValue+";\n");
 
         } else if (modelExp.getCollection4Model1().getSubObj() != null) {
-            ModelSubobj(modelExp,id);
+            modelValue= ModelSubobj(modelExp,id);
+            JSContent.append("        var "+id+"Changes = function (event) {\n" +
+                    "            forthyear."+modelValue+" = document.getElementById(\""+id+"\").value;\n" +
+                    "        };\n");
         }else if(modelExp.getCollection4Model1().getOneLine4ModelCondition()!=null){
-            ModelOneLine4ModelCondition(modelExp,id);
+            modelValue=ModelOneLine4ModelCondition(modelExp,id);
+            JSContent.append("");
+        }else if(modelExp.getCollection4Model1().getFunctionCall()!=null){
+            modelValue=ModelFunctioncall(modelExp,id);
+            JSContent.append("");
         }
 
 
@@ -111,71 +119,58 @@ public class CodeGeneration {
                 "        changes.push("+id+"Changes);\n");
     }
 
-    public void ModelVarible(ModelExpression modelExp ,String id){
-
-
-        String modelValue = null;
-
-        modelValue = modelExp.getCollection4Model1().getVariable().getVariableName().getIdentifier();
-        JSContent.append("        document.getElementById(\""+id+"\").value = forthyear."+modelValue+";\n");
-    }
-    public void ModelSubobj(ModelExpression modelExp,String id ){
-
-        String modelValue = null;
-        ;
-        modelValue = dealWithSubobj(modelExp.getCollection4Model1().getSubObj()).toString();
-        JSContent.append("        var "+id+"Changes = function (event) {\n" +
-                "            forthyear."+modelValue+" = document.getElementById(\""+id+"\").value;\n" +
-                "        };\n");
-    }
-    public void ModelObjArray(ModelExpression modelExp,String id){
+    public String ModelVarible(ModelExpression modelExp ,String id){
+        return modelExp.getCollection4Model1().getVariable().getVariableName().getIdentifier();
 
     }
-    public void ModelFunctioncall(ModelExpression modelExp,String id){
+    public String ModelSubobj(ModelExpression modelExp,String id ){
+        return dealWithSubobj(modelExp.getCollection4Model1().getSubObj()).toString();
+    }
+    public String ModelObjArray(ModelExpression modelExp,String id){
+          return "";
+    }
+    public String ModelFunctioncall(ModelExpression modelExp,String id){
+      return "";
+    }
+    public String ModelOneLine4ModelCondition(ModelExpression modelExp,String id) {
 
-    };
-    public void ModelOneLine4ModelCondition(ModelExpression modelExp,String id) {
-        String modelValue = null;
-//hello
         StringBuilder tempValue = new StringBuilder();
         tempValue.append("(");
 
-        //Collection4Model1_1_1
-        if (modelExp.getCollection4Model1().getOneLine4ModelCondition().getCollection4Model1_1_1().getVariable() != null) {
-            ModelVarible(modelExp,id);
-        } else if (modelExp.getCollection4Model1().getOneLine4ModelCondition().getCollection4Model1_1_1().getSubObj() != null){
-            ModelSubobj(modelExp,id);
-        }
-        else if(modelExp.getCollection4Model1().getOneLine4ModelCondition().getCollection4Model1_1_1().getObjArray()!=null){
-            ModelObjArray(modelExp,id);
-        }else if(modelExp.getCollection4Model1().getOneLine4ModelCondition().getCollection4Model1_1_1().getFunctionCall()!=null){
-            ModelFunctioncall(modelExp,id);
-        }
-
         //LogicComprison
         if(modelExp.getCollection4Model1().getOneLine4ModelCondition().getLogicComprison()!=null){
-
+           // tempValue.append();
         }
+        tempValue.append(" ? ");
+
+        //Collection4Model1_1_1
+        if (modelExp.getCollection4Model1().getOneLine4ModelCondition().getCollection4Model1_1_1().getVariable() != null) {
+            tempValue.append(ModelVarible(modelExp,id));
+        } else if (modelExp.getCollection4Model1().getOneLine4ModelCondition().getCollection4Model1_1_1().getSubObj() != null){
+            tempValue.append(ModelSubobj(modelExp,id));
+        }
+        else if(modelExp.getCollection4Model1().getOneLine4ModelCondition().getCollection4Model1_1_1().getObjArray()!=null){
+            tempValue.append( ModelObjArray(modelExp,id));
+        }else if(modelExp.getCollection4Model1().getOneLine4ModelCondition().getCollection4Model1_1_1().getFunctionCall()!=null){
+            tempValue.append(ModelFunctioncall(modelExp,id));
+        }
+
+        tempValue.append(" : ");
 
         //getCollection4Model1_1_2
         if(modelExp.getCollection4Model1().getOneLine4ModelCondition().getCollection4Model1_1_2().getVariable()!=null){
-            ModelVarible(modelExp,id);
+            tempValue.append(ModelVarible(modelExp,id));
         } else if (modelExp.getCollection4Model1().getOneLine4ModelCondition().getCollection4Model1_1_2().getSubObj() != null){
-            ModelSubobj(modelExp,id);
+            tempValue.append(ModelSubobj(modelExp,id));
         }
         else if(modelExp.getCollection4Model1().getOneLine4ModelCondition().getCollection4Model1_1_2().getObjArray()!=null){
-            ModelObjArray(modelExp,id);
+            tempValue.append( ModelObjArray(modelExp,id));
         }else if(modelExp.getCollection4Model1().getOneLine4ModelCondition().getCollection4Model1_1_2().getFunctionCall()!=null){
-            ModelFunctioncall(modelExp,id);
+            tempValue.append( ModelFunctioncall(modelExp,id));
         }
 
 
-
-
-        JSContent.append("        document.getElementById(\""+id+"\").addEventListener(\"input\", function(event) {\n" +
-                "            changes.push("+id+"Changes);\n" +
-                "        });\n" +
-                "        changes.push(\"+id+\"Changes);\n");
+        return tempValue.toString();
     }
 
 
