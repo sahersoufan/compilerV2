@@ -9,7 +9,7 @@ import AST.Elements.ElementsNodes.generic4Elements.variable.Variable;
 public class Collection4Model1 {
     private Variable variable;
     private ObjArray objArray;
-    private FunctionCall functionCall;
+    private FunctionCall functionCall; // error
     private SubObj subObj;
     private OneLine4ModelCondition oneLine4ModelCondition;
 

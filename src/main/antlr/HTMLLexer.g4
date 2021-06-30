@@ -45,7 +45,6 @@ TAG_OPEN
     : '<' -> pushMode(TAG)
     ;
 
-//TODO check this
 HTML_TEXT
     : ~('<' | '{')+
     ;

@@ -8,6 +8,8 @@ import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
+
+import java.io.File;
 import java.util.*;
 
 import org.antlr.v4.runtime.CharStream;
@@ -44,7 +46,6 @@ public class CheckSymbols {
         tempScope = temp;
         if (tempScope.getEnclosingScope() != null) {
             tempScope = tempScope.getEnclosingScope();
-
             // TODO are you sure that you need to get every scope
             while (tempScope.getEnclosingScope() != null) {
                 if (tempScope.resolve(nameToken.getText()) != null) {
@@ -99,13 +100,35 @@ public class CheckSymbols {
 
         return false;
     }
+
+
+    public static boolean checkIfInsideApp(Scope cs){
+        String parents = cs.getName();
+        if (parents.contains("App")){
+            return true;
+        }
+        return false;
+    }
+
+
     public static void error(Token t, String msg) {
         System.err.printf("line %d:%d %s\n", t.getLine(), t.getCharPositionInLine(),
                 msg);
     }
 
-    public void process() throws Exception {
+    public boolean process() throws Exception {
         String source = "E:\\forth year\\1\\CompV2\\src\\sample.txt";
+        String errorsFile = "E:\\forth year\\1\\CompV2\\src\\Errors.txt";
+        String STFile = "E:\\forth year\\1\\CompV2\\src\\ST.txt";
+        File EF1 = new File(errorsFile);
+        if (EF1.exists()){
+            EF1.delete();
+        }
+        File ST1 = new File(STFile);
+        if (ST1.exists()){
+            ST1.delete();
+        }
+
         CharStream cs = fromFileName(source);
         HTMLLexer lexer = new HTMLLexer(cs);
         CommonTokenStream token = new CommonTokenStream(lexer);
@@ -113,12 +136,15 @@ public class CheckSymbols {
         System.out.println("");
         ParseTree tree = parser.htmlDocument();
         ParseTreeWalker walker = new ParseTreeWalker();
-
         DefPhase def = new DefPhase();
         walker.walk(def, tree);
 
-        // create next phase and feed symbol table info from def to ref phase
-        RefPhase ref = new RefPhase(def.globals, def.scopes);
+
+        RefPhase ref = new RefPhase(def.globals, def.scopes, errorsFile, STFile);
         walker.walk(ref, tree);
+
+
+        File EF = new File(errorsFile);
+        return EF.length() != 0;
     }
 }

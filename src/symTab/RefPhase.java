@@ -5,11 +5,9 @@ import generatedGrammers.HTMLParserBaseListener;
 import org.antlr.symtab.GlobalScope;
 import org.antlr.symtab.Scope;
 import org.antlr.symtab.Symbol;
-import org.antlr.v4.runtime.ParserRuleContext;
-import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.ParseTreeProperty;
-import org.antlr.v4.runtime.tree.TerminalNode;
 
+import java.io.*;
 import java.util.Stack;
 
 public class RefPhase extends HTMLParserBaseListener {
@@ -19,9 +17,23 @@ public class RefPhase extends HTMLParserBaseListener {
     Stack<String> elementNames = new Stack<>();
     String thisElement = null;
     boolean justOneCp = false;
-    public RefPhase(GlobalScope globals, ParseTreeProperty<Scope> scopes) {
+    File errorsFile;
+    FileWriter EFW;
+    File STFile;
+    FileWriter SFW;
+    public RefPhase(GlobalScope globals, ParseTreeProperty<Scope> scopes, String errorsFile, String STFile) {
         this.scopes = scopes;
         this.globals = globals;
+        this.errorsFile = new File(errorsFile);
+        this.STFile = new File(STFile);
+        try {
+            this.EFW = new FileWriter(this.errorsFile);
+            this.SFW = new FileWriter(this.STFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
     }
 
 
@@ -33,7 +45,12 @@ public class RefPhase extends HTMLParserBaseListener {
 
     @Override
     public void exitHtmlDocument(HTMLParser.HtmlDocumentContext ctx) {
-
+        try {
+            this.EFW.close();
+            this.SFW.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -55,7 +72,8 @@ public class RefPhase extends HTMLParserBaseListener {
                             }
                         }
                         if (!thereIsNoUlOrOl) {
-                            CheckSymbols.error(ctx.TAG_NAME(0).getSymbol(), "ti's LI out of UL or OL, idiot !!! ");
+                            System.err.println(ctx.TAG_NAME(0).getSymbol()+ "it's LI out of UL or OL, idiot !!! ");
+                            fwInErrorFile(ctx.TAG_NAME(0).getSymbol()+ "it's LI out of UL or OL, idiot !!! ");
                         }
                     }
 
@@ -73,6 +91,7 @@ public class RefPhase extends HTMLParserBaseListener {
                         }
                         if (!thereIsSrc){
                             CheckSymbols.error(ctx.TAG_NAME(0).getSymbol(), "it's don't have src, idiot !!! ");
+                            fwInErrorFile(ctx.TAG_NAME(0).getSymbol()+ "it's don't have src, idiot !!! ");
                         }
                     }
 
@@ -90,6 +109,7 @@ public class RefPhase extends HTMLParserBaseListener {
                     }
                     if (!thereIsHref){
                         CheckSymbols.error(ctx.TAG_NAME(0).getSymbol(), "it's don't have href, idiot !!! ");
+                        fwInErrorFile(ctx.TAG_NAME(0).getSymbol()+"it's don't have href, idiot !!! ");
                     }
                 }
 
@@ -125,7 +145,24 @@ public class RefPhase extends HTMLParserBaseListener {
             if(ctx.TAG_NAME().getSymbol().getText().equals("id")){
                 if (!CheckSymbols.checkIdsDifferent(ctx.ATTVALUE_VALUE().getSymbol().getText())){
                     CheckSymbols.error(ctx.ATTVALUE_VALUE().getSymbol(), "it's repeated, idiot !!! ");
+                    fwInErrorFile(ctx.ATTVALUE_VALUE().getSymbol()+"it's repeated, idiot !!! ");
                 }
+            }
+        }
+
+        if (ctx.CP_CLICK() != null ||
+        ctx.CP_FOR() != null ||
+        ctx.CP_HIDE() != null ||
+        ctx.CP_IF() != null ||
+        ctx.CP_MODEL() != null ||
+        ctx.CP_MOUSEOVER() != null ||
+        ctx.CP_SHOW() != null ||
+        ctx.CP_SWITCH() != null ||
+        ctx.CP_SWITCH_CASE() != null ||
+        ctx.CP_SWITCH_DEF() != null){
+            if (!CheckSymbols.checkIfInsideApp(currentScope)){
+                System.err.println("you can't add cp attribute outside APP, idiot !!! ");
+                fwInErrorFile("you can't add cp attribute outside APP, idiot !!! ");
             }
         }
     }
@@ -134,9 +171,11 @@ public class RefPhase extends HTMLParserBaseListener {
     public void enterAppExpression(HTMLParser.AppExpressionContext ctx) {
         if (justOneCp){
             System.err.println("you can't add more than one cp attribute here, idiot !!! ");
+            fwInErrorFile("you can't add more than one cp attribute here, idiot !!! ");
         }
         if (currentScope.getName().contains("App")){
             System.err.println("APP , it's repeated, idiot !!! ");
+            fwInErrorFile("APP , it's repeated, idiot !!! ");
         }
     }
 
@@ -150,6 +189,7 @@ public class RefPhase extends HTMLParserBaseListener {
         currentScope = scopes.get(ctx);
         if (justOneCp){
             System.err.println("you can't add more than one cp attribute here, idiot !!! ");
+            fwInErrorFile("you can't add more than one cp attribute here, idiot !!! ");
         }
         justOneCp = true;
     }
@@ -196,6 +236,7 @@ public class RefPhase extends HTMLParserBaseListener {
     public void enterShowExpression(HTMLParser.ShowExpressionContext ctx) {
         if (justOneCp){
             System.err.println("you can't add more than one cp attribute here, idiot !!! ");
+            fwInErrorFile("you can't add more than one cp attribute here, idiot !!! ");
         }
         justOneCp = true;
     }
@@ -204,6 +245,7 @@ public class RefPhase extends HTMLParserBaseListener {
     public void enterHideExpression(HTMLParser.HideExpressionContext ctx) {
         if (justOneCp){
             System.err.println("you can't add more than one cp attribute here, idiot !!! ");
+            fwInErrorFile("you can't add more than one cp attribute here, idiot !!! ");
         }
         justOneCp = true;
     }
@@ -212,6 +254,7 @@ public class RefPhase extends HTMLParserBaseListener {
     public void enterSwitchExpression(HTMLParser.SwitchExpressionContext ctx) {
         if (justOneCp){
             System.err.println("you can't add more than one cp attribute here, idiot !!! ");
+            fwInErrorFile("you can't add more than one cp attribute here, idiot !!! ");
         }
     }
 
@@ -219,6 +262,8 @@ public class RefPhase extends HTMLParserBaseListener {
     public void enterSwitchCaseExpression(HTMLParser.SwitchCaseExpressionContext ctx) {
         if (justOneCp){
             System.err.println("you can't add more than one cp attribute here, idiot !!! ");
+            fwInErrorFile("you can't add more than one cp attribute here, idiot !!! ");
+
         }
         justOneCp = true;
     }
@@ -233,6 +278,8 @@ public class RefPhase extends HTMLParserBaseListener {
     public void enterIfExpression(HTMLParser.IfExpressionContext ctx) {
         if (justOneCp){
             System.err.println("you can't add more than one cp attribute here, idiot !!! ");
+            fwInErrorFile("you can't add more than one cp attribute here, idiot !!! ");
+
         }
         justOneCp = true;
     }
@@ -247,6 +294,8 @@ public class RefPhase extends HTMLParserBaseListener {
     public void enterModelExpression(HTMLParser.ModelExpressionContext ctx) {
         if (justOneCp){
             System.err.println("you can't add more than one cp attribute here, idiot !!! ");
+            fwInErrorFile("you can't add more than one cp attribute here, idiot !!! ");
+
         }
     }
 
@@ -254,6 +303,8 @@ public class RefPhase extends HTMLParserBaseListener {
     public void enterAnnotationClickExpression(HTMLParser.AnnotationClickExpressionContext ctx) {
         if (justOneCp){
             System.err.println("you can't add more than one cp attribute here, idiot !!! ");
+            fwInErrorFile("you can't add more than one cp attribute here, idiot !!! ");
+
         }
     }
 
@@ -261,6 +312,8 @@ public class RefPhase extends HTMLParserBaseListener {
     public void enterAnnotationOverExpression(HTMLParser.AnnotationOverExpressionContext ctx) {
         if (justOneCp){
             System.err.println("you can't add more than one cp attribute here, idiot !!! ");
+            fwInErrorFile("you can't add more than one cp attribute here, idiot !!! ");
+
         }
     }
 
@@ -273,18 +326,22 @@ public class RefPhase extends HTMLParserBaseListener {
             if (CheckSymbols.checKResolve(currentScope, name) && CheckSymbols.checkScope(currentScope, ctx.CP_CONTENT_IDENTIFIER().getSymbol())) {
                 System.out.println();
                 System.out.println(currentScope.getName());
+                fwInSTFile(currentScope.getName());
+
                 Symbol var = currentScope.resolve(name);
                 if (var == null) {
 
-                    CheckSymbols.error(ctx.CP_CONTENT_IDENTIFIER().getSymbol(), "ti's null, idiot !!! ");
+                    CheckSymbols.error(ctx.CP_CONTENT_IDENTIFIER().getSymbol(), "it's null, idiot !!! ");
                 } else {
 
                     System.out.println("VariableName = " + var.getName());
+                    fwInSTFile("VariableName = " + var.getName());
                 }
             }
 
             if (addItToColl4For1 && !CheckSymbols.checkScope(currentScope, ctx.CP_CONTENT_IDENTIFIER().getSymbol())){
-                CheckSymbols.error(ctx.CP_CONTENT_IDENTIFIER().getSymbol(), "ti's repeated Iterator, idiot !!! ");
+                CheckSymbols.error(ctx.CP_CONTENT_IDENTIFIER().getSymbol(), "it's repeated Iterator, idiot !!! ");
+                fwInErrorFile(ctx.CP_CONTENT_IDENTIFIER().getSymbol()+"it's repeated Iterator, idiot !!! ");
                 addItToColl4For1=false;
             }
         }else{
@@ -293,13 +350,15 @@ public class RefPhase extends HTMLParserBaseListener {
             if (CheckSymbols.checKResolve(currentScope.getEnclosingScope(), name) && CheckSymbols.checkScope(currentScope.getEnclosingScope(), ctx.CP_CONTENT_IDENTIFIER().getSymbol())) {
                 System.out.println();
                 System.out.println(currentScope.getEnclosingScope().getName());
+                fwInSTFile(currentScope.getEnclosingScope().getName());
                 Symbol var = currentScope.getEnclosingScope().resolve(name);
                 if (var == null) {
 
-                    CheckSymbols.error(ctx.CP_CONTENT_IDENTIFIER().getSymbol(), "ti's null, idiot !!! ");
+                    CheckSymbols.error(ctx.CP_CONTENT_IDENTIFIER().getSymbol(), "it's null, idiot !!! ");
                 } else {
 
                     System.out.println("VariableName = " + var.getName());
+                    fwInSTFile("VariableName = " + var.getName());
                 }
             }
         }
@@ -312,13 +371,15 @@ public class RefPhase extends HTMLParserBaseListener {
             if (CheckSymbols.checKResolve(currentScope, name) && CheckSymbols.checkScope(currentScope, ctx.CP_CONTENT_IDENTIFIER().getSymbol())) {
                 System.out.println();
                 System.out.println(currentScope.getName());
+                fwInSTFile(currentScope.getName());
                 Symbol var = currentScope.resolve(name);
                 if (var == null) {
 
-                    CheckSymbols.error(ctx.CP_CONTENT_IDENTIFIER().getSymbol(), "ti's null, idiot !!! ");
+                    CheckSymbols.error(ctx.CP_CONTENT_IDENTIFIER().getSymbol(), "it's null, idiot !!! ");
                 } else {
 
                     System.out.println("ArrayName = " + var.getName());
+                    fwInSTFile("ArrayName = " + var.getName());
                 }
             }
         }else {
@@ -326,13 +387,15 @@ public class RefPhase extends HTMLParserBaseListener {
             if (CheckSymbols.checKResolve(currentScope.getEnclosingScope(), name) && CheckSymbols.checkScope(currentScope.getEnclosingScope(), ctx.CP_CONTENT_IDENTIFIER().getSymbol())) {
                 System.out.println();
                 System.out.println(currentScope.getEnclosingScope().getName());
+                fwInSTFile(currentScope.getEnclosingScope().getName());
                 Symbol var = currentScope.getEnclosingScope().resolve(name);
                 if (var == null) {
 
-                    CheckSymbols.error(ctx.CP_CONTENT_IDENTIFIER().getSymbol(), "ti's null, idiot !!! ");
+                    CheckSymbols.error(ctx.CP_CONTENT_IDENTIFIER().getSymbol(), "it's null, idiot !!! ");
                 } else {
 
                     System.out.println("ArrayName = " + var.getName());
+                    fwInSTFile("ArrayName = " + var.getName());
                 }
             }
         }
@@ -345,13 +408,15 @@ public class RefPhase extends HTMLParserBaseListener {
             if (CheckSymbols.checKResolve(currentScope, name) && CheckSymbols.checkScope(currentScope, ctx.CP_CONTENT_IDENTIFIER().getSymbol())) {
                 System.out.println();
                 System.out.println(currentScope.getName());
+                fwInSTFile(currentScope.getName());
                 Symbol var = currentScope.resolve(name);
                 if (var == null) {
 
-                    CheckSymbols.error(ctx.CP_CONTENT_IDENTIFIER().getSymbol(), "ti's null, idiot !!! ");
+                    CheckSymbols.error(ctx.CP_CONTENT_IDENTIFIER().getSymbol(), "it's null, idiot !!! ");
                 } else {
 
                     System.out.println("ObjectName = " + var.getName());
+                    fwInSTFile("ObjectName = " + var.getName());
                 }
             }
         }else{
@@ -359,13 +424,15 @@ public class RefPhase extends HTMLParserBaseListener {
             if (CheckSymbols.checKResolve(currentScope.getEnclosingScope(), name) && CheckSymbols.checkScope(currentScope.getEnclosingScope(), ctx.CP_CONTENT_IDENTIFIER().getSymbol())) {
                 System.out.println();
                 System.out.println(currentScope.getEnclosingScope().getName());
+                fwInSTFile(currentScope.getEnclosingScope().getName());
                 Symbol var = currentScope.getEnclosingScope().resolve(name);
                 if (var == null) {
 
-                    CheckSymbols.error(ctx.CP_CONTENT_IDENTIFIER().getSymbol(), "ti's null, idiot !!! ");
+                    CheckSymbols.error(ctx.CP_CONTENT_IDENTIFIER().getSymbol(), "it's null, idiot !!! ");
                 } else {
 
                     System.out.println("ObjectName = " + var.getName());
+                    fwInSTFile("ObjectName = " + var.getName());
                 }
             }
         }
@@ -383,12 +450,14 @@ public class RefPhase extends HTMLParserBaseListener {
             if (CheckSymbols.checKResolve(currentScope, name) && CheckSymbols.checkScope(currentScope, ctx.CP_CONTENT_IDENTIFIER().getSymbol())) {
                 System.out.println();
                 System.out.println(currentScope.getName());
+                fwInSTFile(currentScope.getName());
                 Symbol var = currentScope.resolve(name);
                 if (var == null) {
 
-                    CheckSymbols.error(ctx.CP_CONTENT_IDENTIFIER().getSymbol(), "ti's null, idiot !!! ");
+                    CheckSymbols.error(ctx.CP_CONTENT_IDENTIFIER().getSymbol(), "it's null, idiot !!! ");
                 } else {
                     System.out.println("ObjectName = " + var.getName());
+                    fwInSTFile("ObjectName = " + var.getName());
                 }
             }
         }else{
@@ -396,12 +465,14 @@ public class RefPhase extends HTMLParserBaseListener {
             if (CheckSymbols.checKResolve(currentScope.getEnclosingScope(), name) && CheckSymbols.checkScope(currentScope.getEnclosingScope(), ctx.CP_CONTENT_IDENTIFIER().getSymbol())) {
                 System.out.println();
                 System.out.println(currentScope.getEnclosingScope().getName());
+                fwInSTFile(currentScope.getEnclosingScope().getName());
                 Symbol var = currentScope.getEnclosingScope().resolve(name);
                 if (var == null) {
 
-                    CheckSymbols.error(ctx.CP_CONTENT_IDENTIFIER().getSymbol(), "ti's null, idiot !!! ");
+                    CheckSymbols.error(ctx.CP_CONTENT_IDENTIFIER().getSymbol(), "it's null, idiot !!! ");
                 } else {
                     System.out.println("ObjectName = " + var.getName());
+                    fwInSTFile("ObjectName = " + var.getName());
                 }
             }
         }
@@ -415,9 +486,10 @@ public class RefPhase extends HTMLParserBaseListener {
                 Symbol var = currentScope.resolve(name);
                 if (var == null) {
 
-                    CheckSymbols.error(ctx.CP_CONTENT_IDENTIFIER().getSymbol(), "ti's null, idiot !!! ");
+                    CheckSymbols.error(ctx.CP_CONTENT_IDENTIFIER().getSymbol(), "it's null, idiot !!! ");
                 } else {
                     System.out.println("PropertyName = " + var.getName());
+                    fwInSTFile("PropertyName = " + var.getName());
                 }
             }
         }else{
@@ -426,9 +498,10 @@ public class RefPhase extends HTMLParserBaseListener {
                 Symbol var = currentScope.getEnclosingScope().resolve(name);
                 if (var == null) {
 
-                    CheckSymbols.error(ctx.CP_CONTENT_IDENTIFIER().getSymbol(), "ti's null, idiot !!! ");
+                    CheckSymbols.error(ctx.CP_CONTENT_IDENTIFIER().getSymbol(), "it's null, idiot !!! ");
                 } else {
                     System.out.println("PropertyName = " + var.getName());
+                    fwInSTFile("PropertyName = " + var.getName());
                 }
             }
         }
@@ -441,12 +514,14 @@ public class RefPhase extends HTMLParserBaseListener {
             if (CheckSymbols.checKResolve(currentScope, name) && CheckSymbols.checkScope(currentScope, ctx.CP_CONTENT_IDENTIFIER().getSymbol())) {
                 System.out.println();
                 System.out.println(currentScope.getName());
+                fwInSTFile(currentScope.getName());
                 Symbol var = currentScope.resolve(name);
                 if (var == null) {
 
-                    CheckSymbols.error(ctx.CP_CONTENT_IDENTIFIER().getSymbol(), "ti's null, idiot !!! ");
+                    CheckSymbols.error(ctx.CP_CONTENT_IDENTIFIER().getSymbol(), "it's null, idiot !!! ");
                 } else {
                     System.out.println("Function = " + var.getName());
+                    fwInSTFile("Function = " + var.getName());
                 }
             }
         }else{
@@ -454,12 +529,14 @@ public class RefPhase extends HTMLParserBaseListener {
             if (CheckSymbols.checKResolve(currentScope.getEnclosingScope(), name) && CheckSymbols.checkScope(currentScope.getEnclosingScope(), ctx.CP_CONTENT_IDENTIFIER().getSymbol())) {
                 System.out.println();
                 System.out.println(currentScope.getEnclosingScope().getName());
+                fwInSTFile(currentScope.getEnclosingScope().getName());
                 Symbol var = currentScope.getEnclosingScope().resolve(name);
                 if (var == null) {
 
-                    CheckSymbols.error(ctx.CP_CONTENT_IDENTIFIER().getSymbol(), "ti's null, idiot !!! ");
+                    CheckSymbols.error(ctx.CP_CONTENT_IDENTIFIER().getSymbol(), "it's null, idiot !!! ");
                 } else {
                     System.out.println("Function = " + var.getName());
+                    fwInSTFile("Function = " + var.getName());
                 }
             }
         }
@@ -480,13 +557,15 @@ public class RefPhase extends HTMLParserBaseListener {
         if (CheckSymbols.checKResolve(currentScope,name)  && CheckSymbols.checkScope(currentScope,ctx.MUSTACHE_IDENTIFIER().getSymbol())){
             System.out.println();
             System.out.println(currentScope.getName());
+            fwInSTFile(currentScope.getName());
             Symbol var = currentScope.resolve(name);
             if (var == null){
 
-                CheckSymbols.error(ctx.MUSTACHE_IDENTIFIER().getSymbol(), "ti's null, idiot !!! ");
+                CheckSymbols.error(ctx.MUSTACHE_IDENTIFIER().getSymbol(), "it's null, idiot !!! ");
             }
             else{
                 System.out.println("variableMust = "+var.getName());
+                fwInSTFile("variableMust = "+var.getName());
             }
         }
 
@@ -498,13 +577,15 @@ public class RefPhase extends HTMLParserBaseListener {
         if (CheckSymbols.checKResolve(currentScope,name)   && CheckSymbols.checkScope(currentScope,ctx.MUSTACHE_IDENTIFIER().getSymbol())){
             System.out.println();
             System.out.println(currentScope.getName());
+            fwInSTFile(currentScope.getName());
             Symbol var = currentScope.resolve(name);
             if (var == null){
 
-                CheckSymbols.error(ctx.MUSTACHE_IDENTIFIER().getSymbol(), "ti's null, idiot !!! ");
+                CheckSymbols.error(ctx.MUSTACHE_IDENTIFIER().getSymbol(), "it's null, idiot !!! ");
             }
             else{
                 System.out.println("ArrayNameMust = "+var.getName());
+                fwInSTFile("ArrayNameMust = "+var.getName());
             }
         }
     }
@@ -516,13 +597,15 @@ public class RefPhase extends HTMLParserBaseListener {
         if (CheckSymbols.checKResolve(currentScope,name)   && CheckSymbols.checkScope(currentScope,ctx.MUSTACHE_IDENTIFIER().getSymbol())){
             System.out.println();
             System.out.println(currentScope.getName());
+            fwInSTFile(currentScope.getName());
             Symbol var = currentScope.resolve(name);
             if (var == null){
 
-                CheckSymbols.error(ctx.MUSTACHE_IDENTIFIER().getSymbol(), "ti's null, idiot !!! ");
+                CheckSymbols.error(ctx.MUSTACHE_IDENTIFIER().getSymbol(), "it's null, idiot !!! ");
             }
             else{
                 System.out.println("FunctionNameMust = "+var.getName());
+                fwInSTFile("FunctionNameMust = "+var.getName());
             }
         }
     }
@@ -533,13 +616,15 @@ public class RefPhase extends HTMLParserBaseListener {
         if (CheckSymbols.checKResolve(currentScope,name)   && CheckSymbols.checkScope(currentScope,ctx.MUSTACHE_IDENTIFIER().getSymbol())){
             System.out.println();
             System.out.println(currentScope.getName());
+            fwInSTFile(currentScope.getName());
             Symbol var = currentScope.resolve(name);
             if (var == null){
 
-                CheckSymbols.error(ctx.MUSTACHE_IDENTIFIER().getSymbol(), "ti's null, idiot !!! ");
+                CheckSymbols.error(ctx.MUSTACHE_IDENTIFIER().getSymbol(), "it's null, idiot !!! ");
             }
             else{
                 System.out.println("ObjNameMust = "+var.getName());
+                fwInSTFile("ObjNameMust = "+var.getName());
             }
         }
     }
@@ -550,10 +635,11 @@ public class RefPhase extends HTMLParserBaseListener {
         if (CheckSymbols.checKResolve(currentScope,name) && CheckSymbols.checkScope(currentScope,ctx.MUSTACHE_IDENTIFIER().getSymbol())){
             Symbol var = currentScope.resolve(name);
             if (var == null){
-                CheckSymbols.error(ctx.MUSTACHE_IDENTIFIER().getSymbol(), "ti's null, idiot !!! ");
+                CheckSymbols.error(ctx.MUSTACHE_IDENTIFIER().getSymbol(), "it's null, idiot !!! ");
             }
             else{
                 System.out.println("ObjNameMust = "+var.getName());
+                fwInSTFile("ObjNameMust = "+var.getName());
             }
         }
     }
@@ -577,12 +663,14 @@ public class RefPhase extends HTMLParserBaseListener {
 
             System.out.println();
             System.out.println(currentScope.getName());
+            fwInSTFile(currentScope.getName());
             Symbol var = currentScope.resolve(name);
             if (var == null){
-                CheckSymbols.error(ctx.MUSTACHE_IDENTIFIER().getSymbol(), "ti's null, idiot !!! ");
+                CheckSymbols.error(ctx.MUSTACHE_IDENTIFIER().getSymbol(), "it's null, idiot !!! ");
             }
             else{
                 System.out.println("ModelNameMust = "+var.getName());
+                fwInSTFile("ModelNameMust = "+var.getName());
             }
         }
     }
@@ -610,26 +698,21 @@ public class RefPhase extends HTMLParserBaseListener {
 
 
 
-    /////////////////////////////////////////////////
+    private void fwInErrorFile(String error){
+        try {
 
-
-    @Override
-    public void enterEveryRule(ParserRuleContext ctx) {
-        super.enterEveryRule(ctx);
+            EFW.write(error + "\n");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    @Override
-    public void exitEveryRule(ParserRuleContext ctx) {
-        super.exitEveryRule(ctx);
-    }
+    private void fwInSTFile(String ST){
+        try {
 
-    @Override
-    public void visitTerminal(TerminalNode node) {
-        super.visitTerminal(node);
-    }
-
-    @Override
-    public void visitErrorNode(ErrorNode node) {
-        super.visitErrorNode(node);
+            SFW.write(ST + "\n");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

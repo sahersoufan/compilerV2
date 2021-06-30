@@ -2,6 +2,7 @@ package main;
 
 import AST.HtmlDocument;
 import Base.BaseVisitor;
+import generateCode.CodeGeneration;
 import generatedGrammers.HTMLLexer;
 import generatedGrammers.HTMLParser;
 import org.antlr.v4.runtime.CharStream;
@@ -20,7 +21,12 @@ public class Main {
     public static void main(String[] args) {
 	// write your code here
         try {
-/*          String source = "E:\\forth year\\1\\CompV2\\src\\sample.txt";
+            CheckSymbols checkSymbols = new CheckSymbols();
+            if (checkSymbols.process()){
+                System.out.println("don't continue");
+            }else {
+            System.out.println("continue");
+            String source = "E:\\forth year\\1\\CompV2\\src\\sample.txt";
             CharStream cs = fromFileName(source);
             HTMLLexer lexer = new HTMLLexer(cs);
             CommonTokenStream token = new CommonTokenStream(lexer);
@@ -33,9 +39,9 @@ public class Main {
 
             // mayar add function in baseVisitor to print the tree from object (base)
             System.out.println();
-            base.printTree();*/
-            CheckSymbols checkSymbols = new CheckSymbols();
-            checkSymbols.process();
+            base.printTree();
+            }
+
 
         } catch (IOException e) {
             e.printStackTrace();

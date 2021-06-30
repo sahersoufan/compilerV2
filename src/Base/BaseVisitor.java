@@ -53,6 +53,7 @@ import AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.property.P
 import AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.value.MustacheValue;
 import AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.var.MustacheVariable;
 import AST.HtmlDocument;
+import generateCode.CodeGeneration;
 import generatedGrammers.HTMLParser;
 import generatedGrammers.HTMLParserBaseVisitor;
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -96,7 +97,10 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
 
     SimpleTreeNode root = new SimpleTreeNode("root");
     Node node = new Node();
-
+    public Boolean InsideBody = false;
+    String javaScript = "E:\\forth year\\1\\CompV2\\src\\JS.js";
+    CodeGeneration cg = new CodeGeneration(javaScript);
+    String id = null;
 
     @Override
     public Object visitHtmlDocument(HTMLParser.HtmlDocumentContext ctx) {
@@ -106,6 +110,7 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
 
         root.addChild(node.getNode());
 
+        cg.start();
 
         if(!ctx.scriptletOrSeaWs().isEmpty()){
             List<ScriptLetOrSeaWs> ObjscriptletOrSeaWs = new ArrayList<>();
@@ -141,6 +146,7 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
             htmlDocumentNode.addChild(new SimpleTreeNode(htmlDocument.getXML()));
         }
 
+        cg.end();
         return htmlDocument;
     }
 
@@ -191,6 +197,7 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
     }
 
 
+
     @Override
     public Object visitHtmlElement(HTMLParser.HtmlElementContext ctx) {
         //////////this
@@ -217,6 +224,7 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
         if(!ctx.TAG_NAME().isEmpty()){
                 htmlElement.setTagName(ctx.TAG_NAME(0).getSymbol().getText());
                 htmlElementNode.addChild( new SimpleTreeNode(ctx.TAG_NAME(0).getSymbol().getText()));
+                if (ctx.TAG_NAME(0).getSymbol().getText().equals("body")) InsideBody = true;
             }
 
             if (ctx.TAG_SLASH_CLOSE() == null){
@@ -238,6 +246,33 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
 
             }
             htmlElement.setHtmlAttributeList(htmlAttributeList);
+            if (InsideBody) {
+                for (HtmlAttribute ha : htmlAttributeList) {
+                    if (ha.getModelExpression() != null) {
+                        cg.dealWIthModel(htmlAttributeList);
+                    }else if (ha.getForExpression() != null){
+                        System.out.println("cp-for");
+                    }else if (ha.getHideExpression() != null){
+                        System.out.println("cp-hide");
+                    }else if (ha.getShowExpression() != null){
+                        System.out.println("cp-show");
+                    }else if (ha.getIfExpression() != null){
+                        System.out.println("cp-if");
+                    }else if (ha.getSwitchExpression() != null){
+                        System.out.println("cp-switch");
+                    }else if (ha.getSwitchCaseExpression() != null){
+                        System.out.println("cp-case");
+                    }else if (ha.getAnnotationClickExpression() != null){
+                        System.out.println("cp-click");
+                    }else if (ha.getAnnotationOverExpression() != null){
+                        System.out.println("cp-Over");
+                    }else if (ha.getTagName() != null){
+                        if (ha.getTagName().equals("id")) {
+                            id = ha.getAttValue();
+                        }
+                    }
+                }
+            }
         }
 
         if (ctx.htmlContent() != null){
@@ -259,12 +294,18 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
             htmlElementNode.addChild(addNode("style"));
             htmlElement.setStyle((Style) visitStyle(ctx.style()));
         }
-
+        MustacheExpression me = null;
         if (ctx.mustacheExpression() != null){
             htmlElementNode.addChild(addNode("mustacheExpression"));
-            htmlElement.setMustacheExpression((MustacheExpression) visitMustacheExpression(ctx.mustacheExpression()));
+            me = (MustacheExpression) visitMustacheExpression(ctx.mustacheExpression());
+            htmlElement.setMustacheExpression(me);
         }
 
+        if (InsideBody){
+            if (me != null){
+                cg.dealWithMustacheExp(id,me);
+            }
+        }
 
         return htmlElement;
     }

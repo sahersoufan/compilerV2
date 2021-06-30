@@ -13,4 +13,5 @@ public class ModelExpression {
     public void setCollection4Model1(Collection4Model1 collection4Model1) {
         this.collection4Model1 = collection4Model1;
     }
+
 }

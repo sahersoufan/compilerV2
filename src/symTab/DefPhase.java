@@ -96,7 +96,6 @@ public class DefPhase extends HTMLParserBaseListener {
 
     @Override
     public void enterAppExpression(HTMLParser.AppExpressionContext ctx) {
-        // TODO this will have push
     }
 
     @Override
@@ -104,20 +103,17 @@ public class DefPhase extends HTMLParserBaseListener {
         currentScope = new AppExpression(currentScope, "APP");
         saveScope(ctx, currentScope);
 
-        //TODO this will have pop
     }
 
     @Override
     public void enterForExpression(HTMLParser.ForExpressionContext ctx) {
         currentScope = new ForExpression(currentScope, "FOR");
         saveScope(ctx,currentScope);
-        //TODO this will have push
     }
 
     @Override
     public void exitForExpression(HTMLParser.ForExpressionContext ctx) {
 
-        //TODO this will have pop
     }
 
     boolean saveItInPreviousScope = false;
@@ -153,7 +149,6 @@ public class DefPhase extends HTMLParserBaseListener {
 
     @Override
     public void enterSwitchCaseExpression(HTMLParser.SwitchCaseExpressionContext ctx) {
-        //TODO this will have push
     }
 
     @Override
@@ -162,12 +157,10 @@ public class DefPhase extends HTMLParserBaseListener {
         currentScope  = new SwitchCaseExpression(currentScope, "CASE");
         saveScope(ctx,currentScope);
 
-        //TODO this will have pop
     }
 
     @Override
     public void enterIfExpression(HTMLParser.IfExpressionContext ctx) {
-        //TODO this will have push
     }
 
     @Override
@@ -176,13 +169,12 @@ public class DefPhase extends HTMLParserBaseListener {
         currentScope = new IfExpression(currentScope, "IF");
         saveScope(ctx,currentScope);
 
-        //TODO this will have pop
     }
 
     @Override
     public void enterVariableName(HTMLParser.VariableNameContext ctx) {
 
-        //TODO this will have not push
+
     }
 
     @Override
@@ -191,12 +183,12 @@ public class DefPhase extends HTMLParserBaseListener {
             defineVar(ctx.CP_CONTENT_IDENTIFIER().getSymbol());
         }
 
-        //TODO this will have not pop
+
     }
 
     @Override
     public void enterArrName(HTMLParser.ArrNameContext ctx) {
-        //TODO this will have not push
+
     }
 
     @Override
@@ -204,12 +196,12 @@ public class DefPhase extends HTMLParserBaseListener {
         if (ctx.CP_CONTENT_IDENTIFIER() != null){
             defineVar(ctx.CP_CONTENT_IDENTIFIER().getSymbol());
         }
-        //TODO this will have not pop
+
     }
 
     @Override
     public void enterObj(HTMLParser.ObjContext ctx) {
-        //TODO this will have not push
+
     }
 
     @Override
@@ -217,12 +209,12 @@ public class DefPhase extends HTMLParserBaseListener {
         if (ctx.CP_CONTENT_IDENTIFIER() != null){
             defineVar(ctx.CP_CONTENT_IDENTIFIER().getSymbol());
         }
-        //TODO this will have not pop
+
     }
 
     @Override
     public void enterSubObj(HTMLParser.SubObjContext ctx) {
-        //TODO this will have not push
+
     }
 
     @Override
@@ -230,12 +222,12 @@ public class DefPhase extends HTMLParserBaseListener {
         if (ctx.CP_CONTENT_IDENTIFIER() != null){
             defineVar(ctx.CP_CONTENT_IDENTIFIER().getSymbol());
         }
-        //TODO this will have not pop
+
     }
 
     @Override
     public void enterFunctionName(HTMLParser.FunctionNameContext ctx) {
-        //TODO this will have not push
+
     }
 
     @Override
@@ -243,7 +235,7 @@ public class DefPhase extends HTMLParserBaseListener {
         if (ctx.CP_CONTENT_IDENTIFIER() != null){
             defineVar(ctx.CP_CONTENT_IDENTIFIER().getSymbol());
         }
-        //TODO this will have not pop
+
     }
 
     @Override
