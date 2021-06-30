@@ -1,7 +1,8 @@
 <html>
+<p>{{var1}}</p>
 
-{{ curr | currency:"$asd"}}
-{{ upper | upper}}
-{{ lower | lower}}
+<script>
+var var1=6;
 
+</script>
 </html>
