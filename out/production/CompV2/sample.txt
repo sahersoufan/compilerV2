@@ -1,0 +1,8 @@
+<html>
+<p>{{var1}}</p>
+
+<script>
+var var1=6;
+
+</script>
+</html>

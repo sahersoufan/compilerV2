@@ -2,6 +2,7 @@ package generateCode;
 
 import AST.Elements.ElementsNodes.CpExpression.Switch.SwitchCaseExpression;
 import AST.Elements.ElementsNodes.CpExpression.Switch.SwitchExpression;
+import AST.Elements.ElementsNodes.CpExpression.app.AppExpression;
 import AST.Elements.ElementsNodes.CpExpression.model.ModelExpression;
 import AST.Elements.ElementsNodes.CpExpression.showHide.HideExpression;
 import AST.Elements.ElementsNodes.CpExpression.showHide.ShowExpression;
