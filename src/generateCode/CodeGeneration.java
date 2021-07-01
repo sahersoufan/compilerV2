@@ -1,5 +1,7 @@
 package generateCode;
 
+import AST.Elements.ElementsNodes.CpExpression.Switch.SwitchCaseExpression;
+import AST.Elements.ElementsNodes.CpExpression.Switch.SwitchExpression;
 import AST.Elements.ElementsNodes.CpExpression.model.ModelExpression;
 import AST.Elements.ElementsNodes.CpExpression.showHide.HideExpression;
 import AST.Elements.ElementsNodes.CpExpression.showHide.ShowExpression;
@@ -24,6 +26,7 @@ import AST.Elements.ElementsNodes.generic4Elements.object.ObjBody;
 import AST.Elements.ElementsNodes.generic4Elements.object.SubObj;
 import AST.Elements.ElementsNodes.generic4Elements.property.Property;
 import AST.Elements.ElementsNodes.mustacheExpression.MustacheExpression;
+import AST.Elements.HtmlElement;
 
 
 import java.io.File;
@@ -278,6 +281,147 @@ public class CodeGeneration {
     }
 
 
+    //CP-Switch
+    public void dealWithSwitch(List<HtmlAttribute> attributes, HtmlElement htmlElement){
+        SwitchExpression switchExp=null;
+        SwitchCaseExpression switchCaseExp=null;
+        String id=null;
+        String idSwitchcase=null;
+        String switchValue=null;
+        String switchcaseValue=null;
+
+        //Get Id and Switch From Element
+        for (HtmlAttribute ha : attributes) {
+            if (ha.getSwitchExpression() != null) {
+                switchExp = ha.getSwitchExpression();
+            }
+            if (ha.getTagName() != null) {
+                if (ha.getTagName().equals("id")) {
+                    id = ha.getAttValue().substring(1,ha.getAttValue().length()-1);
+                }
+            }
+
+        }
+
+        if (id == null || switchExp == null) {
+            throw new NullPointerException(id);
+        }
+
+        if(switchExp.getCollection4Switch1().getVariable()!=null){
+            switchValue=SwitchVarible(switchExp);
+            JSContent.append("document.getElementById(\""+id+"\").value = forthyear."+switchValue+";\n");
+
+        }
+        else if(switchExp.getCollection4Switch1().getSubObj()!=null){
+            switchValue=SwitchSubobj(switchExp);
+            JSContent.append("var "+id+"Changes = function (event) {\n" +
+                    "            forthyear."+switchValue+" = document.getElementById(\""+id+"\").value;\n" +
+                    "        };\n");
+
+        }else if(switchExp.getCollection4Switch1().getObjArray()!=null){
+            switchValue=SwitchObjArray(switchExp);
+            JSContent.append("");
+
+        }else if(switchExp.getCollection4Switch1().getNumber()!=null){
+            switchValue=SwitchNumber(switchExp);
+            JSContent.append("");
+
+        }else if(switchExp.getCollection4Switch1().getString()!=null){
+            switchValue=SwitchString(switchExp);
+            JSContent.append("");
+        }else if(switchExp.getCollection4Switch1().getArithmeticLogic()!=null){
+            switchValue=SwitchArithmeticLogic(switchExp);
+            JSContent.append("");
+        }else if(switchExp.getCollection4Switch1().getOneLine4switch1()!=null){
+            switchValue=SwitchOneLine4switch1(switchExp);
+            JSContent.append("");
+        }
+
+
+        for(HtmlElement h: htmlElement.getHtmlContent().getHtmlElement() ){
+
+            for(HtmlAttribute ha: h.getHtmlAttributeList()){
+                if (ha.getTagName() != null) {
+                    if (ha.getTagName().equals("id")) {
+                        idSwitchcase = ha.getAttValue().substring(1,ha.getAttValue().length()-1);
+                    }
+                }
+                if(ha.getSwitchCaseExpression()!=null){
+
+                    switchcaseValue=discussionsSwitchcase(switchExp,ha.getSwitchCaseExpression(),idSwitchcase);
+                    JSContent.append("if("+switchValue.substring(1,switchValue.length()-1)+" == "+switchcaseValue.substring(1,switchcaseValue.length()-1)+")\n" +
+                            "document.getElementById(\""+idSwitchcase+"\").style.display=\"block\";");
+                }
+
+               //ToDo switch case default
+
+
+            }
+
+        }
+
+
+
+
+    }
+    public String SwitchVarible(SwitchExpression switchExp ){
+        return switchExp.getCollection4Switch1().getVariable().getVariableName().getIdentifier();
+
+    }
+    public String SwitchSubobj(SwitchExpression switchExp){
+        return dealWithSubobj(switchExp.getCollection4Switch1().getSubObj()).toString();
+    }
+    public String SwitchObjArray(SwitchExpression switchExp){
+        return "";
+    }
+    public String SwitchNumber(SwitchExpression switchExp){
+        return "";
+    }
+    public String SwitchString(SwitchExpression switchExp){
+        return "";
+    }
+    public String SwitchArithmeticLogic(SwitchExpression switchExp){
+        return "";
+    }
+    public String SwitchOneLine4switch1(SwitchExpression switchExp){
+        return "";
+    }
+    public String discussionsSwitchcase(SwitchExpression switchExp ,SwitchCaseExpression switchCaseExp,String id){
+
+        String switchValue=null;
+        if(switchCaseExp.getCollection4Switch1().getVariable()!=null){
+            switchValue=SwitchVarible(switchExp);
+            JSContent.append("document.getElementById(\""+id+"\").value = forthyear."+switchValue+";\n");
+
+        }else if(switchCaseExp.getCollection4Switch1().getSubObj()!=null){
+
+            switchValue=SwitchSubobj(switchExp);
+            JSContent.append("        var "+id+"Changes = function (event) {\n" +
+                    "            forthyear."+switchValue+" = document.getElementById(\""+id+"\").value;\n" +
+                    "        };\n");
+        }else if(switchCaseExp.getCollection4Switch1().getObjArray()!=null){
+
+            switchValue=SwitchObjArray(switchExp);
+            JSContent.append("");
+        }else if(switchCaseExp.getCollection4Switch1().getNumber()!=null){
+            switchValue=SwitchNumber(switchExp);
+            JSContent.append("");
+
+        }else if(switchCaseExp.getCollection4Switch1().getString()!=null){
+            switchValue=SwitchString(switchExp);
+            JSContent.append("");
+
+        }else if(switchCaseExp.getCollection4Switch1().getArithmeticLogic()!=null){
+            switchValue=SwitchArithmeticLogic(switchExp);
+            JSContent.append("");
+
+        }else if(switchCaseExp.getCollection4Switch1().getOneLine4switch1()!=null){
+
+            switchValue=SwitchOneLine4switch1(switchExp);
+            JSContent.append("");
+        }
+return switchValue;
+    }
 
 
     // CP-MUSTACHE

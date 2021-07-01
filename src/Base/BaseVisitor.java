@@ -230,9 +230,9 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
 
             }
 
+        List<HtmlAttribute> htmlAttributeList = new ArrayList<>();
 
         if (!ctx.htmlAttribute().isEmpty()) {
-            List<HtmlAttribute> htmlAttributeList = new ArrayList<>();
             for (int i = 0; i < ctx.htmlAttribute().size(); i++) {
                 htmlElementNode.addChild(addNode("htmlAttribute"));
                 htmlAttributeList.add((HtmlAttribute) visitHtmlAttribute(ctx.htmlAttribute(i)));
@@ -240,33 +240,7 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
 
             }
             htmlElement.setHtmlAttributeList(htmlAttributeList);
-            if (InsideBody) {
-                for (HtmlAttribute ha : htmlAttributeList) {
-                    if (ha.getModelExpression() != null) {
-                        cg.dealWIthModel(htmlAttributeList);
-                    }else if (ha.getForExpression() != null){
-                        System.out.println("cp-for");
-                    }else if (ha.getHideExpression() != null){
-                        cg.dealWithHide(htmlAttributeList);
-                    }else if (ha.getShowExpression() != null){
-                        cg.dealWithShow(htmlAttributeList);
-                    }else if (ha.getIfExpression() != null){
-                        System.out.println("cp-if");
-                    }else if (ha.getSwitchExpression() != null){
-                        System.out.println("cp-switch");
-                    }else if (ha.getSwitchCaseExpression() != null){
-                        System.out.println("cp-case");
-                    }else if (ha.getClick() != null){
-                        System.out.println("cp-click");
-                    }else if (ha.getDoubleClick() != null){
-                        System.out.println("cp-Over");
-                    }else if (ha.getTagName() != null){
-                        if (ha.getTagName().equals("id")) {
-                            id = ha.getAttValue();
-                        }
-                    }
-                }
-            }
+
         }
 
         if (ctx.htmlContent() != null){
@@ -293,6 +267,34 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
             htmlElementNode.addChild(addNode("mustacheExpression"));
             me = (MustacheExpression) visitMustacheExpression(ctx.mustacheExpression());
             htmlElement.setMustacheExpression(me);
+        }
+
+        if (InsideBody && !ctx.htmlAttribute().isEmpty()){
+                for (HtmlAttribute ha : htmlAttributeList) {
+                    if (ha.getModelExpression() != null) {
+                        cg.dealWIthModel(htmlAttributeList);
+                    }else if (ha.getForExpression() != null){
+                        System.out.println("cp-for");
+                    }else if (ha.getHideExpression() != null){
+                        cg.dealWithHide(htmlAttributeList);
+                    }else if (ha.getShowExpression() != null){
+                        cg.dealWithShow(htmlAttributeList);
+                    }else if (ha.getIfExpression() != null){
+                        System.out.println("cp-if");
+                    }else if (ha.getSwitchExpression() != null){
+                        cg.dealWithSwitch(htmlAttributeList,htmlElement);
+                    }else if (ha.getSwitchCaseExpression() != null){
+                        System.out.println("cp-case");
+                    }else if (ha.getClick() != null){
+                        System.out.println("cp-click");
+                    }else if (ha.getDoubleClick() != null){
+                        System.out.println("cp-Over");
+                    }else if (ha.getTagName() != null){
+                        if (ha.getTagName().equals("id")) {
+                            id = ha.getAttValue();
+                        }
+                    }
+                }
         }
 
         if (InsideBody){
