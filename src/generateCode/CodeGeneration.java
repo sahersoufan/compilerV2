@@ -148,10 +148,11 @@ public class CodeGeneration {
                     "        };\n");
         }else if(modelExp.getCollection4Model1().getOneLine4ModelCondition()!=null){
             modelValue=ModelOneLine4ModelCondition(modelExp);
-            JSContent.append("");
+            JSContent.append("temp="+modelValue+";\n" +
+                    "document.getElementById(\""+id+"\").value = temp;");
         }else if(modelExp.getCollection4Model1().getFunctionCall()!=null){
             modelValue=ModelFunctioncall(modelExp);
-            JSContent.append("");
+            JSContent.append("document.getElementById(\""+id+"\").value = "+modelValue+";");
         }
 
 
@@ -170,10 +171,10 @@ public class CodeGeneration {
         return dealWithSubobj(modelExp.getCollection4Model1().getSubObj()).toString();
     }
     public String ModelObjArray(ModelExpression modelExp){
-          return "";
+          return dealWithObjArray(modelExp.getCollection4Model1().getObjArray());
     }
     public String ModelFunctioncall(ModelExpression modelExp){
-      return "";
+      return dealWithFunctionCall(modelExp.getCollection4Model1().getFunctionCall());
     }
     public String ModelOneLine4ModelCondition(ModelExpression modelExp) {
 
@@ -266,7 +267,7 @@ public class CodeGeneration {
 
     }
     public String ShowLogicComparison(ShowExpression showExp){
-       return "";
+       return dealWithLogicComparison(showExp.getLogicComprison());
     }
 
     // CP-Hide
@@ -304,8 +305,8 @@ public class CodeGeneration {
 
 
     }
-    public String HideLogicComparison(HideExpression showExp){
-        return "";
+    public String HideLogicComparison(HideExpression hideExp){
+        return dealWithLogicComparison(hideExp.getLogicComprison());
     }
 
 
@@ -337,7 +338,7 @@ public class CodeGeneration {
 
         if(switchExp.getCollection4Switch1().getVariable()!=null){
             switchValue=SwitchVarible(switchExp);
-            JSContent.append("document.getElementById(\""+id+"\").value = forthyear."+switchValue+";\n");
+            JSContent.append("document.getElementById(\""+id+"\").value = "+switchValue+";\n");
 
         }
         else if(switchExp.getCollection4Switch1().getSubObj()!=null){
@@ -400,19 +401,67 @@ public class CodeGeneration {
         return dealWithSubobj(switchExp.getCollection4Switch1().getSubObj()).toString();
     }
     public String SwitchObjArray(SwitchExpression switchExp){
-        return "";
+        return dealWithObjArray(switchExp.getCollection4Switch1().getObjArray());
     }
     public String SwitchNumber(SwitchExpression switchExp){
-        return "";
+        return switchExp.getCollection4Switch1().getNumber().getNumber().toString();
     }
     public String SwitchString(SwitchExpression switchExp){
-        return "";
+        return switchExp.getCollection4Switch1().getString();
     }
     public String SwitchArithmeticLogic(SwitchExpression switchExp){
-        return "";
+        return dealWithArithLogic(switchExp.getCollection4Switch1().getArithmeticLogic());
     }
     public String SwitchOneLine4switch1(SwitchExpression switchExp){
-        return "";
+        StringBuilder tempValue = new StringBuilder();
+        tempValue.append("(");
+
+        //LogicComprison
+        if(switchExp.getCollection4Switch1().getOneLine4switch1().getLogicComprison()!=null){
+            // tempValue.append();
+        }
+        tempValue.append(" ? ");
+
+        //Collection4Model1_1_1
+        if (switchExp.getCollection4Switch1().getOneLine4switch1().getCollection4Switch1_1_1().getVariable() != null) {
+            tempValue.append(SwitchVarible(switchExp));
+        } else if (switchExp.getCollection4Switch1().getOneLine4switch1().getCollection4Switch1_1_1().getSubObj() != null){
+            tempValue.append(SwitchSubobj(switchExp));
+        }
+        else if(switchExp.getCollection4Switch1().getOneLine4switch1().getCollection4Switch1_1_1().getObjArray()!=null){
+            tempValue.append( SwitchObjArray(switchExp));
+        }else if(switchExp.getCollection4Switch1().getOneLine4switch1().getCollection4Switch1_1_1().getArithmeticLogic()!=null){
+            tempValue.append(SwitchArithmeticLogic(switchExp));
+        }else if(switchExp.getCollection4Switch1().getOneLine4switch1().getCollection4Switch1_1_1().getNumber()!=null){
+            tempValue.append(SwitchNumber(switchExp));
+        }else if(switchExp.getCollection4Switch1().getOneLine4switch1().getCollection4Switch1_1_1().getString()!=null){
+            tempValue.append(SwitchString(switchExp));
+        }else if(switchExp.getCollection4Switch1().getOneLine4switch1().getCollection4Switch1_1_1().getOneLine4switch1()!=null){
+            tempValue.append(SwitchOneLine4switch1(switchExp));
+        }
+
+        tempValue.append(" : ");
+
+        //getCollection4Model1_1_2
+        if (switchExp.getCollection4Switch1().getOneLine4switch1().getCollection4Switch1_1_2().getVariable() != null) {
+            tempValue.append(SwitchVarible(switchExp));
+        } else if (switchExp.getCollection4Switch1().getOneLine4switch1().getCollection4Switch1_1_2().getSubObj() != null){
+            tempValue.append(SwitchSubobj(switchExp));
+        }
+        else if(switchExp.getCollection4Switch1().getOneLine4switch1().getCollection4Switch1_1_2().getObjArray()!=null){
+            tempValue.append( SwitchObjArray(switchExp));
+        }else if(switchExp.getCollection4Switch1().getOneLine4switch1().getCollection4Switch1_1_2().getArithmeticLogic()!=null){
+            tempValue.append(SwitchArithmeticLogic(switchExp));
+        }else if(switchExp.getCollection4Switch1().getOneLine4switch1().getCollection4Switch1_1_2().getNumber()!=null){
+            tempValue.append(SwitchNumber(switchExp));
+        }else if(switchExp.getCollection4Switch1().getOneLine4switch1().getCollection4Switch1_1_2().getString()!=null){
+            tempValue.append(SwitchString(switchExp));
+        }else if(switchExp.getCollection4Switch1().getOneLine4switch1().getCollection4Switch1_1_2().getOneLine4switch1()!=null){
+            tempValue.append(SwitchOneLine4switch1(switchExp));
+        }
+        tempValue.append(" ) ");
+
+        return tempValue.toString();
     }
     public String discussionsSwitchcase(SwitchExpression switchExp ,SwitchCaseExpression switchCaseExp,String id){
 
@@ -450,6 +499,7 @@ public class CodeGeneration {
         }
 return switchValue;
     }
+
 
 
     // CP-MUSTACHE
