@@ -242,6 +242,7 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
             htmlElement.setHtmlAttributeList(htmlAttributeList);
             if (InsideBody) {
                 for (HtmlAttribute ha : htmlAttributeList) {
+
                     if (ha.getModelExpression() != null) {
                         cg.dealWIthModel(htmlAttributeList);
                     }else if (ha.getForExpression() != null){

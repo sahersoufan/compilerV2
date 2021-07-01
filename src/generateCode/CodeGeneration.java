@@ -1,5 +1,6 @@
 package generateCode;
 
+import AST.Elements.ElementsNodes.CpExpression.app.AppExpression;
 import AST.Elements.ElementsNodes.CpExpression.model.ModelExpression;
 import AST.Elements.ElementsNodes.CpExpression.showHide.HideExpression;
 import AST.Elements.ElementsNodes.CpExpression.showHide.ShowExpression;
@@ -24,6 +25,8 @@ import AST.Elements.ElementsNodes.generic4Elements.object.ObjBody;
 import AST.Elements.ElementsNodes.generic4Elements.object.SubObj;
 import AST.Elements.ElementsNodes.generic4Elements.property.Property;
 import AST.Elements.ElementsNodes.mustacheExpression.MustacheExpression;
+import AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.array.ArrayCalling4Must;
+import AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.array.ObjArray4Must;
 
 
 import java.io.File;
@@ -34,6 +37,7 @@ import java.util.List;
 public class CodeGeneration {
     StringBuilder JSContent = new StringBuilder();
     String JSFile;
+    public String App;
 
     public CodeGeneration(String JSFile) {
         this.JSFile = JSFile;
@@ -75,6 +79,31 @@ public class CodeGeneration {
         }catch (IOException e){
             System.out.println("can't write to JS file");
         }
+    }
+
+    public void dealWithAppExp(List<HtmlAttribute> attributes){
+        AppExpression appExpression = null;
+        String appValue= null;
+        String id = null;
+
+        //Get Model And Id From Element
+        for (HtmlAttribute ha : attributes) {
+            if (ha.getModelExpression() != null) {
+                appExpression = ha.getAppExpression();
+            }
+            if (ha.getTagName() != null) {
+                if (ha.getTagName().equals("id")) {
+                    id = ha.getAttValue().substring(1,ha.getAttValue().length()-1);
+
+
+                }
+            }
+        }
+        if (id == null || appExpression == null) {
+            throw new NullPointerException(id);
+        }
+
+        App = appValue;
     }
 
 
@@ -685,4 +714,48 @@ public class CodeGeneration {
             return "";
         }
     }
+
+
+
+    //    MIUSTACHE
+
+
+    public String dealWithObjArray4M(ObjArray4Must OA){
+
+        StringBuilder st = new StringBuilder();
+
+        if (OA.getArrName4Must1() != null){
+
+            st.append(" "+OA.getArrName4Must1());
+        }
+
+        if (OA.getArrayCalling4Must() != null){
+            st.append(dealWithArrayCalling4M(OA.getArrayCalling4Must()));
+            return st.toString();
+        }
+
+        return "";
+    }
+
+
+    public String dealWithArrayCalling4M(ArrayCalling4Must AC){
+        StringBuilder st = new StringBuilder();
+        if (!AC.getArithmeticLogic4Must().isEmpty()){
+
+            for (int i = 0 ; i < AC.getArithmeticLogic4Must().size() ; i++){
+                st.append(" [ ");
+                st.append(dealWithArithLogic4M(AC.getArithmeticLogic4Must().get(i)));
+                st.append(" ] ");
+            }
+        }
+        if (AC.getProperty4Must() != null){
+
+            st.append(dealWithProperty4M(AC.getProperty4Must()));
+        }else if (AC.getFunctionCallFromVar4Must() != null){
+
+            st.append(dealWithFunctionFromVar4M(AC.getFunctionCallFromVar4Must()));
+        }
+        return st.toString();
+    }
+    public dealWithFunctionCall4m()
 }
