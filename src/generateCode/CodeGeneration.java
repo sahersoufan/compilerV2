@@ -1,6 +1,8 @@
 package generateCode;
 
 import AST.Elements.ElementsNodes.CpExpression.model.ModelExpression;
+import AST.Elements.ElementsNodes.CpExpression.showHide.HideExpression;
+import AST.Elements.ElementsNodes.CpExpression.showHide.ShowExpression;
 import AST.Elements.ElementsNodes.HtmlAttribute;
 import AST.Elements.ElementsNodes.generic4Elements.*;
 import AST.Elements.ElementsNodes.generic4Elements.Logic.ArithmeticLogic;
@@ -27,6 +29,7 @@ import AST.Elements.ElementsNodes.mustacheExpression.MustacheExpression;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.Inet4Address;
 import java.util.List;
 
 public class CodeGeneration {
@@ -104,19 +107,19 @@ public class CodeGeneration {
 
         // Get Model Value
         if (modelExp.getCollection4Model1().getVariable() != null) {
-            modelValue=ModelVarible(modelExp,id);
+            modelValue=ModelVarible(modelExp);
             JSContent.append("        document.getElementById(\""+id+"\").value = forthyear."+modelValue+";\n");
 
         } else if (modelExp.getCollection4Model1().getSubObj() != null) {
-            modelValue= ModelSubobj(modelExp,id);
+            modelValue= ModelSubobj(modelExp);
             JSContent.append("        var "+id+"Changes = function (event) {\n" +
                     "            forthyear."+modelValue+" = document.getElementById(\""+id+"\").value;\n" +
                     "        };\n");
         }else if(modelExp.getCollection4Model1().getOneLine4ModelCondition()!=null){
-            modelValue=ModelOneLine4ModelCondition(modelExp,id);
+            modelValue=ModelOneLine4ModelCondition(modelExp);
             JSContent.append("");
         }else if(modelExp.getCollection4Model1().getFunctionCall()!=null){
-            modelValue=ModelFunctioncall(modelExp,id);
+            modelValue=ModelFunctioncall(modelExp);
             JSContent.append("");
         }
 
@@ -128,20 +131,20 @@ public class CodeGeneration {
                 "        changes.push("+id+"Changes);\n");
     }
 
-    public String ModelVarible(ModelExpression modelExp ,String id){
+    public String ModelVarible(ModelExpression modelExp ){
         return modelExp.getCollection4Model1().getVariable().getVariableName().getIdentifier();
 
     }
-    public String ModelSubobj(ModelExpression modelExp,String id ){
-        return /*dealWithSubobj(modelExp.getCollection4Model1().getSubObj()).toString();*/ "";
+    public String ModelSubobj(ModelExpression modelExp){
+        return dealWithSubobj(modelExp.getCollection4Model1().getSubObj()).toString();
     }
-    public String ModelObjArray(ModelExpression modelExp,String id){
+    public String ModelObjArray(ModelExpression modelExp){
           return "";
     }
-    public String ModelFunctioncall(ModelExpression modelExp,String id){
+    public String ModelFunctioncall(ModelExpression modelExp){
       return "";
     }
-    public String ModelOneLine4ModelCondition(ModelExpression modelExp,String id) {
+    public String ModelOneLine4ModelCondition(ModelExpression modelExp) {
 
         StringBuilder tempValue = new StringBuilder();
         tempValue.append("(");
@@ -154,28 +157,28 @@ public class CodeGeneration {
 
         //Collection4Model1_1_1
         if (modelExp.getCollection4Model1().getOneLine4ModelCondition().getCollection4Model1_1_1().getVariable() != null) {
-            tempValue.append(ModelVarible(modelExp,id));
+            tempValue.append(ModelVarible(modelExp));
         } else if (modelExp.getCollection4Model1().getOneLine4ModelCondition().getCollection4Model1_1_1().getSubObj() != null){
-            tempValue.append(ModelSubobj(modelExp,id));
+            tempValue.append(ModelSubobj(modelExp));
         }
         else if(modelExp.getCollection4Model1().getOneLine4ModelCondition().getCollection4Model1_1_1().getObjArray()!=null){
-            tempValue.append( ModelObjArray(modelExp,id));
+            tempValue.append( ModelObjArray(modelExp));
         }else if(modelExp.getCollection4Model1().getOneLine4ModelCondition().getCollection4Model1_1_1().getFunctionCall()!=null){
-            tempValue.append(ModelFunctioncall(modelExp,id));
+            tempValue.append(ModelFunctioncall(modelExp));
         }
 
         tempValue.append(" : ");
 
         //getCollection4Model1_1_2
         if(modelExp.getCollection4Model1().getOneLine4ModelCondition().getCollection4Model1_1_2().getVariable()!=null){
-            tempValue.append(ModelVarible(modelExp,id));
+            tempValue.append(ModelVarible(modelExp));
         } else if (modelExp.getCollection4Model1().getOneLine4ModelCondition().getCollection4Model1_1_2().getSubObj() != null){
-            tempValue.append(ModelSubobj(modelExp,id));
+            tempValue.append(ModelSubobj(modelExp));
         }
         else if(modelExp.getCollection4Model1().getOneLine4ModelCondition().getCollection4Model1_1_2().getObjArray()!=null){
-            tempValue.append( ModelObjArray(modelExp,id));
+            tempValue.append( ModelObjArray(modelExp));
         }else if(modelExp.getCollection4Model1().getOneLine4ModelCondition().getCollection4Model1_1_2().getFunctionCall()!=null){
-            tempValue.append( ModelFunctioncall(modelExp,id));
+            tempValue.append( ModelFunctioncall(modelExp));
         }
 
 
@@ -183,9 +186,8 @@ public class CodeGeneration {
     }
 
 
-/*
     //subobj
-    public String dealWithSubobj(SubObj sb){
+    public StringBuilder dealWithSubobj(SubObj sb){
 
         StringBuilder tempValue = new StringBuilder();
         tempValue.append(sb.getIdentifier());
@@ -196,9 +198,84 @@ public class CodeGeneration {
         return tempValue;
     }
 
-*/
+
+   // CP-Show
+    public void dealWithShow(List<HtmlAttribute> attributes){
+
+        ShowExpression showExp=null;
+       String id=null;
+       String showValue=null;
+
+        //Get Id and Show From Element
+        for (HtmlAttribute ha : attributes) {
+            if (ha.getShowExpression() != null) {
+                showExp = ha.getShowExpression();
+            }
+            if (ha.getTagName() != null) {
+                if (ha.getTagName().equals("id")) {
+                    id = ha.getAttValue().substring(1,ha.getAttValue().length()-1);
 
 
+                }
+            }
+        }
+
+        if (id == null || showExp == null) {
+            throw new NullPointerException(id);
+        }
+
+        // Get Show Value
+        if (showExp.getLogicComprison() != null) {
+            showValue=ShowLogicComparison(showExp);
+            JSContent.append("if("+showValue.substring(1,showValue.length()-1)+")\n  " +
+                    "document.getElementById(\""+id+"\").style.display=\"block\";");
+
+        }
+
+
+    }
+    public String ShowLogicComparison(ShowExpression showExp){
+       return "";
+    }
+
+    // CP-Hide
+    public void dealWithHide(List<HtmlAttribute> attributes){
+
+        HideExpression hideExp=null;
+        String id=null;
+        String hideValue=null;
+
+        //Get Id and Hide From Element
+        for (HtmlAttribute ha : attributes) {
+            if (ha.getHideExpression() != null) {
+                hideExp = ha.getHideExpression();
+            }
+            if (ha.getTagName() != null) {
+                if (ha.getTagName().equals("id")) {
+                    id = ha.getAttValue().substring(1,ha.getAttValue().length()-1);
+
+
+                }
+            }
+        }
+
+        if (id == null || hideExp == null) {
+            throw new NullPointerException(id);
+        }
+
+        // Get Show Value
+        if (hideExp.getLogicComprison() != null) {
+            hideValue=HideLogicComparison(hideExp);
+            JSContent.append("if("+hideValue.substring(1,hideValue.length()-1)+")\n " +
+                    " document.getElementById(\""+id+"\").style.display=\"none\";");
+
+        }
+
+
+    }
+    public String HideLogicComparison(HideExpression showExp){
+        return "";
+    }
 
 
 
