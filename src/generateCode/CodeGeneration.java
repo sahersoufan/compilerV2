@@ -557,8 +557,18 @@ public class CodeGeneration {
                 st.append(dealWithFunctionFromVar(AC.getFunctionCallFromVar()));
             }
             return st.toString();
+<<<<<<< Updated upstream
     }
     public String dealWithArray(Array a){
+=======
+
+        }
+
+
+
+    public String dealWithArray(Array a){
+
+>>>>>>> Stashed changes
 
         StringBuilder st = new StringBuilder();
         st.append("[ ");
@@ -943,5 +953,315 @@ public class CodeGeneration {
         }
         return st.toString();
     }
-    public dealWithFunctionCall4m()
+
+
+
+
+    public String dealWithFunctionCall4M(FunctionCall4Must FC){
+        StringBuilder st = new StringBuilder();
+
+        st.append(" "+FC.getFunctionName4Must1().getIdentifier());
+        st.append(dealWithFunctionFromVar4M(FC.getFunctionCallFromVar4Must()));
+        // return value
+        return st.toString();
+    }
+
+    public String dealWithFunctionFromVar4M(FunctionCallFromVar4Must FCV){
+
+        StringBuilder st = new StringBuilder();
+
+        for (int i = 0 ; i < FCV.getParameters4Must().size() ; i ++){
+
+            st.append("( ");
+            st.append(dealWithparameters4M(FCV.getParameters4Must().get(i)));
+            st.append(" )");
+        }
+
+
+        if (FCV.getProperty4Must() != null){
+            st.append(dealWithProperty4M(FCV.getProperty4Must()));
+        }
+
+        if (FCV.getArrayCalling4Must() != null){
+            st.append(dealWithArrayCalling4M(FCV.getArrayCalling4Must()));
+        }
+
+
+        return st.toString();
+    }
+    public String dealWithparameters4M(Parameters4Must p){
+
+        StringBuilder st = new StringBuilder();
+        for (int i = 0 ; i < p.getParameters4Musts().size() ; i++){
+            Parameter4Must parameter =  p.getParameters4Musts().get(i);
+            st.append(dealWithColl4Every4M(parameter.getCollection4Mustache()));
+        }
+
+
+        return st.toString();
+    }
+    public String dealWithProperty4M(Property4Must p){
+        StringBuilder st = new StringBuilder();
+
+        for (int i = 0 ; i < p.getPropertyValue4Must().size() ; i++){
+
+            st.append(".");
+            st.append(p.getPropertyValue4Must().get(i).getIdentifier());
+        }
+
+        if (p.getArrayCalling4Must() != null){
+            st.append(dealWithArrayCalling4M(p.getArrayCalling4Must()));
+        }else if (p.getFunctionCallFromVar4Must() != null){
+            st.append(dealWithFunctionFromVar4M(p.getFunctionCallFromVar4Must()));
+        }
+
+        return st.toString();
+
+    }
+    //TODO compare between collection4every and collection4every4M
+
+    public String dealWithColl4Every4M(Collection4Mustache CE){
+        if (CE.getMustacheVariable() != null){
+            return CE.getMustacheVariable().getVariableName().getIdentifier();
+        }else if (CE.getMustacheValue() != null){
+            return dealWithValue4M(CE.getMustacheValue());
+            //TODO WE don't have getMustacheArray!!!
+        }else if(CE.getArray() != null){
+            //TODO WE don't have DealWithArray4M in Parser and AST!!!
+            return dealWithArray4M(CE.getArray());
+        }else if (CE.getObjArray4Must() != null){
+            return dealWithObjArray4M(CE.getObjArray4Must());
+        }else if (CE.getFunctionCall4Must() != null){
+            return dealWithFunctionCall4M(CE.getFunctionCall4Must());
+        }else if (CE.getSubObj4Must() != null){
+            return dealWithSubObj4M(CE.getSubObj4Must());
+        }else if (CE.getOneLineCondition4Must() != null){
+            return dealWithOneLineCond4M(CE.getOneLineCondition4Must());
+            //TODO WE don't have getComparisonExpression!!!
+        }else if (CE.getComparisonExpression() != null){
+            return dealWithComparisonExp4M(CE.getComparisonExpression());
+            //TODO WE don't have getLogicComprison!!!
+        }else if (CE.getLogicComprison() != null){
+            return dealWithLogicComparison4M(CE.getLogicComprison());
+        }else if (CE.getArithmeticLogic4Must() != null){
+            return dealWithArithLogic4M(CE.getArithmeticLogic4Must());
+        }else {
+            return "";
+        }
+    }
+    public String dealWithSubObj4M(SubObj4Must SO){
+
+        StringBuilder st = new StringBuilder();
+        st.append(SO.getIdentifier());
+        st.append(dealWithProperty4M(SO.getProperty4Must()));
+
+        return st.toString();
+    }
+    public String dealWithOneLineCond4M(OneLineCondition4Must OLC){
+
+        StringBuilder st = new StringBuilder();
+
+        st.append("( ");
+        st.append(" "+ dealWithLogicComparison4M(OLC.getLogicComprison4Must()));
+        st.append(" ? ");
+        st.append(dealWithColl4Every4M(OLC.getCollection4Mustache1()));
+        st.append(" : ");
+        st.append(dealWithColl4Every4M(OLC.getCollection4Mustache2()));
+        st.append(" )");
+        return st.toString();
+    }
+
+    public String dealWithOneLineArithCond4M(OneLineArithCondition4Must OLAC){
+        StringBuilder st = new StringBuilder();
+
+        st.append(" ( ");
+        st.append(dealWithLogicComparison4M(OLAC.getLogicComprison4Must()));
+        st.append(" ? ");
+        st.append(dealWithArithLogic4M(OLAC.getArithmeticLogic4Must1()));
+        st.append(" : ");
+        st.append(dealWithArithLogic4M(OLAC.getArithmeticLogic4Must2()));
+        st.append(" )");
+
+        return st.toString();
+    }
+
+    public String dealWithOneLineBoolCond4M(OneLineBoolCondition4Must OLBC){
+        StringBuilder st = new StringBuilder();
+
+        st.append(" ( ");
+        st.append(dealWithLogicComparison4M(OLBC.getLogicComprison4Must()));
+        st.append(" ? ");
+        st.append("true");
+        st.append(" : ");
+        st.append("false");
+        st.append(" )");
+        return st.toString();
+    }
+    public String dealWithComparisonExp4M(ComparisonExp4Must CS){
+        StringBuilder st = new StringBuilder();
+
+        st.append(dealWithColl4Comp4M(CS.getCollection4CompMust()));
+        //TODO Be Aware in CS.getMustacheComparisonOperator().getOperator()
+        //TODO if getOperator is correctly or Not
+        st.append(" "+ CS.getMustacheComparisonOperator().getOperator()+" ");
+        st.append(dealWithColl4Comp4M(CS.getCollection4CompMust2()));
+
+        return st.toString();
+    }
+
+    public String dealWithColl4Comp4M(Collection4CompMust CC){
+        return dealWithArithLogic4M(CC.getArithmeticLogic4Must());
+    }
+
+    public String  dealWithValue4M(MustacheValue V){
+        if (V.getMustacheString() != null){
+            return V.getMustacheString();
+        }else if (V.getMustacheNumber() != null){
+            return V.getMustacheNumber().toString();
+//            TODO Check True And False
+        }else if (V.getMustacheTrue() != null) {
+            return "true";
+        }
+        else if (V.getMustacheFalse() != null) {
+            return "false";
+
+        }else {
+            return "null";
+        }
+    }
+    public String dealWithCOll4Log4M(Collection4LogicRet4Must CL){
+        if (CL.getMustacheVariable() != null){
+            return CL.getMustacheVariable().getVariableName().getIdentifier();
+            //            TODO Check True And False
+        }else if (CL.getMustacheTrue() != null) {
+            return "true";
+        }
+        else if (CL.getMustacheFalse() != null) {
+            return "false";
+
+        }else if (CL.getObjArray4Must() != null){
+            return dealWithObjArray4M(CL.getObjArray4Must());
+        }else if (CL.getFunctionCall4Must() != null){
+            return dealWithFunctionCall4M(CL.getFunctionCall4Must());
+        }else if (CL.getSubObj4Must() != null){
+            return dealWithSubObj4M(CL.getSubObj4Must());
+        }else if (CL.getComparisonExp4Must() != null){
+            return dealWithComparisonExp4M(CL.getComparisonExp4Must());
+        }else if (CL.getOneLineBoolCondition4Must() !=null){
+            return dealWithOneLineBoolCond4M(CL.getOneLineBoolCondition4Must());
+        }
+        else {
+            return "";
+        }
+    }
+    public String dealWithArithLogic4M(ArithmeticLogic4Must AL){
+
+        StringBuilder st = new StringBuilder();
+        if (AL.getCollection4Arithmetic() != null){
+            st.append(dealWithColl4Arith4M(AL.getCollection4Arithmetic()));
+        }else{
+            st.append("( ");
+            st.append(dealWithArithLogic4M(AL.getArithmeticLogic()));
+            st.append(" )");
+        }
+
+
+        if (!AL.getLastArithmeticLogic().isEmpty()){
+            for (int i = 0; i < AL.getLastArithmeticLogic().size() ; i++){
+                LastArithmeticLogic4Must LAL = AL.getLastArithmeticLogic().get(i);
+                st.append(LAL.getArithmetic());
+                if (LAL.getCollection4MUSTArithmetic() != null){
+                    st.append(dealWithColl4Arith4M(LAL.getCollection4MUSTArithmetic()));
+                }else {
+                    st.append("( ");
+                    st.append(dealWithArithLogic4M(LAL.getArithmeticLogic()));
+                    st.append(" )");
+                }
+            }
+        }
+
+        return st.toString();
+    }
+    public String dealWithLogicComparison4M(LogicComprison4Must logicComprison){
+
+        // start
+        if (logicComprison.getCollection4LogicRetFirst() != null){
+            if (logicComprison.getNotFirst() != null){
+                return "!" + dealWithCOll4Log4M(logicComprison.getCollection4LogicRetFirst());
+            }else {
+                return dealWithCOll4Log4M(logicComprison.getCollection4LogicRetFirst());
+            }
+
+        }else if(logicComprison.getLogicComprisonFirst() != null){
+
+            StringBuilder st = new StringBuilder();
+            st.append("( ");
+            st.append(dealWithLogicComparison4M(logicComprison.getLogicComprisonFirst()));
+            st.append(" )");
+
+            if (!logicComprison.getMiddleAndLastLogicComparisons().isEmpty()){
+                for (int i = 0 ; i <logicComprison.getMiddleAndLastLogicComparisons().size(); i ++) {
+                    // add middle and last
+                    MiddleAndLastLogicComparison4Must middleAndLastLogicComparison = logicComprison.getMiddleAndLastLogicComparisons().get(i);
+                    if (middleAndLastLogicComparison.getAndMiddle() != null){
+                        st.append(" && ");
+                        if (middleAndLastLogicComparison.getNotAndMiddle() != null) {
+                            st.append(" !");
+                        }
+                        if (middleAndLastLogicComparison.getCollection4LogicRet() != null){
+
+                            st.append(dealWithCOll4Log4M(middleAndLastLogicComparison.getCollection4LogicRet()));
+                        }else if (middleAndLastLogicComparison.getLogicComprisonLast() != null){
+                            st.append("( ");
+                            st.append(dealWithLogicComparison4M(middleAndLastLogicComparison.getLogicComprisonLast()));
+                            st.append(" )");
+                        }
+
+                    }else if (middleAndLastLogicComparison.getOrMiddle() != null){
+                        st.append(" || ");
+                        if (middleAndLastLogicComparison.getNotOrMiddle() != null){
+                            st.append(" !");
+                        }
+                        if (middleAndLastLogicComparison.getCollection4LogicRet() != null){
+
+                            st.append(dealWithCOll4Log4M(middleAndLastLogicComparison.getCollection4LogicRet()));
+                        }else if (middleAndLastLogicComparison.getLogicComprisonLast() != null){
+                            st.append(" ( ");
+                            st.append(dealWithLogicComparison4M(middleAndLastLogicComparison.getLogicComprisonLast()));
+                            st.append(" ) ");
+                        }
+                    }
+                }
+            }
+            return st.toString();
+        }
+        return "";
+    }
+    public String dealWithColl4Arith4M(Collection4MUSTArithmetic CA){
+        if (CA.getmustacheVariable() != null){
+            return CA.getmustacheVariable().getVariableName().getIdentifier();
+        }else if (CA.getMustacheNumber() != null){
+            return CA.getMustacheNumber().getNumber().toString();
+        }else if (CA.getObjArray4Must() != null){
+            return dealWithObjArray4M(CA.getObjArray4Must());
+        }else if (CA.getFunctionCall4Must() != null){
+            return dealWithFunctionCall4M(CA.getFunctionCall4Must());
+        }else if (CA.getSubObj4Must() != null){
+            return dealWithSubObj4M(CA.getSubObj4Must());
+        }else if (CA.getOneLineArithCondithion4Must1() != null){
+            return dealWithOneLineArithCond4M(CA.getOneLineArithCondithion4Must1());
+        }
+        else {
+            return "";
+        }
+    }
+    /////////////////
+    //TODO collection4LogicRet4Must
+    //TODO middleAndLastLogicComparison4Must
+    //TODO collection4MUSTArithmetic
+    //TODO lastArithmeticLogic4Must
+    //////////////
+
+
+
 }
