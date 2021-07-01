@@ -2,13 +2,23 @@ package generateCode;
 
 import AST.Elements.ElementsNodes.CpExpression.model.ModelExpression;
 import AST.Elements.ElementsNodes.HtmlAttribute;
+import AST.Elements.ElementsNodes.generic4Elements.*;
+import AST.Elements.ElementsNodes.generic4Elements.Logic.ArithmeticLogic;
+import AST.Elements.ElementsNodes.generic4Elements.Logic.LastArithmeticLogic;
 import AST.Elements.ElementsNodes.generic4Elements.Logic.LogicComprison;
 import AST.Elements.ElementsNodes.generic4Elements.Logic.MiddleAndLastLogicComparison;
+import AST.Elements.ElementsNodes.generic4Elements.array.Array;
 import AST.Elements.ElementsNodes.generic4Elements.array.ArrayCalling;
 import AST.Elements.ElementsNodes.generic4Elements.array.ObjArray;
+import AST.Elements.ElementsNodes.generic4Elements.comparison.ComparisonExpression;
+import AST.Elements.ElementsNodes.generic4Elements.comparison.OneLineArithCondition;
+import AST.Elements.ElementsNodes.generic4Elements.comparison.OneLineBoolCondition;
+import AST.Elements.ElementsNodes.generic4Elements.comparison.OneLineCondition;
 import AST.Elements.ElementsNodes.generic4Elements.function.FunctionCall;
+import AST.Elements.ElementsNodes.generic4Elements.function.FunctionCallFromVar;
 import AST.Elements.ElementsNodes.generic4Elements.function.Parameter;
 import AST.Elements.ElementsNodes.generic4Elements.function.Parameters;
+import AST.Elements.ElementsNodes.generic4Elements.object.ObjBody;
 import AST.Elements.ElementsNodes.generic4Elements.object.SubObj;
 import AST.Elements.ElementsNodes.generic4Elements.property.Property;
 import AST.Elements.ElementsNodes.mustacheExpression.MustacheExpression;
@@ -17,7 +27,6 @@ import AST.Elements.ElementsNodes.mustacheExpression.MustacheExpression;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.net.Inet4Address;
 import java.util.List;
 
 public class CodeGeneration {
@@ -124,7 +133,7 @@ public class CodeGeneration {
 
     }
     public String ModelSubobj(ModelExpression modelExp,String id ){
-        return dealWithSubobj(modelExp.getCollection4Model1().getSubObj()).toString();
+        return /*dealWithSubobj(modelExp.getCollection4Model1().getSubObj()).toString();*/ "";
     }
     public String ModelObjArray(ModelExpression modelExp,String id){
           return "";
@@ -174,8 +183,9 @@ public class CodeGeneration {
     }
 
 
+/*
     //subobj
-    public StringBuilder dealWithSubobj(SubObj sb){
+    public String dealWithSubobj(SubObj sb){
 
         StringBuilder tempValue = new StringBuilder();
         tempValue.append(sb.getIdentifier());
@@ -186,6 +196,7 @@ public class CodeGeneration {
         return tempValue;
     }
 
+*/
 
 
 
@@ -218,94 +229,168 @@ public class CodeGeneration {
 
 
     // LOGIC COMPARISON
-    public void dealWithLogicComparison(LogicComprison logicComprison){
+    public String dealWithLogicComparison(LogicComprison logicComprison){
 
         // start
         if (logicComprison.getCollection4LogicRetFirst() != null){
-            // just one
+            if (logicComprison.getNotFirst() != null){
+                return "!" + dealWithCOll4Log(logicComprison.getCollection4LogicRetFirst());
+            }else {
+                return dealWithCOll4Log(logicComprison.getCollection4LogicRetFirst());
+            }
+
         }else if(logicComprison.getLogicComprisonFirst() != null){
-            //add (
-            // repeat logicComparison
-            //add )
-            dealWithLogicComparison(logicComprison.getLogicComprisonFirst());
+
+            StringBuilder st = new StringBuilder();
+            st.append("(");
+            st.append(dealWithLogicComparison(logicComprison.getLogicComprisonFirst()));
+            st.append(")");
 
             if (!logicComprison.getMiddleAndLastLogicComparisons().isEmpty()){
                 for (int i = 0 ; i <logicComprison.getMiddleAndLastLogicComparisons().size(); i ++) {
                     // add middle and last
                     MiddleAndLastLogicComparison middleAndLastLogicComparison = logicComprison.getMiddleAndLastLogicComparisons().get(i);
                     if (middleAndLastLogicComparison.getAndMiddle() != null){
+                        st.append(" && ");
                         if (middleAndLastLogicComparison.getNotAndMiddle() != null) {
-                            //add !
+                            st.append(" !");
                         }
-                            //add (
-                            if (middleAndLastLogicComparison.getCollection4LogicRet() != null){
-                                // get it
-                            }
-                            // add )
+                        if (middleAndLastLogicComparison.getCollection4LogicRet() != null){
+
+                            st.append(dealWithCOll4Log(middleAndLastLogicComparison.getCollection4LogicRet()));
+                        }else if (middleAndLastLogicComparison.getLogicComprisonLast() != null){
+                            st.append(" ( ");
+                            st.append(dealWithLogicComparison(middleAndLastLogicComparison.getLogicComprisonLast()));
+                            st.append(" ) ");
+                        }
+
                     }else if (middleAndLastLogicComparison.getOrMiddle() != null){
+                        st.append(" || ");
                         if (middleAndLastLogicComparison.getNotOrMiddle() != null){
-                            // add !
+                            st.append(" !");
                         }
-                        //add (
-                        if (middleAndLastLogicComparison.getLogicComprisonLast() != null){
-                            // repeat logic comparison
+                        if (middleAndLastLogicComparison.getCollection4LogicRet() != null){
+
+                            st.append(dealWithCOll4Log(middleAndLastLogicComparison.getCollection4LogicRet()));
+                        }else if (middleAndLastLogicComparison.getLogicComprisonLast() != null){
+                            st.append(" ( ");
+                            st.append(dealWithLogicComparison(middleAndLastLogicComparison.getLogicComprisonLast()));
+                            st.append(" ) ");
                         }
-                        // add )
                     }
                 }
             }
+            return st.toString();
         }
+        return "";
     }
 
 
 
-    public void dealWithObjArray(ObjArray OA){
+    public String dealWithObjArray(ObjArray OA){
+
+        StringBuilder st = new StringBuilder();
 
         if (OA.getArrName() != null){
-            // add it
+
+            st.append(" "+OA.getArrName().getIdentifier());
         }
 
         if (OA.getArrayCalling() != null){
-            if (OA.getArrayCalling().getArithmeticLogic() != null){
-                // get from array calling
-            }
-            if (OA.getArrayCalling().getProperty() != null){
-                // get from property
-            }else if (OA.getArrayCalling().getFunctionCallFromVar() != null){
-                // get from function
-            }
+            st.append(dealWithArrayCalling(OA.getArrayCalling()));
+            return st.toString();
         }
 
+        return "";
     }
 
-    public void dealWithArrayCalling(ArrayCalling AC){
+    public String dealWithArrayCalling(ArrayCalling AC){
+        StringBuilder st = new StringBuilder();
+         if (!AC.getArithmeticLogic().isEmpty()){
 
-        for (int i = 0 ; i < AC.getArithmeticLogic().size() ;i++){
-            // add [
-            // add from arithmetic logic
-            // add ]
+                for (int i = 0 ; i < AC.getArithmeticLogic().size() ; i++){
+                    st.append(" [ ");
+                    st.append(dealWithArithLogic(AC.getArithmeticLogic().get(i)));
+                    st.append(" ] ");
+                }
+            }
+            if (AC.getProperty() != null){
+
+                st.append(dealWithProperty(AC.getProperty()));
+            }else if (AC.getFunctionCallFromVar() != null){
+
+                st.append(dealWithFunctionFromVar(AC.getFunctionCallFromVar()));
+            }
+            return st.toString();
+    }
+
+
+    public String dealWithArray(Array a){
+
+        StringBuilder st = new StringBuilder();
+        st.append(" [ ");
+
+        for (int i = 0 ; i < a.getInternalCollection4everythings().size() ; i++){
+
+            st.append(dealWithColl4Every(a.getInternalCollection4everythings().get(i)));
+            if (i != a.getInternalCollection4everythings().size() - 1){
+                st.append(" , ");
+            }
         }
-        // return
+        st.append(" ] ");
+        return st.toString();
     }
 
-    public void dealWithSubObj(SubObj SO){
+    public String dealWithObjBody(ObjBody OB){
 
-//        SO.getIdentifier() add this
+        StringBuilder st = new StringBuilder();
 
-        // add property
-        dealWithProperty(SO.getProperty());
+        st.append(" { ");
+        for (int i = 0 ; i < OB.getPairs().size() ; i ++){
 
-        //return
+            st.append("\"" + OB.getPairs().get(i).getKey().getIdentifier() + "\"");
+            st.append(" : ");
+            st.append("\"" + dealWithColl4Every(OB.getPairs().get(i).getCollection4everything()) + "\"");
+
+            if (i != OB.getPairs().size() - 1){
+                st.append(" , ");
+            }
+        }
+        st.append(" } ");
+
+        return st.toString();
     }
 
-    public void dealWithProperty(Property p){
+
+    public String dealWithSubObj(SubObj SO){
+
+        StringBuilder st = new StringBuilder();
+        st.append(SO.getIdentifier());
+        st.append(dealWithProperty(SO.getProperty()));
+
+        return st.toString();
+    }
+
+    public String dealWithProperty(Property p){
+        StringBuilder st = new StringBuilder();
+
         for (int i = 0 ; i < p.getPropertyValues().size() ; i++){
-//            add .
-//            p.getPropertyValues().get(i);  add it
+
+            st.append(".");
+            st.append(p.getPropertyValues().get(i).getIdentifier());
         }
+
+        if (p.getArrayCalling() != null){
+            st.append(dealWithArrayCalling(p.getArrayCalling()));
+        }else if (p.getFunctionCallFromVar() != null){
+            st.append(dealWithFunctionFromVar(p.getFunctionCallFromVar()));
+        }
+
+        return st.toString();
+
     }
 
-    public void dealWithFunctionCall(FunctionCall FC){
+    public String dealWithFunctionCall(FunctionCall FC){
 
 //        FC.getFunctionName()
 
@@ -326,6 +411,7 @@ public class CodeGeneration {
         }
 
         // return value
+        return null;
     }
 
     public void parameters4FunctionCall(Parameters p){
@@ -338,5 +424,174 @@ public class CodeGeneration {
 
 
         // return
+    }
+
+    public String dealWithFunctionFromVar(FunctionCallFromVar FCV){
+
+
+        return "";
+    }
+
+    public String dealWithComparisonExp(ComparisonExpression CS){
+
+        // add this
+//        CS.getCollection4comparison1()
+//        CS.getComparisonOperator()
+//          CS.getCollection4comparison2()
+        return null;
+    }
+
+
+    public String dealWithOneLineCond(OneLineCondition OLC){
+//        OLC.getOpenPar()
+//    OLC.getLogicComprison()
+//    OLC.getQuestionMark()
+//    OLC.getCollection4everything1()
+//        add :
+//    OLC.getCollection4everything2()
+        return null;
+    }
+
+
+    public String dealWithOneLineBoolCond(OneLineBoolCondition OLBC){
+//        OLBC.getOpenPar()
+//    OLBC.getLogicComprison()
+//    OLBC.getQuestionMark()
+// true
+//        add :
+//    false
+        return null;
+    }
+
+    public String dealWithOneLineArithCond(OneLineArithCondition OLAC){
+/*        OLAC.getOpenPar();
+        OLAC.getLogicComprison();
+        OLAC.getQuestionMark();
+        OLAC.getArithmeticLogic1();
+        // add :
+        OLAC.getArithmeticLogic2();*/
+        return null;
+    }
+
+
+    public String dealWithArithLogic(ArithmeticLogic AL){
+
+        if (AL.getCollection4Arithmetic() != null){
+            //  get AL.getCollection4Arithmetic()
+        }else{
+//            AL.getOpenPar();
+//            dealWithArithLogic(AL.getArithmeticLogic());
+//        AL.getClosePar();
+
+            if (!AL.getLastArithmeticLogic().isEmpty()){
+                for (int i = 0; i < AL.getLastArithmeticLogic().size() ; i++){
+//                    AL.getLastArithmeticLogic().get(i);
+                }
+            }
+        }
+        return null;
+    }
+
+    public void dealWithLastArithLogic(LastArithmeticLogic LAL){
+//        LAL.getArithmeticLogic();
+         if (LAL.getCollection4Arithmetic() != null){
+
+         }else {
+//             LAL.getOpenPar();
+//                LAL.getArithmeticLogic();
+//                LAL.getClosePar();
+
+         }
+    }
+
+
+    public String  dealWithValue(Value V){
+        if (V.getString() != null){
+            return V.getString();
+        }else if (V.getNumber() != null){
+            return V.getNumber().toString();
+        }else if (V.getTrueOrFalse() != null){
+            if (V.getTrueOrFalse().isFalse()){
+                return "true";
+            }else {
+                return "false";
+            }
+        }else {
+            return "null";
+        }
+    }
+
+    public String dealWithColl4Every(Collection4everything CE){
+        if (CE.getVariable() != null){
+            return CE.getVariable().getVariableName().getIdentifier();
+        }else if (CE.getValue() != null){
+            return dealWithValue(CE.getValue());
+        }else if(CE.getArray() != null){
+            return dealWithArray(CE.getArray());
+        }else if (CE.getObjArray() != null){
+            return dealWithObjArray(CE.getObjArray());
+        }else if (CE.getFunctionCall() != null){
+            return dealWithFunctionCall(CE.getFunctionCall());
+        }else if (CE.getSubObj() != null){
+            return dealWithSubObj(CE.getSubObj());
+        }else if (CE.getOneLineCondition() != null){
+            return dealWithOneLineCond(CE.getOneLineCondition());
+        }else if (CE.getComparisonExpression() != null){
+            return dealWithComparisonExp(CE.getComparisonExpression());
+        }else if (CE.getLogicComprison() != null){
+            return dealWithLogicComparison(CE.getLogicComprison());
+        }else if (CE.getArithmeticLogic() != null){
+            return dealWithArithLogic(CE.getArithmeticLogic());
+        }else {
+            return "";
+        }
+    }
+
+    public String dealWithColl4Comp(Collection4comparison CC){
+        return dealWithArithLogic(CC.getArithmeticLogic());
+    }
+
+    public String dealWithColl4Arith(Collection4Arithmetic CA){
+        if (CA.getVariable() != null){
+            return CA.getVariable().getVariableName().getIdentifier();
+        }else if (CA.getNumber() != null){
+            return CA.getNumber().getNumber().toString();
+        }else if (CA.getObjArray() != null){
+            return dealWithObjArray(CA.getObjArray());
+        }else if (CA.getFunctionCall() != null){
+            return dealWithFunctionCall(CA.getFunctionCall());
+        }else if (CA.getSubObj() != null){
+            return dealWithSubObj(CA.getSubObj());
+        }else if (CA.getOneLineArithCondition() != null){
+            return dealWithOneLineArithCond(CA.getOneLineArithCondition());
+        }
+            else {
+            return "";
+        }
+    }
+
+    public String dealWithCOll4Log(Collection4LogicRet CL){
+        if (CL.getVariable() != null){
+            return CL.getVariable().getVariableName().getIdentifier();
+        }else if (CL.getTrueOrFalse()!= null){
+            if (CL.getTrueOrFalse().isTrue()){
+                return "true";
+            }else {
+                return "false";
+            }
+        }else if (CL.getObjArray() != null){
+            return dealWithObjArray(CL.getObjArray());
+        }else if (CL.getFunctionCall() != null){
+            return dealWithFunctionCall(CL.getFunctionCall());
+        }else if (CL.getSubObj() != null){
+            return dealWithSubObj(CL.getSubObj());
+        }else if (CL.getComparisonExpression() != null){
+            return dealWithComparisonExp(CL.getComparisonExpression());
+        }else if (CL.getOneLineBoolCondition() !=null){
+            return dealWithOneLineBoolCond(CL.getOneLineBoolCondition());
+        }
+        else {
+            return "";
+        }
     }
 }
