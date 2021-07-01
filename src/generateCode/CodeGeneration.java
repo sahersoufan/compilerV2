@@ -139,12 +139,12 @@ public class CodeGeneration {
         // Get Model Value
         if (modelExp.getCollection4Model1().getVariable() != null) {
             modelValue=ModelVarible(modelExp);
-            JSContent.append("        document.getElementById(\""+id+"\").value = forthyear."+modelValue+";\n");
+            JSContent.append(" document.getElementById(\""+id+"\").value = "+modelValue+";\n");
 
         } else if (modelExp.getCollection4Model1().getSubObj() != null) {
             modelValue= ModelSubobj(modelExp);
-            JSContent.append("        var "+id+"Changes = function (event) {\n" +
-                    "            forthyear."+modelValue+" = document.getElementById(\""+id+"\").value;\n" +
+            JSContent.append(" var "+id+"Changes = function (event) {\n" +
+                    "            "+modelValue+" = document.getElementById(\""+id+"\").value;\n" +
                     "        };\n");
         }else if(modelExp.getCollection4Model1().getOneLine4ModelCondition()!=null){
             modelValue=ModelOneLine4ModelCondition(modelExp);
@@ -157,18 +157,17 @@ public class CodeGeneration {
 
 
 
-        JSContent.append("        document.getElementById(\""+id+"\").addEventListener(\"input\", function(event) {\n" +
+        JSContent.append("document.getElementById(\""+id+"\").addEventListener(\"input\", function(event) {\n" +
                 "            changes.push("+id+"Changes);\n" +
                 "        });\n" +
                 "        changes.push("+id+"Changes);\n");
     }
-
     public String ModelVarible(ModelExpression modelExp ){
         return modelExp.getCollection4Model1().getVariable().getVariableName().getIdentifier();
 
     }
     public String ModelSubobj(ModelExpression modelExp){
-        return dealWithSubobj(modelExp.getCollection4Model1().getSubObj()).toString();
+        return dealWithSubObj(modelExp.getCollection4Model1().getSubObj());
     }
     public String ModelObjArray(ModelExpression modelExp){
           return dealWithObjArray(modelExp.getCollection4Model1().getObjArray());
@@ -213,21 +212,8 @@ public class CodeGeneration {
             tempValue.append( ModelFunctioncall(modelExp));
         }
 
-
+        tempValue.append(" ) ");
         return tempValue.toString();
-    }
-
-
-    //subobj
-    public StringBuilder dealWithSubobj(SubObj sb){
-
-        StringBuilder tempValue = new StringBuilder();
-        tempValue.append(sb.getIdentifier());
-        for (int i = 0; i < sb.getProperty().getPropertyValues().size(); i++) {
-            tempValue.append(".");
-            tempValue.append(sb.getProperty().getPropertyValues().get(i).getIdentifier());
-        }
-        return tempValue;
     }
 
 
@@ -259,8 +245,10 @@ public class CodeGeneration {
         // Get Show Value
         if (showExp.getLogicComprison() != null) {
             showValue=ShowLogicComparison(showExp);
-            JSContent.append("if("+showValue.substring(1,showValue.length()-1)+")\n  " +
-                    "document.getElementById(\""+id+"\").style.display=\"block\";");
+            JSContent.append("if("+showValue.substring(1,showValue.length()-1)+")\n " +
+                    " document.getElementById(\""+id+"\").style.display=\"block\";" +
+                    "else" +
+                    "document.getElementById(\""+id+"\").style.display=\"none\";");
 
         }
 
@@ -269,6 +257,7 @@ public class CodeGeneration {
     public String ShowLogicComparison(ShowExpression showExp){
        return dealWithLogicComparison(showExp.getLogicComprison());
     }
+
 
     // CP-Hide
     public void dealWithHide(List<HtmlAttribute> attributes){
@@ -299,7 +288,9 @@ public class CodeGeneration {
         if (hideExp.getLogicComprison() != null) {
             hideValue=HideLogicComparison(hideExp);
             JSContent.append("if("+hideValue.substring(1,hideValue.length()-1)+")\n " +
-                    " document.getElementById(\""+id+"\").style.display=\"none\";");
+                    " document.getElementById(\""+id+"\").style.display=\"none\";" +
+                    "else" +
+                    "document.getElementById(\""+id+"\").style.display=\"block\";");
 
         }
 
@@ -343,30 +334,31 @@ public class CodeGeneration {
         }
         else if(switchExp.getCollection4Switch1().getSubObj()!=null){
             switchValue=SwitchSubobj(switchExp);
-            JSContent.append("var "+id+"Changes = function (event) {\n" +
-                    "            forthyear."+switchValue+" = document.getElementById(\""+id+"\").value;\n" +
-                    "        };\n");
+            JSContent.append(" document.getElementById(\""+id+"\").value= "+switchValue+";\n");
 
         }else if(switchExp.getCollection4Switch1().getObjArray()!=null){
             switchValue=SwitchObjArray(switchExp);
-            JSContent.append("");
+            JSContent.append(" document.getElementById(\""+id+"\").value= "+switchValue+";\n");
 
         }else if(switchExp.getCollection4Switch1().getNumber()!=null){
             switchValue=SwitchNumber(switchExp);
-            JSContent.append("");
+            JSContent.append(" document.getElementById(\""+id+"\").value= "+switchValue+";\n");
 
         }else if(switchExp.getCollection4Switch1().getString()!=null){
             switchValue=SwitchString(switchExp);
-            JSContent.append("");
+            JSContent.append(" document.getElementById(\""+id+"\").value= "+switchValue+";\n");
         }else if(switchExp.getCollection4Switch1().getArithmeticLogic()!=null){
             switchValue=SwitchArithmeticLogic(switchExp);
-            JSContent.append("");
+            JSContent.append("temp="+switchValue+";\n" +
+                    "document.getElementById(\""+id+"\").value = temp;");
         }else if(switchExp.getCollection4Switch1().getOneLine4switch1()!=null){
             switchValue=SwitchOneLine4switch1(switchExp);
-            JSContent.append("");
+            JSContent.append("temp="+switchValue+";\n" +
+                    "document.getElementById(\""+id+"\").value = temp;");
         }
 
 
+        JSContent.append("switch("+switchValue+"){");
         for(HtmlElement h: htmlElement.getHtmlContent().getHtmlElement() ){
 
             for(HtmlAttribute ha: h.getHtmlAttributeList()){
@@ -376,15 +368,19 @@ public class CodeGeneration {
                     }
                 }
                 if(ha.getSwitchCaseExpression()!=null){
-
                     switchcaseValue=discussionsSwitchcase(switchExp,ha.getSwitchCaseExpression(),idSwitchcase);
-                    JSContent.append("if("+switchValue.substring(1,switchValue.length()-1)+" == "+switchcaseValue.substring(1,switchcaseValue.length()-1)+")\n" +
-                            "document.getElementById(\""+idSwitchcase+"\").style.display=\"block\";");
+                    JSContent.append("case "+switchcaseValue+":\n" +
+                            "document.getElementById(\""+idSwitchcase+"\").style.display=\"block\";\n" +
+                            "break; ");
                 }
 
                //ToDo switch case default
 
+                JSContent.append("}");
 
+            }
+            if (idSwitchcase == null || switchcaseValue == null) {
+                throw new NullPointerException(idSwitchcase);
             }
 
         }
@@ -398,7 +394,7 @@ public class CodeGeneration {
 
     }
     public String SwitchSubobj(SwitchExpression switchExp){
-        return dealWithSubobj(switchExp.getCollection4Switch1().getSubObj()).toString();
+        return dealWithSubObj(switchExp.getCollection4Switch1().getSubObj()).toString();
     }
     public String SwitchObjArray(SwitchExpression switchExp){
         return dealWithObjArray(switchExp.getCollection4Switch1().getObjArray());
@@ -407,6 +403,7 @@ public class CodeGeneration {
         return switchExp.getCollection4Switch1().getNumber().getNumber().toString();
     }
     public String SwitchString(SwitchExpression switchExp){
+
         return switchExp.getCollection4Switch1().getString();
     }
     public String SwitchArithmeticLogic(SwitchExpression switchExp){
@@ -468,36 +465,36 @@ public class CodeGeneration {
         String switchValue=null;
         if(switchCaseExp.getCollection4Switch1().getVariable()!=null){
             switchValue=SwitchVarible(switchExp);
-            JSContent.append("document.getElementById(\""+id+"\").value = forthyear."+switchValue+";\n");
+            JSContent.append("document.getElementById(\""+id+"\").value = "+switchValue+";\n");
 
         }else if(switchCaseExp.getCollection4Switch1().getSubObj()!=null){
 
             switchValue=SwitchSubobj(switchExp);
-            JSContent.append("        var "+id+"Changes = function (event) {\n" +
-                    "            forthyear."+switchValue+" = document.getElementById(\""+id+"\").value;\n" +
-                    "        };\n");
+            JSContent.append(" document.getElementById(\""+id+"\").value= "+switchValue+";\n");
         }else if(switchCaseExp.getCollection4Switch1().getObjArray()!=null){
 
             switchValue=SwitchObjArray(switchExp);
-            JSContent.append("");
+            JSContent.append(" document.getElementById(\""+id+"\").value= "+switchValue+";\n");
         }else if(switchCaseExp.getCollection4Switch1().getNumber()!=null){
             switchValue=SwitchNumber(switchExp);
-            JSContent.append("");
+            JSContent.append(" document.getElementById(\""+id+"\").value= "+switchValue+";\n");
 
         }else if(switchCaseExp.getCollection4Switch1().getString()!=null){
             switchValue=SwitchString(switchExp);
-            JSContent.append("");
+            JSContent.append(" document.getElementById(\""+id+"\").value= "+switchValue+";\n");
 
         }else if(switchCaseExp.getCollection4Switch1().getArithmeticLogic()!=null){
             switchValue=SwitchArithmeticLogic(switchExp);
-            JSContent.append("");
+            JSContent.append("temp="+switchValue+";\n" +
+                    "document.getElementById(\""+id+"\").value = temp;");
 
         }else if(switchCaseExp.getCollection4Switch1().getOneLine4switch1()!=null){
 
             switchValue=SwitchOneLine4switch1(switchExp);
-            JSContent.append("");
+            JSContent.append("temp="+switchValue+";\n" +
+                    "document.getElementById(\""+id+"\").value = temp;");
         }
-return switchValue;
+       return switchValue;
     }
 
 
@@ -525,6 +522,7 @@ return switchValue;
 
 
 
+
     public String dealWithObjArray(ObjArray OA){
 
         StringBuilder st = new StringBuilder();
@@ -541,7 +539,6 @@ return switchValue;
 
         return "";
     }
-
     public String dealWithArrayCalling(ArrayCalling AC){
         StringBuilder st = new StringBuilder();
          if (!AC.getArithmeticLogic().isEmpty()){
@@ -561,8 +558,6 @@ return switchValue;
             }
             return st.toString();
     }
-
-
     public String dealWithArray(Array a){
 
         StringBuilder st = new StringBuilder();
@@ -578,7 +573,6 @@ return switchValue;
         st.append(" ]");
         return st.toString();
     }
-
     public String dealWithObjBody(ObjBody OB){
 
         StringBuilder st = new StringBuilder();
@@ -598,8 +592,6 @@ return switchValue;
 
         return st.toString();
     }
-
-
     public String dealWithSubObj(SubObj SO){
 
         StringBuilder st = new StringBuilder();
