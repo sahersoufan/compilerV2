@@ -531,7 +531,7 @@ return switchValue;
 
         if (OA.getArrName() != null){
 
-            st.append(" "+OA.getArrName().getIdentifier());
+            st.append(" "+App+"."+OA.getArrName().getIdentifier());
         }
 
         if (OA.getArrayCalling() != null){
@@ -603,7 +603,7 @@ return switchValue;
     public String dealWithSubObj(SubObj SO){
 
         StringBuilder st = new StringBuilder();
-        st.append(SO.getIdentifier());
+        st.append(" "+App+"."+SO.getIdentifier());
         st.append(dealWithProperty(SO.getProperty()));
 
         return st.toString();
@@ -631,7 +631,7 @@ return switchValue;
     public String dealWithFunctionCall(FunctionCall FC){
         StringBuilder st = new StringBuilder();
 
-        st.append(" "+FC.getFunctionName().getIdentifier());
+        st.append(" "+App+"."+FC.getFunctionName().getIdentifier());
         st.append(dealWithFunctionFromVar(FC.getFunctionCallFromVar()));
         // return value
         return st.toString();
@@ -837,7 +837,7 @@ return switchValue;
 
     public String dealWithColl4Every(Collection4everything CE){
         if (CE.getVariable() != null){
-            return CE.getVariable().getVariableName().getIdentifier();
+            return App+"."+CE.getVariable().getVariableName().getIdentifier();
         }else if (CE.getValue() != null){
             return dealWithValue(CE.getValue());
         }else if(CE.getArray() != null){
@@ -867,7 +867,7 @@ return switchValue;
 
     public String dealWithColl4Arith(Collection4Arithmetic CA){
         if (CA.getVariable() != null){
-            return CA.getVariable().getVariableName().getIdentifier();
+            return App+"."+CA.getVariable().getVariableName().getIdentifier();
         }else if (CA.getNumber() != null){
             return CA.getNumber().getNumber().toString();
         }else if (CA.getObjArray() != null){
@@ -886,7 +886,7 @@ return switchValue;
 
     public String dealWithCOll4Log(Collection4LogicRet CL){
         if (CL.getVariable() != null){
-            return CL.getVariable().getVariableName().getIdentifier();
+            return App+"."+CL.getVariable().getVariableName().getIdentifier();
         }else if (CL.getTrueOrFalse()!= null){
             if (CL.getTrueOrFalse().isTrue()){
                 return "true";
