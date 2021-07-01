@@ -1,4 +1,0 @@
-global
-VariableName = hello
-global - App Scope
-VariableName = myTest
