@@ -16,8 +16,8 @@
         <PerGrammarGenerationSettings>
           <option name="fileName" value="$PROJECT_DIR$/src/main/antlr/HTMLParser.g4" />
           <option name="autoGen" value="true" />
-          <option name="outputDir" value="C:\Users\FATIMA\Desktop\compilerV2\src" />
-          <option name="libDir" value="C:\Users\FATIMA\Desktop\compilerV2\src\main\antlr" />
+          <option name="outputDir" value="E:\forth year\1\CompV2\src" />
+          <option name="libDir" value="E:\forth year\1\CompV2\src\main\antlr" />
           <option name="encoding" value="" />
           <option name="pkg" value="generatedGrammers" />
           <option name="language" value="" />
