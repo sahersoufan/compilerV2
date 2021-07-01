@@ -29,7 +29,6 @@ import AST.Elements.ElementsNodes.mustacheExpression.MustacheExpression;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.net.Inet4Address;
 import java.util.List;
 
 public class CodeGeneration {
@@ -303,67 +302,6 @@ public class CodeGeneration {
 
 
 
-
-
-    // LOGIC COMPARISON
-    public String dealWithLogicComparison(LogicComprison logicComprison){
-
-        // start
-        if (logicComprison.getCollection4LogicRetFirst() != null){
-            if (logicComprison.getNotFirst() != null){
-                return "!" + dealWithCOll4Log(logicComprison.getCollection4LogicRetFirst());
-            }else {
-                return dealWithCOll4Log(logicComprison.getCollection4LogicRetFirst());
-            }
-
-        }else if(logicComprison.getLogicComprisonFirst() != null){
-
-            StringBuilder st = new StringBuilder();
-            st.append("(");
-            st.append(dealWithLogicComparison(logicComprison.getLogicComprisonFirst()));
-            st.append(")");
-
-            if (!logicComprison.getMiddleAndLastLogicComparisons().isEmpty()){
-                for (int i = 0 ; i <logicComprison.getMiddleAndLastLogicComparisons().size(); i ++) {
-                    // add middle and last
-                    MiddleAndLastLogicComparison middleAndLastLogicComparison = logicComprison.getMiddleAndLastLogicComparisons().get(i);
-                    if (middleAndLastLogicComparison.getAndMiddle() != null){
-                        st.append(" && ");
-                        if (middleAndLastLogicComparison.getNotAndMiddle() != null) {
-                            st.append(" !");
-                        }
-                        if (middleAndLastLogicComparison.getCollection4LogicRet() != null){
-
-                            st.append(dealWithCOll4Log(middleAndLastLogicComparison.getCollection4LogicRet()));
-                        }else if (middleAndLastLogicComparison.getLogicComprisonLast() != null){
-                            st.append(" ( ");
-                            st.append(dealWithLogicComparison(middleAndLastLogicComparison.getLogicComprisonLast()));
-                            st.append(" ) ");
-                        }
-
-                    }else if (middleAndLastLogicComparison.getOrMiddle() != null){
-                        st.append(" || ");
-                        if (middleAndLastLogicComparison.getNotOrMiddle() != null){
-                            st.append(" !");
-                        }
-                        if (middleAndLastLogicComparison.getCollection4LogicRet() != null){
-
-                            st.append(dealWithCOll4Log(middleAndLastLogicComparison.getCollection4LogicRet()));
-                        }else if (middleAndLastLogicComparison.getLogicComprisonLast() != null){
-                            st.append(" ( ");
-                            st.append(dealWithLogicComparison(middleAndLastLogicComparison.getLogicComprisonLast()));
-                            st.append(" ) ");
-                        }
-                    }
-                }
-            }
-            return st.toString();
-        }
-        return "";
-    }
-
-
-
     public String dealWithObjArray(ObjArray OA){
 
         StringBuilder st = new StringBuilder();
@@ -405,7 +343,7 @@ public class CodeGeneration {
     public String dealWithArray(Array a){
 
         StringBuilder st = new StringBuilder();
-        st.append(" [ ");
+        st.append("[ ");
 
         for (int i = 0 ; i < a.getInternalCollection4everythings().size() ; i++){
 
@@ -414,7 +352,7 @@ public class CodeGeneration {
                 st.append(" , ");
             }
         }
-        st.append(" ] ");
+        st.append(" ]");
         return st.toString();
     }
 
@@ -468,118 +406,194 @@ public class CodeGeneration {
     }
 
     public String dealWithFunctionCall(FunctionCall FC){
+        StringBuilder st = new StringBuilder();
 
-//        FC.getFunctionName()
-
-        for (int i = 0 ; i < FC.getFunctionCallFromVar().getParameters().size() ; i ++){
-            //        FC.getFunctionCallFromVar().getOpenPar()
-            parameters4FunctionCall(FC.getFunctionCallFromVar().getParameters().get(i));
-            //        FC.getFunctionCallFromVar().getClosePar()
-
-        }
-
-
-        if (FC.getFunctionCallFromVar().getProperty() != null){
-            dealWithProperty(FC.getFunctionCallFromVar().getProperty());
-        }
-
-        if (FC.getFunctionCallFromVar().getArrayCalling() != null){
-            dealWithArrayCalling(FC.getFunctionCallFromVar().getArrayCalling());
-        }
-
+        st.append(" "+FC.getFunctionName().getIdentifier());
+        st.append(dealWithFunctionFromVar(FC.getFunctionCallFromVar()));
         // return value
-        return null;
-    }
-
-    public void parameters4FunctionCall(Parameters p){
-
-        for (int i = 0 ; i < p.getParameters().size() ; i++){
-            Parameter parameter =  p.getParameters().get(i);
-//            if (parameter .... )
-            // add ,
-        }
-
-
-        // return
+        return st.toString();
     }
 
     public String dealWithFunctionFromVar(FunctionCallFromVar FCV){
 
+        StringBuilder st = new StringBuilder();
 
-        return "";
+        for (int i = 0 ; i < FCV.getParameters().size() ; i ++){
+
+            st.append("( ");
+            st.append(dealWithparameters(FCV.getParameters().get(i)));
+            st.append(" )");
+        }
+
+
+        if (FCV.getProperty() != null){
+            st.append(dealWithProperty(FCV.getProperty()));
+        }
+
+        if (FCV.getArrayCalling() != null){
+            st.append(dealWithArrayCalling(FCV.getArrayCalling()));
+        }
+
+
+        return st.toString();
     }
 
-    public String dealWithComparisonExp(ComparisonExpression CS){
+    public String dealWithparameters(Parameters p){
 
-        // add this
-//        CS.getCollection4comparison1()
-//        CS.getComparisonOperator()
-//          CS.getCollection4comparison2()
-        return null;
+        StringBuilder st = new StringBuilder();
+        for (int i = 0 ; i < p.getParameters().size() ; i++){
+            Parameter parameter =  p.getParameters().get(i);
+            st.append(dealWithColl4Every(parameter.getCollection4everything()));
+        }
+
+
+    return st.toString();
+    }
+
+
+    public String dealWithComparisonExp(ComparisonExpression CS){
+        StringBuilder st = new StringBuilder();
+
+        st.append(dealWithColl4Comp(CS.getCollection4comparison1()));
+        st.append(" "+ CS.getComparisonOperator().getComparisonOperator()+" ");
+        st.append(dealWithColl4Comp(CS.getCollection4comparison2()));
+
+        return st.toString();
     }
 
 
     public String dealWithOneLineCond(OneLineCondition OLC){
-//        OLC.getOpenPar()
-//    OLC.getLogicComprison()
-//    OLC.getQuestionMark()
-//    OLC.getCollection4everything1()
-//        add :
-//    OLC.getCollection4everything2()
-        return null;
+
+        StringBuilder st = new StringBuilder();
+
+        st.append("( ");
+        st.append(" "+ dealWithLogicComparison(OLC.getLogicComprison()));
+        st.append(" ? ");
+        st.append(dealWithColl4Every(OLC.getCollection4everything1()));
+        st.append(" : ");
+        st.append(dealWithColl4Every(OLC.getCollection4everything2()));
+        st.append(" )");
+        return st.toString();
     }
 
 
     public String dealWithOneLineBoolCond(OneLineBoolCondition OLBC){
-//        OLBC.getOpenPar()
-//    OLBC.getLogicComprison()
-//    OLBC.getQuestionMark()
-// true
-//        add :
-//    false
-        return null;
+        StringBuilder st = new StringBuilder();
+
+        st.append(" ( ");
+        st.append(dealWithLogicComparison(OLBC.getLogicComprison()));
+        st.append(" ? ");
+        st.append("true");
+        st.append(" : ");
+        st.append("false");
+        st.append(" )");
+        return st.toString();
     }
 
     public String dealWithOneLineArithCond(OneLineArithCondition OLAC){
-/*        OLAC.getOpenPar();
-        OLAC.getLogicComprison();
-        OLAC.getQuestionMark();
-        OLAC.getArithmeticLogic1();
-        // add :
-        OLAC.getArithmeticLogic2();*/
-        return null;
+        StringBuilder st = new StringBuilder();
+
+        st.append(" ( ");
+        st.append(dealWithLogicComparison(OLAC.getLogicComprison()));
+        st.append(" ? ");
+        st.append(dealWithArithLogic(OLAC.getArithmeticLogic1()));
+        st.append(" : ");
+        st.append(dealWithArithLogic(OLAC.getArithmeticLogic2()));
+        st.append(" )");
+
+        return st.toString();
+    }
+
+
+
+
+    // LOGIC COMPARISON
+    public String dealWithLogicComparison(LogicComprison logicComprison){
+
+        // start
+        if (logicComprison.getCollection4LogicRetFirst() != null){
+            if (logicComprison.getNotFirst() != null){
+                return "!" + dealWithCOll4Log(logicComprison.getCollection4LogicRetFirst());
+            }else {
+                return dealWithCOll4Log(logicComprison.getCollection4LogicRetFirst());
+            }
+
+        }else if(logicComprison.getLogicComprisonFirst() != null){
+
+            StringBuilder st = new StringBuilder();
+            st.append("( ");
+            st.append(dealWithLogicComparison(logicComprison.getLogicComprisonFirst()));
+            st.append(" )");
+
+            if (!logicComprison.getMiddleAndLastLogicComparisons().isEmpty()){
+                for (int i = 0 ; i <logicComprison.getMiddleAndLastLogicComparisons().size(); i ++) {
+                    // add middle and last
+                    MiddleAndLastLogicComparison middleAndLastLogicComparison = logicComprison.getMiddleAndLastLogicComparisons().get(i);
+                    if (middleAndLastLogicComparison.getAndMiddle() != null){
+                        st.append(" && ");
+                        if (middleAndLastLogicComparison.getNotAndMiddle() != null) {
+                            st.append(" !");
+                        }
+                        if (middleAndLastLogicComparison.getCollection4LogicRet() != null){
+
+                            st.append(dealWithCOll4Log(middleAndLastLogicComparison.getCollection4LogicRet()));
+                        }else if (middleAndLastLogicComparison.getLogicComprisonLast() != null){
+                            st.append("( ");
+                            st.append(dealWithLogicComparison(middleAndLastLogicComparison.getLogicComprisonLast()));
+                            st.append(" )");
+                        }
+
+                    }else if (middleAndLastLogicComparison.getOrMiddle() != null){
+                        st.append(" || ");
+                        if (middleAndLastLogicComparison.getNotOrMiddle() != null){
+                            st.append(" !");
+                        }
+                        if (middleAndLastLogicComparison.getCollection4LogicRet() != null){
+
+                            st.append(dealWithCOll4Log(middleAndLastLogicComparison.getCollection4LogicRet()));
+                        }else if (middleAndLastLogicComparison.getLogicComprisonLast() != null){
+                            st.append(" ( ");
+                            st.append(dealWithLogicComparison(middleAndLastLogicComparison.getLogicComprisonLast()));
+                            st.append(" ) ");
+                        }
+                    }
+                }
+            }
+            return st.toString();
+        }
+        return "";
     }
 
 
     public String dealWithArithLogic(ArithmeticLogic AL){
 
+        StringBuilder st = new StringBuilder();
         if (AL.getCollection4Arithmetic() != null){
-            //  get AL.getCollection4Arithmetic()
+            st.append(dealWithColl4Arith(AL.getCollection4Arithmetic()));
         }else{
-//            AL.getOpenPar();
-//            dealWithArithLogic(AL.getArithmeticLogic());
-//        AL.getClosePar();
+            st.append("( ");
+            st.append(dealWithArithLogic(AL.getArithmeticLogic()));
+            st.append(" )");
+        }
 
-            if (!AL.getLastArithmeticLogic().isEmpty()){
-                for (int i = 0; i < AL.getLastArithmeticLogic().size() ; i++){
-//                    AL.getLastArithmeticLogic().get(i);
+
+        if (!AL.getLastArithmeticLogic().isEmpty()){
+            for (int i = 0; i < AL.getLastArithmeticLogic().size() ; i++){
+                LastArithmeticLogic LAL = AL.getLastArithmeticLogic().get(i);
+                st.append(LAL.getArithmetic());
+                if (LAL.getCollection4Arithmetic() != null){
+                    st.append(dealWithColl4Arith(LAL.getCollection4Arithmetic()));
+                }else {
+                    st.append("( ");
+                    st.append(dealWithArithLogic(LAL.getArithmeticLogic()));
+                    st.append(" )");
                 }
             }
         }
-        return null;
+
+        return st.toString();
     }
 
-    public void dealWithLastArithLogic(LastArithmeticLogic LAL){
-//        LAL.getArithmeticLogic();
-         if (LAL.getCollection4Arithmetic() != null){
-
-         }else {
-//             LAL.getOpenPar();
-//                LAL.getArithmeticLogic();
-//                LAL.getClosePar();
-
-         }
-    }
 
 
     public String  dealWithValue(Value V){
