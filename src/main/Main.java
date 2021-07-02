@@ -38,8 +38,8 @@ public class Main {
             HtmlDocument doc = (HtmlDocument) base.visit(tree);
 
             // mayar add function in baseVisitor to print the tree from object (base)
-            System.out.println();
-            base.printTree();
+//            System.out.println();
+//            base.printTree();
             }
 
 

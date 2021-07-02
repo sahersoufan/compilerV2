@@ -94,8 +94,12 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
     public Boolean InsideBody = false;
     String javaScript = "E:\\forth year\\1\\CompV2\\src\\JS.js";
     CodeGeneration cg = new CodeGeneration(javaScript);
-    String id = null;
 
+    // ID
+    String id = null;
+    List<org.antlr.v4.runtime.misc.Pair<String,Integer>> ids = new ArrayList<>();
+    List<String> currentId = new ArrayList<>();
+    String finalId;
     @Override
     public Object visitHtmlDocument(HTMLParser.HtmlDocumentContext ctx) {
         HtmlDocument htmlDocument = new HtmlDocument();
@@ -218,8 +222,40 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
         if(!ctx.TAG_NAME().isEmpty()){
                 htmlElement.setTagName(ctx.TAG_NAME(0).getSymbol().getText());
                 htmlElementNode.addChild( new SimpleTreeNode(ctx.TAG_NAME(0).getSymbol().getText()));
-                if (ctx.TAG_NAME(0).getSymbol().getText().equals("body")) InsideBody = true;
-            }
+                if (ctx.TAG_NAME(0).getSymbol().getText().equals("body")) {
+                    InsideBody = true;
+                }
+
+                String tagName = ctx.TAG_NAME(0).getSymbol().getText();
+                    currentId.add(tagName);
+
+                    StringBuilder st = new StringBuilder();
+                    for (String s : currentId) {
+                        st.append(s);
+                    }
+
+                    Boolean notEqualAnything = true;
+                    if (!ids.isEmpty()) {
+                        for (int i = 0; i < ids.size(); i++) {
+                            if (ids.get(i).a.equals(st.toString())) {
+                                Integer num = ids.get(i).b + 1;
+                                ids.remove(i);
+                                ids.add(new org.antlr.v4.runtime.misc.Pair<>(st.toString(), num));
+                                st.append(num);
+                                notEqualAnything = false;
+                                break;
+                            }
+                        }
+                        if (notEqualAnything){
+                            ids.add(new org.antlr.v4.runtime.misc.Pair<>(st.toString(), 0));
+                        }
+
+                    }else{
+                        ids.add(new org.antlr.v4.runtime.misc.Pair<>(st.toString(), 0));
+                    }
+
+                    finalId = st.toString();
+                }
 
             if (ctx.TAG_SLASH_CLOSE() == null){
                 if (ctx.TAG_NAME(1) != null){
@@ -231,17 +267,30 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
             }
 
         List<HtmlAttribute> htmlAttributeList = new ArrayList<>();
-
+            Boolean haveId = false;
         if (!ctx.htmlAttribute().isEmpty()) {
             for (int i = 0; i < ctx.htmlAttribute().size(); i++) {
                 htmlElementNode.addChild(addNode("htmlAttribute"));
-                htmlAttributeList.add((HtmlAttribute) visitHtmlAttribute(ctx.htmlAttribute(i)));
-
+                HtmlAttribute h = (HtmlAttribute) visitHtmlAttribute(ctx.htmlAttribute(i));
+                htmlAttributeList.add(h);
+                if (h.getTagName() != null) {
+                    if (h.getTagName().equals("id")) {
+                        haveId = true;
+                    }
+                }
 
             }
-            htmlElement.setHtmlAttributeList(htmlAttributeList);
-
         }
+
+        if (!haveId){
+            HtmlAttribute temp4MakeId = new HtmlAttribute();
+            temp4MakeId.setTagName("id");
+            temp4MakeId.setAttValue(finalId);
+            htmlAttributeList.add(temp4MakeId);
+            System.out.println(finalId);
+        }
+        htmlElement.setHtmlAttributeList(htmlAttributeList);
+
 
         if (ctx.htmlContent() != null){
             htmlElementNode.addChild(addNode("htmlContent"));
@@ -268,6 +317,7 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
             me = (MustacheExpression) visitMustacheExpression(ctx.mustacheExpression());
             htmlElement.setMustacheExpression(me);
         }
+/*
 
         if (InsideBody && !ctx.htmlAttribute().isEmpty()){
                 for (HtmlAttribute ha : htmlAttributeList) {
@@ -304,7 +354,9 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
                 cg.dealWithMustacheExp(id,me);
             }
         }
+*/
 
+        currentId.remove(currentId.size() - 1);
         return htmlElement;
     }
 

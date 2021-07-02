@@ -1,8 +1,17 @@
 <html>
-<p>{{var1}}</p>
 
-<script>
-var var1=6;
+<head><title></title></head>
 
-</script>
+
+<body cp-app="a">
+
+<div>
+<hello></hello>
+</div>
+<span><img src=""></img></span>
+<div>
+<div></div>
+</div>
+
+</body>
 </html>
