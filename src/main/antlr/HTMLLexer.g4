@@ -215,11 +215,11 @@ mode TAG;
     : '@click'->pushMode(CP)
     ;
  CP_DOUBLE_CLICK
-    : '@doubleClick'->pushMode(CP)
+    : '@'->pushMode(CP)
     ;
 
  CP_MOUSEOVER
-    : '@mouseover'->pushMode(CP)
+    : '@mousemove'->pushMode(CP)
     ;
 
 CP_SWITCH_DEF

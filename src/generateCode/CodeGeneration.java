@@ -1332,7 +1332,7 @@ return  FCvalue.toString();
         }else if(oa.getCollection4Annotation1_1().getArrayFuncRet4AnnotOneLine()!=null){
             tempValue.append(ClickArrayFuncRet4AnnotOneLine(oa.getCollection4Annotation1_1().getArrayFuncRet4AnnotOneLine()));
         }else if(oa.getCollection4Annotation1_1().getObj()!=null){
-            tempValue.append(oa.getCollection4Annotation1_1().getObj().getIdentifier()));
+            tempValue.append(oa.getCollection4Annotation1_1().getObj().getIdentifier());
         }else if(oa.getCollection4Annotation1_1().getArrName()!=null){
             tempValue.append(oa.getCollection4Annotation1_1().getArrName().getIdentifier());
         }
@@ -1350,7 +1350,7 @@ return  FCvalue.toString();
         }else if(oa.getCollection4Annotation1_2().getArrayFuncRet4AnnotOneLine()!=null){
             tempValue.append(ClickArrayFuncRet4AnnotOneLine(oa.getCollection4Annotation1_2().getArrayFuncRet4AnnotOneLine()));
         }else if(oa.getCollection4Annotation1_2().getObj()!=null){
-            tempValue.append(oa.getCollection4Annotation1_2().getObj().getIdentifier()));
+            tempValue.append(oa.getCollection4Annotation1_2().getObj().getIdentifier());
         }else if(oa.getCollection4Annotation1_2().getArrName()!=null){
             tempValue.append(oa.getCollection4Annotation1_2().getArrName().getIdentifier());
         }
@@ -1358,6 +1358,76 @@ return  FCvalue.toString();
         tempValue.append(" )");
         return tempValue.toString();
     }
+
+
+    //@double ckick
+    public void dealWithdoubleClick(List<HtmlAttribute> attributes){
+        DoubleClick click =null;
+        String id=null;
+        String clickvalue=null;
+
+        //Get Id and for From Element
+        for (HtmlAttribute ha : attributes) {
+            if (ha.getDoubleClick() != null) {
+                click = ha.getDoubleClick();
+            }
+            if (ha.getTagName() != null) {
+                if (ha.getTagName().equals("id")) {
+                    id = ha.getAttValue().substring(1,ha.getAttValue().length()-1);
+                }
+            }
+        }
+
+        if (id == null || click == null) {
+            throw new NullPointerException(id);
+        }
+
+
+        if(click.getCollection4Annotation().getFunctionCall4AnnotOneLine()!=null){
+            clickvalue=ClickFunctionCall4AnnotOneLine(click.getCollection4Annotation().getFunctionCall4AnnotOneLine());
+            JSContent.append("function click1"+id+"(){\n" +
+                    "var Click" + id + "=document.getElementById(\"" + id + "\")\n" +
+                    "Click" + id + ".addEventListener(\"mouseout\", " + click.getCollection4Annotation().getFunctionCall4AnnotOneLine().getFunctionName() + ");\n" +
+                    "}\n" +
+                    " changes.push(click1"+id+");");
+
+        }
+        else if(click.getCollection4Annotation().getArrName()!=null) {
+            clickvalue = click.getCollection4Annotation().getArrName().getIdentifier();
+            if (click.getCollection4Annotation().getArrayFuncRet4AnnotOneLine() != null) {
+                clickvalue += ClickArrayFuncRet4AnnotOneLine(click.getCollection4Annotation().getArrayFuncRet4AnnotOneLine());
+            }
+
+            JSContent.append("function click1"+id+"(){\n" +
+                    "var Click" + id + "=document.getElementById(\"" + id + "\")\n" +
+                    "Click" + id + ".addEventListener(\"mouseout\", " + clickvalue + ");\n" +
+                    "}\n" +
+                    " changes.push(click1"+id+");");
+        } else if(click.getCollection4Annotation().getObj()!=null){
+            clickvalue=click.getCollection4Annotation().getObj().getIdentifier();
+            if(click.getCollection4Annotation().getPropFuncRet4AnnotOneLine()!=null){
+                clickvalue+=ClickPropFuncRet4AnnotOneLine(click.getCollection4Annotation().getPropFuncRet4AnnotOneLine());
+            }
+            JSContent.append("function click1"+id+"(){\n" +
+                    "var Click" + id + "=document.getElementById(\"" + id + "\")\n" +
+                    "Click" + id + ".addEventListener(\"mouseout\", " + clickvalue + ");\n" +
+                    "}\n" +
+                    " changes.push(click1"+id+");");
+
+        }
+
+        if(click.getCollection4Annotation().getOneLine4Annotation()!=null){
+            clickvalue=ClickOneLine4Annotion(click.getCollection4Annotation().getOneLine4Annotation());
+            JSContent.append("function click1"+id+"(){\n" +
+                    "var Click" + id + "=document.getElementById(\"" + id + "\")\n" +
+                    "Click" + id + ".addEventListener(\"mouseout\", " + clickvalue + ");\n" +
+                    "}\n" +
+                    " changes.push(click1"+id+");");
+        }
+
+
+    }
+
 
 
 
