@@ -120,8 +120,6 @@ public class CodeGeneration {
             if (ha.getTagName() != null) {
                 if (ha.getTagName().equals("id")) {
                     id = ha.getAttValue().substring(1,ha.getAttValue().length()-1);
-
-
                 }
             }
         }
@@ -159,23 +157,46 @@ public class CodeGeneration {
         }
 
 
-        // Get Model Value
+
         if (modelExp.getCollection4Model1().getVariable() != null) {
             modelValue=ModelVarible(modelExp);
             JSContent.append(" document.getElementById(\""+id+"\").value = "+modelValue+";\n");
 
+            JSContent.append(" var "+id+"Changes = function (event) {\n" +
+                    "var temp"+id+"Changes = "+modelValue+ ";\n"+
+                    "            "+modelValue+" = document.getElementById(\""+id+"\").value;\n" +
+                    "        };\n");
         } else if (modelExp.getCollection4Model1().getSubObj() != null) {
             modelValue= ModelSubobj(modelExp);
+            JSContent.append(" document.getElementById(\""+id+"\").value = "+modelValue+";\n");
+
+            JSContent.append(" var "+id+"Changes = function (event) {\n" +
+                    "var temp"+id+"Changes = "+modelValue+ ";\n"+
+                    "            "+modelValue+" = document.getElementById(\""+id+"\").value;\n" +
+                    "        };\n");
+
+        }else if(modelExp.getCollection4Model1().getOneLine4ModelCondition()!=null){
+            modelValue=ModelOneLine4ModelCondition(modelExp);
+            JSContent.append(
+                    "document.getElementById(\""+id+"\").value = "+modelValue+";");
+
+         // TODO check this
+            /*
+            (1 < 2 ? ( 2 < 2 ? a : c) : b)
+            if(1 < 2){
+                app.a = = document.getElementById(\""+id+"\").value;\n" ;
+            }else{
+                app.b =
+            }*/
+
+
+        }else if(modelExp.getCollection4Model1().getFunctionCall()!=null){
+            modelValue=ModelFunctioncall(modelExp);
+            JSContent.append("document.getElementById(\""+id+"\").value = "+modelValue+";\n");
+
             JSContent.append(" var "+id+"Changes = function (event) {\n" +
                     "            "+modelValue+" = document.getElementById(\""+id+"\").value;\n" +
                     "        };\n");
-        }else if(modelExp.getCollection4Model1().getOneLine4ModelCondition()!=null){
-            modelValue=ModelOneLine4ModelCondition(modelExp);
-            JSContent.append("temp="+modelValue+";\n" +
-                    "document.getElementById(\""+id+"\").value = temp;");
-        }else if(modelExp.getCollection4Model1().getFunctionCall()!=null){
-            modelValue=ModelFunctioncall(modelExp);
-            JSContent.append("document.getElementById(\""+id+"\").value = "+modelValue+";");
         }
 
 
@@ -185,6 +206,8 @@ public class CodeGeneration {
                 "            changes.push("+id+"Changes);\n" +
                 "        });\n" +
                 "        changes.push("+id+"Changes);\n");
+
+
     }
 
     public String ModelVarible(ModelExpression modelExp ){
@@ -242,10 +265,12 @@ public class CodeGeneration {
     }
 
 
+
+
    // CP-Show
     public void dealWithShow(List<HtmlAttribute> attributes){
 
-        ShowExpression showExp=null;
+       ShowExpression showExp=null;
        String id=null;
        String showValue=null;
 
@@ -269,11 +294,15 @@ public class CodeGeneration {
         if (showExp.getLogicComprison() != null) {
             showValue=ShowLogicComparison(showExp);
 
-            JSContent.append("if("+showValue.substring(1,showValue.length()-1)+")\n " +
+            JSContent.append("" +
+                    "var "+id+"render function (event) {\n\n" +
+                    "if("+showValue.substring(1,showValue.length()-1)+")\n " +
                     " document.getElementById(\""+id+"\").style.display=\"block\";" +
                     "else" +
-                    "document.getElementById(\""+id+"\").style.display=\"none\";");
-//TODO add it to renders
+                    "document.getElementById(\""+id+"\").style.display=\"none\";\n\n" +
+                    "}\n\n" +
+                    "renders.push("+id+"render");
+
         }
 
 
@@ -311,13 +340,15 @@ public class CodeGeneration {
         // Get Show Value
         if (hideExp.getLogicComprison() != null) {
             hideValue=HideLogicComparison(hideExp);
-            JSContent.append("if("+hideValue.substring(1,hideValue.length()-1)+")\n " +
+            JSContent.append("" +
+                    "var "+id+"render function (event) {\n\n" +
+                    "if("+hideValue.substring(1,hideValue.length()-1)+")\n " +
                     " document.getElementById(\""+id+"\").style.display=\"none\";" +
                     "else" +
-                    "document.getElementById(\""+id+"\").style.display=\"block\";");
-
+                    "document.getElementById(\""+id+"\").style.display=\"block\";\n\n" +
+                    "}\n\n" +
+                    "renders.push("+id+"render");
         }
-// TODO add it to renders
 
     }
     public String HideLogicComparison(HideExpression hideExp){
@@ -350,39 +381,33 @@ public class CodeGeneration {
             throw new NullPointerException(id);
         }
 
-        // TODO repair this >>> must be : value = getELemen .....
         if(switchExp.getCollection4Switch1().getVariable()!=null){
             switchValue=SwitchVarible(switchExp);
-            JSContent.append("document.getElementById(\""+id+"\").value = "+switchValue+";\n");
 
         }
         else if(switchExp.getCollection4Switch1().getSubObj()!=null){
             switchValue=SwitchSubobj(switchExp);
-            JSContent.append(" document.getElementById(\""+id+"\").value= "+switchValue+";\n");
 
         }else if(switchExp.getCollection4Switch1().getObjArray()!=null){
             switchValue=SwitchObjArray(switchExp);
-            JSContent.append(" document.getElementById(\""+id+"\").value= "+switchValue+";\n");
 
         }else if(switchExp.getCollection4Switch1().getNumber()!=null){
             switchValue=SwitchNumber(switchExp);
-            JSContent.append(" document.getElementById(\""+id+"\").value= "+switchValue+";\n");
 
         }else if(switchExp.getCollection4Switch1().getString()!=null){
             switchValue=SwitchString(switchExp);
-            JSContent.append(" document.getElementById(\""+id+"\").value= "+switchValue+";\n");
+
         }else if(switchExp.getCollection4Switch1().getArithmeticLogic()!=null){
             switchValue=SwitchArithmeticLogic(switchExp);
-            JSContent.append("temp="+switchValue+";\n" +
-                    "document.getElementById(\""+id+"\").value = temp;");
+
         }else if(switchExp.getCollection4Switch1().getOneLine4switch1()!=null){
             switchValue=SwitchOneLine4switch1(switchExp);
-            JSContent.append("temp="+switchValue+";\n" +
-                    "document.getElementById(\""+id+"\").value = temp;");
         }
 
 
-        JSContent.append("switch("+switchValue+"){\n\n");
+        JSContent.append("" +
+                "var "+id+"render function (event) {\n\n" +
+                "switch("+switchValue+"){\n\n");
         for(HtmlElement h: htmlElement.getHtmlContent().getHtmlElement() ){
 
             for(HtmlAttribute ha: h.getHtmlAttributeList()){
@@ -407,9 +432,8 @@ public class CodeGeneration {
 
                //ToDo switch case default
 
-                JSContent.append("}");
-
-
+                JSContent.append("}} \n\n" +
+                        "renders.push("+id+"render");
             }
 
 
@@ -439,6 +463,7 @@ public class CodeGeneration {
     public String SwitchArithmeticLogic(SwitchExpression switchExp){
         return dealWithArithLogic(switchExp.getCollection4Switch1().getArithmeticLogic());
     }
+
     public String SwitchOneLine4switch1(SwitchExpression switchExp){
         StringBuilder tempValue = new StringBuilder();
         tempValue.append("( ");
@@ -492,40 +517,33 @@ public class CodeGeneration {
 
         return tempValue.toString();
     }
+
+
     public String discussionsSwitchcase(SwitchExpression switchExp ,SwitchCaseExpression switchCaseExp,String id){
         // TODO repair this >>> must be : value = getELemen .....
 
         String switchValue=null;
         if(switchCaseExp.getCollection4Switch1().getVariable()!=null){
             switchValue=SwitchVarible(switchExp);
-            JSContent.append("document.getElementById(\""+id+"\").value = "+switchValue+";\n");
 
         }else if(switchCaseExp.getCollection4Switch1().getSubObj()!=null){
-
             switchValue=SwitchSubobj(switchExp);
-            JSContent.append(" document.getElementById(\""+id+"\").value= "+switchValue+";\n");
-        }else if(switchCaseExp.getCollection4Switch1().getObjArray()!=null){
 
+        }else if(switchCaseExp.getCollection4Switch1().getObjArray()!=null){
             switchValue=SwitchObjArray(switchExp);
-            JSContent.append(" document.getElementById(\""+id+"\").value= "+switchValue+";\n");
+
         }else if(switchCaseExp.getCollection4Switch1().getNumber()!=null){
             switchValue=SwitchNumber(switchExp);
-            JSContent.append(" document.getElementById(\""+id+"\").value= "+switchValue+";\n");
 
         }else if(switchCaseExp.getCollection4Switch1().getString()!=null){
             switchValue=SwitchString(switchExp);
-            JSContent.append(" document.getElementById(\""+id+"\").value= "+switchValue+";\n");
 
         }else if(switchCaseExp.getCollection4Switch1().getArithmeticLogic()!=null){
             switchValue=SwitchArithmeticLogic(switchExp);
-            JSContent.append("temp="+switchValue+";\n" +
-                    "document.getElementById(\""+id+"\").value = temp;");
 
         }else if(switchCaseExp.getCollection4Switch1().getOneLine4switch1()!=null){
 
             switchValue=SwitchOneLine4switch1(switchExp);
-            JSContent.append("temp="+switchValue+";\n" +
-                    "document.getElementById(\""+id+"\").value = temp;");
         }
        return switchValue;
     }
@@ -562,7 +580,8 @@ public class CodeGeneration {
             JSContent.append("var element=document.createElement(\""+htmlElement.getTagName()+"\");");
             IfContent(htmlElement);
             JSContent.append("} ");
-            JSContent.append(" };\n");
+            JSContent.append(" };\n\n" +
+                    "renders.push("+id+"Changes");
         }
 
 
@@ -575,7 +594,7 @@ public class CodeGeneration {
             int i=0;
             for(HtmlElement h: htmlElement.getHtmlContent().getHtmlElement()){
 
-                JSContent.append("var element"+i+"=document.createElement(\""+h.getTagName()+"\");");
+                JSContent.append("var element"+i+"=document.createElement(\""+h.getTagName()+"\");\n\n");
                 if(h.getHtmlAttributeList()!=null){
                     int j=0;
                     for(HtmlAttribute ha:h.getHtmlAttributeList()){
@@ -585,9 +604,9 @@ public class CodeGeneration {
                             }
                         }
                         JSContent.append("var att"+j+"=document.createAttribute(\""+ha.getTagName()+"\");\n" +
-                                "att"+j+".value="+ha.getAttValue()+";");
+                                "att"+j+".value="+ha.getAttValue()+";\n\n");
                     }
-                    JSContent.append("element"+i+".setAttributeNode(att"+j+");");
+                    JSContent.append("element"+i+".setAttributeNode(att"+j+");\n\n");
 
                 }
                 else if(h.getHtmlContent()!=null){
@@ -595,25 +614,25 @@ public class CodeGeneration {
                 }else if(h.getMustacheExpression()!=null){
                     mustachvalue=dealWithMustacheExp(id,h.getMustacheExpression());
                     JSContent.append("var mustach=document.creatTextNode("+mustachvalue+");" +
-                            "element"+i+".appenChild(mustach) }");
+                            "element"+i+".appenChild(mustach) }\n\n");
 
                 }
-                JSContent.append("element"+i+".appenChild(h) }");
+                JSContent.append("element"+i+".appenChild(h) \n}\n\n");
                 i++;
             }
 
         }
         else if( htmlElement.getHtmlContent().getHtmlCharData()!=null){
                 JSContent.append("var CharData=document.creatTextNode(\""+htmlElement.getHtmlContent().getHtmlCharData()+"\");" +
-                        "element.appenChild(CharData) }");
+                        "element.appenChild(CharData) }\n\n");
         }
         else if( htmlElement.getHtmlContent().getCDATA()!=null){
             JSContent.append("var cdata=document.creatTextNode(\""+htmlElement.getHtmlContent().getCDATA()+"\");" +
-                    "element.appenChild(cdata) }");
+                    "element.appenChild(cdata) }\n\n");
         }else if( htmlElement.getMustacheExpression()!=null){
             mustachvalue=dealWithMustacheExp(id,htmlElement.getMustacheExpression());
             JSContent.append("var mustach=document.creatTextNode("+mustachvalue+");" +
-                    "element.appenChild(mustach) }");
+                    "element.appenChild(mustach) }\n\n");
 
         }
     }
@@ -721,7 +740,7 @@ public class CodeGeneration {
                 }else if(forExp.getCollection4For3_2_1().getObjBody()!=null){
                     collection4For3_2_1=dealWithObjBody(forExp.getCollection4For3_2_1().getObjBody());
                 }else if(forExp.getCollection4For3_2_1().getObj()!=null){
-                    collection4For3_2_1=forExp.getCollection4For3_2_1().getObj().getIdentifier();
+                    collection4For3_2_1=" " + App+ "."+ forExp.getCollection4For3_2_1().getObj().getIdentifier();
                 }
                 JS4For2(id,htmlElement,collection4For1_2_1, collection4For1_2_2, collection4For3_2_1);
 
@@ -740,7 +759,7 @@ public class CodeGeneration {
 
     }
     public String ForVariable( ForExpression forExp){
-        return forExp.getCollection4For1_1_1().getVariable().toString();
+        return " " + App + "." +forExp.getCollection4For1_1_1().getVariable().toString();
     }
     public String ForSubObj(SubObj so){
         return dealWithSubObj(so);
@@ -853,6 +872,9 @@ public class CodeGeneration {
         tempValue.append(")");
         return  tempValue.toString();
     }
+
+
+
     public void JS4For1_1(String id,HtmlElement htmlElement,String collection4For1_1_1, String collection4For2_1_1){
         JSContent.append(" let originalElement"+id+" = document.getElementById(\""+id+"\");" +
                 "let container"+id+" = originalElement"+id+".parentElement;");
@@ -926,6 +948,11 @@ public class CodeGeneration {
                     "originalElement"+id+".hidden = true;");
         }
     }
+
+
+
+
+
     public void JS4For1_2(String id,HtmlElement htmlElement,String collection4For1_1_1,String collection4For2_1_1,String collection4For1_1_2){
         JSContent.append(" let originalElement"+id+" = document.getElementById(\""+id+"\");" +
                 "let container"+id+" = originalElement"+id+".parentElement;");

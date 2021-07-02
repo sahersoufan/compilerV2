@@ -444,7 +444,11 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
             htmlAttributeNode.addChild(addNode("switchCaseExpression"));
             htmlAttribute.setSwitchCaseExpression((SwitchCaseExpression) visitSwitchCaseExpression(ctx.switchCaseExpression()));
         }
-        //switchDefault // TODO may we need to check it
+
+        if (ctx.CP_SWITCH_DEF() != null){
+            htmlAttributeNode.addChild(addNode("switchCasedefaul"));
+            htmlAttribute.setCaseDefault("default");
+        }
 
         //if
         if (ctx.ifExpression() != null){
@@ -1399,7 +1403,6 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
         SimpleTreeNode nUmberNode = node.getNode();
 
         if (ctx.CP_CONTENT_NUMBER() != null) {
-            // TODO i don't know if this is right or not
             double numberType = Double.parseDouble(ctx.CP_CONTENT_NUMBER().getSymbol().getText());
             // For check what's the type of Number
             if (numberType == (int) numberType) {
@@ -2587,7 +2590,6 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
         MustacheNumber mustacheNumber = new MustacheNumber();
         SimpleTreeNode mustacheNumberNode = node.getNode();
         if (ctx.MUSTACHE_NUMBER() != null){
-            // TODO i don't know if this is right or not
             double numberType = Double.parseDouble(ctx.MUSTACHE_NUMBER().getSymbol().getText());
             // For check what's the type of Number
             if (numberType == (int) numberType) {

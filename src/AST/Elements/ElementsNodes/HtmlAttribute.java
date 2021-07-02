@@ -23,6 +23,7 @@ public class HtmlAttribute {
     private HideExpression hideExpression;
     private SwitchExpression switchExpression;
     private SwitchCaseExpression switchCaseExpression;
+    private String caseDefault;
     private IfExpression ifExpression;
     private ModelExpression modelExpression;
     private Click click;
@@ -124,5 +125,14 @@ public class HtmlAttribute {
 
     public void setDoubleClick(DoubleClick doubleClick) {
         this.doubleClick = doubleClick;
+    }
+
+
+    public String getCaseDefault() {
+        return caseDefault;
+    }
+
+    public void setCaseDefault(String caseDefault) {
+        this.caseDefault = caseDefault;
     }
 }
