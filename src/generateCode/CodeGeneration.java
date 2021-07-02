@@ -1,5 +1,6 @@
 package generateCode;
 
+import AST.Elements.ElementsNodes.CpExpression.If.IfExpression;
 import AST.Elements.ElementsNodes.CpExpression.Switch.SwitchCaseExpression;
 import AST.Elements.ElementsNodes.CpExpression.Switch.SwitchExpression;
 import AST.Elements.ElementsNodes.CpExpression.app.AppExpression;
@@ -48,6 +49,7 @@ public class CodeGeneration {
 
     public void start() {
         JSContent.append("<script>\n");
+        //ToDo add switch &&Show $$ hide to changes[]
         JSContent.append("changes = [];\n");
         JSContent.append("renders = [];\n");
     }
@@ -498,6 +500,78 @@ public class CodeGeneration {
     }
 
 
+    //CP-If
+    public void dealWithIf(List<HtmlAttribute> attributes,HtmlElement htmlElement){
+        IfExpression ifExp=null;
+        String id=null;
+        String ifValue=null;
+
+        //Get Id and If From Element
+        for (HtmlAttribute ha : attributes) {
+            if (ha.getIfExpression() != null) {
+                ifExp = ha.getIfExpression();
+            }
+            if (ha.getTagName() != null) {
+                if (ha.getTagName().equals("id")) {
+                    id = ha.getAttValue().substring(1,ha.getAttValue().length()-1);
+                }
+            }
+
+        }
+
+        if (id == null || ifExp == null) {
+            throw new NullPointerException(id);
+        }
+
+        JSContent.append(" var "+id+"Changes = function () {\n" );
+        JSContent.append("document.getElementById(\""+id+"\").remove();");
+        if(ifExp.getLogicComprison()!=null){
+            ifValue=dealWithLogicComparison(ifExp.getLogicComprison());
+            JSContent.append("if("+ifValue+"){\n ");
+            JSContent.append("var element=document.createElement(\""+htmlElement.getTagName()+"\");");
+            IfContent(htmlElement);
+            JSContent.append("} ");
+            JSContent.append(" };\n");
+        }
+
+
+    }
+    public void IfContent(HtmlElement htmlElement){
+
+
+        if( htmlElement.getHtmlContent().getHtmlElement()!=null){
+            int i=0;
+            for(HtmlElement h: htmlElement.getHtmlContent().getHtmlElement()){
+
+                JSContent.append("var element"+i+"=document.createElement(\""+h.getTagName()+"\");");
+                if(h.getHtmlAttributeList()!=null){
+                    int j=0;
+                    for(HtmlAttribute ha:h.getHtmlAttributeList()){
+                        JSContent.append("var att"+j+"=document.createAttribute(\""+ha.getTagName()+"\");\n" +
+                                "att"+j+".value="+ha.getAttValue()+";");
+                    }
+                    JSContent.append("element"+i+".setAttributeNode(att"+j+");");
+
+                }
+                else if(h.getHtmlContent()!=null){
+                    IfContent(h);
+                }else if(h.getMustacheExpression()!=null){
+                    //ToDo mustach
+                }
+                JSContent.append("element"+i+".appenChild(h) }");
+                i++;
+            }
+
+        }
+        else if( htmlElement.getHtmlContent().getHtmlCharData()!=null){
+                JSContent.append("vat CharData=document.creatTextNode(\""+htmlElement.getHtmlContent().getHtmlCharData()+"\");" +
+                        "element.appenChild(CharData) }");
+        }
+        else if( htmlElement.getHtmlContent().getCDATA()!=null){
+            JSContent.append("vat cdata=document.creatTextNode(\""+htmlElement.getHtmlContent().getCDATA()+"\");" +
+                    "element.appenChild(cdata) }");
+        }
+    }
 
     // CP-MUSTACHE
     public void dealWithMustacheExp(String id, MustacheExpression me){
@@ -600,7 +674,6 @@ public class CodeGeneration {
 
         return st.toString();
     }
-
     public String dealWithProperty(Property p){
         StringBuilder st = new StringBuilder();
 
@@ -619,7 +692,6 @@ public class CodeGeneration {
         return st.toString();
 
     }
-
     public String dealWithFunctionCall(FunctionCall FC){
         StringBuilder st = new StringBuilder();
 
@@ -628,7 +700,6 @@ public class CodeGeneration {
         // return value
         return st.toString();
     }
-
     public String dealWithFunctionFromVar(FunctionCallFromVar FCV){
 
         StringBuilder st = new StringBuilder();
@@ -652,7 +723,6 @@ public class CodeGeneration {
 
         return st.toString();
     }
-
     public String dealWithparameters(Parameters p){
 
         StringBuilder st = new StringBuilder();
@@ -664,8 +734,6 @@ public class CodeGeneration {
 
     return st.toString();
     }
-
-
     public String dealWithComparisonExp(ComparisonExpression CS){
         StringBuilder st = new StringBuilder();
 
@@ -675,8 +743,6 @@ public class CodeGeneration {
 
         return st.toString();
     }
-
-
     public String dealWithOneLineCond(OneLineCondition OLC){
 
         StringBuilder st = new StringBuilder();
@@ -690,8 +756,6 @@ public class CodeGeneration {
         st.append(" )");
         return st.toString();
     }
-
-
     public String dealWithOneLineBoolCond(OneLineBoolCondition OLBC){
         StringBuilder st = new StringBuilder();
 
@@ -704,7 +768,6 @@ public class CodeGeneration {
         st.append(" )");
         return st.toString();
     }
-
     public String dealWithOneLineArithCond(OneLineArithCondition OLAC){
         StringBuilder st = new StringBuilder();
 
@@ -778,8 +841,6 @@ public class CodeGeneration {
         }
         return "";
     }
-
-
     public String dealWithArithLogic(ArithmeticLogic AL){
 
         StringBuilder st = new StringBuilder();
@@ -808,9 +869,6 @@ public class CodeGeneration {
 
         return st.toString();
     }
-
-
-
     public String  dealWithValue(Value V){
         if (V.getString() != null){
             return V.getString();
@@ -826,7 +884,6 @@ public class CodeGeneration {
             return "null";
         }
     }
-
     public String dealWithColl4Every(Collection4everything CE){
         if (CE.getVariable() != null){
             return App+"."+CE.getVariable().getVariableName().getIdentifier();
@@ -852,11 +909,9 @@ public class CodeGeneration {
             return "";
         }
     }
-
     public String dealWithColl4Comp(Collection4comparison CC){
         return dealWithArithLogic(CC.getArithmeticLogic());
     }
-
     public String dealWithColl4Arith(Collection4Arithmetic CA){
         if (CA.getVariable() != null){
             return App+"."+CA.getVariable().getVariableName().getIdentifier();
@@ -875,7 +930,6 @@ public class CodeGeneration {
             return "";
         }
     }
-
     public String dealWithCOll4Log(Collection4LogicRet CL){
         if (CL.getVariable() != null){
             return App+"."+CL.getVariable().getVariableName().getIdentifier();
@@ -904,8 +958,6 @@ public class CodeGeneration {
 
 
     //    MIUSTACHE
-
-
     public String dealWithObjArray4M(ObjArray4Must OA){
 
         StringBuilder st = new StringBuilder();
@@ -922,8 +974,6 @@ public class CodeGeneration {
 
         return "";
     }
-
-
     public String dealWithArrayCalling4M(ArrayCalling4Must AC){
         StringBuilder st = new StringBuilder();
         if (!AC.getArithmeticLogic4Must().isEmpty()){

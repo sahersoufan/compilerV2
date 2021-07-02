@@ -282,7 +282,7 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
                     }else if (ha.getShowExpression() != null){
                         cg.dealWithShow(htmlAttributeList);
                     }else if (ha.getIfExpression() != null){
-                        System.out.println("cp-if");
+                        cg.dealWithIf(htmlAttributeList,htmlElement);
                     }else if (ha.getSwitchExpression() != null){
                         cg.dealWithSwitch(htmlAttributeList,htmlElement);
                     }else if (ha.getSwitchCaseExpression() != null){
