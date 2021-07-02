@@ -115,7 +115,7 @@ public class CodeGeneration {
 
         //Get Model And Id From Element
         for (HtmlAttribute ha : attributes) {
-            if (ha.getModelExpression() != null) {
+            if (ha.getAppExpression() != null) {
                 appExpression = ha.getAppExpression();
             }
             if (ha.getTagName() != null) {
@@ -128,7 +128,8 @@ public class CodeGeneration {
             throw new NullPointerException(id);
         }
 
-        App = appValue;
+
+        App = appExpression.getCollection4App1().getVariable().getVariableName().getIdentifier();
     }
 
 
@@ -147,7 +148,7 @@ public class CodeGeneration {
             }
             if (ha.getTagName() != null) {
                 if (ha.getTagName().equals("id")) {
-                    id = ha.getAttValue().substring(1,ha.getAttValue().length()-1);
+                    id = ha.getAttValue();
 
 
                 }
@@ -162,7 +163,6 @@ public class CodeGeneration {
         if (modelExp.getCollection4Model1().getVariable() != null) {
             modelValue=ModelVarible(modelExp);
             JSContent.append(" document.getElementById(\""+id+"\").value = "+modelValue+";\n");
-
             JSContent.append(" var "+id+"Changes = function (event) {\n" +
                     "var temp"+id+"Changes = "+modelValue+ ";\n"+
                     "            "+modelValue+" = document.getElementById(\""+id+"\").value;\n" +

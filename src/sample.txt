@@ -1,17 +1,25 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 
-<head><title></title></head>
+<head>
+    <title>Sample 1 - basic model</title>
+</head>
 
+<body cp-app="forthyear">
 
-<body cp-app="a">
+    <input type="text" cp-model="myTest" />
+    <div id="myTestDiv">My Text is: {{myTest}}</div>
 
-<div>
-<hello></hello>
-</div>
-<span><img src=""></img></span>
-<div>
-<div></div>
-</div>
+    <script>
+        function forthyear() {
+            this.myTest = "HI MAn";
+        };
+
+        var forthyear = new forthyear();
+
+    </script>
+
 
 </body>
+
 </html>
