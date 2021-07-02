@@ -178,13 +178,15 @@ public class CodeGeneration {
 
 
 
+
         JSContent.append("document.getElementById(\""+id+"\").addEventListener(\"input\", function(event) {\n" +
                 "            changes.push("+id+"Changes);\n" +
                 "        });\n" +
                 "        changes.push("+id+"Changes);\n");
     }
+
     public String ModelVarible(ModelExpression modelExp ){
-        return modelExp.getCollection4Model1().getVariable().getVariableName().getIdentifier();
+        return " "+App+"."+modelExp.getCollection4Model1().getVariable().getVariableName().getIdentifier();
 
     }
     public String ModelSubobj(ModelExpression modelExp){
@@ -199,7 +201,7 @@ public class CodeGeneration {
     public String ModelOneLine4ModelCondition(ModelExpression modelExp) {
 
         StringBuilder tempValue = new StringBuilder();
-        tempValue.append("(");
+        tempValue.append("( ");
 
         //LogicComprison
         if(modelExp.getCollection4Model1().getOneLine4ModelCondition().getLogicComprison()!=null){
@@ -233,7 +235,7 @@ public class CodeGeneration {
             tempValue.append( ModelFunctioncall(modelExp));
         }
 
-        tempValue.append(" ) ");
+        tempValue.append(" )");
         return tempValue.toString();
     }
 
@@ -253,8 +255,6 @@ public class CodeGeneration {
             if (ha.getTagName() != null) {
                 if (ha.getTagName().equals("id")) {
                     id = ha.getAttValue().substring(1,ha.getAttValue().length()-1);
-
-
                 }
             }
         }
@@ -270,7 +270,7 @@ public class CodeGeneration {
                     " document.getElementById(\""+id+"\").style.display=\"block\";" +
                     "else" +
                     "document.getElementById(\""+id+"\").style.display=\"none\";");
-
+//TODO add it to renders
         }
 
 
@@ -314,7 +314,7 @@ public class CodeGeneration {
                     "document.getElementById(\""+id+"\").style.display=\"block\";");
 
         }
-
+// TODO add it to renders
 
     }
     public String HideLogicComparison(HideExpression hideExp){
@@ -341,13 +341,13 @@ public class CodeGeneration {
                     id = ha.getAttValue().substring(1,ha.getAttValue().length()-1);
                 }
             }
-
         }
 
         if (id == null || switchExp == null) {
             throw new NullPointerException(id);
         }
 
+        // TODO repair this >>> must be : value = getELemen .....
         if(switchExp.getCollection4Switch1().getVariable()!=null){
             switchValue=SwitchVarible(switchExp);
             JSContent.append("document.getElementById(\""+id+"\").value = "+switchValue+";\n");
@@ -379,7 +379,7 @@ public class CodeGeneration {
         }
 
 
-        JSContent.append("switch("+switchValue+"){");
+        JSContent.append("switch("+switchValue+"){\n\n");
         for(HtmlElement h: htmlElement.getHtmlContent().getHtmlElement() ){
 
             for(HtmlAttribute ha: h.getHtmlAttributeList()){
@@ -387,22 +387,28 @@ public class CodeGeneration {
                     if (ha.getTagName().equals("id")) {
                         idSwitchcase = ha.getAttValue().substring(1,ha.getAttValue().length()-1);
                     }
+                    if (idSwitchcase == null) {
+                        throw new NullPointerException(idSwitchcase);
+                    }
                 }
                 if(ha.getSwitchCaseExpression()!=null){
                     switchcaseValue=discussionsSwitchcase(switchExp,ha.getSwitchCaseExpression(),idSwitchcase);
+                    if (switchcaseValue == null) {
+                        throw new NullPointerException(idSwitchcase);
+                    }
+
                     JSContent.append("case "+switchcaseValue+":\n" +
                             "document.getElementById(\""+idSwitchcase+"\").style.display=\"block\";\n" +
-                            "break; ");
+                            "break; \n\n");
                 }
 
                //ToDo switch case default
 
                 JSContent.append("}");
 
+
             }
-            if (idSwitchcase == null || switchcaseValue == null) {
-                throw new NullPointerException(idSwitchcase);
-            }
+
 
         }
 
@@ -411,7 +417,7 @@ public class CodeGeneration {
 
     }
     public String SwitchVarible(SwitchExpression switchExp ){
-        return switchExp.getCollection4Switch1().getVariable().getVariableName().getIdentifier();
+        return " "+App+"."+switchExp.getCollection4Switch1().getVariable().getVariableName().getIdentifier();
 
     }
     public String SwitchSubobj(SwitchExpression switchExp){
@@ -432,11 +438,13 @@ public class CodeGeneration {
     }
     public String SwitchOneLine4switch1(SwitchExpression switchExp){
         StringBuilder tempValue = new StringBuilder();
-        tempValue.append("(");
+        tempValue.append("( ");
 
         //LogicComprison
         if(switchExp.getCollection4Switch1().getOneLine4switch1().getLogicComprison()!=null){
             // tempValue.append();
+
+            //TODO check this
         }
         tempValue.append(" ? ");
 
@@ -477,11 +485,12 @@ public class CodeGeneration {
         }else if(switchExp.getCollection4Switch1().getOneLine4switch1().getCollection4Switch1_1_2().getOneLine4switch1()!=null){
             tempValue.append(SwitchOneLine4switch1(switchExp));
         }
-        tempValue.append(" ) ");
+        tempValue.append(" )");
 
         return tempValue.toString();
     }
     public String discussionsSwitchcase(SwitchExpression switchExp ,SwitchCaseExpression switchCaseExp,String id){
+        // TODO repair this >>> must be : value = getELemen .....
 
         String switchValue=null;
         if(switchCaseExp.getCollection4Switch1().getVariable()!=null){
@@ -583,14 +592,17 @@ public class CodeGeneration {
 
         }
         else if( htmlElement.getHtmlContent().getHtmlCharData()!=null){
-                JSContent.append("vat CharData=document.creatTextNode(\""+htmlElement.getHtmlContent().getHtmlCharData()+"\");" +
+                JSContent.append("var CharData=document.creatTextNode(\""+htmlElement.getHtmlContent().getHtmlCharData()+"\");" +
                         "element.appenChild(CharData) }");
         }
         else if( htmlElement.getHtmlContent().getCDATA()!=null){
-            JSContent.append("vat cdata=document.creatTextNode(\""+htmlElement.getHtmlContent().getCDATA()+"\");" +
+            JSContent.append("var cdata=document.creatTextNode(\""+htmlElement.getHtmlContent().getCDATA()+"\");" +
                     "element.appenChild(cdata) }");
         }
     }
+
+
+
 
     // CP-MUSTACHE
     public void dealWithMustacheExp(String id, MustacheExpression me){
