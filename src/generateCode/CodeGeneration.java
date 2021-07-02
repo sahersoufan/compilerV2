@@ -1,5 +1,6 @@
 package generateCode;
 
+import AST.Elements.ElementsNodes.CpExpression.For.*;
 import AST.Elements.ElementsNodes.CpExpression.If.IfExpression;
 import AST.Elements.ElementsNodes.CpExpression.Switch.SwitchCaseExpression;
 import AST.Elements.ElementsNodes.CpExpression.Switch.SwitchExpression;
@@ -71,6 +72,7 @@ public class CodeGeneration {
         //ToDo add switch &&Show $$ hide to changes[]
         JSContent.append("changes = [];\n");
         JSContent.append("renders = [];\n");
+        JSContent.append(" new_elements = [];\n");
     }
 
     public void end(){
@@ -266,6 +268,7 @@ public class CodeGeneration {
         // Get Show Value
         if (showExp.getLogicComprison() != null) {
             showValue=ShowLogicComparison(showExp);
+
             JSContent.append("if("+showValue.substring(1,showValue.length()-1)+")\n " +
                     " document.getElementById(\""+id+"\").style.display=\"block\";" +
                     "else" +
@@ -557,7 +560,8 @@ public class CodeGeneration {
     }
     public void IfContent(HtmlElement htmlElement){
 
-
+         String mustachvalue=null;
+         String id=null;
         if( htmlElement.getHtmlContent().getHtmlElement()!=null){
             int i=0;
             for(HtmlElement h: htmlElement.getHtmlContent().getHtmlElement()){
@@ -566,6 +570,11 @@ public class CodeGeneration {
                 if(h.getHtmlAttributeList()!=null){
                     int j=0;
                     for(HtmlAttribute ha:h.getHtmlAttributeList()){
+                        if (ha.getTagName() != null) {
+                            if (ha.getTagName().equals("id")) {
+                                id = ha.getAttValue().substring(1,ha.getAttValue().length()-1);
+                            }
+                        }
                         JSContent.append("var att"+j+"=document.createAttribute(\""+ha.getTagName()+"\");\n" +
                                 "att"+j+".value="+ha.getAttValue()+";");
                     }
@@ -575,7 +584,10 @@ public class CodeGeneration {
                 else if(h.getHtmlContent()!=null){
                     IfContent(h);
                 }else if(h.getMustacheExpression()!=null){
-                    //ToDo mustach
+                    mustachvalue=dealWithMustacheExp(id,h.getMustacheExpression());
+                    JSContent.append("var mustach=document.creatTextNode("+mustachvalue+");" +
+                            "element"+i+".appenChild(mustach) }");
+
                 }
                 JSContent.append("element"+i+".appenChild(h) }");
                 i++;
@@ -589,11 +601,533 @@ public class CodeGeneration {
         else if( htmlElement.getHtmlContent().getCDATA()!=null){
             JSContent.append("vat cdata=document.creatTextNode(\""+htmlElement.getHtmlContent().getCDATA()+"\");" +
                     "element.appenChild(cdata) }");
+        }else if( htmlElement.getMustacheExpression()!=null){
+            mustachvalue=dealWithMustacheExp(id,htmlElement.getMustacheExpression());
+            JSContent.append("var mustach=document.creatTextNode("+mustachvalue+");" +
+                    "element.appenChild(mustach) }");
+
+        }
+    }
+
+
+    //CP-For
+    public void dealWithFor(List<HtmlAttribute> attributes,HtmlElement htmlElement){
+        ForExpression forExp=null;
+        String id=null;
+        String collection4For1_1_1=null;
+        String collection4For1_1_2=null;
+        String collection4For2_1_1=null;
+        String collection4For1_2_1=null;
+        String collection4For1_2_2=null;
+        String collection4For3_2_1=null;
+        String collection4For4_3_1=null;
+
+        //Get Id and for From Element
+        for (HtmlAttribute ha : attributes) {
+            if (ha.getForExpression() != null) {
+                forExp = ha.getForExpression();
+            }
+            if (ha.getTagName() != null) {
+                if (ha.getTagName().equals("id")) {
+                    id = ha.getAttValue().substring(1,ha.getAttValue().length()-1);
+                }
+            }
+        }
+
+        if (id == null || forExp == null) {
+            throw new NullPointerException(id);
+        }
+
+
+       //Collection4For1_1_1
+        if(forExp.getCollection4For1_1_1().getVariable()!=null){
+            collection4For1_1_1=forExp.getCollection4For1_1_1().getVariable().toString();
+        }else if(forExp.getCollection4For1_1_1().getSubObj()!=null){
+            collection4For1_1_1=ForSubObj(forExp.getCollection4For1_1_1().getSubObj());
+        }else if(forExp.getCollection4For1_1_1().getObjArray()!=null){
+            collection4For1_1_1=ForObjArray(forExp.getCollection4For1_1_1().getObjArray());
+        }
+
+        if(collection4For1_1_1!=null){
+
+            collection4For2_1_1=discussionsCollection4For2_1_1(forExp.getCollection4For2_1_1());
+           //discussion for 1
+            if(collection4For2_1_1!=null){
+
+                if(forExp.getCollection4For1_1_2().getVariable()!=null){
+                    collection4For1_1_2=forExp.getCollection4For1_1_2().getVariable().toString();
+
+                }else if(forExp.getCollection4For1_1_2().getSubObj()!=null){
+                    collection4For1_1_2=ForSubObj(forExp.getCollection4For1_1_1().getSubObj());
+                }else if(forExp.getCollection4For1_1_2().getObjArray()!=null){
+                    collection4For1_1_2=ForObjArray(forExp.getCollection4For1_1_1().getObjArray());
+                }
+
+                //discussion model for 1_2
+                //ex:for(i in a ; z = INDEX )
+                if(collection4For1_1_2!=null){
+                    JS4For1_2(id,htmlElement,collection4For1_1_1,collection4For2_1_1,collection4For1_1_2);
+                }else{
+                    //discussion model for 1_1
+                    //for(i in "fatima")
+                    JS4For1_1(id,htmlElement,collection4For1_1_1,collection4For2_1_1);
+                }
+            }
+            else{
+                //discussion model for 2
+                //for(i,j in a)
+
+                ///Collection4For1_2_1
+                if(forExp.getCollection4For1_2_1().getVariable()!=null){
+                    collection4For1_2_1=forExp.getCollection4For1_2_1().getVariable().toString();
+
+                }else if(forExp.getCollection4For1_2_1().getSubObj()!=null){
+                    collection4For1_2_1=ForSubObj(forExp.getCollection4For1_2_1().getSubObj());
+                }else if(forExp.getCollection4For1_2_1().getObjArray()!=null){
+                    collection4For1_2_1=ForObjArray(forExp.getCollection4For1_2_1().getObjArray());
+                }
+
+
+                ///Collection4For1_2_2
+
+                if(forExp.getCollection4For1_2_2().getVariable()!=null){
+                    collection4For1_2_2=forExp.getCollection4For1_2_2().getVariable().toString();
+
+                }else if(forExp.getCollection4For1_2_2().getSubObj()!=null){
+                    collection4For1_2_2=ForSubObj(forExp.getCollection4For1_2_2().getSubObj());
+                }else if(forExp.getCollection4For1_2_2().getObjArray()!=null){
+                    collection4For1_2_2=ForObjArray(forExp.getCollection4For1_2_2().getObjArray());
+                }
+
+
+                //// collection4For3_2_1
+                if(forExp.getCollection4For3_2_1().getFunctionCall()!=null){
+                    collection4For3_2_1=ForFunctionCall(forExp.getCollection4For3_2_1().getFunctionCall());
+                }else if(forExp.getCollection4For3_2_1().getObjArray()!=null){
+                    collection4For3_2_1=ForObjArray(forExp.getCollection4For3_2_1().getObjArray());
+                }else if(forExp.getCollection4For3_2_1().getOneLine4For3Condition()!=null){
+                    collection4For3_2_1=dealWithOneLine4For3Condition(forExp.getCollection4For3_2_1().getOneLine4For3Condition());
+                }else if(forExp.getCollection4For3_2_1().getSubObj()!=null){
+                    collection4For3_2_1=ForSubObj(forExp.getCollection4For3_2_1().getSubObj());
+                }else if(forExp.getCollection4For3_2_1().getObjBody()!=null){
+                    collection4For3_2_1=dealWithObjBody(forExp.getCollection4For3_2_1().getObjBody());
+                }else if(forExp.getCollection4For3_2_1().getObj()!=null){
+                    collection4For3_2_1=forExp.getCollection4For3_2_1().getObj().getIdentifier();
+                }
+                JS4For2(id,htmlElement,collection4For1_2_1, collection4For1_2_2, collection4For3_2_1);
+
+            }
+
+        }
+        else{
+             //discussion model for 3
+            //for(true)
+            collection4For4_3_1=discussionsCollection4For4_3_1(forExp.getCollection4For4_3_1());
+            JS4For3(id, htmlElement,collection4For4_3_1);
+
+        }
+
+
+
+    }
+    public String ForVariable( ForExpression forExp){
+        return forExp.getCollection4For1_1_1().getVariable().toString();
+    }
+    public String ForSubObj(SubObj so){
+        return dealWithSubObj(so);
+    }
+    public String ForObjArray(ObjArray  oa){
+        return dealWithObjArray(oa);
+    }
+    public String ForComparisonExpression(ComparisonExpression CS){
+        return dealWithComparisonExp(CS);
+    }
+    public String ForFunctionCall(FunctionCall FC){
+        return dealWithFunctionCall(FC);
+    }
+    public String ForLogicComprison(LogicComprison lo){
+        return dealWithLogicComparison(lo);
+    }
+    public String ForArithmeticLogic(ArithmeticLogic al){
+        return dealWithArithLogic(al);
+    }
+    public String discussionsCollection4For4_3_1(Collection4For4 collection4For4){
+        String Collection4For4_3_1=null;
+
+        if(collection4For4.getArithmeticLogic()!=null){
+            Collection4For4_3_1=ForArithmeticLogic(collection4For4.getArithmeticLogic());
+
+        }else if(collection4For4.getComparisonExpression()!=null){
+            Collection4For4_3_1=ForComparisonExpression(collection4For4.getComparisonExpression());
+
+        }else if(collection4For4.getFunctionCall()!=null){
+            Collection4For4_3_1=ForFunctionCall(collection4For4.getFunctionCall());
+
+        }else if(collection4For4.getLogicComprison()!=null){
+            Collection4For4_3_1=ForLogicComprison(collection4For4.getLogicComprison());
+
+        }else if(collection4For4.getOneLine4For4Condition()!=null){
+          //  Collection4For4_3_1=dealWithOneLineCond(collection4For4.getOneLine4For4Condition());
+            //TODO creat dealwithOneLine4For4Condition()
+
+        }else  if(collection4For4.getVariable()!=null){
+            Collection4For4_3_1=collection4For4.getVariable().toString();
+        }else if(collection4For4.getSubObj()!=null){
+            Collection4For4_3_1=ForSubObj(collection4For4.getSubObj());
+        }else if(collection4For4.getObjArray()!=null){
+            Collection4For4_3_1=ForObjArray(collection4For4.getObjArray());
+        }else if(collection4For4.getNumber()!=null){
+            Collection4For4_3_1=collection4For4.getNumber().toString();
+        }else if(collection4For4.getTrueOrFalse()!=null){
+            Collection4For4_3_1=collection4For4.getTrueOrFalse().toString();
+        }
+        return Collection4For4_3_1;
+    }
+    public String discussionsCollection4For2_1_1(Collection4For2 collection4For2){
+        String Collection4For2_1_1=null;
+
+        if(collection4For2.getArithmeticLogic()!=null) {
+            Collection4For2_1_1 = ForArithmeticLogic(collection4For2.getArithmeticLogic());
+
+        }else if(collection4For2.getFunctionCall()!=null) {
+            Collection4For2_1_1 = ForFunctionCall(collection4For2.getFunctionCall());
+
+        }else  if(collection4For2.getVariable()!=null){
+            Collection4For2_1_1=collection4For2.getVariable().toString();
+        }else if(collection4For2.getSubObj()!=null){
+            Collection4For2_1_1=ForSubObj(collection4For2.getSubObj());
+        }else if(collection4For2.getObjArray()!=null){
+            Collection4For2_1_1=ForObjArray(collection4For2.getObjArray());
+        }else if(collection4For2.getNumber()!=null){
+            Collection4For2_1_1=collection4For2.getNumber().toString();
+        }
+        return Collection4For2_1_1;
+    }
+    public String discussionsCollection4For3_1_1(Collection4For3 collection4For3){
+        String Collection4For3_1_1=null;
+
+      if(collection4For3.getFunctionCall()!=null) {
+          Collection4For3_1_1 = ForFunctionCall(collection4For3.getFunctionCall());
+
+
+        }else if(collection4For3.getSubObj()!=null){
+          Collection4For3_1_1=ForSubObj(collection4For3.getSubObj());
+        }else if(collection4For3.getObjArray()!=null){
+          Collection4For3_1_1=ForObjArray(collection4For3.getObjArray());
+        }else if(collection4For3.getOneLine4For3Condition()!=null){
+          Collection4For3_1_1=dealWithOneLine4For3Condition(collection4For3.getOneLine4For3Condition());
+      }else if(collection4For3.getObj()!=null){
+          Collection4For3_1_1=collection4For3.getObj().getIdentifier();
+      }else if(collection4For3.getObjBody()!=null){
+          Collection4For3_1_1= dealWithObjBody(collection4For3.getObjBody());
+      }
+        return Collection4For3_1_1;
+    }
+    public String dealWithOneLine4For3Condition(OneLine4For3Condition oneLine4For3Condition){
+        StringBuilder tempValue = new StringBuilder();
+        String lineValue=null;
+        tempValue.append("(");
+        if(oneLine4For3Condition.getLogicComprison()!=null){
+            lineValue= ForLogicComprison(oneLine4For3Condition.getLogicComprison());
+            tempValue.append(lineValue);
+        }
+        tempValue.append("?");
+        if(oneLine4For3Condition.getCollection4For3_1_1()!=null){
+            lineValue= discussionsCollection4For3_1_1(oneLine4For3Condition.getCollection4For3_1_1());
+            tempValue.append(lineValue);
+        }
+        tempValue.append(":");
+        if(oneLine4For3Condition.getCollection4For3_1_2()!=null){
+            lineValue= discussionsCollection4For3_1_1(oneLine4For3Condition.getCollection4For3_1_1());
+            tempValue.append(lineValue);
+        }
+        tempValue.append(")");
+        return  tempValue.toString();
+    }
+    public void JS4For1_1(String id,HtmlElement htmlElement,String collection4For1_1_1, String collection4For2_1_1){
+        JSContent.append(" let originalElement"+id+" = document.getElementById(\""+id+"\");" +
+                "let container"+id+" = originalElement"+id+".parentElement;");
+
+        if(htmlElement.getHtmlContent().getHtmlElement()!=null){
+            JSContent.append(
+                    "var "+id+"randem="+collection4For2_1_1.split(".")+";"+
+                            "if("+id+"randem[1]== null)\n"+
+                            "var "+id+"randem0="+collection4For2_1_1+"\n" +
+                            "else "+id+"randem0="+id+"randem[1]"+
+                            "var "+collection4For1_1_1+" "+
+                            "for("+collection4For1_1_1+" in "+id+"randem0) \n");
+
+
+        }
+        else if(htmlElement.getHtmlContent().getHtmlCharData()!=null){
+            JSContent.append(" let defaultText"+id+" =\""+htmlElement.getHtmlContent().getHtmlCharData()+"\";" +
+                   "var "+id+"randem="+collection4For2_1_1.split(".")+";"+
+                    "if("+id+"randem[1]== null)\n"+
+                    "var "+id+"randem0="+collection4For2_1_1+"\n" +
+                    "else "+id+"randem0="+id+"randem[1]"+
+                    "var "+collection4For1_1_1+" "+
+                    "for("+collection4For1_1_1+" in "+id+"randem0) {\n" +
+                    " let elem = originalElement"+id+".cloneNode(true);\n" +
+                    "elem.id = \""+id+"\" + "+collection4For1_1_1+";\n" +
+                    " elem.innerHTML = defaultText"+id+";\n" +
+                    " elem.hidden= false;\n" +
+                    "container+"+id+"+.appendChild(elem);\n" +
+                    " new_elements.push(elem);\n" +
+                    "} \n " +
+                    "originalElement"+id+".hidden = true;");
+
+        }
+        else if(htmlElement.getHtmlContent().getCDATA()!=null){
+            JSContent.append(" let defaultText"+id+" =\""+htmlElement.getHtmlContent().getHtmlCharData()+"\";" +
+                    "var "+id+"randem="+collection4For2_1_1.split(".")+";"+
+                    "if("+id+"randem[1]== null)\n"+
+                    "var "+id+"randem0="+collection4For2_1_1+"\n" +
+                    "else "+id+"randem0="+id+"randem[1]"+
+                    "var "+collection4For1_1_1+" "+
+                    "for("+collection4For1_1_1+" in "+id+"randem0) {\n" +
+                    " let elem = originalElement"+id+".cloneNode(true);\n" +
+                    "elem.id = \""+id+"\" + "+collection4For1_1_1+";\n" +
+                    " elem.innerHTML = defaultText"+id+";\n" +
+                    " elem.hidden= false;\n" +
+                    "container"+id+".appendChild(elem);\n" +
+                    " new_elements.push(elem);\n" +
+                    "} \n " +
+                    "originalElement"+id+".hidden = true;");
+        }
+        else if(htmlElement.getMustacheExpression()!=null){
+            String s=null;
+            for(int i=0;i<htmlElement.getMustacheExpression().getMustacheContent().size();i++){
+                s=s+"elem.innerHTML = defaultText"+id+".replace('{{"+htmlElement.getMustacheExpression().getMustacheContent().get(i).a+" }}',"+htmlElement.getMustacheExpression().getMustacheContent().get(i).b.getFormatName()+"("+id+"randem0));\n";
+            }
+            JSContent.append(" let defaultText"+id+" =\"{{"+dealWithMustacheExp(id,htmlElement.getMustacheExpression())+"}}\";" +
+                    "var "+id+"randem="+collection4For2_1_1.split(".")+";"+
+                    "if("+id+"randem[1]== null)\n"+
+                    "var "+id+"randem0="+collection4For2_1_1+"\n" +
+                    "else "+id+"randem0="+id+"randem[1]"+
+                    "var "+collection4For1_1_1+" "+
+                    "for("+collection4For1_1_1+" in "+id+"randem0) {\n" +
+                    " let elem = originalElement"+id+".cloneNode(true);\n" +
+                    "elem.id = \""+id+"\" + "+collection4For1_1_1+";\n" +
+
+                     ""+s+""+
+                     " elem.hidden= false;\n" +
+                    "container"+id+".appendChild(elem);\n" +
+                    " new_elements.push(elem);\n" +
+                    "} \n " +
+                    "originalElement"+id+".hidden = true;");
+        }
+    }
+    public void JS4For1_2(String id,HtmlElement htmlElement,String collection4For1_1_1,String collection4For2_1_1,String collection4For1_1_2){
+        JSContent.append(" let originalElement"+id+" = document.getElementById(\""+id+"\");" +
+                "let container"+id+" = originalElement"+id+".parentElement;");
+
+        if(htmlElement.getHtmlContent().getHtmlElement()!=null){
+            JSContent.append(
+                    "var "+id+"randem="+collection4For2_1_1.split(".")+";"+
+                            "if("+id+"randem[1]== null)\n"+
+                            "var "+id+"randem0="+collection4For2_1_1+"\n" +
+                            "else "+id+"randem0="+id+"randem[1]"+
+                            "var "+collection4For1_1_1+" "+
+                            "for("+collection4For1_1_1+" in "+id+"randem0 ; "+collection4For1_1_2+" = INDEX) \n");
+
+
+        }
+        else if(htmlElement.getHtmlContent().getHtmlCharData()!=null){
+            JSContent.append(" let defaultText"+id+" =\""+htmlElement.getHtmlContent().getHtmlCharData()+"\";" +
+                    "var "+id+"randem="+collection4For2_1_1.split(".")+";"+
+                    "if("+id+"randem[1]== null)\n"+
+                    "var "+id+"randem0="+collection4For2_1_1+"\n" +
+                    "else "+id+"randem0="+id+"randem[1]"+
+                    "var "+collection4For1_1_1+" "+
+                    "for("+collection4For1_1_1+" in "+id+"randem0 ; "+collection4For1_1_2+" = INDEX) \n"+
+                    " let elem = originalElement"+id+".cloneNode(true);\n" +
+                    "elem.id = \""+id+"\" + "+collection4For1_1_1+";\n" +
+                    " elem.innerHTML = defaultText"+id+";\n" +
+                    " elem.hidden= false;\n" +
+                    "container+"+id+"+.appendChild(elem);\n" +
+                    " new_elements.push(elem);\n" +
+                    "} \n " +
+                    "originalElement"+id+".hidden = true;");
+
+        }
+        else if(htmlElement.getHtmlContent().getCDATA()!=null){
+            JSContent.append(" let defaultText"+id+" =\""+htmlElement.getHtmlContent().getHtmlCharData()+"\";" +
+                    "var "+id+"randem="+collection4For2_1_1.split(".")+";"+
+                    "if("+id+"randem[1]== null)\n"+
+                    "var "+id+"randem0="+collection4For2_1_1+"\n" +
+                    "else "+id+"randem0="+id+"randem[1]"+
+                    "var "+collection4For1_1_1+" "+
+                    "for("+collection4For1_1_1+" in "+id+"randem0 ; "+collection4For1_1_2+" = INDEX) \n"+
+                    " let elem = originalElement"+id+".cloneNode(true);\n" +
+                    "elem.id = \""+id+"\" + "+collection4For1_1_1+";\n" +
+                    " elem.innerHTML = defaultText"+id+";\n" +
+                    " elem.hidden= false;\n" +
+                    "container"+id+".appendChild(elem);\n" +
+                    " new_elements.push(elem);\n" +
+                    "} \n " +
+                    "originalElement"+id+".hidden = true;");
+        }
+        else if(htmlElement.getMustacheExpression()!=null){
+            String s=null;
+            for(int i=0;i<htmlElement.getMustacheExpression().getMustacheContent().size();i++){
+                s=s+"elem.innerHTML = defaultText"+id+".replace('{{"+htmlElement.getMustacheExpression().getMustacheContent().get(i).a+" }}',"+htmlElement.getMustacheExpression().getMustacheContent().get(i).b.getFormatName()+"("+id+"randem0));\n";
+            }
+            JSContent.append(" let defaultText"+id+" =\"{{"+dealWithMustacheExp(id,htmlElement.getMustacheExpression())+"}}\";" +
+                    "var "+id+"randem="+collection4For2_1_1.split(".")+";"+
+                    "if("+id+"randem[1]== null)\n"+
+                    "var "+id+"randem0="+collection4For2_1_1+"\n" +
+                    "else "+id+"randem0="+id+"randem[1]"+
+                    "var "+collection4For1_1_1+" "+
+                    "for("+collection4For1_1_1+" in "+id+"randem0 ; "+collection4For1_1_2+" = INDEX) \n"+
+                    " let elem = originalElement"+id+".cloneNode(true);\n" +
+                    "elem.id = \""+id+"\" + "+collection4For1_1_1+";\n" +
+
+                    ""+s+""+
+                    " elem.hidden= false;\n" +
+                    "container"+id+".appendChild(elem);\n" +
+                    " new_elements.push(elem);\n" +
+                    "} \n " +
+                    "originalElement"+id+".hidden = true;");
+        }
+    }
+    public void JS4For2(String id,HtmlElement htmlElement,String collection4For1_2_1, String collection4For1_2_2, String collection4For3_2_1){
+        JSContent.append(" let originalElement"+id+" = document.getElementById(\""+id+"\");" +
+                "let container"+id+" = originalElement"+id+".parentElement;");
+
+        if(htmlElement.getHtmlContent().getHtmlElement()!=null){
+            JSContent.append(
+                    "var "+id+"randem="+collection4For3_2_1.split(".")+";"+
+                            "if("+id+"randem[1]== null)\n"+
+                            "var "+id+"randem0="+collection4For3_2_1+"\n" +
+                            "else "+id+"randem0="+id+"randem[1]"+
+                            "var "+collection4For1_2_1+" "+
+                            "var "+collection4For1_2_2+" "+
+                            "for("+collection4For1_2_2+","+collection4For1_2_1+" in "+id+"randem0) \n");
+
+
+        }
+        else if(htmlElement.getHtmlContent().getHtmlCharData()!=null){
+            JSContent.append(" let defaultText"+id+" =\""+htmlElement.getHtmlContent().getHtmlCharData()+"\";" +
+                    "var "+id+"randem="+collection4For3_2_1.split(".")+";"+
+                    "if("+id+"randem[1]== null)\n"+
+                    "var "+id+"randem0="+collection4For3_2_1+"\n" +
+                    "else "+id+"randem0="+id+"randem[1]"+
+                    "var "+collection4For1_2_1+" "+
+                    "var "+collection4For1_2_2+" "+
+                    "for("+collection4For1_2_2+","+collection4For1_2_1+" in "+id+"randem0) \n"+
+            " let elem = originalElement"+id+".cloneNode(true);\n" +
+                    "elem.id = \""+id+"\" + "+collection4For1_2_1+";\n" +
+                    " elem.innerHTML = defaultText"+id+";\n" +
+                    " elem.hidden= false;\n" +
+                    "container+"+id+"+.appendChild(elem);\n" +
+                    " new_elements.push(elem);\n" +
+                    "} \n " +
+                    "originalElement"+id+".hidden = true;");
+
+        }
+        else if(htmlElement.getHtmlContent().getCDATA()!=null){
+            JSContent.append(" let defaultText"+id+" =\""+htmlElement.getHtmlContent().getHtmlCharData()+"\";" +
+                    "var "+id+"randem="+collection4For3_2_1.split(".")+";"+
+                    "if("+id+"randem[1]== null)\n"+
+                    "var "+id+"randem0="+collection4For3_2_1+"\n" +
+                    "else "+id+"randem0="+id+"randem[1]"+
+                    "var "+collection4For1_2_1+" "+
+                    "var "+collection4For1_2_2+" "+
+                    "for("+collection4For1_2_2+","+collection4For1_2_1+" in "+id+"randem0) \n"+
+
+                  " let elem = originalElement"+id+".cloneNode(true);\n" +
+                    "elem.id = \""+id+"\" + "+collection4For1_2_1+";\n" +
+                    " elem.innerHTML = defaultText"+id+";\n" +
+                    " elem.hidden= false;\n" +
+                    "container"+id+".appendChild(elem);\n" +
+                    " new_elements.push(elem);\n" +
+                    "} \n " +
+                    "originalElement"+id+".hidden = true;"  );
+        }
+        else if(htmlElement.getMustacheExpression()!=null){
+            String s=null;
+            for(int i=0;i<htmlElement.getMustacheExpression().getMustacheContent().size();i++){
+                s=s+"elem.innerHTML = defaultText"+id+".replace('{{"+htmlElement.getMustacheExpression().getMustacheContent().get(i).a+" }}',"+htmlElement.getMustacheExpression().getMustacheContent().get(i).b.getFormatName()+"("+id+"randem0));\n";
+            }
+            JSContent.append(" let defaultText"+id+" =\"{{"+dealWithMustacheExp(id,htmlElement.getMustacheExpression())+"}}\";" +
+                    "var "+id+"randem="+collection4For3_2_1.split(".")+";"+
+                    "if("+id+"randem[1]== null)\n"+
+                    "var "+id+"randem0="+collection4For3_2_1+"\n" +
+                    "else "+id+"randem0="+id+"randem[1]"+
+                    "var "+collection4For1_2_1+" "+
+                    "var "+collection4For1_2_2+" "+
+                    "for("+collection4For1_2_2+","+collection4For1_2_1+" in "+id+"randem0) \n"+
+
+                  " let elem = originalElement"+id+".cloneNode(true);\n" +
+                    "elem.id = \""+id+"\" + "+collection4For1_2_1+";\n" +
+
+                    ""+s+""+
+                    " elem.hidden= false;\n" +
+                    "container"+id+".appendChild(elem);\n" +
+                    " new_elements.push(elem);\n" +
+                    "} \n " +
+                    "originalElement"+id+".hidden = true;");
+        }
+    }
+    public void JS4For3(String id,HtmlElement htmlElement,String collection4For4_3_1){
+        JSContent.append(" let originalElement"+id+" = document.getElementById(\""+id+"\");" +
+                "let container"+id+" = originalElement"+id+".parentElement;");
+
+        if(htmlElement.getHtmlContent().getHtmlElement()!=null){
+            JSContent.append(
+
+                            "for("+collection4For4_3_1+") \n");
+
+
+        }
+        else if(htmlElement.getHtmlContent().getHtmlCharData()!=null){
+            JSContent.append(" let defaultText"+id+" =\""+htmlElement.getHtmlContent().getHtmlCharData()+"\";" +
+                            "for("+collection4For4_3_1+") \n"+
+                    " let elem = originalElement"+id+".cloneNode(true);\n" +
+                    "elem.id = \""+id+"\" + "+collection4For4_3_1+";\n" +
+                    " elem.innerHTML = defaultText"+id+";\n" +
+                    " elem.hidden= false;\n" +
+                    "container+"+id+"+.appendChild(elem);\n" +
+                    " new_elements.push(elem);\n" +
+                    "} \n " +
+                    "originalElement"+id+".hidden = true;");
+
+        }
+        else if(htmlElement.getHtmlContent().getCDATA()!=null){
+            JSContent.append(" let defaultText"+id+" =\""+htmlElement.getHtmlContent().getHtmlCharData()+"\";" +
+                            "for("+collection4For4_3_1+") \n"+
+
+                    " let elem = originalElement"+id+".cloneNode(true);\n" +
+                    "elem.id = \""+id+"\" + "+collection4For4_3_1+";\n" +
+                    " elem.innerHTML = defaultText"+id+";\n" +
+                    " elem.hidden= false;\n" +
+                    "container"+id+".appendChild(elem);\n" +
+                    " new_elements.push(elem);\n" +
+                    "} \n " +
+                    "originalElement"+id+".hidden = true;"  );
+        }
+        else if(htmlElement.getMustacheExpression()!=null){
+            String s=null;
+            for(int i=0;i<htmlElement.getMustacheExpression().getMustacheContent().size();i++){
+                s=s+"elem.innerHTML = defaultText"+id+".replace('{{"+htmlElement.getMustacheExpression().getMustacheContent().get(i).a+" }}',"+htmlElement.getMustacheExpression().getMustacheContent().get(i).b.getFormatName()+"("+id+"randem0));\n";
+            }
+            JSContent.append(" let defaultText"+id+" =\"{{"+dealWithMustacheExp(id,htmlElement.getMustacheExpression())+"}}\";" +
+                    "for("+collection4For4_3_1+") \n"+
+
+                    " let elem = originalElement"+id+".cloneNode(true);\n" +
+                    "elem.id = \""+id+"\" + "+collection4For4_3_1+";\n" +
+
+                    ""+s+""+
+                    " elem.hidden= false;\n" +
+                    "container"+id+".appendChild(elem);\n" +
+                    " new_elements.push(elem);\n" +
+                    "} \n " +
+                    "originalElement"+id+".hidden = true;");
         }
     }
 
     // CP-MUSTACHE
-    public void dealWithMustacheExp(String id, MustacheExpression me){
+    public String dealWithMustacheExp(String id, MustacheExpression me){
         String MustValue;
 
         id=id.substring(1,id.length()-1);
@@ -609,6 +1143,7 @@ public class CodeGeneration {
                     "        };\n " +
                     "renders.push("+id+"Changes4Must);\n");
         }*/
+        return "";
     }
 
 
@@ -1020,10 +1555,6 @@ public class CodeGeneration {
         }
         return st.toString();
     }
-
-
-
-
     public String dealWithFunctionCall4M(FunctionCall4Must FC){
         StringBuilder st = new StringBuilder();
 
@@ -1032,7 +1563,6 @@ public class CodeGeneration {
         // return value
         return st.toString();
     }
-
     public String dealWithFunctionFromVar4M(FunctionCallFromVar4Must FCV){
 
         StringBuilder st = new StringBuilder();
@@ -1065,7 +1595,6 @@ public class CodeGeneration {
         }
         return st.toString();
     }
-
     public String dealWithSubObj4M(SubObj4Must SO){
 
         StringBuilder st = new StringBuilder();
@@ -1074,7 +1603,6 @@ public class CodeGeneration {
 
         return st.toString();
     }
-
     public String dealWithProperty4M(Property4Must p){
         StringBuilder st = new StringBuilder();
 
@@ -1093,8 +1621,6 @@ public class CodeGeneration {
         return st.toString();
 
     }
-
-
     public String dealWithOneLineCond4M(OneLineCondition4Must OLC){
 
         StringBuilder st = new StringBuilder();
@@ -1108,7 +1634,6 @@ public class CodeGeneration {
         st.append(" )");
         return st.toString();
     }
-
     public String dealWithOneLineArithCond4M(OneLineArithCondition4Must OLAC){
         StringBuilder st = new StringBuilder();
 
@@ -1122,7 +1647,6 @@ public class CodeGeneration {
 
         return st.toString();
     }
-
     public String dealWithOneLineBoolCond4M(OneLineBoolCondition4Must OLBC){
         StringBuilder st = new StringBuilder();
 
@@ -1144,8 +1668,6 @@ public class CodeGeneration {
 
         return st.toString();
     }
-
-
     public String dealWithArithLogic4M(ArithmeticLogic4Must AL){
 
         StringBuilder st = new StringBuilder();
@@ -1229,8 +1751,6 @@ public class CodeGeneration {
         }
         return "";
     }
-
-
     public String dealWithColl4Every4M(Collection4Mustache CE){
         if (CE.getMustacheVariable() != null){
             return App+"."+CE.getMustacheVariable().getMustacheVariable();
@@ -1252,13 +1772,9 @@ public class CodeGeneration {
             return "";
         }
     }
-
-
     public String dealWithColl4Comp4M(Collection4CompMust CC){
         return dealWithArithLogic4M(CC.getArithmeticLogic4Must());
     }
-
-
     public String  dealWithValue4M(MustacheValue V){
         if (V.getMustacheString() != null){
             return V.getMustacheString();
@@ -1274,7 +1790,6 @@ public class CodeGeneration {
             return "";
         }
     }
-
     public String dealWithCOll4Log4M(Collection4LogicRet4Must CL){
         if (CL.getMustacheVariable() != null){
             return " "+App+"."+CL.getMustacheVariable().getMustacheVariable();
@@ -1296,7 +1811,6 @@ public class CodeGeneration {
             return "";
         }
     }
-
     public String dealWithColl4Arith4M(Collection4MUSTArithmetic CA){
         if (CA.getmustacheVariable() != null){
             return " "+App+"."+CA.getmustacheVariable().getMustacheVariable();

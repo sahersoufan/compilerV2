@@ -276,7 +276,7 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
                     }else if (ha.getModelExpression() != null) {
                         cg.dealWIthModel(htmlAttributeList);
                     }else if (ha.getForExpression() != null){
-                        System.out.println("cp-for");
+                        cg.dealWithFor(htmlAttributeList,htmlElement);
                     }else if (ha.getHideExpression() != null){
                         cg.dealWithHide(htmlAttributeList);
                     }else if (ha.getShowExpression() != null){
