@@ -368,7 +368,7 @@ oneLineCondition
 : CP_CONTENT_OPEN_PAR logicComprison CP_CONTENT_QUESTION_MARK collection4everything CP_CONTENT_COLON collection4everything CP_CONTENT_CLOSE_PAR
     ;
 oneLineBoolCondition
-: CP_CONTENT_OPEN_PAR logicComprison CP_CONTENT_QUESTION_MARK CP_CONTENT_TRUE CP_CONTENT_COLON CP_CONTENT_FALSE CP_CONTENT_CLOSE_PAR
+: CP_CONTENT_OPEN_PAR logicComprison CP_CONTENT_QUESTION_MARK  trueOrFalse CP_CONTENT_COLON trueOrFalse CP_CONTENT_CLOSE_PAR
     ;
 //v = (a < c ? 1 : 2) + a
 //v = (a < c ? 1 : [1,2,3]) + a
@@ -600,8 +600,12 @@ oneLineArithCondition4Must
     ;
 
 oneLineBoolCondition4Must
-    : MUSTACHE_OPEN_PAR logicComprison4Must MUSTACHE_QUESTION_MARK MUSTACHE_TRUE MUSTACHE_COLON MUSTACHE_FALSE MUSTACHE_CLOSE_PAR
+    : MUSTACHE_OPEN_PAR logicComprison4Must MUSTACHE_QUESTION_MARK trueOrFalse4M MUSTACHE_COLON trueOrFalse4M MUSTACHE_CLOSE_PAR
     ;
+
+trueOrFalse4M
+: (MUSTACHE_TRUE | MUSTACHE_FALSE)
+;
 comparisonExp4Must
     : collection4CompMust mustacheComparisonOperator collection4CompMust
     ;

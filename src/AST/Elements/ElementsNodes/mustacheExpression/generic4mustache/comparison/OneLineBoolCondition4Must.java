@@ -6,8 +6,8 @@ public class OneLineBoolCondition4Must {
     private String openPar;
     private LogicComprison4Must logicComprison4Must;
     private String questionMark;
-    private boolean True;
-    private boolean False;
+    private boolean first;
+    private boolean second;
     private String closePar;
 
     public String getOpenPar() {
@@ -34,20 +34,20 @@ public class OneLineBoolCondition4Must {
         this.questionMark = questionMark;
     }
 
-    public boolean isTrue() {
-        return True;
+    public boolean isFirst() {
+        return first;
     }
 
-    public void setTrue(boolean aTrue) {
-        True = aTrue;
+    public void setFirst(boolean first) {
+        this.first = first;
     }
 
-    public boolean isFalse() {
-        return False;
+    public boolean isSecond() {
+        return second;
     }
 
-    public void setFalse(boolean aFalse) {
-        False = aFalse;
+    public void setSecond(boolean second) {
+        this.second = second;
     }
 
     public String getClosePar() {

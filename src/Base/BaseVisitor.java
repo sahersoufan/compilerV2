@@ -1814,15 +1814,24 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
             oneLineBoolCondition.setLogicComprison((LogicComprison) visitLogicComprison(ctx.logicComprison()));
         }
 
-        if (ctx.CP_CONTENT_FALSE() != null){
-            oneLineBoolCondition.setFalse(false);
-            oneLineBoolConditionNode.addChild(new SimpleTreeNode("False"));
+        if (!ctx.trueOrFalse().isEmpty()){
+            if (ctx.trueOrFalse().get(0).CP_CONTENT_TRUE() != null){
+                oneLineBoolCondition.setFirst(true);
+                oneLineBoolConditionNode.addChild(new SimpleTreeNode("True"));
+            }else {
+                oneLineBoolCondition.setFirst(false);
+                oneLineBoolConditionNode.addChild(new SimpleTreeNode("False"));
+            }
+
+            if (ctx.trueOrFalse().get(1).CP_CONTENT_TRUE() != null){
+                oneLineBoolCondition.setSecond(true);
+                oneLineBoolConditionNode.addChild(new SimpleTreeNode("True"));
+            }else {
+                oneLineBoolCondition.setSecond(false);
+                oneLineBoolConditionNode.addChild(new SimpleTreeNode("False"));
+            }
         }
 
-        if (ctx.CP_CONTENT_TRUE() != null){
-            oneLineBoolCondition.setTrue(true);
-            oneLineBoolConditionNode.addChild(new SimpleTreeNode("True"));
-        }
         return oneLineBoolCondition;
     }
 
@@ -2887,13 +2896,23 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
             oneLineBoolCondition4Must.setLogicComprison4Must((LogicComprison4Must) visitLogicComprison4Must(ctx.logicComprison4Must()));
         }
 
-        if (ctx.MUSTACHE_TRUE() != null){
-            oneLineBoolCondition4Must.setTrue(true);
-            oneLineBoolCondition4MustNode.addChild(new SimpleTreeNode("True"));
-        }
-        if (ctx.MUSTACHE_FALSE() != null){
-            oneLineBoolCondition4Must.setFalse(false);
-            oneLineBoolCondition4MustNode.addChild(new SimpleTreeNode("False"));
+        if (!ctx.trueOrFalse4M().isEmpty()){
+            if (ctx.trueOrFalse4M().get(0).MUSTACHE_TRUE() != null){
+                oneLineBoolCondition4Must.setFirst(true);
+                oneLineBoolCondition4MustNode.addChild(new SimpleTreeNode("True"));
+
+            }else {
+                oneLineBoolCondition4Must.setFirst(false);
+                oneLineBoolCondition4MustNode.addChild(new SimpleTreeNode("False"));
+            }
+
+            if (ctx.trueOrFalse4M().get(1).MUSTACHE_TRUE() != null){
+                oneLineBoolCondition4Must.setSecond(true);
+                oneLineBoolCondition4MustNode.addChild(new SimpleTreeNode("True"));
+            }else {
+                oneLineBoolCondition4Must.setSecond(false);
+                oneLineBoolCondition4MustNode.addChild(new SimpleTreeNode("False"));
+            }
         }
 
         return oneLineBoolCondition4Must;

@@ -793,12 +793,12 @@ public class CodeGeneration {
     public String dealWithOneLineBoolCond(OneLineBoolCondition OLBC){
         StringBuilder st = new StringBuilder();
 
-        st.append(" ( ");
+        st.append("( ");
         st.append(dealWithLogicComparison(OLBC.getLogicComprison()));
         st.append(" ? ");
-        st.append("true");
+        st.append(OLBC.isFirst());
         st.append(" : ");
-        st.append("false");
+        st.append(OLBC.isSecond());
         st.append(" )");
         return st.toString();
     }
@@ -1141,9 +1141,9 @@ public class CodeGeneration {
         st.append("( ");
         st.append(dealWithLogicComparison4M(OLBC.getLogicComprison4Must()));
         st.append(" ? ");
-        st.append("true");
+        st.append(OLBC.isFirst());
         st.append(" : ");
-        st.append("false");
+        st.append(OLBC.isSecond());
         st.append(" )");
         return st.toString();
     }

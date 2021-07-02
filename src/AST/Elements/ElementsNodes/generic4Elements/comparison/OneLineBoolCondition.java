@@ -2,16 +2,16 @@ package AST.Elements.ElementsNodes.generic4Elements.comparison;
 
 import AST.Elements.ElementsNodes.generic4Elements.Logic.LogicComprison;
 
-import java.util.ArrayList;
-
 public class OneLineBoolCondition {
     private LogicComprison logicComprison;
-    private boolean True;
-    private boolean False;
+
 
     private String openPar;
     private String questionMark;
     private String closePar;
+
+    private boolean first;
+    private boolean second;
 
     public String getOpenPar() {
         return openPar;
@@ -46,19 +46,19 @@ public class OneLineBoolCondition {
         this.logicComprison = logicComprison;
     }
 
-    public boolean isTrue() {
-        return True;
+    public boolean isFirst() {
+        return first;
     }
 
-    public void setTrue(boolean aTrue) {
-        True = aTrue;
+    public void setFirst(boolean first) {
+        this.first = first;
     }
 
-    public boolean isFalse() {
-        return False;
+    public boolean isSecond() {
+        return second;
     }
 
-    public void setFalse(boolean aFalse) {
-        False = aFalse;
+    public void setSecond(boolean second) {
+        this.second = second;
     }
 }
