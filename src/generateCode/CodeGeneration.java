@@ -1138,25 +1138,6 @@ public class CodeGeneration {
 
 
 
-    // CP-MUSTACHE
-    public String dealWithMustacheExp(String id, MustacheExpression me){
-        String MustValue;
-
-        id=id.substring(1,id.length()-1);
-        if (id == null) {
-            throw new NullPointerException(id);
-        }
-/*
-        if (me.getCollection4Mustache() != null){
-            MustValue = me.getCollection4Mustache().getMustacheVariable().getMustacheVariable();
-            JSContent.append("        var "+id+"Changes4Must = function (event) {\n" +
-                    "            var defaultText = \"My Text is: {{"+MustValue+"}}\";\n" +
-                    "            document.getElementById(\""+id+"\").innerHTML = defaultText.replace(\"{{"+MustValue+"}}\", forthyear."+MustValue+");\n" +
-                    "        };\n " +
-                    "renders.push("+id+"Changes4Must);\n");
-        }*/
-        return "";
-    }
 
 
 
