@@ -29,6 +29,7 @@ import AST.Elements.ElementsNodes.generic4Elements.object.ObjBody;
 import AST.Elements.ElementsNodes.generic4Elements.object.SubObj;
 import AST.Elements.ElementsNodes.generic4Elements.property.Property;
 import AST.Elements.ElementsNodes.mustacheExpression.MustacheExpression;
+import AST.Elements.ElementsNodes.mustacheExpression.filter.Filter;
 import AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.Collection4CompMust;
 import AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.Collection4LogicRet4Must;
 import AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.Collection4MUSTArithmetic;
@@ -611,12 +612,12 @@ public class CodeGeneration {
                 }
                 else if(h.getHtmlContent()!=null){
                     IfContent(h);
-                }else if(h.getMustacheExpression()!=null){
+                }/*else if(h.getMustacheExpression()!=null){
                     mustachvalue=dealWithMustacheExp(id,h.getMustacheExpression());
                     JSContent.append("var mustach=document.creatTextNode("+mustachvalue+");" +
                             "element"+i+".appenChild(mustach) }\n\n");
 
-                }
+                }*/
                 JSContent.append("element"+i+".appenChild(h) \n}\n\n");
                 i++;
             }
@@ -629,12 +630,12 @@ public class CodeGeneration {
         else if( htmlElement.getHtmlContent().getCDATA()!=null){
             JSContent.append("var cdata=document.creatTextNode(\""+htmlElement.getHtmlContent().getCDATA()+"\");" +
                     "element.appenChild(cdata) }\n\n");
-        }else if( htmlElement.getMustacheExpression()!=null){
+        }/*else if( htmlElement.getMustacheExpression()!=null){
             mustachvalue=dealWithMustacheExp(id,htmlElement.getMustacheExpression());
             JSContent.append("var mustach=document.creatTextNode("+mustachvalue+");" +
                     "element.appenChild(mustach) }\n\n");
 
-        }
+        }*/
     }
 
 
@@ -929,7 +930,7 @@ public class CodeGeneration {
             String s=null;
             for(int i=0;i<htmlElement.getMustacheExpression().getMustacheContent().size();i++){
                 s=s+"elem.innerHTML = defaultText"+id+".replace('{{"+htmlElement.getMustacheExpression().getMustacheContent().get(i).a+" }}',"+htmlElement.getMustacheExpression().getMustacheContent().get(i).b.getFormatName()+"("+id+"randem0));\n";
-            }
+            }/*
             JSContent.append(" let defaultText"+id+" =\"{{"+dealWithMustacheExp(id,htmlElement.getMustacheExpression())+"}}\";" +
                     "var "+id+"randem="+collection4For2_1_1.split(".")+";"+
                     "if("+id+"randem[1]== null)\n"+
@@ -945,7 +946,7 @@ public class CodeGeneration {
                     "container"+id+".appendChild(elem);\n" +
                     " new_elements.push(elem);\n" +
                     "} \n " +
-                    "originalElement"+id+".hidden = true;");
+                    "originalElement"+id+".hidden = true;");*/
         }
     }
 
@@ -1008,7 +1009,7 @@ public class CodeGeneration {
             for(int i=0;i<htmlElement.getMustacheExpression().getMustacheContent().size();i++){
                 s=s+"elem.innerHTML = defaultText"+id+".replace('{{"+htmlElement.getMustacheExpression().getMustacheContent().get(i).a+" }}',"+htmlElement.getMustacheExpression().getMustacheContent().get(i).b.getFormatName()+"("+id+"randem0));\n";
             }
-            JSContent.append(" let defaultText"+id+" =\"{{"+dealWithMustacheExp(id,htmlElement.getMustacheExpression())+"}}\";" +
+       /*     JSContent.append(" let defaultText"+id+" =\"{{"+dealWithMustacheExp(id,htmlElement.getMustacheExpression())+"}}\";" +
                     "var "+id+"randem="+collection4For2_1_1.split(".")+";"+
                     "if("+id+"randem[1]== null)\n"+
                     "var "+id+"randem0="+collection4For2_1_1+"\n" +
@@ -1023,7 +1024,7 @@ public class CodeGeneration {
                     "container"+id+".appendChild(elem);\n" +
                     " new_elements.push(elem);\n" +
                     "} \n " +
-                    "originalElement"+id+".hidden = true;");
+                    "originalElement"+id+".hidden = true;");*/
         }
     }
     public void JS4For2(String id,HtmlElement htmlElement,String collection4For1_2_1, String collection4For1_2_2, String collection4For3_2_1){
@@ -1084,7 +1085,7 @@ public class CodeGeneration {
             String s=null;
             for(int i=0;i<htmlElement.getMustacheExpression().getMustacheContent().size();i++){
                 s=s+"elem.innerHTML = defaultText"+id+".replace('{{"+htmlElement.getMustacheExpression().getMustacheContent().get(i).a+" }}',"+htmlElement.getMustacheExpression().getMustacheContent().get(i).b.getFormatName()+"("+id+"randem0));\n";
-            }
+            }/*
             JSContent.append(" let defaultText"+id+" =\"{{"+dealWithMustacheExp(id,htmlElement.getMustacheExpression())+"}}\";" +
                     "var "+id+"randem="+collection4For3_2_1.split(".")+";"+
                     "if("+id+"randem[1]== null)\n"+
@@ -1102,7 +1103,7 @@ public class CodeGeneration {
                     "container"+id+".appendChild(elem);\n" +
                     " new_elements.push(elem);\n" +
                     "} \n " +
-                    "originalElement"+id+".hidden = true;");
+                    "originalElement"+id+".hidden = true;");*/
         }
     }
     public void JS4For3(String id,HtmlElement htmlElement,String collection4For4_3_1){
@@ -1146,7 +1147,7 @@ public class CodeGeneration {
             String s=null;
             for(int i=0;i<htmlElement.getMustacheExpression().getMustacheContent().size();i++){
                 s=s+"elem.innerHTML = defaultText"+id+".replace('{{"+htmlElement.getMustacheExpression().getMustacheContent().get(i).a+" }}',"+htmlElement.getMustacheExpression().getMustacheContent().get(i).b.getFormatName()+"("+id+"randem0));\n";
-            }
+            }/*
             JSContent.append(" let defaultText"+id+" =\"{{"+dealWithMustacheExp(id,htmlElement.getMustacheExpression())+"}}\";" +
                     "for("+collection4For4_3_1+") \n"+
 
@@ -1158,7 +1159,7 @@ public class CodeGeneration {
                     "container"+id+".appendChild(elem);\n" +
                     " new_elements.push(elem);\n" +
                     "} \n " +
-                    "originalElement"+id+".hidden = true;");
+                    "originalElement"+id+".hidden = true;");*/
         }
     }
 
@@ -1166,23 +1167,67 @@ public class CodeGeneration {
 
 
     // CP-MUSTACHE
-    public String dealWithMustacheExp(String id, MustacheExpression me){
+    public void dealWithMustacheExp(String id, MustacheExpression me){
         String MustValue;
 
         id=id.substring(1,id.length()-1);
         if (id == null) {
             throw new NullPointerException(id);
         }
-/*
-        if (me.getCollection4Mustache() != null){
-            MustValue = me.getCollection4Mustache().getMustacheVariable().getMustacheVariable();
+
+
+        // variable
+        if (!me.getMustacheContent().isEmpty()){
+            Collection4Mustache CM = me.getMustacheContent().get(0).a;
+            Filter f = me.getMustacheContent().get(0).b;
             JSContent.append("        var "+id+"Changes4Must = function (event) {\n" +
-                    "            var defaultText = \"My Text is: {{"+MustValue+"}}\";\n" +
-                    "            document.getElementById(\""+id+"\").innerHTML = defaultText.replace(\"{{"+MustValue+"}}\", forthyear."+MustValue+");\n" +
-                    "        };\n " +
-                    "renders.push("+id+"Changes4Must);\n");
-        }*/
-        return "";
+                    "var def = document.getElementById(\""+id+"\").innerHTML;\n" +
+                    "int opencurly = def.search(\"{{\");\n" +
+                    "int closecurly = def.search(\"}}\");\n" +
+                    "var temptext = def.substr(opencurly,closecurly+1);\n");
+
+            if (CM != null){
+                if (f != null){
+                    // lower
+
+                    if (f.getFormatName().getMustachIdentifier().equals("lower")){
+                        String value = " "+App+CM.getMustacheVariable().getMustacheVariable();
+                        JSContent.append("document.getElementById(\"" + id + "\").innerHTML = def.replace(temptext,"+ value +".toLowerCase() )\n");
+                    }else if (f.getFormatName().getMustachIdentifier().equals("currency")){
+                        String value = " "+App+CM.getMustacheVariable().getMustacheVariable();
+                        JSContent.append("let dollarUS = Intl.NumberFormat(\"en-US\", {\n" +
+                                "    style: \"currency\",\n" +
+                                "    currency: \"USD\",\n" +
+                                "});\n\n");
+
+                        JSContent.append("document.getElementById(\"" + id + "\").innerHTML = def.replace(temptext,dollarUS.format("+ value +"))\n");
+                    }else if (f.getFormatName().getMustachIdentifier().equals("date")){
+                        String value = " "+App+CM.getMustacheVariable().getMustacheVariable();
+                        JSContent.append("var dd = String("+value+".getDate()).padStart(2, '0');\n" +
+                                "var mm = String("+value+".getMonth() + 1).padStart(2, '0');\n" +
+                                "var yyyy = "+value+".getFullYear();\n" +
+                                ""+value+" = dd + '/' + mm + '/' + yyyy;\n\n");
+
+                        JSContent.append("document.getElementById(\"" + id + "\").innerHTML = def.replace(temptext,"+ value +")\n");
+
+                    }
+
+                }else {
+                    if (CM.getMustacheVariable() != null) {
+                        String value = " "+App+CM.getMustacheVariable().getMustacheVariable();
+                        JSContent.append("document.getElementById(\"" + id + "\").innerHTML = def.replace(temptext,"+ value +" )\n");
+                    }else if (CM.getSubObj4Must() != null){
+                        String value = " "+App+ dealWithSubObj4M(CM.getSubObj4Must());
+                        JSContent.append("document.getElementById(\"" + id + "\").innerHTML = def.replace(temptext,"+ value +" )\n");
+                    }
+                }
+            }
+
+
+            JSContent.append("}" +
+                    "renders.push("+id+"Changes4Must);");
+        }
+
     }
 
 
