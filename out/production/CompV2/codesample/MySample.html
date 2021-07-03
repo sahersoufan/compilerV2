@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Sample</title>
+</head>
+
+<body>
+
+    <input id="myTestInput" type="text" cp-model="myTest" value="myTestInputValue" />
+    <div id="myTestDiv">My Text is: {{myTest}}</div>
+    <div id="test"> </div>
+
+    <div id="myTestShow" cp-show="user"> {{'show : ' + user}} </div>
+    <div id="myTestHide" cp-hide="!user"> {{'Username'}} </div>
+
+    <!-- it's already there -->
+    <script>
+        function forthyear (){
+             this.myTest = "HI MAn";
+             this.test = "a";
+             this.user="fa";
+
+
+        };
+
+        var forthyear = new forthyear();
+    </script>
+
+    <!-- our generated code -->
+    <script>
+        
+        changes = []; // array of changes
+
+        // inital value
+        document.getElementById("myTestInput").value = forthyear.myTest;
+
+        var myTestChanges = function (event) {
+            var defaultText = "My Text is: {{myTest}}";
+            document.getElementById("myTestDiv").innerHTML = defaultText.replace("{{myTest}}", document.getElementById("myTestInput").value);
+
+         user.
+/*        	var temp = (1 < 2 ? test : false);
+*/            document.getElementById("test").innerHTML = forthyear.(1 < 2 ? test : false);
+        };
+
+        document.getElementById("myTestInput").addEventListener("input", function(event) {
+            console.log("addListener");
+            changes.push(myTestChanges);
+        });
+
+        changes.push(myTestChanges);
+
+
+        function render() {
+            setInterval(() => {
+                console.log("render")
+                // for (change in changes) {
+                for (var i = 0; i < changes.length; i++) {
+                    // console.log(changes[i]);
+                    changes[i]();
+                }
+                changes = [];
+            }, 1000);
+        }
+        render();
+    </script>
+</body>
+
+</html>

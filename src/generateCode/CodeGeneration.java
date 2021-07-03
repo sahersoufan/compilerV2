@@ -551,7 +551,7 @@ public class CodeGeneration {
     }
 
 
-    //CP-If
+  /*  //CP-If
     public void dealWithIf(List<HtmlAttribute> attributes,HtmlElement htmlElement){
         IfExpression ifExp=null;
         String id=null;
@@ -775,7 +775,7 @@ public class CodeGeneration {
     public String ForFunctionCall(FunctionCall FC){
         return dealWithFunctionCall(FC);
     }
-    public String ForLogicComprison(LogicComprison lo){
+  /*  public String ForLogicComprison(LogicComprison lo){
         return dealWithLogicComparison(lo);
     }
     public String ForArithmeticLogic(ArithmeticLogic al){
@@ -874,9 +874,6 @@ public class CodeGeneration {
         tempValue.append(")");
         return  tempValue.toString();
     }
-
-
-
     public void JS4For1_1(String id,HtmlElement htmlElement,String collection4For1_1_1, String collection4For2_1_1){
         JSContent.append(" let originalElement"+id+" = document.getElementById(\""+id+"\");" +
                 "let container"+id+" = originalElement"+id+".parentElement;");
@@ -950,11 +947,6 @@ public class CodeGeneration {
                     "originalElement"+id+".hidden = true;");
         }
     }
-
-
-
-
-
     public void JS4For1_2(String id,HtmlElement htmlElement,String collection4For1_1_1,String collection4For2_1_1,String collection4For1_1_2){
         JSContent.append(" let originalElement"+id+" = document.getElementById(\""+id+"\");" +
                 "let container"+id+" = originalElement"+id+".parentElement;");
@@ -1164,7 +1156,7 @@ public class CodeGeneration {
         }
     }
 
-
+*/
 
 
 

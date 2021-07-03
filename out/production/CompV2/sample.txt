@@ -1,0 +1,17 @@
+<html>
+
+<head><title></title></head>
+
+
+<body cp-app="a">
+
+<div>
+<hello></hello>
+</div>
+<span><img src=""></img></span>
+<div>
+<div></div>
+</div>
+
+</body>
+</html>
