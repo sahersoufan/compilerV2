@@ -298,22 +298,6 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
                     cg.dealWithAppExp(htmlAttributeList);
                 }else if (ha.getModelExpression() != null) {
                     cg.dealWIthModel(htmlAttributeList);
-                }else if (ha.getForExpression() != null){
-                    cg.dealWithFor(htmlAttributeList,htmlElement);
-                }else if (ha.getHideExpression() != null){
-                    cg.dealWithHide(htmlAttributeList);
-                }else if (ha.getShowExpression() != null){
-                    cg.dealWithShow(htmlAttributeList);
-                }else if (ha.getIfExpression() != null){
-                    cg.dealWithIf(htmlAttributeList,htmlElement);
-                }else if (ha.getSwitchExpression() != null){
-                    cg.dealWithSwitch(htmlAttributeList,htmlElement);
-                }else if (ha.getSwitchCaseExpression() != null){
-                    System.out.println("cp-case");
-                }else if (ha.getClick() != null){
-                    System.out.println("cp-click");
-                }else if (ha.getDoubleClick() != null){
-                    System.out.println("cp-Over");
                 }else if (ha.getTagName() != null){
                     if (ha.getTagName().equals("id")) {
                         id = ha.getAttValue();
@@ -328,6 +312,27 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
             htmlElement.setHtmlContent((HtmlContent) visitHtmlContent(ctx.htmlContent()));
         }
 
+        if (InsideBody && !ctx.htmlAttribute().isEmpty()) {
+            for (HtmlAttribute ha : htmlAttributeList) {
+                if (ha.getIfExpression() != null) {
+                    cg.dealWithIf(htmlAttributeList, htmlElement);
+                }else if (ha.getSwitchExpression() != null){
+                    cg.dealWithSwitch(htmlAttributeList,htmlElement);
+                }else if (ha.getForExpression() != null){
+                    cg.dealWithFor(htmlAttributeList,htmlElement);
+                }else if (ha.getHideExpression() != null){
+                    cg.dealWithHide(htmlAttributeList);
+                }else if (ha.getShowExpression() != null){
+                    cg.dealWithShow(htmlAttributeList);
+                }else if (ha.getSwitchCaseExpression() != null){
+                    System.out.println("cp-case");
+                }else if (ha.getClick() != null){
+                    System.out.println("cp-click");
+                }else if (ha.getDoubleClick() != null){
+                    System.out.println("cp-Over");
+                }
+            }
+        }
         if (ctx.SCRIPTLET() != null){
             htmlElement.setScriptLet(ctx.SCRIPTLET().getSymbol().getText());
             htmlElementNode.addChild(new SimpleTreeNode(htmlElement.getScriptLet()));
