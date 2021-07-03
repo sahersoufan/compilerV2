@@ -126,7 +126,7 @@ public class CodeGeneration {
                         id = id.substring(1);
                     }
                     if (id.charAt(id.length()-1)=='"') {
-                        id = id.substring(id.length()-1);
+                        id = id.substring(0,id.length()-1);
                     }
                 }
             }
@@ -160,7 +160,7 @@ public class CodeGeneration {
                         id = id.substring(1);
                     }
                     if (id.charAt(id.length()-1)=='"') {
-                        id = id.substring(id.length()-1);
+                        id = id.substring(0,id.length()-1);
                     }
 
 
@@ -301,7 +301,7 @@ public class CodeGeneration {
                         id = id.substring(1);
                     }
                     if (id.charAt(id.length()-1)=='"') {
-                        id = id.substring(id.length()-1);
+                        id = id.substring(0,id.length()-1);
                     }
                 }
             }
@@ -352,7 +352,7 @@ public class CodeGeneration {
                         id = id.substring(1);
                     }
                     if (id.charAt(id.length()-1)=='"') {
-                        id = id.substring(id.length()-1);
+                        id = id.substring(0,id.length()-1);
                     }
 
 
@@ -404,7 +404,7 @@ public class CodeGeneration {
                         id = id.substring(1);
                     }
                     if (id.charAt(id.length()-1)=='"') {
-                        id = id.substring(id.length()-1);
+                        id = id.substring(0,id.length()-1);
                     }
                 }
             }
@@ -451,7 +451,7 @@ public class CodeGeneration {
                             idSwitchcase = idSwitchcase.substring(1);
                         }
                         if (idSwitchcase.charAt(idSwitchcase.length()-1)=='"') {
-                            idSwitchcase = idSwitchcase.substring(idSwitchcase.length()-1);
+                            idSwitchcase = idSwitchcase.substring(0,idSwitchcase.length()-1);
                         }
                     }
                     if (idSwitchcase == null) {
@@ -606,7 +606,7 @@ public class CodeGeneration {
                         id = id.substring(1);
                     }
                     if (id.charAt(id.length()-1)=='"') {
-                        id = id.substring(id.length()-1);
+                        id = id.substring(0,id.length()-1);
                     }
                 }
             }
@@ -651,7 +651,7 @@ public class CodeGeneration {
                                     id = id.substring(1);
                                 }
                                 if (id.charAt(id.length()-1)=='"') {
-                                    id = id.substring(id.length()-1);
+                                    id = id.substring(0,id.length()-1);
                                 }
                                 b=  true;
                                 JSContent.append("var att"+j+"=document.createAttribute(\""+ha.getTagName()+"\");\n" +
@@ -715,7 +715,7 @@ public class CodeGeneration {
                         id = id.substring(1);
                     }
                     if (id.charAt(id.length()-1)=='"') {
-                        id = id.substring(id.length()-1);
+                        id = id.substring(0,id.length()-1);
                     }
                 }
             }
@@ -1232,7 +1232,7 @@ public class CodeGeneration {
             id = id.substring(1);
         }
         if (id.charAt(id.length()-1)=='"') {
-            id = id.substring(id.length()-1);
+            id = id.substring(0,id.length()-1);
         }
         if (id == null) {
             throw new NullPointerException(id);
