@@ -1,16 +1,18 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <title>Sample 5 filters</title>
+    <title>Sample 4 if</title>
 </head>
 
 <body id="b" cp-app="forthyear">
     <span>Cards?</span>
     <input id="myShowItems" type="text" cp-model="showItemsCnt" value="4" />
 
-    <div id="bignum">it's a big number {{showItemsCnt | currency:"D"}}</div>
-    <!-- D id USD $ -->
+    <div id="ifdiv" cp-if="showItemsCnt > 10">
+        <div id = "showdiv">it's a big number {{showItemsCnt}}</div>
+    </div>
 
     <script>
         function forthyear() {
