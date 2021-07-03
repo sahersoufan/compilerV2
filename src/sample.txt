@@ -11,7 +11,7 @@
     <input id="myShowItems" type="text" cp-model="showItemsCnt" value="4" />
 
     <div id="ifdiv" cp-if="showItemsCnt > 10">
-        <div id = "showdiv">it's a big number {{showItemsCnt}}</div>
+        <div id ="showdiv">it's a big number {{showItemsCnt}}</div>
     </div>
 
     <script>

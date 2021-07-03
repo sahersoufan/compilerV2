@@ -39,7 +39,7 @@ public class Main {
 
             // mayar add function in baseVisitor to print the tree from object (base)
             System.out.println();
-            base.printTree();
+//            base.printTree();
             }
 
 

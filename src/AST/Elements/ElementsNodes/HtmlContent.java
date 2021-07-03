@@ -13,10 +13,6 @@ public class HtmlContent {
     private List<HtmlComment> htmlComment = new ArrayList<>();
     private List<HtmlCharData> htmlCharData = new ArrayList<>();
 
-    public List<HtmlElement> getHtmlElement() {
-        return htmlElement;
-    }
-
 
 
     public List<String> getCDATA() {
@@ -48,7 +44,11 @@ public class HtmlContent {
         this.htmlCharData = htmlCharData;
     }
 
-    public void setHtmlElement(List<HtmlElement> htmlElements) {
+    public List<HtmlElement> getHtmlElement() {
+        return htmlElement;
+    }
+
+    public void setHtmlElement(List<HtmlElement> htmlElement) {
         this.htmlElement = htmlElement;
     }
 }

@@ -307,10 +307,12 @@ public class BaseVisitor extends HTMLParserBaseVisitor {
         }
 
 
+
         if (ctx.htmlContent() != null){
             htmlElementNode.addChild(addNode("htmlContent"));
             htmlElement.setHtmlContent((HtmlContent) visitHtmlContent(ctx.htmlContent()));
         }
+
 
         if (InsideBody && !ctx.htmlAttribute().isEmpty()) {
             for (HtmlAttribute ha : htmlAttributeList) {

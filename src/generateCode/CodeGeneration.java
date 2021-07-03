@@ -9,6 +9,7 @@ import AST.Elements.ElementsNodes.CpExpression.model.ModelExpression;
 import AST.Elements.ElementsNodes.CpExpression.showHide.HideExpression;
 import AST.Elements.ElementsNodes.CpExpression.showHide.ShowExpression;
 import AST.Elements.ElementsNodes.HtmlAttribute;
+import AST.Elements.ElementsNodes.HtmlContent;
 import AST.Elements.ElementsNodes.generic4Elements.*;
 import AST.Elements.ElementsNodes.generic4Elements.Logic.ArithmeticLogic;
 import AST.Elements.ElementsNodes.generic4Elements.Logic.LastArithmeticLogic;
@@ -617,6 +618,7 @@ public class CodeGeneration {
             throw new NullPointerException(id);
         }
 
+//        System.out.println(htmlElement.getHtmlContent().getHtmlElement().get(0).getTagName());
         JSContent.append(" var "+id+"Changes = function () {\n" );
         JSContent.append("document.getElementById(\""+id+"\").remove();\n\n");
         if(ifExp.getLogicComprison()!=null){
@@ -635,8 +637,13 @@ public class CodeGeneration {
 
          String mustachvalue=null;
          String id=null;
-        if( !htmlElement.getHtmlContent().getHtmlElement().isEmpty()){
-            int i=0;
+        if(htmlElement.getHtmlContent()!=null){
+
+            HtmlContent hc = htmlElement.getHtmlContent();
+
+
+        }
+            /*int i=0;
             for(HtmlElement h: htmlElement.getHtmlContent().getHtmlElement()){
 
                 JSContent.append("var element"+i+"=document.createElement(\""+h.getTagName()+"\");\n\n");
@@ -670,12 +677,12 @@ public class CodeGeneration {
                 }
                 else if(h.getHtmlContent()!=null){
                     IfContent(h);
-                }/*else if(h.getMustacheExpression()!=null){
+                }*//*else if(h.getMustacheExpression()!=null){
                     mustachvalue=dealWithMustacheExp(id,h.getMustacheExpression());
                     JSContent.append("var mustach=document.creatTextNode("+mustachvalue+");" +
                             "element"+i+".appenChild(mustach) }\n\n");
 
-                }*/
+                }*//*
                 JSContent.append("element"+i+".appenChild(h);\n\n");
                 i++;
 
@@ -687,7 +694,7 @@ public class CodeGeneration {
 
             }
 
-        }
+        }*/
     }
 
 
@@ -1243,6 +1250,9 @@ public class CodeGeneration {
         if (!me.getMustacheContent().isEmpty()){
             Collection4Mustache CM = me.getMustacheContent().get(0).a;
             Filter f = me.getMustacheContent().get(0).b;
+            if (id.charAt(0) == '"'){
+                id=id.substring(0);
+            }
             JSContent.append("var def = document.getElementById(\""+id+"\").innerHTML;\n");
             JSContent.append("        var "+id+"Changes4Must = function (event) {\n");
 
