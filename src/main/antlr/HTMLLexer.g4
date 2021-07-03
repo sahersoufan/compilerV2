@@ -211,15 +211,13 @@ mode TAG;
     : 'cp-model'->pushMode(CP)
     ;
 
+// TODO i don't think so
  CP_CLICK
     : '@click'->pushMode(CP)
     ;
- CP_DOUBLE_CLICK
-    : '@'->pushMode(CP)
-    ;
 
  CP_MOUSEOVER
-    : '@mousemove'->pushMode(CP)
+    : '@mouseover'->pushMode(CP)
     ;
 
 CP_SWITCH_DEF

@@ -4,7 +4,6 @@ import AST.Elements.ElementsNodes.CpExpression.For.*;
 import AST.Elements.ElementsNodes.CpExpression.If.IfExpression;
 import AST.Elements.ElementsNodes.CpExpression.Switch.SwitchCaseExpression;
 import AST.Elements.ElementsNodes.CpExpression.Switch.SwitchExpression;
-import AST.Elements.ElementsNodes.CpExpression.annotation.*;
 import AST.Elements.ElementsNodes.CpExpression.app.AppExpression;
 import AST.Elements.ElementsNodes.CpExpression.model.ModelExpression;
 import AST.Elements.ElementsNodes.CpExpression.showHide.HideExpression;
@@ -30,6 +29,7 @@ import AST.Elements.ElementsNodes.generic4Elements.object.ObjBody;
 import AST.Elements.ElementsNodes.generic4Elements.object.SubObj;
 import AST.Elements.ElementsNodes.generic4Elements.property.Property;
 import AST.Elements.ElementsNodes.mustacheExpression.MustacheExpression;
+import AST.Elements.ElementsNodes.mustacheExpression.filter.Filter;
 import AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.Collection4CompMust;
 import AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.Collection4LogicRet4Must;
 import AST.Elements.ElementsNodes.mustacheExpression.generic4mustache.Collection4MUSTArithmetic;
@@ -57,7 +57,6 @@ import AST.Elements.HtmlElement;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class CodeGeneration {
@@ -116,7 +115,7 @@ public class CodeGeneration {
 
         //Get Model And Id From Element
         for (HtmlAttribute ha : attributes) {
-            if (ha.getModelExpression() != null) {
+            if (ha.getAppExpression() != null) {
                 appExpression = ha.getAppExpression();
             }
             if (ha.getTagName() != null) {
@@ -129,7 +128,8 @@ public class CodeGeneration {
             throw new NullPointerException(id);
         }
 
-        App = appValue;
+
+        App = appExpression.getCollection4App1().getVariable().getVariableName().getIdentifier();
     }
 
 
@@ -148,7 +148,7 @@ public class CodeGeneration {
             }
             if (ha.getTagName() != null) {
                 if (ha.getTagName().equals("id")) {
-                    id = ha.getAttValue().substring(1,ha.getAttValue().length()-1);
+                    id = ha.getAttValue();
 
 
                 }
@@ -163,7 +163,6 @@ public class CodeGeneration {
         if (modelExp.getCollection4Model1().getVariable() != null) {
             modelValue=ModelVarible(modelExp);
             JSContent.append(" document.getElementById(\""+id+"\").value = "+modelValue+";\n");
-
             JSContent.append(" var "+id+"Changes = function (event) {\n" +
                     "var temp"+id+"Changes = "+modelValue+ ";\n"+
                     "            "+modelValue+" = document.getElementById(\""+id+"\").value;\n" +
@@ -472,9 +471,9 @@ public class CodeGeneration {
 
         //LogicComprison
         if(switchExp.getCollection4Switch1().getOneLine4switch1().getLogicComprison()!=null){
-            tempValue.append(dealWithLogicComparison(switchExp.getCollection4Switch1().getOneLine4switch1().getLogicComprison()));
+            // tempValue.append();
 
-
+            //TODO check this
         }
         tempValue.append(" ? ");
 
@@ -522,7 +521,7 @@ public class CodeGeneration {
 
 
     public String discussionsSwitchcase(SwitchExpression switchExp ,SwitchCaseExpression switchCaseExp,String id){
-
+        // TODO repair this >>> must be : value = getELemen .....
 
         String switchValue=null;
         if(switchCaseExp.getCollection4Switch1().getVariable()!=null){
@@ -613,12 +612,12 @@ public class CodeGeneration {
                 }
                 else if(h.getHtmlContent()!=null){
                     IfContent(h);
-                }else if(h.getMustacheExpression()!=null){
+                }/*else if(h.getMustacheExpression()!=null){
                     mustachvalue=dealWithMustacheExp(id,h.getMustacheExpression());
                     JSContent.append("var mustach=document.creatTextNode("+mustachvalue+");" +
                             "element"+i+".appenChild(mustach) }\n\n");
 
-                }
+                }*/
                 JSContent.append("element"+i+".appenChild(h) \n}\n\n");
                 i++;
             }
@@ -631,12 +630,12 @@ public class CodeGeneration {
         else if( htmlElement.getHtmlContent().getCDATA()!=null){
             JSContent.append("var cdata=document.creatTextNode(\""+htmlElement.getHtmlContent().getCDATA()+"\");" +
                     "element.appenChild(cdata) }\n\n");
-        }else if( htmlElement.getMustacheExpression()!=null){
+        }/*else if( htmlElement.getMustacheExpression()!=null){
             mustachvalue=dealWithMustacheExp(id,htmlElement.getMustacheExpression());
             JSContent.append("var mustach=document.creatTextNode("+mustachvalue+");" +
                     "element.appenChild(mustach) }\n\n");
 
-        }
+        }*/
     }
 
 
@@ -928,7 +927,7 @@ public class CodeGeneration {
             String s=null;
             for(int i=0;i<htmlElement.getMustacheExpression().getMustacheContent().size();i++){
                 s=s+"elem.innerHTML = defaultText"+id+".replace('{{"+htmlElement.getMustacheExpression().getMustacheContent().get(i).a+" }}',"+htmlElement.getMustacheExpression().getMustacheContent().get(i).b.getFormatName()+"("+id+"randem0));\n";
-            }
+            }/*
             JSContent.append(" let defaultText"+id+" =\"{{"+dealWithMustacheExp(id,htmlElement.getMustacheExpression())+"}}\";" +
                     "var "+id+"randem="+collection4For2_1_1.split(".")+";"+
                     "if("+id+"randem[1]== null)\n"+
@@ -944,7 +943,7 @@ public class CodeGeneration {
                     "container"+id+".appendChild(elem);\n" +
                     " new_elements.push(elem);\n" +
                     "} \n " +
-                    "originalElement"+id+".hidden = true;");
+                    "originalElement"+id+".hidden = true;");*/
         }
     }
     public void JS4For1_2(String id,HtmlElement htmlElement,String collection4For1_1_1,String collection4For2_1_1,String collection4For1_1_2){
@@ -1002,7 +1001,7 @@ public class CodeGeneration {
             for(int i=0;i<htmlElement.getMustacheExpression().getMustacheContent().size();i++){
                 s=s+"elem.innerHTML = defaultText"+id+".replace('{{"+htmlElement.getMustacheExpression().getMustacheContent().get(i).a+" }}',"+htmlElement.getMustacheExpression().getMustacheContent().get(i).b.getFormatName()+"("+id+"randem0));\n";
             }
-            JSContent.append(" let defaultText"+id+" =\"{{"+dealWithMustacheExp(id,htmlElement.getMustacheExpression())+"}}\";" +
+       /*     JSContent.append(" let defaultText"+id+" =\"{{"+dealWithMustacheExp(id,htmlElement.getMustacheExpression())+"}}\";" +
                     "var "+id+"randem="+collection4For2_1_1.split(".")+";"+
                     "if("+id+"randem[1]== null)\n"+
                     "var "+id+"randem0="+collection4For2_1_1+"\n" +
@@ -1017,7 +1016,7 @@ public class CodeGeneration {
                     "container"+id+".appendChild(elem);\n" +
                     " new_elements.push(elem);\n" +
                     "} \n " +
-                    "originalElement"+id+".hidden = true;");
+                    "originalElement"+id+".hidden = true;");*/
         }
     }
     public void JS4For2(String id,HtmlElement htmlElement,String collection4For1_2_1, String collection4For1_2_2, String collection4For3_2_1){
@@ -1078,7 +1077,7 @@ public class CodeGeneration {
             String s=null;
             for(int i=0;i<htmlElement.getMustacheExpression().getMustacheContent().size();i++){
                 s=s+"elem.innerHTML = defaultText"+id+".replace('{{"+htmlElement.getMustacheExpression().getMustacheContent().get(i).a+" }}',"+htmlElement.getMustacheExpression().getMustacheContent().get(i).b.getFormatName()+"("+id+"randem0));\n";
-            }
+            }/*
             JSContent.append(" let defaultText"+id+" =\"{{"+dealWithMustacheExp(id,htmlElement.getMustacheExpression())+"}}\";" +
                     "var "+id+"randem="+collection4For3_2_1.split(".")+";"+
                     "if("+id+"randem[1]== null)\n"+
@@ -1096,7 +1095,7 @@ public class CodeGeneration {
                     "container"+id+".appendChild(elem);\n" +
                     " new_elements.push(elem);\n" +
                     "} \n " +
-                    "originalElement"+id+".hidden = true;");
+                    "originalElement"+id+".hidden = true;");*/
         }
     }
     public void JS4For3(String id,HtmlElement htmlElement,String collection4For4_3_1){
@@ -1140,7 +1139,7 @@ public class CodeGeneration {
             String s=null;
             for(int i=0;i<htmlElement.getMustacheExpression().getMustacheContent().size();i++){
                 s=s+"elem.innerHTML = defaultText"+id+".replace('{{"+htmlElement.getMustacheExpression().getMustacheContent().get(i).a+" }}',"+htmlElement.getMustacheExpression().getMustacheContent().get(i).b.getFormatName()+"("+id+"randem0));\n";
-            }
+            }/*
             JSContent.append(" let defaultText"+id+" =\"{{"+dealWithMustacheExp(id,htmlElement.getMustacheExpression())+"}}\";" +
                     "for("+collection4For4_3_1+") \n"+
 
@@ -1152,273 +1151,78 @@ public class CodeGeneration {
                     "container"+id+".appendChild(elem);\n" +
                     " new_elements.push(elem);\n" +
                     "} \n " +
-                    "originalElement"+id+".hidden = true;");
+                    "originalElement"+id+".hidden = true;");*/
         }
     }
 
 */
 
 
+    // CP-MUSTACHE
+    public void dealWithMustacheExp(String id, MustacheExpression me){
+        String MustValue;
 
-
-    //@ckick
-    public void dealWithClick(List<HtmlAttribute> attributes){
-        Click click =null;
-        String id=null;
-        String clickvalue=null;
-
-        //Get Id and for From Element
-        for (HtmlAttribute ha : attributes) {
-            if (ha.getClick() != null) {
-                click = ha.getClick();
-            }
-            if (ha.getTagName() != null) {
-                if (ha.getTagName().equals("id")) {
-                    id = ha.getAttValue().substring(1,ha.getAttValue().length()-1);
-                }
-            }
-        }
-
-        if (id == null || click == null) {
+        id=id.substring(1,id.length()-1);
+        if (id == null) {
             throw new NullPointerException(id);
         }
 
 
-        if(click.getCollection4Annotation().getFunctionCall4AnnotOneLine()!=null){
-            clickvalue=ClickFunctionCall4AnnotOneLine(click.getCollection4Annotation().getFunctionCall4AnnotOneLine());
-            JSContent.append("function click1"+id+"(){\n" +
-                    "var Click" + id + "=document.getElementById(\"" + id + "\")\n" +
-                    "Click" + id + ".addEventListener(\"click\", " + click.getCollection4Annotation().getFunctionCall4AnnotOneLine().getFunctionName() + ");\n" +
-                    "}\n" +
-                    " changes.push(click1"+id+");");
+        // variable
+        if (!me.getMustacheContent().isEmpty()){
+            Collection4Mustache CM = me.getMustacheContent().get(0).a;
+            Filter f = me.getMustacheContent().get(0).b;
+            JSContent.append("        var "+id+"Changes4Must = function (event) {\n" +
+                    "var def = document.getElementById(\""+id+"\").innerHTML;\n" +
+                    "int opencurly = def.search(\"{{\");\n" +
+                    "int closecurly = def.search(\"}}\");\n" +
+                    "var temptext = def.substr(opencurly,closecurly+1);\n");
 
-        }
-       else if(click.getCollection4Annotation().getArrName()!=null) {
-            clickvalue = click.getCollection4Annotation().getArrName().getIdentifier();
-            if (click.getCollection4Annotation().getArrayFuncRet4AnnotOneLine() != null) {
-                clickvalue += ClickArrayFuncRet4AnnotOneLine(click.getCollection4Annotation().getArrayFuncRet4AnnotOneLine());
-            }
+            if (CM != null){
+                if (f != null){
+                    // lower
 
-            JSContent.append("function click1"+id+"(){\n" +
-                    "var Click" + id + "=document.getElementById(\"" + id + "\")\n" +
-                    "Click" + id + ".addEventListener(\"click\", " + clickvalue + ");\n" +
-                    "}\n" +
-                    " changes.push(click1"+id+");");
-        } else if(click.getCollection4Annotation().getObj()!=null){
-            clickvalue=click.getCollection4Annotation().getObj().getIdentifier();
-            if(click.getCollection4Annotation().getPropFuncRet4AnnotOneLine()!=null){
-                clickvalue+=ClickPropFuncRet4AnnotOneLine(click.getCollection4Annotation().getPropFuncRet4AnnotOneLine());
-            }
-            JSContent.append("function click1"+id+"(){\n" +
-                    "var Click" + id + "=document.getElementById(\"" + id + "\")\n" +
-                    "Click" + id + ".addEventListener(\"click\", " + clickvalue + ");\n" +
-                    "}\n" +
-                    " changes.push(click1"+id+");");
+                    if (f.getFormatName().getMustachIdentifier().equals("lower")){
+                        String value = " "+App+CM.getMustacheVariable().getMustacheVariable();
+                        JSContent.append("document.getElementById(\"" + id + "\").innerHTML = def.replace(temptext,"+ value +".toLowerCase() )\n");
+                    }else if (f.getFormatName().getMustachIdentifier().equals("currency")){
+                        String value = " "+App+CM.getMustacheVariable().getMustacheVariable();
+                        JSContent.append("let dollarUS = Intl.NumberFormat(\"en-US\", {\n" +
+                                "    style: \"currency\",\n" +
+                                "    currency: \"USD\",\n" +
+                                "});\n\n");
 
-        }
+                        JSContent.append("document.getElementById(\"" + id + "\").innerHTML = def.replace(temptext,dollarUS.format("+ value +"))\n");
+                    }else if (f.getFormatName().getMustachIdentifier().equals("date")){
+                        String value = " "+App+CM.getMustacheVariable().getMustacheVariable();
+                        JSContent.append("var dd = String("+value+".getDate()).padStart(2, '0');\n" +
+                                "var mm = String("+value+".getMonth() + 1).padStart(2, '0');\n" +
+                                "var yyyy = "+value+".getFullYear();\n" +
+                                ""+value+" = dd + '/' + mm + '/' + yyyy;\n\n");
 
-        if(click.getCollection4Annotation().getOneLine4Annotation()!=null){
-                clickvalue=ClickOneLine4Annotion(click.getCollection4Annotation().getOneLine4Annotation());
-            JSContent.append("function click1"+id+"(){\n" +
-                    "var Click" + id + "=document.getElementById(\"" + id + "\")\n" +
-                    "Click" + id + ".addEventListener(\"click\", " + clickvalue + ");\n" +
-                    "}\n" +
-                    " changes.push(click1"+id+");");
-        }
+                        JSContent.append("document.getElementById(\"" + id + "\").innerHTML = def.replace(temptext,"+ value +")\n");
 
+                    }
 
-    }
-    public String ClickParameters(ArrayList<Parameter> p){
-        StringBuilder Pvalue=new StringBuilder() ;
-        for(int i=0;i<p.size();i++){
-            Pvalue.append(dealWithColl4Every(p.get(i).getCollection4everything()));
-            Pvalue.append(",");
-        }
-        return Pvalue.toString();
-
-    }
-    public String ClickFunctionParameters(List<Parameters> FP){
-        StringBuilder FPvalue=new StringBuilder() ;
-        for(int i=0;i<FP.size();i++){
-            FPvalue.append("(");
-           FPvalue.append(ClickParameters(FP.get(i).getParameters()) );
-            FPvalue.append(")");
-        }
-return  FPvalue.toString();
-    }
-    public String ClickFunctionCall4AnnotOneLine(FunctionCall4AnnotOneLine FC){
-        StringBuilder FCvalue=new StringBuilder() ;
-
-
-        if(FC.getFunctionName()!=null){
-            FCvalue.append(FC.getFunctionName().getIdentifier());
-        } if(FC.getFuncEndRet4AnnotOneLine()!=null){
-            FCvalue.append(ClickFuncEndRet4AnnotOneLine(FC.getFuncEndRet4AnnotOneLine()));
-        }
-return FCvalue.toString();
-    }
-    public  String ClickPropFuncRet4AnnotOneLine(PropFuncRet4AnnotOneLine P){
-        StringBuilder avalue=new StringBuilder() ;
-
-        if(P.getPropertyValue()!=null){
-            for(int i=0;i<P.getPropertyValue().size();i++){
-                avalue.append(".");
-                avalue.append(P.getPropertyValue().get(i).getIdentifier());
-            }
-        }
-        if(P.getArrayFuncRet4AnnotOneLine()!=null){
-            avalue.append(ClickArrayFuncRet4AnnotOneLine(P.getArrayFuncRet4AnnotOneLine()));
-        }else if(P.getFuncEndRet4AnnotOneLine()!=null){
-            avalue.append(ClickFuncEndRet4AnnotOneLine(P.getFuncEndRet4AnnotOneLine()));
-        }
-        return avalue.toString();
-
-    }
-    public String ClickArrayFuncRet4AnnotOneLine(ArrayFuncRet4AnnotOneLine a){
-        StringBuilder avalue=new StringBuilder() ;
-        avalue.append("(");
-        if(a.getArithmeticLogics()!=null){
-            for(int i=0;i<a.getArithmeticLogics().size();i++)
-            avalue.append(dealWithArithLogic(a.getArithmeticLogics().get(i)));
-        }
-        avalue.append(")");
-        if(a.getFuncEndRet4AnnotOneLine()!=null){
-            avalue.append( ClickFuncEndRet4AnnotOneLine(a.getFuncEndRet4AnnotOneLine()));
-        } else if(a.getPropFuncRet4AnnotOneLine()!=null){
-            avalue.append(ClickPropFuncRet4AnnotOneLine(a.getPropFuncRet4AnnotOneLine()));
-        }
-        return  avalue.toString();
-    }
-    public String ClickFuncEndRet4AnnotOneLine(FuncEndRet4AnnotOneLine FC){
-        StringBuilder FCvalue=new StringBuilder() ;
-        FCvalue.append("(");
-        if(FC.getFunctionParameters()!=null){
-            FCvalue.append(ClickFunctionParameters(FC.getFunctionParameters()));
-        }
-        FCvalue.append(")");
-        if(FC.getArrayFuncRet4AnnotOneLine()!=null){
-            FCvalue.append(ClickArrayFuncRet4AnnotOneLine(FC.getArrayFuncRet4AnnotOneLine()));
-        }else if(FC.getPropFuncRet4AnnotOneLine()!=null){
-            FCvalue.append(ClickPropFuncRet4AnnotOneLine(FC.getPropFuncRet4AnnotOneLine()));
-        }
-return  FCvalue.toString();
-    }
-    public String ClickOneLine4Annotion(OneLine4Annotation oa){
-        StringBuilder tempValue = new StringBuilder();
-        tempValue.append("( ");
-
-        //LogicComprison
-        if(oa.getLogicComprison()!=null){
-             tempValue.append(dealWithLogicComparison(oa.getLogicComprison()));
-        }
-        tempValue.append(" ? ");
-
-
-        if (oa.getCollection4Annotation1_1().getOneLine4Annotation() != null) {
-            tempValue.append(ClickOneLine4Annotion(oa.getCollection4Annotation1_1().getOneLine4Annotation()));
-        } else if (oa.getCollection4Annotation1_1().getPropFuncRet4AnnotOneLine() != null){
-            tempValue.append(ClickPropFuncRet4AnnotOneLine(oa.getCollection4Annotation1_1().getPropFuncRet4AnnotOneLine()));
-        }
-        else if(oa.getCollection4Annotation1_1().getFunctionCall4AnnotOneLine()!=null){
-            tempValue.append( ClickFunctionCall4AnnotOneLine(oa.getCollection4Annotation1_1().getFunctionCall4AnnotOneLine()));
-        }else if(oa.getCollection4Annotation1_1().getArrayFuncRet4AnnotOneLine()!=null){
-            tempValue.append(ClickArrayFuncRet4AnnotOneLine(oa.getCollection4Annotation1_1().getArrayFuncRet4AnnotOneLine()));
-        }else if(oa.getCollection4Annotation1_1().getObj()!=null){
-            tempValue.append(oa.getCollection4Annotation1_1().getObj().getIdentifier());
-        }else if(oa.getCollection4Annotation1_1().getArrName()!=null){
-            tempValue.append(oa.getCollection4Annotation1_1().getArrName().getIdentifier());
-        }
-
-        tempValue.append(" : ");
-
-
-        if (oa.getCollection4Annotation1_2().getOneLine4Annotation() != null) {
-            tempValue.append(ClickOneLine4Annotion(oa.getCollection4Annotation1_2().getOneLine4Annotation()));
-        } else if (oa.getCollection4Annotation1_2().getPropFuncRet4AnnotOneLine() != null){
-            tempValue.append(ClickPropFuncRet4AnnotOneLine(oa.getCollection4Annotation1_2().getPropFuncRet4AnnotOneLine()));
-        }
-        else if(oa.getCollection4Annotation1_2().getFunctionCall4AnnotOneLine()!=null){
-            tempValue.append( ClickFunctionCall4AnnotOneLine(oa.getCollection4Annotation1_2().getFunctionCall4AnnotOneLine()));
-        }else if(oa.getCollection4Annotation1_2().getArrayFuncRet4AnnotOneLine()!=null){
-            tempValue.append(ClickArrayFuncRet4AnnotOneLine(oa.getCollection4Annotation1_2().getArrayFuncRet4AnnotOneLine()));
-        }else if(oa.getCollection4Annotation1_2().getObj()!=null){
-            tempValue.append(oa.getCollection4Annotation1_2().getObj().getIdentifier());
-        }else if(oa.getCollection4Annotation1_2().getArrName()!=null){
-            tempValue.append(oa.getCollection4Annotation1_2().getArrName().getIdentifier());
-        }
-
-        tempValue.append(" )");
-        return tempValue.toString();
-    }
-
-
-    //@double ckick
-    public void dealWithdoubleClick(List<HtmlAttribute> attributes){
-        DoubleClick click =null;
-        String id=null;
-        String clickvalue=null;
-
-        //Get Id and for From Element
-        for (HtmlAttribute ha : attributes) {
-            if (ha.getDoubleClick() != null) {
-                click = ha.getDoubleClick();
-            }
-            if (ha.getTagName() != null) {
-                if (ha.getTagName().equals("id")) {
-                    id = ha.getAttValue().substring(1,ha.getAttValue().length()-1);
+                }else {
+                    if (CM.getMustacheVariable() != null) {
+                        String value = " "+App+CM.getMustacheVariable().getMustacheVariable();
+                        JSContent.append("document.getElementById(\"" + id + "\").innerHTML = def.replace(temptext,"+ value +" )\n");
+                    }else if (CM.getSubObj4Must() != null){
+                        String value = " "+App+ dealWithSubObj4M(CM.getSubObj4Must());
+                        JSContent.append("document.getElementById(\"" + id + "\").innerHTML = def.replace(temptext,"+ value +" )\n");
+                    }
                 }
             }
+
+
+            JSContent.append("}" +
+                    "renders.push("+id+"Changes4Must);");
         }
-
-        if (id == null || click == null) {
-            throw new NullPointerException(id);
-        }
-
-
-        if(click.getCollection4Annotation().getFunctionCall4AnnotOneLine()!=null){
-            clickvalue=ClickFunctionCall4AnnotOneLine(click.getCollection4Annotation().getFunctionCall4AnnotOneLine());
-            JSContent.append("function click1"+id+"(){\n" +
-                    "var Click" + id + "=document.getElementById(\"" + id + "\")\n" +
-                    "Click" + id + ".addEventListener(\"mouseout\", " + click.getCollection4Annotation().getFunctionCall4AnnotOneLine().getFunctionName() + ");\n" +
-                    "}\n" +
-                    " changes.push(click1"+id+");");
-
-        }
-        else if(click.getCollection4Annotation().getArrName()!=null) {
-            clickvalue = click.getCollection4Annotation().getArrName().getIdentifier();
-            if (click.getCollection4Annotation().getArrayFuncRet4AnnotOneLine() != null) {
-                clickvalue += ClickArrayFuncRet4AnnotOneLine(click.getCollection4Annotation().getArrayFuncRet4AnnotOneLine());
-            }
-
-            JSContent.append("function click1"+id+"(){\n" +
-                    "var Click" + id + "=document.getElementById(\"" + id + "\")\n" +
-                    "Click" + id + ".addEventListener(\"mouseout\", " + clickvalue + ");\n" +
-                    "}\n" +
-                    " changes.push(click1"+id+");");
-        } else if(click.getCollection4Annotation().getObj()!=null){
-            clickvalue=click.getCollection4Annotation().getObj().getIdentifier();
-            if(click.getCollection4Annotation().getPropFuncRet4AnnotOneLine()!=null){
-                clickvalue+=ClickPropFuncRet4AnnotOneLine(click.getCollection4Annotation().getPropFuncRet4AnnotOneLine());
-            }
-            JSContent.append("function click1"+id+"(){\n" +
-                    "var Click" + id + "=document.getElementById(\"" + id + "\")\n" +
-                    "Click" + id + ".addEventListener(\"mouseout\", " + clickvalue + ");\n" +
-                    "}\n" +
-                    " changes.push(click1"+id+");");
-
-        }
-
-        if(click.getCollection4Annotation().getOneLine4Annotation()!=null){
-            clickvalue=ClickOneLine4Annotion(click.getCollection4Annotation().getOneLine4Annotation());
-            JSContent.append("function click1"+id+"(){\n" +
-                    "var Click" + id + "=document.getElementById(\"" + id + "\")\n" +
-                    "Click" + id + ".addEventListener(\"mouseout\", " + clickvalue + ");\n" +
-                    "}\n" +
-                    " changes.push(click1"+id+");");
-        }
-
 
     }
+
+
 
 
 

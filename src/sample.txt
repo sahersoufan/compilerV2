@@ -1,17 +1,26 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 
-<head><title></title></head>
+<head>
+    <title>Sample 5 filters</title>
+</head>
 
+<body id="b" cp-app="forthyear">
+    <span>Cards?</span>
+    <input id="myShowItems" type="text" cp-model="showItemsCnt" value="4" />
 
-<body cp-app="a">
+    <div id="bignum">it's a big number {{showItemsCnt | currency:"D"}}</div>
+    <!-- D id USD $ -->
 
-<div>
-<hello></hello>
-</div>
-<span><img src=""></img></span>
-<div>
-<div></div>
-</div>
+    <script>
+        function forthyear() {
+            this.showItemsCnt = 6;
+        };
+
+        var forthyear = new forthyear();
+
+    </script>
 
 </body>
+
 </html>
